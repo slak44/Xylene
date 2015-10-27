@@ -8,6 +8,7 @@ void ASTNode::addChild(ASTNode* child) {
   child->setParent(this);
   children.push_back(child);
 }
+
 std::vector<ASTNode*> ASTNode::getChildren() {
   return children;
 }
@@ -28,12 +29,12 @@ std::vector<TokenType> ExpressionNode::validOperandTypes {
   INTEGER, FLOAT, STRING, ARRAY, TYPE, VARIABLE, FUNCTION, UNPROCESSED
 };
 
-ExpressionNode::ExpressionNode(std::vector<Token> tokens) {
-  for (unsigned int i = 0; i < tokens.size(); ++i) {
+ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
+  for (unsigned long long i = 0; i < tokens.size(); ++i) {
     if (EXPRESSION_STEPS) {
-      for (auto tok : outStack) printnb(tok.data << ' ');
+      for (auto tok : outStack) print(tok.data, " ");
       print("\n-------\n");
-      for (auto tok : opStack) printnb(tok.data << ' ');
+      for (auto tok : opStack) print(tok.data, " ");
       print("\n=======\n");
     }
     if (contains(tokens[i].type, validOperandTypes)) {
@@ -81,18 +82,36 @@ std::vector<Token> ExpressionNode::getRPNOutput() {
   return outStack;
 }
 
-ExpressionNode::buildSubtree() {
-  ExpressionChildNode subroot = ExpressionChildNode(outStack.back());
-  this.addChild(subroot);
+void ExpressionNode::buildSubtree(void) {
+  auto stackCopy = outStack;
+  auto tok = stackCopy.back();
+  stackCopy.pop_back();
+  ExpressionChildNode node = ExpressionChildNode(tok, stackCopy);
+  this->addChild(&node);
 }
 
-ExpressionChildNode::ExpressionChildNode(Token t): t(t) {};
+
+ExpressionChildNode::ExpressionChildNode(Token operand): t(operand) {};
+ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands): t(op) {
+  auto arity = static_cast<ops::Operator*>(op.typeData)->getArity();
+  for (int i = 1; i <= arity; ++i) {
+    auto next = operands[operands.size() - i];
+    if (next.type == OPERATOR) {
+      operands.pop_back();
+      this->addChild(new ExpressionChildNode(next, operands));
+    } else {
+      operands.pop_back();
+      this->addChild(new ExpressionChildNode(next));
+    }
+  }
+};
 
 AST::AbstractSyntaxTree() {}
 
 void AST::addRootChild(ASTNode* node) {
   root.addChild(node);
 }
+
 ChildrenNodes AST::getRootChildren() {
   return root.getChildren();
 }
