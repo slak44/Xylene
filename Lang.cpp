@@ -31,7 +31,7 @@ public:
       tokenize(code);
       buildTree();
       if (PARSER_PRINT_TOKENS) for (auto tok : tokens) print(tok.data, " --> TokenType ", tok.type, "\n");
-      if (PARSER_PRINT_AS_EXPR) for (auto tok : nodes::ExpressionNode(tokens).getRPNOutput()) printnb(tok.data << ' ')
+      if (PARSER_PRINT_AS_EXPR) for (auto tok : nodes::ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
     } catch (SyntaxError &e) {
       print(e.getMessage(), "\n");
     }
@@ -136,18 +136,23 @@ public:
   void buildTree() {
     // TODO: start building the AST here
   }
+  
+  std::vector<Token> getTokens() {
+    return tokens;
+  }
 };
 
 int main() {
   switch (TEST_INPUT) {
-    case 1: Parser("a = ++b"); break;
-    case 2: Parser("(1 + 2) * 3 / (2 << 1)"); break;
+    case 1: Parser("a = (a + 1)"); break;
+    case 2: Parser("(1 + 2) * 3 / (2 << 1)"); break;// TODO: Causes segfault because it's starting with "(" 
     case 3: Parser("var a = \"abc123\";"); break;
     case 4: Parser("var a = 132;\na+=1+123*(1 + 32/2);"); break;
     case 5: Parser("1+ a*(-19-1++)==Integer.MAX_INT"); break;
     case 6: Parser("var a = 1 + 2 * (76 - 123 - (43 + 12) / 5) % 10;\nInteger n = 1;"); break;
     case 7: Parser("1 + 2 * 3 << 2"); break;
     case 8: Parser("Test.test.abc.df23.asdasf ()"); break;
+    case 9: Parser("(1+3)*1+ a*(19-1)"); break;
     default: break;
   }
   return 0;
