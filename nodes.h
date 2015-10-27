@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <memory>
+
 #include "global.h"
 #include "std_is_missing_stuff.h"
 #include "operators.h"
@@ -32,7 +34,7 @@ public:
   DeclarationNode(std::string typeName, std::string identifier);
 };
 
-class ExpressionNode: ASTNode {
+class ExpressionNode: public ASTNode {
 private:
   static std::vector<TokenType> validOperandTypes;
   std::vector<Token> opStack {};
@@ -44,17 +46,28 @@ private:
     opStack.pop_back();
   }
 public:
-  ExpressionNode(std::vector<Token> tokens);
+  ExpressionNode(std::vector<Token>& tokens);
   
   std::vector<Token> getRPNOutput();
   void buildSubtree();
 };
 
-class ExpressionChildNode: ASTNode {
+class ExpressionChildNode: public ASTNode {
 public:
   Token t;
-  ExpressionChildNode(Token t);
+  ExpressionChildNode(Token operand);
+  ExpressionChildNode(Token op, std::vector<Token>& operands);
 };
+
+inline std::ostream& operator<<(std::ostream& os, ExpressionChildNode& tok) { 
+  if (tok.t.type != OPERATOR) return os << "ExpressionChildNode with " << tok.t;
+  else {
+    for (unsigned long long i = 0; i < tok.getChildren().size(); ++i) {
+      operator<<(os, *static_cast<ExpressionChildNode*>(tok.getChildren()[i]));
+    }
+    return os;
+  }
+}
 
 class AbstractSyntaxTree {
 private:
