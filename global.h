@@ -9,7 +9,7 @@
 #define PARSER_PRINT_AS_EXPR              IF_DEBUGGING(true)
 #define PARSER_PRINT_OPERATOR_TOKENS      IF_DEBUGGING(false)
 #define TOKEN_OPERATOR_PRINT_CONSTRUCTION IF_DEBUGGING(false)
-#define TEST_INPUT                        2
+#define TEST_INPUT                        7
 
 #include <iostream>
 #include <stdexcept>
@@ -25,8 +25,6 @@ void print(T thing, Args... args) {
   print(thing);
   print(args...);
 }
-
-#define printnb(x) std::cout << x;
 
 class SyntaxError: std::runtime_error {
 private:
