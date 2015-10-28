@@ -13,7 +13,3 @@ Token::Token(ops::Operator& opContent, TokenType type, int line):
   line(line) {
   if (TOKEN_OPERATOR_PRINT_CONSTRUCTION) print("Initialized Token with Operator: ", opContent, ", at address ", &opContent, "\n");
 }
-
-inline std::ostream &operator<<(std::ostream& os, Token& tok) { 
-  return os << tok.data << ", TokenType " << tok.type << ", at line " << tok.line;
-}
