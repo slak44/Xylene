@@ -31,8 +31,8 @@ public:
   Token(ops::Operator& opContent, TokenType type, int line);
 };
 
-inline std::ostream &operator<<(std::ostream& os, Token& tok) { 
-  return os << tok.data << ", TokenType " << tok.type << ", at line " << tok.line;
+inline std::ostream& operator<<(std::ostream& os, Token& tok) { 
+  return os << "Token " << tok.data << ", TokenType " << tok.type << ", at line " << tok.line;
 }
 
 #endif /* TOKENS_H_ */
