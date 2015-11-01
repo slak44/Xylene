@@ -146,9 +146,10 @@ public:
 };
 
 int main() {
+  getConstants();
   switch (TEST_INPUT) {
     case 1: Parser("a = (a + 1)"); break;
-    case 2: Parser("(1 + 2) * 3 / (2 << 1)"); break; // TODO: Causes segfault because it's starting with "(" 
+    case 2: Parser("(1 + 2) * 3 / (2 << 1)"); break; 
     case 3: Parser("var a = \"abc123\";"); break;
     case 4: Parser("var a = 132;\na+=1+123*(1 + 32/2);"); break;
     case 5: Parser("1+ a*(-19-1++)==Integer.MAX_INT"); break;
