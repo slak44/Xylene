@@ -16,9 +16,9 @@
 class Parser {
 private:
   std::vector<Token> tokens {};
-  inline void skipCharacters(unsigned int &i, int by) {i += by;}
+  inline void skipCharacters(unsigned int& i, int by) {i += by;}
   // If we're already at the next character, but the loop will increment i by 1
-  inline void preventIncrement(unsigned int &i) {i--;}
+  inline void preventIncrement(unsigned int& i) {i--;}
 
   std::vector<std::string> typeIdentifiers {"Integer"};
   std::vector<std::string> variables {};
