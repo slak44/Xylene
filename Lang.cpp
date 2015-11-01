@@ -134,10 +134,14 @@ public:
   }
   
   void buildTree() {
-    nodes::ExpressionNode expr(tokens);
-    expr.buildSubtree();
-    expr.printTree(0);
-    tree.addRootChild(&expr);
+    std::function<bool(Token)> isNewLine = [](Token tok) {return tok.data == ";" && tok.type == CONSTRUCT;};
+    auto vecs = splitVector(tokens, isNewLine);
+    for (auto toks : vecs) {
+      auto expr = new nodes::ExpressionNode(toks);
+      expr->buildSubtree();
+      expr->printTree(0);
+      tree.addRootChild(expr);
+    }
   }
   
   std::vector<Token> getTokens() {
@@ -156,7 +160,7 @@ int main() {
     case 6: Parser("var a = 1 + 2 * (76 - 123 - (43 + 12) / 5) % 10;\nInteger n = 1;"); break;
     case 7: Parser("1 + 2 * 3 << 2"); break;
     case 8: Parser("Test.test.abc.df23.asdasf ()"); break;
-    case 9: Parser("1 * 2 + 3"); break;
+    case 9: Parser("a = 1 + 2;\nb = 2 * 3"); break;
     default: break;
   }
   
