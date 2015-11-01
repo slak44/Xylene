@@ -2,7 +2,12 @@
 
 namespace nodes {
 
+void printIndent(int level) {
+  for (int i = 0; i < level; ++i) print("  ");
+}
+
 ASTNode::ASTNode() {}
+ASTNode::~ASTNode() {}
 
 void ASTNode::addChild(ASTNode* child) {
   child->setParent(this);
@@ -18,6 +23,14 @@ void ASTNode::setParent(ASTNode* parent) {
 }
 ASTNode* ASTNode::getParent() {
   return parent;
+}
+
+void ASTNode::printTree(int level) {
+  printIndent(level);
+  print("Plain ASTNode");
+  for (auto child : children) {
+    child->printTree(level + 1);
+  }
 }
 
 DeclarationNode::DeclarationNode(std::string typeName, std::string identifier) {
@@ -83,28 +96,42 @@ std::vector<Token> ExpressionNode::getRPNOutput() {
 }
 
 void ExpressionNode::buildSubtree(void) {
-  auto stackCopy = outStack;
+  std::vector<Token> stackCopy(outStack);
   auto tok = stackCopy.back();
   stackCopy.pop_back();
-  ExpressionChildNode node = ExpressionChildNode(tok, stackCopy);
-  this->addChild(&node);
+  ExpressionChildNode* node = new ExpressionChildNode(tok, stackCopy);
+  this->addChild(node);
 }
 
+void ExpressionNode::printTree(int level) {
+  auto top = static_cast<ExpressionChildNode*>(this->getChildren()[0]);
+  top->printTree(level);
+}
 
 ExpressionChildNode::ExpressionChildNode(Token operand): t(operand) {};
 ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands): t(op) {
   auto arity = static_cast<ops::Operator*>(op.typeData)->getArity();
-  for (int i = 1; i <= arity; ++i) {
-    auto next = operands[operands.size() - i];
+  for (int i = 0; i < arity; ++i) {
+    auto next = operands[operands.size() - 1];
     if (next.type == OPERATOR) {
       operands.pop_back();
-      this->addChild(new ExpressionChildNode(next, operands));
+      auto branch = new ExpressionChildNode(next, operands);
+      this->addChild(branch);
     } else {
       operands.pop_back();
-      this->addChild(new ExpressionChildNode(next));
+      auto leaf = new ExpressionChildNode(next);
+      this->addChild(leaf);
     }
   }
 };
+
+void ExpressionChildNode::printTree(int level) {
+  printIndent(level);
+  print(this->t, "\n");
+  for (auto child : children) {
+    static_cast<ExpressionChildNode*>(child)->printTree(level + 1);
+  }
+}
 
 AST::AbstractSyntaxTree() {}
 

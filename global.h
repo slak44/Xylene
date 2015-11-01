@@ -6,7 +6,7 @@
 
 #define EXPRESSION_STEPS                  IF_DEBUGGING(false)
 #define PARSER_PRINT_TOKENS               IF_DEBUGGING(false)
-#define PARSER_PRINT_AS_EXPR              IF_DEBUGGING(true)
+#define PARSER_PRINT_AS_EXPR              IF_DEBUGGING(false)
 #define PARSER_PRINT_OPERATOR_TOKENS      IF_DEBUGGING(false)
 #define TOKEN_OPERATOR_PRINT_CONSTRUCTION IF_DEBUGGING(false)
 #define TEST_INPUT                        9
