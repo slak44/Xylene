@@ -30,7 +30,7 @@ public:
     try {
       tokenize(code);
       buildTree();
-      if (PARSER_PRINT_TOKENS) for (auto tok : tokens) print(tok.data, " --> TokenType ", tok.type, "\n");
+      if (PARSER_PRINT_TOKENS) for (auto tok : tokens) print(tok, "\n");
       if (PARSER_PRINT_AS_EXPR) for (auto tok : nodes::ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
     } catch (SyntaxError &e) {
       print(e.getMessage(), "\n");
@@ -136,8 +136,8 @@ public:
   void buildTree() {
     nodes::ExpressionNode expr(tokens);
     expr.buildSubtree();
+    expr.printTree();
     tree.addRootChild(&expr);
-//    print(*static_cast<nodes::ExpressionChildNode*>(expr.getChildren()[0]));
   }
   
   std::vector<Token> getTokens() {
