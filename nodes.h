@@ -18,10 +18,14 @@ protected:
   std::vector<ASTNode*> children {};
 public:
   ASTNode();
+  virtual ~ASTNode();
+  
   void addChild(ASTNode* child);
   std::vector<ASTNode*> getChildren();
   void setParent(ASTNode* parent);
   ASTNode* getParent();
+  
+  virtual void printTree(int level);
 };
 
 typedef std::vector<ASTNode*> ChildrenNodes;
@@ -34,6 +38,7 @@ public:
   DeclarationNode(std::string typeName, std::string identifier);
 };
 
+// TODO: restrict to one child only
 class ExpressionNode: public ASTNode {
 private:
   static std::vector<TokenType> validOperandTypes;
@@ -50,6 +55,7 @@ public:
   
   std::vector<Token> getRPNOutput();
   void buildSubtree();
+  void printTree(int level);
 };
 
 class ExpressionChildNode: public ASTNode {
@@ -57,17 +63,10 @@ public:
   Token t;
   ExpressionChildNode(Token operand);
   ExpressionChildNode(Token op, std::vector<Token>& operands);
+  
+  void printTree(int level);
 };
 
-inline std::ostream& operator<<(std::ostream& os, ExpressionChildNode& tok) { 
-  if (tok.t.type != OPERATOR) return os << "ExpressionChildNode with " << tok.t;
-  else {
-    for (unsigned long long i = 0; i < tok.getChildren().size(); ++i) {
-      operator<<(os, *static_cast<ExpressionChildNode*>(tok.getChildren()[i]));
-    }
-    return os;
-  }
-}
 
 class AbstractSyntaxTree {
 private:

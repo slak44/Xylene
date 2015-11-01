@@ -136,7 +136,7 @@ public:
   void buildTree() {
     nodes::ExpressionNode expr(tokens);
     expr.buildSubtree();
-    expr.printTree();
+    expr.printTree(0);
     tree.addRootChild(&expr);
   }
   
