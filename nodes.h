@@ -42,8 +42,8 @@ public:
 class ExpressionNode: public ASTNode {
 private:
   static std::vector<TokenType> validOperandTypes;
-  std::vector<Token> opStack {};
-  std::vector<Token> outStack {};
+  std::vector<Token> opStack = std::vector<Token>();
+  std::vector<Token> outStack = std::vector<Token>();
   
   // Moves the top of the opStack to the top of the outStack
   inline void popToOut() {
