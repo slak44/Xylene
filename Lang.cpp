@@ -137,10 +137,22 @@ public:
     std::function<bool(Token)> isNewLine = [](Token tok) {return tok.data == ";" && tok.type == CONSTRUCT;};
     auto logicalLines = splitVector(tokens, isNewLine);
     for (auto toks : logicalLines) {
-      auto expr = new nodes::ExpressionNode(toks);
-      expr->buildSubtree();
-      expr->printTree(0);
-      tree.addRootChild(expr);
+      if (toks.size() == 0) continue;
+      if (toks[0].data == "define" && toks[0].type == KEYWORD) {
+        nodes::DeclarationNode* decl = new nodes::DeclarationNode("define", toks[1]);
+        if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
+          nodes::ExpressionNode* expr = new nodes::ExpressionNode(toks);
+          expr->buildSubtree();
+          decl->addChild(expr);
+        }
+        decl->printTree(0);
+        tree.addRootChild(decl);
+      } else {
+        nodes::ExpressionNode* expr = new nodes::ExpressionNode(toks);
+        expr->buildSubtree();
+        expr->printTree(0);
+        tree.addRootChild(expr);
+      }
     }
   }
   
@@ -154,13 +166,13 @@ int main() {
   switch (TEST_INPUT) {
     case 1: Parser("a = (a + 1)"); break;
     case 2: Parser("(1 + 2) * 3 / (2 << 1)"); break; 
-    case 3: Parser("var a = \"abc123\";"); break;
-    case 4: Parser("var a = 132;\na+=1+123*(1 + 32/2);"); break;
+    case 3: Parser("define a = \"abc123\";"); break;
+    case 4: Parser("define a = 132;\na+=1+123*(1 + 32/2);"); break;
     case 5: Parser("1+ a*(-19-1++)==Integer.MAX_INT"); break;
     case 6: Parser("var a = 1 + 2 * (76 - 123 - (43 + 12) / 5) % 10;\nInteger n = 1;"); break;
     case 7: Parser("1 + 2 * 3 << 2"); break;
     case 8: Parser("Test.test.abc.df23.asdasf ()"); break;
-    case 9: Parser("a = 1 + 2;\nb = 2 * 3"); break;
+    case 9: Parser("define a = 1 + 2;\nb = 2 * 3"); break;
     default: break;
   }
   
