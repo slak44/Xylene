@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <stdexcept>
 #include <memory>
 
 #include "global.h"
@@ -20,7 +21,7 @@ public:
   ASTNode();
   virtual ~ASTNode();
   
-  void addChild(ASTNode* child);
+  virtual void addChild(ASTNode* child);
   std::vector<ASTNode*> getChildren();
   void setParent(ASTNode* parent);
   ASTNode* getParent();
@@ -28,18 +29,29 @@ public:
   virtual void printTree(int level);
 };
 
+class SingleChildNode: public ASTNode {
+public:
+  SingleChildNode();
+  
+  void addChild(ASTNode* child);
+  ASTNode* getChild();
+  void printTree(int level);
+};
+
 typedef std::vector<ASTNode*> ChildrenNodes;
 
-class DeclarationNode: public ASTNode {
+class DeclarationNode: public SingleChildNode {
 public:
   std::string typeName;
-  std::string identifier;
+  Token identifier;
 
-  DeclarationNode(std::string typeName, std::string identifier);
+  DeclarationNode(std::string typeName, Token identifier);
+  void addChild(ASTNode* child);
+  void printTree(int level);
 };
 
 // TODO: restrict to one child only
-class ExpressionNode: public ASTNode {
+class ExpressionNode: public SingleChildNode {
 private:
   static std::vector<TokenType> validOperandTypes;
   std::vector<Token> opStack = std::vector<Token>();

@@ -33,9 +33,44 @@ void ASTNode::printTree(int level) {
   }
 }
 
-DeclarationNode::DeclarationNode(std::string typeName, std::string identifier) {
+SingleChildNode::SingleChildNode() {};
+void SingleChildNode::addChild(ASTNode* child) {
+  if (this->getChildren().size() >= 1) throw std::runtime_error("Trying to add more than one child to SingleChildNode.");
+  else {
+    this->ASTNode::addChild(child);
+  }
+}
+
+ASTNode* SingleChildNode::getChild() {
+  return children[0];
+}
+
+void SingleChildNode::printTree(int level) {
+  printIndent(level);
+  auto child = this->getChild();
+  if (child == 0) {
+    print("SingleChildNode, empty", "\n");
+    return;
+  }
+  print("SingleChildNode with: ", child, "\n");
+  child->printTree(level + 1);
+}
+
+DeclarationNode::DeclarationNode(std::string typeName, Token identifier) {
   this->typeName = typeName;
   this->identifier = identifier;
+}
+
+void DeclarationNode::addChild(ASTNode* child) {
+  auto node = dynamic_cast<ExpressionNode*>(child);
+  if (node == 0) throw std::invalid_argument("DeclarationNode only accepts an ExpressionNode as its child.");
+  this->SingleChildNode::addChild(node);
+}
+
+void DeclarationNode::printTree(int level) {
+  printIndent(level);
+  print("Declared ", this->typeName, " as ", this->identifier, "\n");
+  static_cast<ExpressionNode*>(this->getChild())->printTree(level + 1);
 }
 
 std::vector<TokenType> ExpressionNode::validOperandTypes {
