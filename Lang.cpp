@@ -22,7 +22,7 @@ private:
 
   std::vector<std::string> typeIdentifiers {"Integer"};
   std::vector<std::string> variables {};
-  std::vector<std::string> keywords {"var", "if", "while", "for"};
+  std::vector<std::string> keywords {"define", "if", "while"};
 public:
   nodes::AST tree = nodes::AST();
 
@@ -135,8 +135,8 @@ public:
   
   void buildTree() {
     std::function<bool(Token)> isNewLine = [](Token tok) {return tok.data == ";" && tok.type == CONSTRUCT;};
-    auto vecs = splitVector(tokens, isNewLine);
-    for (auto toks : vecs) {
+    auto logicalLines = splitVector(tokens, isNewLine);
+    for (auto toks : logicalLines) {
       auto expr = new nodes::ExpressionNode(toks);
       expr->buildSubtree();
       expr->printTree(0);
