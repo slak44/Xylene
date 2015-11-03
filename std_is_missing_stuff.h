@@ -2,6 +2,9 @@
 #ifndef STD_IS_MISSING_STUFF_H_
 #define STD_IS_MISSING_STUFF_H_
 
+#include <string>
+#include <vector>
+#include <iostream>
 #include <algorithm>
 #include <sstream>
 
