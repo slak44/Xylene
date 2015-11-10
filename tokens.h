@@ -6,6 +6,7 @@
 
 #include "global.h"
 #include "operators.h"
+#include "builtins.h"
 
 enum TokenType: int {
   INTEGER, FLOAT, STRING, ARRAY, // Literals
@@ -21,6 +22,7 @@ public:
   /*
    * Depending on the TokenType, the pointer has the following possible types:
    * For OPERATOR: ops::Operator*
+   * For INTEGER: builtins::Integer*
    */
   void* typeData = nullptr;
   // Location of Token
@@ -29,6 +31,7 @@ public:
   Token();
   Token(std::string data, TokenType type, int line);
   Token(ops::Operator& opContent, TokenType type, int line);
+  Token(builtins::Object& obj, TokenType type, int line);
 };
 
 inline std::ostream& operator<<(std::ostream& os, Token& tok) { 

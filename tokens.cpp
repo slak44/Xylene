@@ -13,3 +13,11 @@ Token::Token(ops::Operator& opContent, TokenType type, int line):
   line(line) {
   if (TOKEN_OPERATOR_PRINT_CONSTRUCTION) print("Initialized Token with Operator: ", opContent, ", at address ", &opContent, "\n");
 }
+
+Token::Token(builtins::Object& obj, TokenType type, int line):
+  data(obj.asString()),
+  type(type),
+  typeData(&obj),
+  line(line) {
+  
+}
