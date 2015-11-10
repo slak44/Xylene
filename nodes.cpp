@@ -25,6 +25,10 @@ ASTNode* ASTNode::getParent() {
   return parent;
 }
 
+std::string ASTNode::getNodeType() {
+  return "ASTNode";
+}
+
 void ASTNode::printTree(int level) {
   printIndent(level);
   print("Plain ASTNode");
@@ -43,6 +47,10 @@ void SingleChildNode::addChild(ASTNode* child) {
 
 ASTNode* SingleChildNode::getChild() {
   return children[0];
+}
+
+std::string SingleChildNode::getNodeType() {
+  return "SingleChildNode";
 }
 
 void SingleChildNode::printTree(int level) {
@@ -65,6 +73,10 @@ void DeclarationNode::addChild(ASTNode* child) {
   auto node = dynamic_cast<ExpressionNode*>(child);
   if (node == 0) throw std::invalid_argument("DeclarationNode only accepts an ExpressionNode as its child.");
   this->SingleChildNode::addChild(node);
+}
+
+std::string DeclarationNode::getNodeType() {
+  return "DeclarationNode";
 }
 
 void DeclarationNode::printTree(int level) {
@@ -138,6 +150,10 @@ void ExpressionNode::buildSubtree(void) {
   this->addChild(node);
 }
 
+std::string ExpressionNode::getNodeType() {
+  return "ExpressionNode";
+}
+
 void ExpressionNode::printTree(int level) {
   auto top = static_cast<ExpressionChildNode*>(this->getChildren()[0]);
   top->printTree(level);
@@ -159,6 +175,10 @@ ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands)
     }
   }
 };
+
+std::string ExpressionChildNode::getNodeType() {
+  return "ExpressionChildNode";
+}
 
 void ExpressionChildNode::printTree(int level) {
   printIndent(level);

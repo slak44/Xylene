@@ -5,12 +5,14 @@
 #include <sstream>
 #include <algorithm>
 #include <functional>
+#include <unordered_map>
 
 #include "std_is_missing_stuff.h"
 #include "global.h"
 #include "operators.h"
 #include "tokens.h"
 #include "nodes.h"
+#include "builtins.h"
 
 
 class Parser {
@@ -20,8 +22,7 @@ private:
   // If we're already at the next character, but the loop will increment i by 1
   inline void preventIncrement(unsigned int& i) {i--;}
 
-  std::vector<std::string> typeIdentifiers {"Integer"};
-  std::vector<std::string> variables {};
+  std::vector<std::string> typeIdentifiers {"Integer"}; // TODO: add this
   std::vector<std::string> keywords {"define", "if", "while"};
 public:
   nodes::AST tree = nodes::AST();
@@ -36,7 +37,6 @@ public:
       print(e.getMessage(), "\n");
     }
   }
-  Parser() {}
 
   void tokenize(std::string code) {
     unsigned int lines = 0;
@@ -48,7 +48,7 @@ public:
 
       // Block begin/end
       // Parenthesis
-      // Semicolumns
+      // Semicolons
       if (code[i] == '{' || code[i] == '}' ||
           code[i] == '(' || code[i] == ')' ||
           code[i] == ';') {
@@ -79,7 +79,8 @@ public:
           if (PARSER_PRINT_OPERATOR_TOKENS) print("Parser found Token with Operator ", tmp, ", at address ", &tmp, "\n");
           tokens.push_back(Token(tmp, OPERATOR, lines));
         }
-      });
+      });        std::string current = "";
+
       if (initTokSize < tokens.size()) {
         skipCharacters(i, tokens.back().data.length() - 1);
         continue; // Token added, continue.
@@ -139,6 +140,7 @@ public:
     for (auto toks : logicalLines) {
       if (toks.size() == 0) continue;
       if (toks[0].data == "define" && toks[0].type == KEYWORD) {
+        toks[1].type = VARIABLE;
         nodes::DeclarationNode* decl = new nodes::DeclarationNode("define", toks[1]);
         if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
           nodes::ExpressionNode* expr = new nodes::ExpressionNode(toks);
@@ -159,22 +161,54 @@ public:
   std::vector<Token> getTokens() {
     return tokens;
   }
+  
+};
+
+class Interpreter {
+private:
+  nodes::AST tree;
+  std::unordered_map<std::string, nodes::DeclarationNode*> variables();
+public:
+  Interpreter(nodes::AST tree): tree(tree) {
+    interpret();
+  }
+private:
+  void interpret() {
+    nodes::ChildrenNodes nodes = tree.getRootChildren();
+    for (unsigned long long int i = 0; i < nodes.size(); ++i) {
+
+    }
+  }
+  
+  builtins::Object* interpretExpression(nodes::ExpressionChildNode* node) {
+    switch (node->t.type) {
+    case INTEGER:
+      return new builtins::Integer(node->t.data, 10/* TODO: change base depending on token?*/);
+    case OPERATOR:
+    default:
+      break;
+    }
+    return nullptr;
+  }
+  
 };
 
 int main() {
   getConstants();
+  Parser* a;
   switch (TEST_INPUT) {
-    case 1: Parser("a = (a + 1)"); break;
-    case 2: Parser("(1 + 2) * 3 / (2 << 1)"); break; 
-    case 3: Parser("define a = \"abc123\";"); break;
-    case 4: Parser("define a = 132;\na+=1+123*(1 + 32/2);"); break;
-    case 5: Parser("1+ a*(-19-1++)==Integer.MAX_INT"); break;
-    case 6: Parser("var a = 1 + 2 * (76 - 123 - (43 + 12) / 5) % 10;\nInteger n = 1;"); break;
-    case 7: Parser("1 + 2 * 3 << 2"); break;
-    case 8: Parser("Test.test.abc.df23.asdasf ()"); break;
-    case 9: Parser("define a = 1 + 2;\nb = 2 * 3"); break;
+    case 1: a = new Parser("a = (a + 1)"); break;
+    case 2: a = new Parser("(1 + 2) * 3 / (2 << 1)"); break; 
+    case 3: a = new Parser("define a = \"abc123\";"); break;
+    case 4: a = new Parser("define a = 132;\na+=1+123*(1 + 32/2);"); break;
+    case 5: a = new Parser("1+ a*(-19-1++)==Integer.MAX_INT"); break;
+    case 6: a = new Parser("var a = 1 + 2 * (76 - 123 - (43 + 12) / 5) % 10;\nInteger n = 1;"); break;
+    case 7: a = new Parser("1 + 2 * 3 << 2"); break;
+    case 8: a = new Parser("Test.test.abc.df23.asdasf ()"); break;
+    case 9: a = new Parser("define a = 1 + 2;\nb = 2 * 3"); break;
     default: break;
   }
+  Interpreter in(a->tree);
   
   return 0;
 }

@@ -26,6 +26,7 @@ public:
   void setParent(ASTNode* parent);
   ASTNode* getParent();
   
+  virtual std::string getNodeType();
   virtual void printTree(int level);
 };
 
@@ -35,6 +36,8 @@ public:
   
   void addChild(ASTNode* child);
   ASTNode* getChild();
+  
+  std::string getNodeType();
   void printTree(int level);
 };
 
@@ -47,6 +50,8 @@ public:
 
   DeclarationNode(std::string typeName, Token identifier);
   void addChild(ASTNode* child);
+  
+  std::string getNodeType();
   void printTree(int level);
 };
 
@@ -67,6 +72,8 @@ public:
   
   std::vector<Token> getRPNOutput();
   void buildSubtree();
+  
+  std::string getNodeType();
   void printTree(int level);
 };
 
@@ -76,6 +83,7 @@ public:
   ExpressionChildNode(Token operand);
   ExpressionChildNode(Token op, std::vector<Token>& operands);
   
+  std::string getNodeType();
   void printTree(int level);
 };
 
