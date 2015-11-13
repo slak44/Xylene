@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 
-#include "global.h"
-#include "operators.h"
-#include "builtins.h"
+#include "global.hpp"
+#include "operators.hpp"
+#include "builtins.hpp"
 
 enum TokenType: int {
   INTEGER, FLOAT, STRING, ARRAY, // Literals

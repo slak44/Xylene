@@ -19,7 +19,7 @@ TEST_INPUT;
 #include <iostream>
 #include <stdexcept>
 #include <functional>
-#include "std_is_missing_stuff.h"
+#include "std_is_missing_stuff.hpp"
 
 void getConstants();
 

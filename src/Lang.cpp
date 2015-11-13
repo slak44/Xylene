@@ -9,12 +9,12 @@
 #include <utility>
 #include <typeinfo>
 
-#include "std_is_missing_stuff.h"
-#include "global.h"
-#include "operators.h"
-#include "tokens.h"
-#include "nodes.h"
-#include "builtins.h"
+#include "std_is_missing_stuff.hpp"
+#include "global.hpp"
+#include "operators.hpp"
+#include "tokens.hpp"
+#include "nodes.hpp"
+#include "builtins.hpp"
 
 
 class Parser {

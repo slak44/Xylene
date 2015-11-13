@@ -6,10 +6,10 @@
 #include <stdexcept>
 #include <memory>
 
-#include "global.h"
-#include "std_is_missing_stuff.h"
-#include "operators.h"
-#include "tokens.h"
+#include "global.hpp"
+#include "std_is_missing_stuff.hpp"
+#include "operators.hpp"
+#include "tokens.hpp"
 
 namespace nodes {
 

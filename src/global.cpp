@@ -1,4 +1,4 @@
-#include "global.h"
+#include "global.hpp"
 
 int
 DEBUG_ENV,

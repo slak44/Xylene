@@ -5,8 +5,8 @@
 #include <map>
 #include <functional>
 #include <stdexcept>
-#include "global.h"
-#include "operators.h"
+#include "global.hpp"
+#include "operators.hpp"
 
 namespace builtins {
 
