@@ -22,7 +22,7 @@ public:
   virtual ~ASTNode();
   
   virtual void addChild(ASTNode* child);
-  std::vector<ASTNode*> getChildren();
+  std::vector<ASTNode*>& getChildren();
   void setParent(ASTNode* parent);
   ASTNode* getParent();
   
@@ -55,7 +55,6 @@ public:
   void printTree(int level);
 };
 
-// TODO: restrict to one child only
 class ExpressionNode: public SingleChildNode {
 private:
   static std::vector<TokenType> validOperandTypes;

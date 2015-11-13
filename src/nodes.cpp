@@ -14,7 +14,7 @@ void ASTNode::addChild(ASTNode* child) {
   children.push_back(child);
 }
 
-std::vector<ASTNode*> ASTNode::getChildren() {
+std::vector<ASTNode*>& ASTNode::getChildren() {
   return children;
 }
 
@@ -111,8 +111,8 @@ ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
       ops::Operator current = *static_cast<ops::Operator*>(tokens[i].typeData);
       ops::Operator topOfStack = *static_cast<ops::Operator*>(opStack.back().typeData);
       while (opStack.size() != 0) {
-        if ((current.getAssociativity() == ops::ASSOCIATE_FROM_LEFT && current <= topOfStack) ||
-        (current.getAssociativity() == ops::ASSOCIATE_FROM_RIGHT && current < topOfStack)) {
+        if ((current.getAssociativity() == ops::ASSOCIATE_FROM_LEFT && current.getPrecedence() <= topOfStack.getPrecedence()) ||
+        (current.getAssociativity() == ops::ASSOCIATE_FROM_RIGHT && current.getPrecedence() < topOfStack.getPrecedence())) {
           popToOut();
         } else break;
         // Non-operators (eg parenthesis) will crash on next line, and must break to properly evaluate expression

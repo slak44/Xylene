@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <functional>
 #include <unordered_map>
+#include <utility>
+#include <typeinfo>
 
 #include "std_is_missing_stuff.h"
 #include "global.h"
@@ -79,7 +81,7 @@ public:
           if (PARSER_PRINT_OPERATOR_TOKENS) print("Parser found Token with Operator ", tmp, ", at address ", &tmp, "\n");
           tokens.push_back(Token(tmp, OPERATOR, lines));
         }
-      });        std::string current = "";
+      });
 
       if (initTokSize < tokens.size()) {
         skipCharacters(i, tokens.back().data.length() - 1);
@@ -88,8 +90,16 @@ public:
 
       // Numbers
       if (isdigit(code[i])) {
-        // TODO: understand 0xDEADBEEF hexadecimal and 0b10101 binary, maybe 0o765432 octal
+        int base = 10;
         std::string current = "";
+        if (code[i] == '0') {
+          switch (code[i + 1]) {
+            case 'x': base = 16; skipCharacters(i, 2); break;
+            case 'b': base = 2;  skipCharacters(i, 2); break;
+            case 'o': base = 8;  skipCharacters(i, 2); break;
+            default: break;
+          }
+        }
         bool isFloat = false;
         while (isdigit(code[i]) || code[i] == '.') {
           current += code[i];
@@ -101,7 +111,11 @@ public:
         }
         preventIncrement(i);
         if (current[current.length() - 1] == '.') throw SyntaxError("Malformed float, missing digits after decimal point: \"" + current + "\"", lines);
-        tokens.push_back(Token(current, isFloat ? FLOAT : INTEGER, lines));
+        if (base != 10 && isFloat) throw SyntaxError("Floating point numbers must be used with base 10 numbers: \"" + current + "\"", lines);
+        Token t;
+        if (isFloat) t = Token(new builtins::Float(current), FLOAT, lines);
+        else t = Token(new builtins::Integer(current, base), INTEGER, lines);
+        tokens.push_back(t);//TODO here go to exprnode and things then interpreter
         continue;
       }
       
@@ -166,6 +180,7 @@ public:
 
 class Interpreter {
 private:
+  typedef builtins::Object Object;
   nodes::AST tree;
   std::unordered_map<std::string, nodes::DeclarationNode*> variables();
 public:
@@ -175,18 +190,24 @@ public:
 private:
   void interpret() {
     nodes::ChildrenNodes nodes = tree.getRootChildren();
-    for (unsigned long long int i = 0; i < nodes.size(); ++i) {
-
+    for (uint64 i = 0; i < nodes.size(); ++i) {
+//      if (nodes[i]->getNodeType() == "ExpressionNode") interpretExpression(dynamic_cast<nodes::ExpressionChildNode*>(nodes[i]->getChildren()[0]));
     }
   }
   
-  builtins::Object* interpretExpression(nodes::ExpressionChildNode* node) {
-    switch (node->t.type) {
-    case INTEGER:
-      return new builtins::Integer(node->t.data, 10/* TODO: change base depending on token?*/);
-    case OPERATOR:
-    default:
-      break;
+  nodes::ExpressionChildNode* interpretExpression(nodes::ExpressionChildNode* node) {
+    if (node->getChildren().size() == 0) return node;
+    if (node->t.type == OPERATOR) {
+      ops::Operator* op = static_cast<ops::Operator*>(node->t.typeData);
+      auto ch = node->getChildren();
+      std::for_each(ch.begin(), ch.end(), [this](nodes::ASTNode*& n) {
+        auto node = dynamic_cast<nodes::ExpressionChildNode*>(n);
+        if (node->getChildren().size() != 0) n = interpretExpression(node);
+      });
+      if (dynamic_cast<nodes::ExpressionChildNode*>(ch.back())->t.type == INTEGER) {
+//        if (op->getArity() == ops::BINARY)
+//          static_cast<std::function<builtins::Integer*(builtins::Integer, builtins::Integer)> >(builtins::Integer::operators[op])(ch.back(), ch[ch.size() - 2]);
+      }
     }
     return nullptr;
   }
@@ -197,18 +218,18 @@ int main() {
   getConstants();
   Parser* a;
   switch (TEST_INPUT) {
-    case 1: a = new Parser("a = (a + 1)"); break;
+    case 1: a = new Parser("6 >> (4 >> 2)"); break;
     case 2: a = new Parser("(1 + 2) * 3 / (2 << 1)"); break; 
     case 3: a = new Parser("define a = \"abc123\";"); break;
     case 4: a = new Parser("define a = 132;\na+=1+123*(1 + 32/2);"); break;
     case 5: a = new Parser("1+ a*(-19-1++)==Integer.MAX_INT"); break;
-    case 6: a = new Parser("var a = 1 + 2 * (76 - 123 - (43 + 12) / 5) % 10;\nInteger n = 1;"); break;
+    case 6: a = new Parser("define a = 1 + 2 * (76 - 123 - (43 + 12) / 5) % 10;\nInteger n = 1;"); break;
     case 7: a = new Parser("1 + 2 * 3 << 2"); break;
     case 8: a = new Parser("Test.test.abc.df23.asdasf ()"); break;
     case 9: a = new Parser("define a = 1 + 2;\nb = 2 * 3"); break;
     default: break;
   }
   Interpreter in(a->tree);
-  
+
   return 0;
 }

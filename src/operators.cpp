@@ -27,12 +27,14 @@ int Operator::getPrecedence() {
   return precedence;
 }
 
-bool Operator::operator==(const Operator& right) {return this->precedence == right.precedence;}
+bool Operator::operator==(const Operator& right) {
+  return
+  this->precedence == right.precedence &&
+  this->ar == right.ar &&
+  this->asc == right.asc &&
+  this->op == right.op;
+}
 bool Operator::operator!=(const Operator& right) {return !operator==(right);}
-bool Operator::operator< (const Operator& right) {return this->precedence < right.precedence;}
-bool Operator::operator> (const Operator& right) {return this->precedence > right.precedence;}
-bool Operator::operator>=(const Operator& right) {return !operator<(right);}
-bool Operator::operator<=(const Operator& right) {return !operator>(right);}
 
 std::vector<Operator> opList {
   Operator(">>", 9),
@@ -63,7 +65,7 @@ std::vector<Operator> opList {
   Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY),
   Operator("++", 13, ASSOCIATE_FROM_LEFT, UNARY),
 //  Operator("()", 13), // TODO: find function calls somehow
-//  Operator("[]", 13), // TODO: find subscript better
+//  Operator("[]", 13), // TODO: find subscript better, treat as macro and preprocess maybe?
   Operator(".", 13),
 
   // Prefix

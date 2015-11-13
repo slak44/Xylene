@@ -36,10 +36,6 @@ public:
 
   bool operator==(const Operator& right);
   bool operator!=(const Operator& right);
-  bool operator< (const Operator& right);
-  bool operator> (const Operator& right);
-  bool operator>=(const Operator& right);
-  bool operator<=(const Operator& right);
 };
 
 std::vector<char> getOperatorCharacters();
