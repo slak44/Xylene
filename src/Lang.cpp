@@ -55,7 +55,7 @@ public:
       if (code[i] == '{' || code[i] == '}' ||
           code[i] == '(' || code[i] == ')' ||
           code[i] == ';') {
-        tokens.push_back(Token(to_string(code[i]), CONSTRUCT, lines));
+        tokens.push_back(Token(std::to_string(code[i]), CONSTRUCT, lines));
         continue;
       }
       

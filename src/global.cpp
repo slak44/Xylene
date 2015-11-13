@@ -29,10 +29,10 @@ void getConstants() {
 }
 
 SyntaxError::SyntaxError(unsigned int lines):runtime_error("") {
-  msg = "at line: " + to_string(lines);
+  msg = "at line: " + std::to_string(lines);
 }
 SyntaxError::SyntaxError(std::string msg, unsigned int lines):runtime_error(msg.c_str()) {
-  this->msg = msg + ", at line: " + to_string(lines);
+  this->msg = msg + ", at line: " + std::to_string(lines);
 }
 
 std::string SyntaxError::getMessage() {

@@ -19,11 +19,4 @@ bool contains(T element, std::vector<T> vec) {
   return std::find(vec.begin(), vec.end(), element) != vec.end();
 }
 
-template <typename T>
-std::string to_string(const T& n) {
-  std::ostringstream stm;
-  stm << n;
-  return stm.str();
-}
-
 #endif /* STD_IS_MISSING_STUFF_H_ */
