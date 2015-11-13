@@ -30,6 +30,7 @@ public:
   nodes::AST tree = nodes::AST();
 
   Parser(std::string code) {
+    if (PARSER_PRINT_INPUT) print(code, "\n");
     try {
       tokenize(code);
       buildTree();
@@ -64,21 +65,21 @@ public:
         if (initTokSize < tokens.size()) return; // If there are more tokens than before for_each, the operator was already added, so return.
         if (op.getName().length() + i > code.length()) return; // If the operator is longer than the source string, ignore it.
         if (op.getName() == code.substr(i, op.getName().length())) {
-          ops::Operator& tmp = op;
+          ops::Operator* tmp = &op;
           // TODO: apply DRY on these ifs
-          if (tmp.getName() == "++" || tmp.getName() == "--") {
+          if (tmp->getName() == "++" || tmp->getName() == "--") {
             // Prefix version
-            if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = ops::Operator(tmp.getName(), 12, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
+            if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new ops::Operator(tmp->getName(), 12, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
             // Postfix version
-            else tmp = ops::Operator(tmp.getName(), 13, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
+            else tmp = new ops::Operator(tmp->getName(), 13, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
           }
-          if (tmp.getName() == "+" || tmp.getName() == "-") {
+          if (tmp->getName() == "+" || tmp->getName() == "-") {
             // Unary version
-            if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = ops::Operator(tmp.getName(), 12, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
+            if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new ops::Operator(tmp->getName(), 12, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
             // Binary version
-            else tmp = ops::Operator(tmp.getName(), 10);
+            else tmp = new ops::Operator(tmp->getName(), 10);
           }
-          if (PARSER_PRINT_OPERATOR_TOKENS) print("Parser found Token with Operator ", tmp, ", at address ", &tmp, "\n");
+          if (PARSER_PRINT_OPERATOR_TOKENS) print("Parser found Token with Operator ", *tmp, ", at address ", tmp, "\n");
           tokens.push_back(Token(tmp, OPERATOR, lines));
         }
       });
@@ -218,7 +219,7 @@ int main() {
   getConstants();
   Parser* a;
   switch (TEST_INPUT) {
-    case 1: a = new Parser("6 >> (4 >> 2)"); break;
+    case 1: a = new Parser("6 >> 4 >> 2 * 1"); break;
     case 2: a = new Parser("(1 + 2) * 3 / (2 << 1)"); break; 
     case 3: a = new Parser("define a = \"abc123\";"); break;
     case 4: a = new Parser("define a = 132;\na+=1+123*(1 + 32/2);"); break;
