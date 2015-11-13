@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "global.hpp"
-#include "std_is_missing_stuff.hpp"
 #include "operators.hpp"
 #include "tokens.hpp"
 

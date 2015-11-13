@@ -15,11 +15,13 @@ PARSER_PRINT_OPERATOR_TOKENS,
 TOKEN_OPERATOR_PRINT_CONSTRUCTION,
 TEST_INPUT;
 
+#include <string>
+#include <vector>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <functional>
-#include "std_is_missing_stuff.hpp"
+#include <algorithm>
 
 void getConstants();
 
@@ -35,6 +37,17 @@ std::vector<std::vector<T> > splitVector(std::vector<T> origin, Lambda& shouldSp
     }
   }
   return vec2d;
+}
+
+template<class T>
+std::ostream& operator<<(std::ostream& os, std::vector<T>& vec) {
+  for (unsigned int i = 0; i < vec.size(); ++i) os << vec[i] << std::endl;
+  return os;
+}
+
+template <typename T>
+bool contains(T element, std::vector<T> vec) {
+  return std::find(vec.begin(), vec.end(), element) != vec.end();
 }
 
 template<typename T>
