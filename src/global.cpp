@@ -3,6 +3,7 @@
 int
 DEBUG_ENV,
 EXPRESSION_STEPS,
+PARSER_PRINT_INPUT,
 PARSER_PRINT_TOKENS,
 PARSER_PRINT_AS_EXPR,
 PARSER_PRINT_OPERATOR_TOKENS,
@@ -19,6 +20,7 @@ void getConstants() {
   std::ifstream consts("constants.data");
   getAndSetConstant(DEBUG_ENV, consts);
   getAndSetConstant(EXPRESSION_STEPS, consts);
+  getAndSetConstant(PARSER_PRINT_INPUT, consts);
   getAndSetConstant(PARSER_PRINT_TOKENS, consts);
   getAndSetConstant(PARSER_PRINT_AS_EXPR, consts);
   getAndSetConstant(PARSER_PRINT_OPERATOR_TOKENS, consts);
