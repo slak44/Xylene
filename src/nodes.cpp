@@ -183,7 +183,7 @@ std::string ExpressionChildNode::getNodeType() {
 void ExpressionChildNode::printTree(int level) {
   printIndent(level);
   print(this->t, "\n");
-  for (auto child : children) {
+  for (auto child : this->getChildren()) {
     static_cast<ExpressionChildNode*>(child)->printTree(level + 1);
   }
 }
