@@ -31,7 +31,7 @@ public:
   
   Token();
   Token(std::string data, TokenType type, int line);
-  Token(ops::Operator opContent, TokenType type, int line);
+  Token(ops::Operator* opContent, TokenType type, int line);
   Token(builtins::Object* obj, TokenType type, int line);
 };
 
