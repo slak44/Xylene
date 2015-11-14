@@ -191,7 +191,11 @@ private:
   void interpret() {
     nodes::ChildrenNodes nodes = tree.getRootChildren();
     for (uint64 i = 0; i < nodes.size(); ++i) {
-//      if (nodes[i]->getNodeType() == "ExpressionNode") interpretExpression(dynamic_cast<nodes::ExpressionChildNode*>(nodes[i]->getChildren()[0]));
+      if (nodes[i]->getNodeType() == "ExpressionNode") {
+        nodes[i]->getChildren()[0] = interpretExpression(dynamic_cast<nodes::ExpressionChildNode*>(nodes[i]->getChildren()[0]));
+        print("\n\n");
+        dynamic_cast<nodes::ExpressionChildNode*>(nodes[i]->getChildren()[0])->printTree(0);
+      }
     }
   }
   
@@ -205,8 +209,15 @@ private:
         if (node->getChildren().size() != 0) n = interpretExpression(node);
       });
       if (dynamic_cast<nodes::ExpressionChildNode*>(ch.back())->t.type == INTEGER) {
-//        if (op->getArity() == ops::BINARY)
-//          static_cast<std::function<builtins::Integer*(builtins::Integer, builtins::Integer)> >(builtins::Integer::operators[op])(ch.back(), ch[ch.size() - 2]);
+        if (op->getArity() == ops::BINARY) {
+          auto fun = *static_cast<builtins::Integer::BinaryOp*>(builtins::Integer::operators[*op]);
+          auto result = fun(
+           static_cast<builtins::Integer*>(static_cast<nodes::ExpressionChildNode*>(ch[1])->t.typeData),
+           static_cast<builtins::Integer*>(static_cast<nodes::ExpressionChildNode*>(ch[0])->t.typeData)
+          );
+          return new nodes::ExpressionChildNode(Token(result, INTEGER, -2));
+        }
+        
       }
     }
     return nullptr;
@@ -218,7 +229,7 @@ int main() {
   getConstants();
   Parser* a;
   switch (TEST_INPUT) {
-    case 1: a = new Parser("6 >> 4 >> 2 * 1"); break;
+    case 1: a = new Parser("6 >> 1"); break;
     case 2: a = new Parser("(1 + 2) * 3 / (2 << 1)"); break; 
     case 3: a = new Parser("define a = \"abc123\";"); break;
     case 4: a = new Parser("define a = 132;\na+=1+123*(1 + 32/2);"); break;
