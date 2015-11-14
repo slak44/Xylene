@@ -92,8 +92,8 @@ public:
         if (code[i] == '0') {
           switch (code[i + 1]) {
             case 'x': base = 16; skipCharacters(i, 2); break;
-            case 'b': base = 2;  skipCharacters(i, 2); break;
-            case 'o': base = 8;  skipCharacters(i, 2); break;
+            case 'b': base =  2; skipCharacters(i, 2); break;
+            case 'o': base =  8; skipCharacters(i, 2); break;
             default: break;
           }
         }
