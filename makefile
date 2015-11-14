@@ -2,12 +2,12 @@ CC = g++
 DEBUG_FLAGS = -c -Wall -std=c++11 -O0 -g3
 LDFLAGS = 
 SOURCES = \
-./src/Lang.cpp \
-./src/builtins.cpp \
 ./src/global.cpp \
-./src/nodes.cpp \
 ./src/operators.cpp \
-./src/tokens.cpp 
+./src/tokens.cpp \
+./src/nodes.cpp \
+./src/builtins.cpp \
+./src/Lang.cpp \
 
 OBJECTS=$(SOURCES:./src/%.cpp=./make/%.o)
 	
