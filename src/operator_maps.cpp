@@ -102,4 +102,90 @@ OperatorMap Integer::operators = initializeOperatorMap({
   nullptr  // not implemented
 });
 
+OperatorMap Float::operators = initializeOperatorMap({
+  new Float::BinaryOp([](Float* left, Float* right) {
+    throw TypeError("Attempt to use bitwise operations on float value.\n");
+  }),
+  new Float::BinaryOp([](Float* left, Float* right) {
+    throw TypeError("Attempt to use bitwise operations on float value.\n");
+  }),
+  
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  
+  new Float::UnaryOp([](Float* op) {
+    return new Float((op->internal)--);
+  }),
+  new Float::UnaryOp([](Float* op) {
+    return new Float((op->internal)++);
+  }),
+  
+  nullptr, // not implemented
+  
+  new Float::UnaryOp([](Float* op) {
+    return new Float(--(op->internal));
+  }),
+  new Float::UnaryOp([](Float* op) {
+    return new Float(++(op->internal));
+  }),
+  new Float::UnaryOp([](Float* op) {
+    return new Float(-(op->internal));
+  }),
+  new Float::UnaryOp([](Float* op) {
+    return new Float(+(op->internal));
+  }),
+  new Float::UnaryOp([](Float* op) {
+    throw TypeError("Attempt to use bitwise operations on float value.\n");
+  }),
+  nullptr, // not implemented
+  
+  new Float::BinaryOp([](Float* left, Float* right) {
+    return new Float(left->internal * right->internal);
+  }),
+  new Float::BinaryOp([](Float* left, Float* right) {
+    return new Float(left->internal / right->internal);
+  }),
+  new Float::BinaryOp([](Float* left, Float* right) {
+    return new Float(std::fmod(left->internal, right->internal));
+  }),
+  
+  new Float::BinaryOp([](Float* left, Float* right) {
+    return new Float(left->internal + right->internal);
+  }),
+  new Float::BinaryOp([](Float* left, Float* right) {
+    return new Float(left->internal - right->internal);
+  }),
+  
+  nullptr, // not implemented
+  nullptr, // not implemented
+  
+  new Float::BinaryOp([](Float* left, Float* right) {
+    throw TypeError("Attempt to use bitwise operations on float value.\n");
+  }),
+  new Float::BinaryOp([](Float* left, Float* right) {
+    throw TypeError("Attempt to use bitwise operations on float value.\n");
+  }),
+  new Float::BinaryOp([](Float* left, Float* right) {
+    throw TypeError("Attempt to use bitwise operations on float value.\n");
+  }),
+  
+  nullptr  // not implemented
+});
+
 } /* namespace lang */

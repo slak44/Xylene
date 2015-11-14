@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <functional>
 #include <stdexcept>
+#include <cmath>
 
 #include "global.hpp"
 #include "operators.hpp"
@@ -38,6 +39,8 @@ class Float : public Object {
 private:
   double64 internal = 0.0;
 public:
+  typedef std::function<Float*(Float*, Float*)> BinaryOp;
+  typedef std::function<Float*(Float*)> UnaryOp;
   static OperatorMap operators;
   
   Float();
