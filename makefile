@@ -7,6 +7,7 @@ SOURCES = \
 ./src/tokens.cpp \
 ./src/nodes.cpp \
 ./src/builtins.cpp \
+./src/operator_maps.cpp \
 ./src/Lang.cpp \
 
 OBJECTS=$(SOURCES:./src/%.cpp=./make/%.o)
