@@ -12,6 +12,7 @@ typedef unsigned long long int uint64;
 #include <stdexcept>
 #include <functional>
 #include <algorithm>
+#include <type_traits>
 
 extern int
 DEBUG_ENV,
@@ -26,21 +27,17 @@ extern std::string INPUT;
 
 void getConstants();
 
-// Makes enums work in hashes
-namespace std {
-  template<class E>
-  class hash {
-    using sfinae = typename std::enable_if<std::is_enum<E>::value, E>::type;
-  public:
-    size_t operator()(const E&e) const {
-      return std::hash<typename std::underlying_type<E>::type>()(e);
-    }
-  };
-};
-
 template<typename T>
 std::size_t hash(T element) {
   return std::hash<T>()(element);
+}
+
+template<typename T>
+std::size_t hash(std::vector<T>& element) {
+  if (element.size() == 0) return 0;
+  std::size_t h = 0;
+  for (auto e : element) h = hash(h, e);
+  return h;
 }
 
 template<typename T, typename... HashTypes>
@@ -52,6 +49,33 @@ template<typename T, typename... HashTypes>
 std::size_t hash(T element, HashTypes... ht) {
   return hash(hash<T>(element), ht...);
 }
+
+// For some reason, this needs to be a duplicate of above hash(vector<T> element) function with different name
+template<typename T>
+std::size_t hashV(std::vector<T>& element) {
+  if (element.size() == 0) return 0;
+  std::size_t h = 0;
+  for (auto e : element) h = hash(h, e);
+  return h;
+}
+
+namespace std {
+  template<class E>
+  class hash<std::vector<E>> {
+  public:
+    size_t operator()(const vector<E>& element) const {
+      return hashV(const_cast<vector<E>&>(element));
+    }
+  };
+  template<class E>
+  class hash {
+    using sfinae = typename std::enable_if<std::is_enum<E>::value, E>::type;
+  public:
+    size_t operator()(const E&e) const {
+      return std::hash<typename std::underlying_type<E>::type>()(e);
+    }
+  };
+};
 
 template<typename T, typename Lambda>
 std::vector<std::vector<T> > splitVector(std::vector<T> origin, Lambda& shouldSplit) {
