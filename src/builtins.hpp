@@ -53,6 +53,7 @@ private:
   int64 internal = 0;
 public:
   typedef std::function<builtins::Integer*(builtins::Integer*, builtins::Integer*)> BinaryOp;
+  typedef std::function<builtins::Integer*(builtins::Integer*)> UnaryOp;
   static OperatorMap operators;
   
   Integer();

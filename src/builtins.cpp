@@ -50,7 +50,87 @@ std::string Float::getTypeData() {
 OperatorMap Integer::operators = initializeOperatorMap({
   new Integer::BinaryOp([](Integer* left, Integer* right) {
     return new Integer(left->internal >> right->internal);
-  })
+  }),
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal << right->internal);
+  }),
+  
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  nullptr, // not implemented
+  
+  new Integer::UnaryOp([](Integer* op) {
+    return new Integer((op->internal)--);
+  }),
+  new Integer::UnaryOp([](Integer* op) {
+    return new Integer((op->internal)++);
+  }),
+  
+  nullptr, // not implemented
+  
+  new Integer::UnaryOp([](Integer* op) {
+    return new Integer(--(op->internal));
+  }),
+  new Integer::UnaryOp([](Integer* op) {
+    return new Integer(++(op->internal));
+  }),
+  new Integer::UnaryOp([](Integer* op) {
+    return new Integer(-(op->internal));
+  }),
+  new Integer::UnaryOp([](Integer* op) {
+    return new Integer(+(op->internal));
+  }),
+  new Integer::UnaryOp([](Integer* op) {
+    return new Integer(~(op->internal));
+  }),
+  nullptr, // not implemented
+  
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal * right->internal);
+  }),
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal / right->internal);
+  }),
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal % right->internal);
+  }),
+  
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal + right->internal);
+  }),
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal - right->internal);
+  }),
+  
+  nullptr, // not implemented
+  nullptr, // not implemented
+  
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal & right->internal);
+  }),
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal ^ right->internal);
+  }),
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal | right->internal);
+  }),
+  
+  nullptr  // not implemented
 });
 
 Integer::Integer() {}
