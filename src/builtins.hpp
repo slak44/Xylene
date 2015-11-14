@@ -11,6 +11,19 @@
 #include "operators.hpp"
 
 namespace lang {
+  // TODO: use this as the key for OperatorMap, make one big map for all types
+  class Operation {
+  public:
+    Operator o;
+    std::string returnType;
+    std::vector<std::string> argsTypeList;
+    Operation(Operator o, std::string returnType, std::vector<std::string> argsTypeList);
+    
+    bool operator==(const Operation& right) const;
+    bool operator!=(const Operation& right) const;
+    
+    std::size_t operator()() const;
+  };
   
   /*
   * 'void*' points to a std::function.
