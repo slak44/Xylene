@@ -26,7 +26,10 @@ public:
    * For FLOAT: builtins::Float*
    */
   void* typeData = nullptr;
-  // Location of Token in code
+  /*
+   * Location of Token in code.
+   * -1 by default. -2 when Token was created by interpreter.
+   */
   int line = -1;
   
   Token();
