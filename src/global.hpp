@@ -72,4 +72,14 @@ public:
   std::string getMessage();
 };
 
+class TypeError: std::runtime_error {
+private:
+  std::string msg;
+public:
+  TypeError();
+  TypeError(std::string msg);
+
+  std::string getMessage();
+};
+
 #endif /* GLOBAL_H_ */
