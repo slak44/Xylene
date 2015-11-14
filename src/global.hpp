@@ -5,6 +5,14 @@ typedef long double double64;
 typedef long long int int64;
 typedef unsigned long long int uint64;
 
+#include <string>
+#include <vector>
+#include <fstream>
+#include <iostream>
+#include <stdexcept>
+#include <functional>
+#include <algorithm>
+
 extern int
 DEBUG_ENV,
 EXPRESSION_STEPS,
@@ -14,14 +22,7 @@ PARSER_PRINT_AS_EXPR,
 PARSER_PRINT_OPERATOR_TOKENS,
 TOKEN_OPERATOR_PRINT_CONSTRUCTION,
 TEST_INPUT;
-
-#include <string>
-#include <vector>
-#include <fstream>
-#include <iostream>
-#include <stdexcept>
-#include <functional>
-#include <algorithm>
+extern std::string INPUT;
 
 void getConstants();
 

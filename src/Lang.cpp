@@ -233,20 +233,7 @@ private:
 
 int main() {
   getConstants();
-  Parser* a;
-  switch (TEST_INPUT) {
-    case 1: a = new Parser("6 >> 1"); break;
-    case 2: a = new Parser("(1 + 2) * 3 / (2 << 1)"); break; 
-    case 3: a = new Parser("define a = \"abc123\";"); break;
-    case 4: a = new Parser("define a = 132;\na+=1+123*(1 + 32/2);"); break;
-    case 5: a = new Parser("1+ a*(-19-1++)==Integer.MAX_INT"); break;
-    case 6: a = new Parser("define a = 1 + 2 * (76 - 123 - (43 + 12) / 5) % 10;\nInteger n = 1;"); break;
-    case 7: a = new Parser("1 + 2 * 3 << 2"); break;
-    case 8: a = new Parser("Test.test.abc.df23.asdasf ()"); break;
-    case 9: a = new Parser("define a = 1 + 2;\nb = 2 * 3"); break;
-    default: break;
-  }
-  Interpreter in(a->tree);
-
+  Parser a = Parser(INPUT);
+  Interpreter in(a.tree);
   return 0;
 }

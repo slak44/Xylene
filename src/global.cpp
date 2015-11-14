@@ -9,6 +9,7 @@ PARSER_PRINT_AS_EXPR,
 PARSER_PRINT_OPERATOR_TOKENS,
 TOKEN_OPERATOR_PRINT_CONSTRUCTION,
 TEST_INPUT;
+std::string INPUT;
 
 void getAndSetConstant(int& constRef, std::ifstream& is) {
   std::string line;
@@ -26,6 +27,11 @@ void getConstants() {
   getAndSetConstant(PARSER_PRINT_OPERATOR_TOKENS, consts);
   getAndSetConstant(TOKEN_OPERATOR_PRINT_CONSTRUCTION, consts);
   getAndSetConstant(TEST_INPUT, consts);
+  std::ifstream input("inputs.data");
+  for (int i = 0; i < TEST_INPUT; i++) {
+    std::string line; getline(input, line);
+    if (i == TEST_INPUT - 1) INPUT = line;
+  }
 }
 
 SyntaxError::SyntaxError(unsigned int lines):runtime_error("") {
