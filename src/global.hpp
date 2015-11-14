@@ -68,7 +68,7 @@ private:
 public:
   SyntaxError(unsigned int lines);
   SyntaxError(std::string msg, unsigned int lines);
-
+  
   std::string getMessage();
 };
 
@@ -78,7 +78,7 @@ private:
 public:
   TypeError();
   TypeError(std::string msg);
-
+  
   std::string getMessage();
 };
 

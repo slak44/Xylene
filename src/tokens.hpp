@@ -9,41 +9,41 @@
 #include "builtins.hpp"
 
 namespace lang {
-
-enum TokenType: int {
-  INTEGER, FLOAT, STRING, ARRAY, // Literals
-  OPERATOR, KEYWORD, CONSTRUCT, // Language parts
-  TYPE, VARIABLE, FUNCTION, // Defined structures
-  UNPROCESSED
-};
-
-class Token {
-public:
-  std::string data = "";
-  TokenType type = UNPROCESSED;
-  /*
-   * Depending on the TokenType, the pointer has the following possible types:
-   * For OPERATOR: Operator*
-   * For INTEGER: Integer*
-   * For FLOAT: Float*
-   */
-  void* typeData = nullptr;
-  /*
-   * Location of Token in code.
-   * -1 by default. -2 when Token was created by interpreter.
-   */
-  int line = -1;
   
-  Token();
-  Token(std::string data, TokenType type, int line);
-  Token(Operator* opContent, TokenType type, int line);
-  Token(Object* obj, TokenType type, int line);
-};
-
-inline std::ostream& operator<<(std::ostream& os, Token& tok) { 
-  return os << "Token " << tok.data << ", TokenType " << tok.type << ", at line " << tok.line;
-}
-
+  enum TokenType: int {
+    INTEGER, FLOAT, STRING, ARRAY, // Literals
+    OPERATOR, KEYWORD, CONSTRUCT, // Language parts
+    TYPE, VARIABLE, FUNCTION, // Defined structures
+    UNPROCESSED
+  };
+  
+  class Token {
+  public:
+    std::string data = "";
+    TokenType type = UNPROCESSED;
+    /*
+    * Depending on the TokenType, the pointer has the following possible types:
+    * For OPERATOR: Operator*
+    * For INTEGER: Integer*
+    * For FLOAT: Float*
+    */
+    void* typeData = nullptr;
+    /*
+    * Location of Token in code.
+    * -1 by default. -2 when Token was created by interpreter.
+    */
+    int line = -1;
+    
+    Token();
+    Token(std::string data, TokenType type, int line);
+    Token(Operator* opContent, TokenType type, int line);
+    Token(Object* obj, TokenType type, int line);
+  };
+  
+  inline std::ostream& operator<<(std::ostream& os, Token& tok) { 
+    return os << "Token " << tok.data << ", TokenType " << tok.type << ", at line " << tok.line;
+  }
+  
 } /* namespace lang */
 
 #endif /* TOKENS_H_ */
