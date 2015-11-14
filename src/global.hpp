@@ -26,6 +26,33 @@ extern std::string INPUT;
 
 void getConstants();
 
+// Makes enums work in hashes
+namespace std {
+  template<class E>
+  class hash {
+    using sfinae = typename std::enable_if<std::is_enum<E>::value, E>::type;
+  public:
+    size_t operator()(const E&e) const {
+      return std::hash<typename std::underlying_type<E>::type>()(e);
+    }
+  };
+};
+
+template<typename T>
+std::size_t hash(T element) {
+  return std::hash<T>()(element);
+}
+
+template<typename T, typename... HashTypes>
+std::size_t hash(std::size_t init, T element, HashTypes... ht) {
+  return hash(init ^ (hash<T>(element) + 0x9e3779b9 + (init << 6) + (init >> 2)), ht...);
+}
+
+template<typename T, typename... HashTypes>
+std::size_t hash(T element, HashTypes... ht) {
+  return hash(hash<T>(element), ht...);
+}
+
 template<typename T, typename Lambda>
 std::vector<std::vector<T> > splitVector(std::vector<T> origin, Lambda& shouldSplit) {
   std::vector<std::vector<T> > vec2d {std::vector<T>()};
