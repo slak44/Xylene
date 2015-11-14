@@ -205,14 +205,23 @@ private:
         auto node = dynamic_cast<nodes::ExpressionChildNode*>(n);
         if (node->getChildren().size() != 0) n = interpretExpression(node);
       });
-      if (dynamic_cast<nodes::ExpressionChildNode*>(ch.back())->t.type == INTEGER) {
-        if (op->getArity() == ops::BINARY) {
+      // TODO: check for all operand types before resolving operator map
+      if (dynamic_cast<nodes::ExpressionChildNode*>(ch[0])->t.type == INTEGER) {
+        if (op->getArity() == ops::UNARY) {
+          auto fun = *static_cast<builtins::Integer::UnaryOp*>(builtins::Integer::operators[*op]);
+          auto result = fun(
+           static_cast<builtins::Integer*>(static_cast<nodes::ExpressionChildNode*>(ch[0])->t.typeData)
+          );
+          return new nodes::ExpressionChildNode(Token(result, INTEGER, -2));
+        } else if (op->getArity() == ops::BINARY) {
           auto fun = *static_cast<builtins::Integer::BinaryOp*>(builtins::Integer::operators[*op]);
           auto result = fun(
            static_cast<builtins::Integer*>(static_cast<nodes::ExpressionChildNode*>(ch[1])->t.typeData),
            static_cast<builtins::Integer*>(static_cast<nodes::ExpressionChildNode*>(ch[0])->t.typeData)
           );
           return new nodes::ExpressionChildNode(Token(result, INTEGER, -2));
+        } else if (op->getArity() == ops::TERNARY) {
+          // Not implemented
         }
         
       }
