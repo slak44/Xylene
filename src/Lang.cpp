@@ -32,9 +32,9 @@ public:
     if (PARSER_PRINT_INPUT) print(code, "\n");
     try {
       tokenize(code);
-      buildTree();
       if (PARSER_PRINT_TOKENS) for (auto tok : tokens) print(tok, "\n");
       if (PARSER_PRINT_AS_EXPR) for (auto tok : nodes::ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
+      buildTree();
     } catch (SyntaxError &e) {
       print(e.getMessage(), "\n");
     }
