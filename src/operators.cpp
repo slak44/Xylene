@@ -1,6 +1,6 @@
 #include "operators.hpp"
 
-namespace ops {
+namespace lang {
 
 Operator::Operator(std::string opName, int precedence, Associativity asc, Arity ar):
   op(opName),
@@ -140,4 +140,4 @@ bool isReservedChar(char& c) {
   return false;
 }
 
-} /* namespace ops */
+} /* namespace lang */

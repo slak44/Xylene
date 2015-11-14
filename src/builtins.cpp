@@ -1,6 +1,6 @@
 #include "builtins.hpp"
 
-namespace builtins {
+namespace lang {
 
 Object::Object() {
 }
@@ -49,4 +49,4 @@ std::string Integer::getTypeData() {
   return "Integer";
 }
 
-};
+} /* namespace lang */

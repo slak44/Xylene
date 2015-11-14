@@ -1,6 +1,6 @@
 #include "nodes.hpp"
 
-namespace nodes {
+namespace lang {
 
 void printIndent(int level) {
   for (int i = 0; i < level; ++i) print("  ");
@@ -108,17 +108,17 @@ ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
         opStack.push_back(tokens[i]);
         continue;
       }
-      ops::Operator current = *static_cast<ops::Operator*>(tokens[i].typeData);
-      ops::Operator topOfStack = *static_cast<ops::Operator*>(opStack.back().typeData);
+      Operator current = *static_cast<Operator*>(tokens[i].typeData);
+      Operator topOfStack = *static_cast<Operator*>(opStack.back().typeData);
       while (opStack.size() != 0) {
-        if ((current.getAssociativity() == ops::ASSOCIATE_FROM_LEFT && current.getPrecedence() <= topOfStack.getPrecedence()) ||
-        (current.getAssociativity() == ops::ASSOCIATE_FROM_RIGHT && current.getPrecedence() < topOfStack.getPrecedence())) {
+        if ((current.getAssociativity() == ASSOCIATE_FROM_LEFT && current.getPrecedence() <= topOfStack.getPrecedence()) ||
+        (current.getAssociativity() == ASSOCIATE_FROM_RIGHT && current.getPrecedence() < topOfStack.getPrecedence())) {
           popToOut();
         } else break;
         // Non-operators (eg parenthesis) will crash on next line, and must break to properly evaluate expression
         if (opStack.back().type != OPERATOR) break;
         // Get new top of stack
-        if (opStack.size() != 0) topOfStack = *static_cast<ops::Operator*>(opStack.back().typeData);
+        if (opStack.size() != 0) topOfStack = *static_cast<Operator*>(opStack.back().typeData);
       }
       opStack.push_back(tokens[i]);
     } else if (tokens[i].type == CONSTRUCT) {
@@ -161,7 +161,7 @@ void ExpressionNode::printTree(int level) {
 
 ExpressionChildNode::ExpressionChildNode(Token operand): t(operand) {};
 ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands): t(op) {
-  auto arity = static_cast<ops::Operator*>(op.typeData)->getArity();
+  auto arity = static_cast<Operator*>(op.typeData)->getArity();
   for (int i = 0; i < arity; ++i) {
     auto next = operands[operands.size() - 1];
     if (next.type == OPERATOR) {
@@ -198,4 +198,4 @@ ChildrenNodes AST::getRootChildren() {
   return root.getChildren();
 }
 
-}
+} /* namespace lang */

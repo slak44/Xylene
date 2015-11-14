@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "global.hpp"
 
-namespace ops {
+namespace lang {
 
 enum Associativity: int {
   ASSOCIATE_FROM_LEFT,
@@ -59,5 +59,6 @@ inline std::ostream& operator<<(std::ostream& os, Operator& op) {
   return os << op.getName() << ", with precedence " << op.getPrecedence() << ", associativity " << op.getAssociativity() << ", arity " << op.getArity();
 }
 
-}
+} /* namespace lang */
+
 #endif /* OPERATORS_H_ */

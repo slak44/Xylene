@@ -12,6 +12,7 @@
 #include "nodes.hpp"
 #include "builtins.hpp"
 
+namespace lang {
 
 class Parser {
 private:
@@ -22,14 +23,14 @@ private:
 
   std::vector<std::string> keywords {"define", "if", "while"};
 public:
-  nodes::AST tree = nodes::AST();
+  AST tree = AST();
 
   Parser(std::string code) {
     if (PARSER_PRINT_INPUT) print(code, "\n");
     try {
       tokenize(code);
       if (PARSER_PRINT_TOKENS) for (auto tok : tokens) print(tok, "\n");
-      if (PARSER_PRINT_AS_EXPR) for (auto tok : nodes::ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
+      if (PARSER_PRINT_AS_EXPR) for (auto tok : ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
       buildTree();
     } catch (SyntaxError &e) {
       print(e.getMessage(), "\n");
@@ -56,23 +57,23 @@ public:
       
       // Operators
       auto initTokSize = tokens.size();
-      std::for_each(ops::opList.begin(), ops::opList.end(), [this, initTokSize, code, i, lines](ops::Operator& op) {
+      std::for_each(opList.begin(), opList.end(), [this, initTokSize, code, i, lines](Operator& op) {
         if (initTokSize < tokens.size()) return; // If there are more tokens than before for_each, the operator was already added, so return.
         if (op.getName().length() + i > code.length()) return; // If the operator is longer than the source string, ignore it.
         if (op.getName() == code.substr(i, op.getName().length())) {
-          ops::Operator* tmp = &op;
+          Operator* tmp = &op;
           // TODO: apply DRY on these ifs
           if (tmp->getName() == "++" || tmp->getName() == "--") {
             // Prefix version
-            if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new ops::Operator(tmp->getName(), 12, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
+            if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new Operator(tmp->getName(), 12, ASSOCIATE_FROM_RIGHT, UNARY);
             // Postfix version
-            else tmp = new ops::Operator(tmp->getName(), 13, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
+            else tmp = new Operator(tmp->getName(), 13, ASSOCIATE_FROM_RIGHT, UNARY);
           }
           if (tmp->getName() == "+" || tmp->getName() == "-") {
             // Unary version
-            if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new ops::Operator(tmp->getName(), 12, ops::ASSOCIATE_FROM_RIGHT, ops::UNARY);
+            if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new Operator(tmp->getName(), 12, ASSOCIATE_FROM_RIGHT, UNARY);
             // Binary version
-            else tmp = new ops::Operator(tmp->getName(), 10);
+            else tmp = new Operator(tmp->getName(), 10);
           }
           if (PARSER_PRINT_OPERATOR_TOKENS) print("Parser found Token with Operator ", *tmp, ", at address ", tmp, "\n");
           tokens.push_back(Token(tmp, OPERATOR, lines));
@@ -109,8 +110,8 @@ public:
         if (current[current.length() - 1] == '.') throw SyntaxError("Malformed float, missing digits after decimal point: \"" + current + "\"", lines);
         if (base != 10 && isFloat) throw SyntaxError("Floating point numbers must be used with base 10 numbers: \"" + current + "\"", lines);
         Token t;
-        if (isFloat) t = Token(new builtins::Float(current), FLOAT, lines);
-        else t = Token(new builtins::Integer(current, base), INTEGER, lines);
+        if (isFloat) t = Token(new Float(current), FLOAT, lines);
+        else t = Token(new Integer(current, base), INTEGER, lines);
         tokens.push_back(t);
         continue;
       }
@@ -132,7 +133,7 @@ public:
       // Others
       Token token = Token();
       while (!isspace(code[i])) {
-        if (ops::isReservedChar(code[i]) || code[i] == '\0') break;
+        if (isReservedChar(code[i]) || code[i] == '\0') break;
         token.data += code[i];
         skipCharacters(i, 1);
       }
@@ -152,16 +153,16 @@ public:
       // TODO: check for solid types here as well
       if (toks[0].data == "define" && toks[0].type == KEYWORD) {
         toks[1].type = VARIABLE;
-        nodes::DeclarationNode* decl = new nodes::DeclarationNode("define", toks[1]);
+        DeclarationNode* decl = new DeclarationNode("define", toks[1]);
         if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
-          nodes::ExpressionNode* expr = new nodes::ExpressionNode(toks);
+          ExpressionNode* expr = new ExpressionNode(toks);
           expr->buildSubtree();
           decl->addChild(expr);
         }
         decl->printTree(0);
         tree.addRootChild(decl);
       } else {
-        nodes::ExpressionNode* expr = new nodes::ExpressionNode(toks);
+        ExpressionNode* expr = new ExpressionNode(toks);
         expr->buildSubtree();
         expr->printTree(0);
         tree.addRootChild(expr);
@@ -177,50 +178,49 @@ public:
 
 class Interpreter {
 private:
-  typedef builtins::Object Object;
-  nodes::AST tree;
-  std::unordered_map<std::string, nodes::DeclarationNode*> variables();
+  AST tree;
+  std::unordered_map<std::string, DeclarationNode*> variables();
 public:
-  Interpreter(nodes::AST tree): tree(tree) {
+  Interpreter(AST tree): tree(tree) {
     interpret();
   }
 private:
   void interpret() {
-    nodes::ChildrenNodes nodes = tree.getRootChildren();
+    ChildrenNodes nodes = tree.getRootChildren();
     for (uint64 i = 0; i < nodes.size(); ++i) {
       if (nodes[i]->getNodeType() == "ExpressionNode") {
-        nodes[i]->getChildren()[0] = interpretExpression(dynamic_cast<nodes::ExpressionChildNode*>(nodes[i]->getChildren()[0]));
+        nodes[i]->getChildren()[0] = interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]));
         print("\n\n");
-        dynamic_cast<nodes::ExpressionChildNode*>(nodes[i]->getChildren()[0])->printTree(0);
+        dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0])->printTree(0);
       }
     }
   }
   
-  nodes::ExpressionChildNode* interpretExpression(nodes::ExpressionChildNode* node) {
+  ExpressionChildNode* interpretExpression(ExpressionChildNode* node) {
     if (node->getChildren().size() == 0) return node;
     if (node->t.type == OPERATOR) {
-      ops::Operator* op = static_cast<ops::Operator*>(node->t.typeData);
+      Operator* op = static_cast<Operator*>(node->t.typeData);
       auto ch = node->getChildren();
-      std::for_each(ch.begin(), ch.end(), [this](nodes::ASTNode*& n) {
-        auto node = dynamic_cast<nodes::ExpressionChildNode*>(n);
+      std::for_each(ch.begin(), ch.end(), [this](ASTNode*& n) {
+        auto node = dynamic_cast<ExpressionChildNode*>(n);
         if (node->getChildren().size() != 0) n = interpretExpression(node);
       });
       // TODO: check for all operand types before resolving operator map
-      if (dynamic_cast<nodes::ExpressionChildNode*>(ch[0])->t.type == INTEGER) {
-        if (op->getArity() == ops::UNARY) {
-          auto fun = *static_cast<builtins::Integer::UnaryOp*>(builtins::Integer::operators[*op]);
+      if (dynamic_cast<ExpressionChildNode*>(ch[0])->t.type == INTEGER) {
+        if (op->getArity() == UNARY) {
+          auto fun = *static_cast<Integer::UnaryOp*>(Integer::operators[*op]);
           auto result = fun(
-           static_cast<builtins::Integer*>(static_cast<nodes::ExpressionChildNode*>(ch[0])->t.typeData)
+           static_cast<Integer*>(static_cast<ExpressionChildNode*>(ch[0])->t.typeData)
           );
-          return new nodes::ExpressionChildNode(Token(result, INTEGER, -2));
-        } else if (op->getArity() == ops::BINARY) {
-          auto fun = *static_cast<builtins::Integer::BinaryOp*>(builtins::Integer::operators[*op]);
+          return new ExpressionChildNode(Token(result, INTEGER, -2));
+        } else if (op->getArity() == BINARY) {
+          auto fun = *static_cast<Integer::BinaryOp*>(Integer::operators[*op]);
           auto result = fun(
-           static_cast<builtins::Integer*>(static_cast<nodes::ExpressionChildNode*>(ch[1])->t.typeData),
-           static_cast<builtins::Integer*>(static_cast<nodes::ExpressionChildNode*>(ch[0])->t.typeData)
+           static_cast<Integer*>(static_cast<ExpressionChildNode*>(ch[1])->t.typeData),
+           static_cast<Integer*>(static_cast<ExpressionChildNode*>(ch[0])->t.typeData)
           );
-          return new nodes::ExpressionChildNode(Token(result, INTEGER, -2));
-        } else if (op->getArity() == ops::TERNARY) {
+          return new ExpressionChildNode(Token(result, INTEGER, -2));
+        } else if (op->getArity() == TERNARY) {
           // Not implemented
         }
         
@@ -231,9 +231,11 @@ private:
   
 };
 
+} /* namespace lang */
+
 int main() {
   getConstants();
-  Parser a = Parser(INPUT);
-  Interpreter in(a.tree);
+  lang::Parser a(INPUT);
+  lang::Interpreter in(a.tree);
   return 0;
 }

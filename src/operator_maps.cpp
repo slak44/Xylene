@@ -1,16 +1,16 @@
 #include "builtins.hpp"
 
-namespace builtins {
+namespace lang {
 
 OperatorMap initializeOperatorMap(std::vector<void*> funcs) {
-  if (funcs.size() < ops::opList.size()) {
+  if (funcs.size() < opList.size()) {
     print("Warning: Operator function vector does not match number of operators, filling with nullptr.\n");
-    funcs.resize(ops::opList.size(), nullptr);
+    funcs.resize(opList.size(), nullptr);
   }
   OperatorMap map;
-  for (uint64 i = 0; i < ops::opList.size(); ++i) {
+  for (uint64 i = 0; i < opList.size(); ++i) {
     map.insert({
-      ops::opList[i], funcs[i]
+      opList[i], funcs[i]
     });
   }
   return map;
@@ -102,4 +102,4 @@ OperatorMap Integer::operators = initializeOperatorMap({
   nullptr  // not implemented
 });
 
-} // namespace builtins
+} /* namespace lang */

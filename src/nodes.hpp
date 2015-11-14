@@ -10,7 +10,7 @@
 #include "operators.hpp"
 #include "tokens.hpp"
 
-namespace nodes {
+namespace lang {
 
 class ASTNode {
 protected:
@@ -96,8 +96,8 @@ public:
   ChildrenNodes getRootChildren();
 };
 
-typedef nodes::AbstractSyntaxTree AST;
+typedef AbstractSyntaxTree AST;
 
-} /* namespace nodes */
+} /* namespace lang */
 
 #endif /* NODES_H_ */

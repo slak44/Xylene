@@ -8,6 +8,8 @@
 #include "operators.hpp"
 #include "builtins.hpp"
 
+namespace lang {
+
 enum TokenType: int {
   INTEGER, FLOAT, STRING, ARRAY, // Literals
   OPERATOR, KEYWORD, CONSTRUCT, // Language parts
@@ -21,9 +23,9 @@ public:
   TokenType type = UNPROCESSED;
   /*
    * Depending on the TokenType, the pointer has the following possible types:
-   * For OPERATOR: ops::Operator*
-   * For INTEGER: builtins::Integer*
-   * For FLOAT: builtins::Float*
+   * For OPERATOR: Operator*
+   * For INTEGER: Integer*
+   * For FLOAT: Float*
    */
   void* typeData = nullptr;
   /*
@@ -34,12 +36,14 @@ public:
   
   Token();
   Token(std::string data, TokenType type, int line);
-  Token(ops::Operator* opContent, TokenType type, int line);
-  Token(builtins::Object* obj, TokenType type, int line);
+  Token(Operator* opContent, TokenType type, int line);
+  Token(Object* obj, TokenType type, int line);
 };
 
 inline std::ostream& operator<<(std::ostream& os, Token& tok) { 
   return os << "Token " << tok.data << ", TokenType " << tok.type << ", at line " << tok.line;
 }
+
+} /* namespace lang */
 
 #endif /* TOKENS_H_ */

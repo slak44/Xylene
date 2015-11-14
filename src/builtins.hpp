@@ -9,7 +9,7 @@
 #include "global.hpp"
 #include "operators.hpp"
 
-namespace builtins {
+namespace lang {
 
 /*
  * 'void*' points to a std::function.
@@ -17,7 +17,7 @@ namespace builtins {
  * For example, Integer will have a binary Operator "+", whose function signature can look like this: std::function<Integer*(Integer*, Integer*)>
  * There should be typedefs for common std::functions such as BinaryOp in Integer.
  */
-typedef std::unordered_map<ops::Operator, void*, ops::OperatorHash> OperatorMap;
+typedef std::unordered_map<Operator, void*, OperatorHash> OperatorMap;
 
 OperatorMap initializeOperatorMap(std::vector<void*> funcs);
 
@@ -52,8 +52,8 @@ class Integer : public Object {
 private:
   int64 internal = 0;
 public:
-  typedef std::function<builtins::Integer*(builtins::Integer*, builtins::Integer*)> BinaryOp;
-  typedef std::function<builtins::Integer*(builtins::Integer*)> UnaryOp;
+  typedef std::function<Integer*(Integer*, Integer*)> BinaryOp;
+  typedef std::function<Integer*(Integer*)> UnaryOp;
   static OperatorMap operators;
   
   Integer();
@@ -64,6 +64,6 @@ public:
   std::string getTypeData();
 };
 
-}; /* namespace builtins */
+}; /* namespace lang */
 
 #endif /* BUILTINS_H_ */
