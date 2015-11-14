@@ -2,12 +2,9 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <sstream>
 #include <algorithm>
 #include <functional>
 #include <unordered_map>
-#include <utility>
-#include <typeinfo>
 
 #include "global.hpp"
 #include "operators.hpp"
@@ -23,7 +20,6 @@ private:
   // If we're already at the next character, but the loop will increment i by 1
   inline void preventIncrement(unsigned int& i) {i--;}
 
-  std::vector<std::string> typeIdentifiers {"Integer"}; // TODO: add this
   std::vector<std::string> keywords {"define", "if", "while"};
 public:
   nodes::AST tree = nodes::AST();
@@ -115,7 +111,7 @@ public:
         Token t;
         if (isFloat) t = Token(new builtins::Float(current), FLOAT, lines);
         else t = Token(new builtins::Integer(current, base), INTEGER, lines);
-        tokens.push_back(t);//TODO here go to exprnode and things then interpreter
+        tokens.push_back(t);
         continue;
       }
       
@@ -153,6 +149,7 @@ public:
     auto logicalLines = splitVector(tokens, isNewLine);
     for (auto toks : logicalLines) {
       if (toks.size() == 0) continue;
+      // TODO: check for solid types here as well
       if (toks[0].data == "define" && toks[0].type == KEYWORD) {
         toks[1].type = VARIABLE;
         nodes::DeclarationNode* decl = new nodes::DeclarationNode("define", toks[1]);
