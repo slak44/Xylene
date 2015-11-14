@@ -29,17 +29,29 @@ public:
   Operator(std::string opName, int precedence, Associativity asc, Arity ar);
   Operator(std::string opName, int precedence, Arity ar = BINARY);
   
+  // TODO: Do something about this duplication
+  std::string getName() const;
+  Arity getArity() const;
+  Associativity getAssociativity() const;
+  int getPrecedence() const;
+  
   std::string getName();
   Arity getArity();
   Associativity getAssociativity();
   int getPrecedence();
 
-  bool operator==(const Operator& right);
-  bool operator!=(const Operator& right);
+  bool operator==(const Operator& right) const;
+  bool operator!=(const Operator& right) const;
 };
 
 std::vector<char> getOperatorCharacters();
 bool isReservedChar(char& c);
+
+struct OperatorHash {
+  std::size_t operator()(const Operator& k) const {
+    return std::hash<std::string>()(k.getName()) + k.getPrecedence() + k.getArity() + k.getAssociativity();
+  }
+};
 
 extern std::vector<Operator> opList;
 

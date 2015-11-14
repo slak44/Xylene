@@ -11,30 +11,42 @@ Operator::Operator(std::string opName, int precedence, Associativity asc, Arity 
 
 Operator::Operator(std::string opName, int precedence, Arity ar): Operator(opName, precedence, ASSOCIATE_FROM_LEFT, ar) {}
 
+std::string Operator::getName() const {
+  return op;
+}
 std::string Operator::getName() {
   return op;
 }
 
+Arity Operator::getArity() const {
+  return ar;
+}
 Arity Operator::getArity() {
   return ar;
 }
 
+Associativity Operator::getAssociativity() const {
+  return asc;
+}
 Associativity Operator::getAssociativity() {
   return asc;
 }
 
+int Operator::getPrecedence() const {
+  return precedence;
+}
 int Operator::getPrecedence() {
   return precedence;
 }
 
-bool Operator::operator==(const Operator& right) {
+bool Operator::operator==(const Operator& right) const {
   return
   this->precedence == right.precedence &&
   this->ar == right.ar &&
   this->asc == right.asc &&
   this->op == right.op;
 }
-bool Operator::operator!=(const Operator& right) {return !operator==(right);}
+bool Operator::operator!=(const Operator& right) const {return !operator==(right);}
 
 std::vector<Operator> opList {
   Operator(">>", 9),
@@ -64,8 +76,8 @@ std::vector<Operator> opList {
   // Postfix
   Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY),
   Operator("++", 13, ASSOCIATE_FROM_LEFT, UNARY),
-//  Operator("()", 13), // TODO: find function calls somehow
-//  Operator("[]", 13), // TODO: find subscript better, treat as macro and preprocess maybe?
+  //  Operator("()", 13), // TODO: find function calls somehow
+  //  Operator("[]", 13), // TODO: find subscript better, treat as macro and preprocess maybe?
   Operator(".", 13),
 
   // Prefix
