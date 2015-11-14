@@ -2,15 +2,15 @@
 
 namespace builtins {
 
-std::map<ops::Operator*, void*> initializeOperatorMap(std::vector<void*> funcs) {
+OperatorMap initializeOperatorMap(std::vector<void*> funcs) {
   if (funcs.size() < ops::opList.size()) {
-    print("Warning: Operator function vector does not match number of operators, filling with nullptr.");
+    print("Warning: Operator function vector does not match number of operators, filling with nullptr.\n");
     funcs.resize(ops::opList.size(), nullptr);
   }
-  std::map<ops::Operator*, void*> map;
+  OperatorMap map;
   for (uint64 i = 0; i < ops::opList.size(); ++i) {
     map.insert({
-      &ops::opList[i], funcs[i]
+      ops::opList[i], funcs[i]
     });
   }
   return map;
@@ -26,10 +26,6 @@ Object::~Object() {
 std::string Object::asString() {
   return std::to_string((int64) this);
 }
-
-//std::map<ops::Operator, void*> Object::getOperations() {
-//  return std::map<ops::Operator, void*>();
-//}
 
 std::string Object::getTypeData() {
   return "Object";
@@ -51,9 +47,9 @@ std::string Float::getTypeData() {
   return "Float";
 }
 
-std::map<ops::Operator*, void*> Integer::operators = initializeOperatorMap({
-  new std::function<Integer*(Integer, Integer)>([](Integer left, Integer right) {
-    return new Integer(left.internal >> right.internal);
+OperatorMap Integer::operators = initializeOperatorMap({
+  new Integer::BinaryOp([](Integer* left, Integer* right) {
+    return new Integer(left->internal >> right->internal);
   })
 });
 
@@ -72,39 +68,5 @@ std::string Integer::asString() {
 std::string Integer::getTypeData() {
   return "Integer";
 }
-
-
-//std::map<ops::Operator, void*> Integer::getOperations() {
-//  return std::map<ops::Operator*, void*> {
-//    {ops::Operator("+", 10), *([](Integer a, Integer b) {return a + b;})}
-//  };
-//}
-//
-//bool Integer::operator==(const Integer& right) {return this->internal == right.internal;}
-//bool Integer::operator!=(const Integer& right) {return !operator==(right);}
-//bool Integer::operator< (const Integer& right) {return this->internal < right.internal;}
-//bool Integer::operator> (const Integer& right) {return this->internal > right.internal;}
-//bool Integer::operator>=(const Integer& right) {return !operator<(right);}
-//bool Integer::operator<=(const Integer& right) {return !operator>(right);}
-//
-//Integer Integer::operator+(const Integer& right) {return this->internal + right.internal;};
-//Integer Integer::operator-(const Integer& right) {return this->internal - right.internal;};
-//Integer Integer::operator*(const Integer& right) {return this->internal * right.internal;};
-//Integer Integer::operator/(const Integer& right) {return this->internal / right.internal;};
-//Integer Integer::operator%(const Integer& right) {return this->internal % right.internal;};
-//
-//Integer Integer::operator>>(const Integer& right) {return this->internal >> right.internal;};
-//Integer Integer::operator<<(const Integer& right) {return this->internal << right.internal;};
-//
-//Integer Integer::operator--()    {return --(this->internal);};
-//Integer Integer::operator++()    {return ++(this->internal);};
-//Integer Integer::operator--(int) {return (this->internal)--;};
-//Integer Integer::operator++(int) {return (this->internal)++;};
-//
-//Integer Integer::operator~() {return ~(this->internal);};
-//
-//Integer Integer::operator&(const Integer& right) {return this->internal & right.internal;};
-//Integer Integer::operator^(const Integer& right) {return this->internal ^ right.internal;};
-//Integer Integer::operator|(const Integer& right) {return this->internal | right.internal;};
 
 };

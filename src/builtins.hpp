@@ -2,30 +2,33 @@
 #define BUILTINS_H_
 
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <functional>
 #include <stdexcept>
+
 #include "global.hpp"
 #include "operators.hpp"
 
 namespace builtins {
 
-std::map<ops::Operator*, void*> initializeOperatorMap(std::vector<void*> funcs);
+/*
+ * 'void*' points to a std::function.
+ * The template arguments for it depend on the type of Object.
+ * For example, Integer will have a binary Operator "+", whose function signature can look like this: std::function<Integer*(Integer*, Integer*)>
+ * There should be typedefs for common std::functions such as BinaryOp in Integer.
+ */
+typedef std::unordered_map<ops::Operator, void*, ops::OperatorHash> OperatorMap;
+
+OperatorMap initializeOperatorMap(std::vector<void*> funcs);
 
 class Object {
 public:
-  /*
-   * 'void*' points to a std::function.
-   * The template arguments for it depend on the type of Object.
-   * For example, Integer will have a binary Operator "+", whose function signature can look like this: std::function<Integer*(Integer, Integer)>
-   */
-  static std::map<ops::Operator*, void*> operators;
+  static OperatorMap operators;
 
   Object();
 	virtual ~Object();
 	
 	virtual std::string asString();
-//	std::map<ops::Operator, void*> getOperations();
 	virtual std::string getTypeData();
 };
 
@@ -35,7 +38,7 @@ class Float : public Object {
 private:
   double64 internal = 0.0;
 public:
-  static std::map<ops::Operator*, void*> operators;
+  static OperatorMap operators;
   
   Float();
   Float(std::string str);
@@ -49,7 +52,8 @@ class Integer : public Object {
 private:
   int64 internal = 0;
 public:
-  static std::map<ops::Operator*, void*> operators;
+  typedef std::function<builtins::Integer*(builtins::Integer*, builtins::Integer*)> BinaryOp;
+  static OperatorMap operators;
   
   Integer();
   Integer(std::string str, int base);
@@ -57,32 +61,6 @@ public:
   
   std::string asString();
   std::string getTypeData();
-  
-//  bool operator==(const Integer& right);
-//  bool operator!=(const Integer& right);
-//  bool operator< (const Integer& right);
-//  bool operator> (const Integer& right);
-//  bool operator>=(const Integer& right);
-//  bool operator<=(const Integer& right);
-//  
-//  Integer operator+(const Integer& right);
-//  Integer operator-(const Integer& right);
-//  Integer operator*(const Integer& right);
-//  Integer operator/(const Integer& right);
-//  Integer operator%(const Integer& right);
-//  
-//  Integer operator>>(const Integer& right);
-//  Integer operator<<(const Integer& right);
-//  
-//  Integer operator--();
-//  Integer operator++();
-//  Integer operator--(int);
-//  Integer operator++(int);
-//  
-//  Integer operator~();
-//  Integer operator&(const Integer& right);
-//  Integer operator^(const Integer& right);
-//  Integer operator|(const Integer& right);
 };
 
 }; /* namespace builtins */
