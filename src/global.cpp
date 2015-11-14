@@ -47,7 +47,7 @@ std::string SyntaxError::getMessage() {
 
 TypeError::TypeError():runtime_error("") {
 }
-TypeError::TypeError(std::string msg, unsigned int lines):runtime_error(msg.c_str()) {
+TypeError::TypeError(std::string msg):runtime_error(msg.c_str()) {
 }
 
 std::string TypeError::getMessage() {
