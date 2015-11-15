@@ -6,55 +6,57 @@
 #include <functional>
 #include <stdexcept>
 #include <cmath>
+#include <boost/any.hpp>
 
 #include "global.hpp"
 #include "operators.hpp"
 
 namespace lang {
-  // TODO: use this as the key for OperatorMap, make one big map for all types
-  class Operation {
-  public:
-    Operator o;
-    std::string returnType;
-    std::vector<std::string> argsTypeList;
-    Operation(Operator o, std::string returnType, std::vector<std::string> argsTypeList);
-    
-    bool operator==(const Operation& right) const;
-    bool operator!=(const Operation& right) const;
-    
-    std::size_t operator()() const;
-  };
-  
-  /*
-  * 'void*' points to a std::function.
-  * The template arguments for it depend on the type of Object.
-  * For example, Integer will have a binary Operator "+", whose function signature can look like this: std::function<Integer*(Integer*, Integer*)>
-  * There should be typedefs for common std::functions such as BinaryOp in Integer.
-  */
-  typedef std::unordered_map<Operator, void*, OperatorHash> OperatorMap;
-  
-  OperatorMap initializeOperatorMap(std::vector<void*> funcs);
+
+  typedef std::unordered_map<Operator, std::unordered_map<std::string, boost::any>, OperatorHash> OperatorMap;
+  extern OperatorMap opsMap;
   
   class Object {
   public:
-    static OperatorMap operators;
-    
     Object();
     virtual ~Object();
     
     virtual std::string asString();
-    virtual std::string getTypeData();
+    virtual std::string getTypeData() = 0; // Pure virtual, derived classes must implement this
   };
   
-  // TODO: maybe Number base class?
+  inline std::ostream& operator<<(std::ostream& os, Object& obj) { 
+    return os << "Object[" << obj.asString() << "]";
+  }
+  
+  void concatenateNames(std::string& result);
+  
+  template<typename... Args>
+  void concatenateNames(std::string& result, Object* obj, Args... args) {
+    result += obj->getTypeData() + " ";
+    concatenateNames(result, args...);
+  }
+  
+  template<typename... Args>
+  Object* runOperator(Operator* op, Args... pr) {
+    std::string funSig = "";
+    concatenateNames(funSig, pr...);
+    // TODO: handle case where operator function is undefined for given types
+    // 1. Get a boost::any instance from the OperatorMap
+    // 2. Use boost::any_cast to get a pointer to the operator function
+    // 3. Dereference pointer and call function
+    auto result = (*boost::any_cast<std::function<Object*(Args...)>*>(opsMap[*op][funSig]))(pr...);
+    return result;
+  }
+  
+  // TODO: Number<T> class, with T = int64 || double64
   
   class Float : public Object {
   private:
     double64 internal = 0.0;
   public:
-    typedef std::function<Float*(Float*, Float*)> BinaryOp;
-    typedef std::function<Float*(Float*)> UnaryOp;
-    static OperatorMap operators;
+    typedef std::function<Object*(Float*, Float*)> BinaryOp;
+    typedef std::function<Object*(Float*)> UnaryOp;
     
     Float();
     Float(std::string str);
@@ -62,15 +64,16 @@ namespace lang {
     
     std::string asString();
     std::string getTypeData();
+    
+    double64 getNumber();
   };
   
   class Integer : public Object {
   private:
     int64 internal = 0;
   public:
-    typedef std::function<Integer*(Integer*, Integer*)> BinaryOp;
-    typedef std::function<Integer*(Integer*)> UnaryOp;
-    static OperatorMap operators;
+    typedef std::function<Object*(Integer*, Integer*)> BinaryOp;
+    typedef std::function<Object*(Integer*)> UnaryOp;
     
     Integer();
     Integer(std::string str, int base);
@@ -78,6 +81,8 @@ namespace lang {
     
     std::string asString();
     std::string getTypeData();
+    
+    int64 getNumber();
   };
   
 }; /* namespace lang */

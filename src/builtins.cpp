@@ -2,6 +2,10 @@
 
 namespace lang {
   
+  void concatenateNames(std::string& result) {
+    result.pop_back(); // Remove trailing space
+  }
+  
   Object::Object() {
   }
   
@@ -33,6 +37,10 @@ namespace lang {
     return "Float";
   }
   
+  double64 Float::getNumber() {
+    return this->internal;
+  }
+  
   Integer::Integer() {}
   
   Integer::Integer(int64 i): internal(i) {}
@@ -47,6 +55,10 @@ namespace lang {
   
   std::string Integer::getTypeData() {
     return "Integer";
+  }
+  
+  int64 Integer::getNumber() {
+    return this->internal;
   }
   
 } /* namespace lang */

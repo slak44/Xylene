@@ -201,30 +201,24 @@ namespace lang {
       if (node->t.type == OPERATOR) {
         Operator* op = static_cast<Operator*>(node->t.typeData);
         auto ch = node->getChildren();
+        // TODO: could this be multithreaded?
         std::for_each(ch.begin(), ch.end(), [this](ASTNode*& n) {
           auto node = dynamic_cast<ExpressionChildNode*>(n);
           if (node->getChildren().size() != 0) n = interpretExpression(node);
         });
-        // TODO: check for all operand types before resolving operator map
-        if (dynamic_cast<ExpressionChildNode*>(ch[0])->t.type == INTEGER) {
-          if (op->getArity() == UNARY) {
-            auto fun = *static_cast<Integer::UnaryOp*>(Integer::operators[*op]);
-            auto result = fun(
-              static_cast<Integer*>(static_cast<ExpressionChildNode*>(ch[0])->t.typeData)
-            );
-            return new ExpressionChildNode(Token(result, INTEGER, -2));
-          } else if (op->getArity() == BINARY) {
-            auto fun = *static_cast<Integer::BinaryOp*>(Integer::operators[*op]);
-            auto result = fun(
-              static_cast<Integer*>(static_cast<ExpressionChildNode*>(ch[1])->t.typeData),
-              static_cast<Integer*>(static_cast<ExpressionChildNode*>(ch[0])->t.typeData)
-            );
-            return new ExpressionChildNode(Token(result, INTEGER, -2));
-          } else if (op->getArity() == TERNARY) {
-            // Not implemented
-          }
-          
+        auto arity = op->getArity();
+        Object* result;
+        // TODO: find a way to determine type of operands and replace `Integer*` with it
+        if (arity == UNARY) {
+          result = runOperator(op, static_cast<Integer*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData));
+        } else if (arity == BINARY) {
+          result = runOperator(op,
+            static_cast<Integer*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData),
+            static_cast<Integer*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData));
+        } else if (arity == TERNARY) {
+          // TODO: ternary operator
         }
+        return new ExpressionChildNode(Token(result, INTEGER, -2)); // replace INTEGER with something else
       }
       return nullptr;
     }
