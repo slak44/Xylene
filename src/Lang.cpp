@@ -210,11 +210,12 @@ namespace lang {
         Object* result;
         // TODO: find a way to determine type of operands and replace `Integer*` with it
         if (arity == UNARY) {
-          result = runOperator(op, static_cast<Integer*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData));
+          Object* operand = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData);
+          result = runOperator(op, dynamic_cast<Integer*>(operand));
         } else if (arity == BINARY) {
-          result = runOperator(op,
-            static_cast<Integer*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData),
-            static_cast<Integer*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData));
+          Object* operandLeft = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData);
+          Object* operandRight = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData);
+          result = runOperator(op, dynamic_cast<Integer*>(operandLeft), dynamic_cast<Integer*>(operandRight));
         } else if (arity == TERNARY) {
           // TODO: ternary operator
         }
