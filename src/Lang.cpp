@@ -219,7 +219,7 @@ namespace lang {
         } else if (arity == TERNARY) {
           // TODO: ternary operator
         }
-        return new ExpressionChildNode(Token(result, INTEGER, -2)); // replace INTEGER with something else
+        return new ExpressionChildNode(Token(result, UNPROCESSED, -2));
       }
       return nullptr;
     }
