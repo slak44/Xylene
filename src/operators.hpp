@@ -49,7 +49,7 @@ namespace lang {
   
   struct OperatorHash {
     std::size_t operator()(const Operator& k) const {
-      return std::hash<std::string>()(k.getName()) + k.getPrecedence() + k.getArity() + k.getAssociativity();
+      return hash(k.getName(), k.getPrecedence(), k.getArity(), k.getAssociativity());
     }
   };
   
