@@ -2,3 +2,4 @@ make/
 Lang
 constants.data
 inputs.data
+src/*.gch
