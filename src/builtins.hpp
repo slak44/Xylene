@@ -40,6 +40,7 @@ namespace lang {
     concatenateNames(result, args...);
   }
   
+  // TODO: check for nullptr in any of the arguments, throw SyntaxError. Get line numbers from higher up, maybe default param
   template<typename... Args>
   Object* runOperator(Operator* op, Args... pr) {
     std::string funSig = "";
