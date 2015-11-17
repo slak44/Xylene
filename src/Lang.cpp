@@ -159,12 +159,12 @@ namespace lang {
             expr->buildSubtree();
             decl->addChild(expr);
           }
-          decl->printTree(0);
+          if (PARSER_PRINT_DECL_TREE) decl->printTree(0);
           tree.addRootChild(decl);
         } else {
           ExpressionNode* expr = new ExpressionNode(toks);
           expr->buildSubtree();
-          expr->printTree(0);
+          if (PARSER_PRINT_EXPR_TREE) expr->printTree(0);
           tree.addRootChild(expr);
         }
       }
