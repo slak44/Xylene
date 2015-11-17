@@ -18,6 +18,9 @@ namespace lang {
   
   class Object : Stringifyable {
   public:
+    typedef std::function<Object*(Object*, Object*)> BinaryOp;
+    typedef std::function<Object*(Object*)> UnaryOp;
+    
     Object();
     virtual ~Object();
     
@@ -68,9 +71,6 @@ namespace lang {
   private:
     double64 internal = 0.0;
   public:
-    typedef std::function<Object*(Float*, Float*)> BinaryOp;
-    typedef std::function<Object*(Float*)> UnaryOp;
-    
     Float();
     Float(std::string str);
     Float(double64 f);
@@ -85,9 +85,6 @@ namespace lang {
   private:
     int64 internal = 0;
   public:
-    typedef std::function<Object*(Integer*, Integer*)> BinaryOp;
-    typedef std::function<Object*(Integer*)> UnaryOp;
-    
     Integer();
     Integer(std::string str, int base);
     Integer(int64 i);

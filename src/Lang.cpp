@@ -208,16 +208,18 @@ namespace lang {
         });
         auto arity = op->getArity();
         Object* result;
-        // TODO: find a way to determine type of operands and replace `Integer*` with it
         if (arity == UNARY) {
           Object* operand = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData);
-          result = runOperator(op, dynamic_cast<Integer*>(operand));
+          result = runOperator(op, operand);
         } else if (arity == BINARY) {
           Object* operandLeft = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData);
           Object* operandRight = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData);
-          result = runOperator(op, dynamic_cast<Integer*>(operandLeft), dynamic_cast<Integer*>(operandRight));
+          result = runOperator(op, operandLeft, operandRight);
         } else if (arity == TERNARY) {
-          // TODO: ternary operator
+          Object* operand1 = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[2])->t.typeData);
+          Object* operand2 = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData);
+          Object* operand3 = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData);
+          result = runOperator(op, operand1, operand2, operand3);
         }
         return new ExpressionChildNode(Token(result, UNPROCESSED, -2));
       }
