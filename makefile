@@ -19,10 +19,12 @@ EXECUTABLE = Lang
 
 all: $(SOURCES) $(EXECUTABLE)
     
-$(EXECUTABLE): $(OBJECTS) 
+$(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
 clean:
+	@echo "Cleaning precompiled headers..."
+	@rm src/*.gch
 	@echo "Cleaning make folder..."
 	@rm -f ./make/*
 	@echo "Cleaning executable..."
