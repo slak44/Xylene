@@ -6,35 +6,34 @@ namespace lang {
     result.pop_back(); // Remove trailing space
   }
   
-  Object::Object() {
-  }
-  
-  Object::~Object() {
-    
-  }
+  Object::Object() {}
+  Object::~Object() {}
   
   std::string Object::toString() {
     return std::to_string((int64) this);
   }
   
-  std::string Object::getTypeData() {
-    return "Object";
+  std::string Object::getTypeData() {return "Object";}
+  
+  Variable::Variable() {}
+  Variable::Variable(Object* obj): internal(obj) {}
+  
+  std::string Variable::toString() {return this->internal->toString();}
+  std::string Variable::getTypeData() {return "Variable";}
+  
+  void Variable::assign(Object* newObj) {
+    this->internal = newObj;
+  }
+  Object* Variable::read() {
+    return this->internal;
   }
   
   String::String() {}
   String::String(std::string str): internal(str) {}
   
-  std::string String::toString() {
-    return this->internal;
-  }
-  
-  std::string String::getTypeData() {
-    return "String";
-  }
-  
-  std::string String::getString() {
-    return this->toString();
-  }
+  std::string String::toString() {return this->internal;}
+  std::string String::getString() {return this->toString();}  
+  std::string String::getTypeData() {return "String";}
   
   Float::Float() {}
   Float::Float(double64 f): internal(f) {}
@@ -42,17 +41,10 @@ namespace lang {
     this->internal = std::stold(str);
   }
   
-  std::string Float::toString() {
-    return std::to_string(internal);
-  }
+  std::string Float::toString() {return std::to_string(internal);}
+  std::string Float::getTypeData() {return "Float";}
   
-  std::string Float::getTypeData() {
-    return "Float";
-  }
-  
-  double64 Float::getNumber() {
-    return this->internal;
-  }
+  double64 Float::getNumber() {return this->internal;}
   
   Integer::Integer() {}
   Integer::Integer(int64 i): internal(i) {}
@@ -60,16 +52,9 @@ namespace lang {
     this->internal = std::stoll(str, 0, base);
   }
   
-  std::string Integer::toString() {
-    return std::to_string(internal);
-  }
+  std::string Integer::toString() {return std::to_string(internal);}
+  std::string Integer::getTypeData() {return "Integer";}
   
-  std::string Integer::getTypeData() {
-    return "Integer";
-  }
-  
-  int64 Integer::getNumber() {
-    return this->internal;
-  }
+  int64 Integer::getNumber() {return this->internal;}
   
 } /* namespace lang */

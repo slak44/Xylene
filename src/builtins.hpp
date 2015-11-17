@@ -52,6 +52,20 @@ namespace lang {
     return result;
   }
   
+  class Variable : public Object {
+  private:
+    Object* internal = nullptr;
+  public:
+    Variable();
+    Variable(Object* obj);
+    
+    std::string toString();
+    std::string getTypeData();
+    
+    void assign(Object* newObj);
+    Object* read();
+  };
+  
   class String : public Object {
   private:
     std::string internal = "";
