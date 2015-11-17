@@ -60,8 +60,8 @@ namespace lang {
     std::string getTypeData();
     
     std::string getString();
-};
-  
+  };
+
   // TODO: Number<T> class, with T = int64 || double64
   
   class Float : public Object {
