@@ -25,6 +25,13 @@ namespace lang {
     return parent;
   }
   
+  void ASTNode::setLineNumber(int lines) {
+    this->lines = lines;
+  }
+  int ASTNode::getLineNumber() {
+    return this->lines;
+  }
+  
   std::string ASTNode::getNodeType() {
     return "ASTNode";
   }

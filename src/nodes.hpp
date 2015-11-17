@@ -16,14 +16,19 @@ namespace lang {
   protected:
     ASTNode* parent = nullptr;
     std::vector<ASTNode*> children {};
+    int lines = -1;
   public:
     ASTNode();
+    ASTNode(int lines);
     virtual ~ASTNode();
     
     virtual void addChild(ASTNode* child);
     std::vector<ASTNode*>& getChildren();
     void setParent(ASTNode* parent);
     ASTNode* getParent();
+    
+    void setLineNumber(int lines);
+    int getLineNumber();
     
     virtual std::string getNodeType();
     virtual void printTree(int level);

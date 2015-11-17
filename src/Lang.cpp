@@ -154,6 +154,7 @@ namespace lang {
         if (toks[0].data == "define" && toks[0].type == KEYWORD) {
           toks[1].type = VARIABLE;
           DeclarationNode* decl = new DeclarationNode("define", toks[1]);
+          decl->setLineNumber(toks[1].line);
           if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
             ExpressionNode* expr = new ExpressionNode(toks);
             expr->buildSubtree();
@@ -163,6 +164,7 @@ namespace lang {
           tree.addRootChild(decl);
         } else {
           ExpressionNode* expr = new ExpressionNode(toks);
+          expr->setLineNumber(dynamic_cast<ExpressionChildNode*>(expr->getChildren()[0])->t.line);
           expr->buildSubtree();
           if (PARSER_PRINT_EXPR_TREE) expr->printTree(0);
           tree.addRootChild(expr);
