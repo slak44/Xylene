@@ -22,6 +22,10 @@ all: $(SOURCES) $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
+cleanph:
+	@echo "Cleaning precompiled headers..."
+	@rm src/*.gch
+
 clean:
 	@echo "Cleaning precompiled headers..."
 	@rm src/*.gch
