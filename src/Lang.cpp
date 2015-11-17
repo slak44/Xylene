@@ -33,7 +33,7 @@ namespace lang {
         if (PARSER_PRINT_AS_EXPR) for (auto tok : ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
         buildTree();
       } catch (SyntaxError &e) {
-        print(e.getMessage(), "\n");
+        print(e.toString(), "\n");
       }
     }
     
@@ -59,21 +59,21 @@ namespace lang {
         auto initTokSize = tokens.size();
         std::for_each(opList.begin(), opList.end(), [this, initTokSize, code, i, lines](Operator& op) {
           if (initTokSize < tokens.size()) return; // If there are more tokens than before for_each, the operator was already added, so return.
-          if (op.getName().length() + i > code.length()) return; // If the operator is longer than the source string, ignore it.
-          if (op.getName() == code.substr(i, op.getName().length())) {
+          if (op.toString().length() + i > code.length()) return; // If the operator is longer than the source string, ignore it.
+          if (op.toString() == code.substr(i, op.toString().length())) {
             Operator* tmp = &op;
             // TODO: apply DRY on these ifs
-            if (tmp->getName() == "++" || tmp->getName() == "--") {
+            if (tmp->toString() == "++" || tmp->toString() == "--") {
               // Prefix version
-              if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new Operator(tmp->getName(), 12, ASSOCIATE_FROM_RIGHT, UNARY);
+              if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new Operator(tmp->toString(), 12, ASSOCIATE_FROM_RIGHT, UNARY);
               // Postfix version
-              else tmp = new Operator(tmp->getName(), 13, ASSOCIATE_FROM_RIGHT, UNARY);
+              else tmp = new Operator(tmp->toString(), 13, ASSOCIATE_FROM_RIGHT, UNARY);
             }
-            if (tmp->getName() == "+" || tmp->getName() == "-") {
+            if (tmp->toString() == "+" || tmp->toString() == "-") {
               // Unary version
-              if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new Operator(tmp->getName(), 12, ASSOCIATE_FROM_RIGHT, UNARY);
+              if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new Operator(tmp->toString(), 12, ASSOCIATE_FROM_RIGHT, UNARY);
               // Binary version
-              else tmp = new Operator(tmp->getName(), 10);
+              else tmp = new Operator(tmp->toString(), 10);
             }
             if (PARSER_PRINT_OPERATOR_TOKENS) print("Parser found Token with Operator ", *tmp, ", at address ", tmp, "\n");
             tokens.push_back(Token(tmp, OPERATOR, lines));

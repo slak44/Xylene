@@ -113,24 +113,29 @@ void print(T thing, Args... args) {
   print(args...);
 }
 
-class SyntaxError: std::runtime_error {
+class Stringifyable {
+public:
+  virtual std::string toString() = 0;
+};
+
+class SyntaxError: std::runtime_error, Stringifyable {
 private:
   std::string msg;
 public:
   SyntaxError(unsigned int lines);
   SyntaxError(std::string msg, unsigned int lines);
   
-  std::string getMessage();
+  std::string toString();
 };
 
-class TypeError: std::runtime_error {
+class TypeError: std::runtime_error, Stringifyable {
 private:
   std::string msg;
 public:
   TypeError();
   TypeError(std::string msg);
   
-  std::string getMessage();
+  std::string toString();
 };
 
 #endif /* GLOBAL_H_ */

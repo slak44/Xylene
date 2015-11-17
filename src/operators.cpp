@@ -12,10 +12,10 @@ namespace lang {
   
   Operator::Operator(std::string opName, int precedence, Arity ar): Operator(opName, precedence, ASSOCIATE_FROM_LEFT, ar) {}
   
-  std::string Operator::getName() const {
+  std::string Operator::toString() const {
     return op;
   }
-  std::string Operator::getName() {
+  std::string Operator::toString() {
     return op;
   }
   
@@ -111,7 +111,7 @@ namespace lang {
     if (chars.size() == 0) {
       std::string mashed = "";
       std::for_each(opList.begin(), opList.end(), [&mashed](Operator op) {
-        mashed += op.getName();
+        mashed += op.toString();
       });
       std::sort(mashed.begin(), mashed.end());
       mashed.erase(std::unique(mashed.begin(), mashed.end()), mashed.end());

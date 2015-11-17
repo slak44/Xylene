@@ -41,7 +41,7 @@ SyntaxError::SyntaxError(std::string msg, unsigned int lines):runtime_error(msg.
   this->msg = msg + ", at line: " + std::to_string(lines);
 }
 
-std::string SyntaxError::getMessage() {
+std::string SyntaxError::toString() {
   return msg;
 }
 
@@ -50,6 +50,6 @@ TypeError::TypeError():runtime_error("") {
 TypeError::TypeError(std::string msg):runtime_error(msg.c_str()) {
 }
 
-std::string TypeError::getMessage() {
+std::string TypeError::toString() {
   return msg;
 }

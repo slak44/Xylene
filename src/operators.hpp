@@ -19,7 +19,7 @@ namespace lang {
     TERNARY = 3
   };
   
-  class Operator {
+  class Operator : Stringifyable {
   private:
     std::string op;
     int precedence = -1;
@@ -30,12 +30,12 @@ namespace lang {
     Operator(std::string opName, int precedence, Arity ar = BINARY);
     
     // TODO: Do something about this duplication
-    std::string getName() const;
+    std::string toString() const;
     Arity getArity() const;
     Associativity getAssociativity() const;
     int getPrecedence() const;
     
-    std::string getName();
+    std::string toString();
     Arity getArity();
     Associativity getAssociativity();
     int getPrecedence();
@@ -49,14 +49,14 @@ namespace lang {
   
   struct OperatorHash {
     std::size_t operator()(const Operator& k) const {
-      return hash(k.getName(), k.getPrecedence(), k.getArity(), k.getAssociativity());
+      return hash(k.toString(), k.getPrecedence(), k.getArity(), k.getAssociativity());
     }
   };
   
   extern std::vector<Operator> opList;
   
   inline std::ostream& operator<<(std::ostream& os, Operator& op) { 
-    return os << op.getName() << ", with precedence " << op.getPrecedence() << ", associativity " << op.getAssociativity() << ", arity " << op.getArity();
+    return os << op.toString() << ", with precedence " << op.getPrecedence() << ", associativity " << op.getAssociativity() << ", arity " << op.getArity();
   }
   
 } /* namespace lang */

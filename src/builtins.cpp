@@ -13,7 +13,7 @@ namespace lang {
     
   }
   
-  std::string Object::asString() {
+  std::string Object::toString() {
     return std::to_string((int64) this);
   }
   
@@ -24,7 +24,7 @@ namespace lang {
   String::String() {}
   String::String(std::string str): internal(str) {}
   
-  std::string String::asString() {
+  std::string String::toString() {
     return this->internal;
   }
   
@@ -33,7 +33,7 @@ namespace lang {
   }
   
   std::string String::getString() {
-    return this->asString();
+    return this->toString();
   }
   
   Float::Float() {}
@@ -42,7 +42,7 @@ namespace lang {
     this->internal = std::stold(str);
   }
   
-  std::string Float::asString() {
+  std::string Float::toString() {
     return std::to_string(internal);
   }
   
@@ -60,7 +60,7 @@ namespace lang {
     this->internal = std::stoll(str, 0, base);
   }
   
-  std::string Integer::asString() {
+  std::string Integer::toString() {
     return std::to_string(internal);
   }
   

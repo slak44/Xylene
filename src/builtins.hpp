@@ -16,17 +16,17 @@ namespace lang {
   typedef std::unordered_map<Operator, std::unordered_map<std::string, boost::any>, OperatorHash> OperatorMap;
   extern OperatorMap opsMap;
   
-  class Object {
+  class Object : Stringifyable {
   public:
     Object();
     virtual ~Object();
     
-    virtual std::string asString();
+    virtual std::string toString() = 0;
     virtual std::string getTypeData() = 0; // Pure virtual, derived classes must implement this
   };
   
   inline std::ostream& operator<<(std::ostream& os, Object& obj) { 
-    return os << "Object[" << obj.asString() << "]";
+    return os << "Object[" << obj.toString() << "]";
   }
   
   void concatenateNames(std::string& result);
@@ -56,7 +56,7 @@ namespace lang {
     String();
     String(std::string str);
     
-    std::string asString();
+    std::string toString();
     std::string getTypeData();
     
     std::string getString();
@@ -75,7 +75,7 @@ namespace lang {
     Float(std::string str);
     Float(double64 f);
     
-    std::string asString();
+    std::string toString();
     std::string getTypeData();
     
     double64 getNumber();
@@ -92,7 +92,7 @@ namespace lang {
     Integer(std::string str, int base);
     Integer(int64 i);
     
-    std::string asString();
+    std::string toString();
     std::string getTypeData();
     
     int64 getNumber();

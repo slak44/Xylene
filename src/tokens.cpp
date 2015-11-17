@@ -9,7 +9,7 @@ namespace lang {
     line(line) {}
   
   Token::Token(Operator* opContent, TokenType type, int line):
-    data(opContent->getName()),
+    data(opContent->toString()),
     type(type),
     typeData(opContent),
     line(line) {
@@ -17,7 +17,7 @@ namespace lang {
   }
   
   Token::Token(Object* obj, TokenType type, int line):
-    data(obj->asString()),
+    data(obj->toString()),
     type(type),
     typeData(obj),
     line(line) {
