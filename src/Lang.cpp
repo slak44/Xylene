@@ -126,7 +126,7 @@ namespace lang {
             skipCharacters(i, 1);
           }
           // Don't call preventIncrement here so the other double quote is skipped
-          tokens.push_back(Token(current, STRING, lines));
+          tokens.push_back(Token(new String(current), STRING, lines));
           continue;
         }
         
