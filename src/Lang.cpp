@@ -164,8 +164,8 @@ namespace lang {
           tree.addRootChild(decl);
         } else {
           ExpressionNode* expr = new ExpressionNode(toks);
-          expr->setLineNumber(dynamic_cast<ExpressionChildNode*>(expr->getChildren()[0])->t.line);
           expr->buildSubtree();
+          expr->setLineNumber(dynamic_cast<ExpressionChildNode*>(expr->getChildren()[0])->t.line);
           if (PARSER_PRINT_EXPR_TREE) expr->printTree(0);
           tree.addRootChild(expr);
         }
@@ -181,7 +181,7 @@ namespace lang {
   class Interpreter {
   private:
     AST tree;
-    std::unordered_map<std::string, DeclarationNode*> variables();
+    std::unordered_map<std::string, Variable*> variables {};
   public:
     Interpreter(AST tree): tree(tree) {
       interpret();
@@ -190,10 +190,16 @@ namespace lang {
     void interpret() {
       ChildrenNodes nodes = tree.getRootChildren();
       for (uint64 i = 0; i < nodes.size(); ++i) {
-        if (nodes[i]->getNodeType() == "ExpressionNode") {
+        auto nodeType = nodes[i]->getNodeType();
+        if (nodeType == "ExpressionNode") {
           nodes[i]->getChildren()[0] = interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]));
           print("\n\n");
           dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0])->printTree(0);
+        } else if (nodeType == "DeclarationNode") {
+          Token child = dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]->getChildren()[0])->t;
+          if (nodes[i]->getChildren().size() == 0) {
+            // TODO declnodes
+          }
         }
       }
     }
