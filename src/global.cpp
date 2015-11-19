@@ -19,8 +19,12 @@ void getAndSetConstant(int& constRef, std::ifstream& is) {
   constRef = line[0] - '0';
 }
 
-void getConstants() {
+void getConstants(char* arg) {
   std::ifstream consts("constants.data");
+  if (!consts.good()) {
+    INPUT = arg;
+    return;
+  }
   getAndSetConstant(DEBUG_ENV, consts);
   getAndSetConstant(EXPRESSION_STEPS, consts);
   getAndSetConstant(PARSER_PRINT_INPUT, consts);

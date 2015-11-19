@@ -27,7 +27,7 @@ TOKEN_OPERATOR_PRINT_CONSTRUCTION,
 TEST_INPUT;
 extern std::string INPUT;
 
-void getConstants();
+void getConstants(char* arg);
 
 template<typename T>
 std::size_t hash(T element);

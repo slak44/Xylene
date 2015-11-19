@@ -259,8 +259,8 @@ namespace lang {
   
 } /* namespace lang */
 
-int main() {
-  getConstants();
+int main(int argc, char** argv) {
+  getConstants(argv[1]);
   try {
     lang::Parser a(INPUT);
     lang::Interpreter in(a.tree);
