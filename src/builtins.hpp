@@ -44,8 +44,8 @@ namespace lang {
   template<typename... Args>
   Object* runOperator(Operator* op, Args... pr) {
     std::string funSig = "";
-    concatenateNames(funSig, pr...);
     if (op->toString().back() == '=') funSig = "Variable Object";
+    else concatenateNames(funSig, pr...);
     // TODO: handle case where operator function is undefined for given types
     // 1. Get a boost::any instance from the OperatorMap
     // 2. Use boost::any_cast to get a pointer to the operator function

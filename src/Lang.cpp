@@ -21,6 +21,7 @@ namespace lang {
     // If we're already at the next character, but the loop will increment i by 1
     inline void preventIncrement(unsigned int& i) {i--;}
     
+    std::vector<Token> variables {};
     std::vector<std::string> keywords {"define", "if", "while"};
   public:
     AST tree = AST();
@@ -137,8 +138,22 @@ namespace lang {
           token.data += code[i];
           skipCharacters(i, 1);
         }
+        // Check if the thing references a variable
+        for (auto tok : variables)
+          if (tok.data == token.data) {
+            token = tok;
+            break;
+          }
+        // Check if the thing is a new variable
+        if (tokens.size() > 0 && ((tokens.back().type == KEYWORD && tokens.back().data == "define") || tokens.back().type == TYPE)) {
+          token.type = VARIABLE;
+          token.typeData = new Variable();
+          variables.push_back(token);
+        }
         // Check if the thing is a keyword
         if (contains(token.data, keywords)) token.type = KEYWORD;
+        
+        // Push token
         preventIncrement(i);
         token.line = lines;
         tokens.push_back(token);
@@ -148,7 +163,7 @@ namespace lang {
     void buildTree() {
       std::function<bool(Token)> isNewLine = [](Token tok) {return tok.data == ";" && tok.type == CONSTRUCT;};
       auto logicalLines = splitVector(tokens, isNewLine);
-      for (auto toks : logicalLines) {
+      for (std::vector<Token>& toks : logicalLines) {
         if (toks.size() == 0) continue;
         // TODO: check for solid types here as well
         if (toks[0].data == "define" && toks[0].type == KEYWORD) {
@@ -207,7 +222,9 @@ namespace lang {
     void registerDeclaration(DeclarationNode* node) {
       variables.insert({node->identifier.data, static_cast<Variable*>(node->identifier.typeData)});
       if (node->getChildren().size() == 1) {
-        interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]));
+        variables[node->identifier.data]->assign(
+          static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]))->t.typeData)
+        );
       }
     }
     

@@ -21,6 +21,7 @@ all: $(SOURCES) $(EXECUTABLE)
     
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	@rm -f .fuse_hidden*
 
 cleanph:
 	@echo "Cleaning precompiled headers..."
@@ -33,3 +34,4 @@ clean:
 	@rm -f ./make/*
 	@echo "Cleaning executable..."
 	@rm -f $(EXECUTABLE)
+	@rm -f .fuse_hidden*
