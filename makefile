@@ -1,6 +1,8 @@
 EXECUTABLE = Lang
 CC = g++
+CONFIG = DEBUG
 DEBUG_FLAGS = -c -Wall -std=c++11 -O0 -g3
+RELEASE_FLAGS = -c -std=c++11 -O3
 LDFLAGS = 
 SOURCES = \
 ./src/global.cpp \
@@ -14,8 +16,8 @@ SOURCES = \
 OBJECTS=$(SOURCES:./src/%.cpp=./make/%.o)
 	
 ./make/%.o: ./src/%.cpp
-	$(CC) $(DEBUG_FLAGS) $< -o $@
-	
+	[[ $(CONFIG) == DEBUG ]] && $(CC) $(DEBUG_FLAGS) $< -o $@ || $(CC) $(RELEASE_FLAGS) $< -o $@
+
 all: $(SOURCES) $(EXECUTABLE)
     
 $(EXECUTABLE): $(OBJECTS)
