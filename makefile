@@ -1,3 +1,4 @@
+EXECUTABLE = Lang
 CC = g++
 DEBUG_FLAGS = -c -Wall -std=c++11 -O0 -g3
 LDFLAGS = 
@@ -15,8 +16,6 @@ OBJECTS=$(SOURCES:./src/%.cpp=./make/%.o)
 ./make/%.o: ./src/%.cpp
 	$(CC) $(DEBUG_FLAGS) $< -o $@
 	
-EXECUTABLE = Lang
-
 all: $(SOURCES) $(EXECUTABLE)
     
 $(EXECUTABLE): $(OBJECTS)
