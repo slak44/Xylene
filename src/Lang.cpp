@@ -167,8 +167,6 @@ namespace lang {
         if (toks.size() == 0) continue;
         // TODO: check for solid types here as well
         if (toks[0].data == "define" && toks[0].type == KEYWORD) {
-          toks[1].type = VARIABLE;
-          toks[1].typeData = new Variable();
           DeclarationNode* decl = new DeclarationNode("define", toks[1]);
           decl->setLineNumber(toks[1].line);
           if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
