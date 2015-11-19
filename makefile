@@ -28,7 +28,7 @@ cleanph:
 
 clean:
 	@echo "Cleaning precompiled headers..."
-	@rm src/*.gch
+	@rm -f src/*.gch
 	@echo "Cleaning make folder..."
 	@rm -f ./make/*
 	@echo "Cleaning executable..."
