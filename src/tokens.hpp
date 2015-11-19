@@ -26,6 +26,7 @@ namespace lang {
     * For OPERATOR: Operator*
     * For INTEGER: Integer*
     * For FLOAT: Float*
+    * For VARIABLE: Variable*
     */
     void* typeData = nullptr;
     /*

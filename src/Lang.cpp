@@ -153,6 +153,7 @@ namespace lang {
         // TODO: check for solid types here as well
         if (toks[0].data == "define" && toks[0].type == KEYWORD) {
           toks[1].type = VARIABLE;
+          toks[1].typeData = new Variable();
           DeclarationNode* decl = new DeclarationNode("define", toks[1]);
           decl->setLineNumber(toks[1].line);
           if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
@@ -181,10 +182,12 @@ namespace lang {
   class Interpreter {
   private:
     AST tree;
+    // TODO: implement some scope
     std::unordered_map<std::string, Variable*> variables {};
   public:
     Interpreter(AST tree): tree(tree) {
       interpret();
+      print(variables["n"]->read()->toString());
     }
   private:
     void interpret() {
@@ -196,11 +199,15 @@ namespace lang {
           print("\n\n");
           dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0])->printTree(0);
         } else if (nodeType == "DeclarationNode") {
-          Token child = dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]->getChildren()[0])->t;
-          if (nodes[i]->getChildren().size() == 0) {
-            // TODO declnodes
-          }
+          registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
         }
+      }
+    }
+    
+    void registerDeclaration(DeclarationNode* node) {
+      variables.insert({node->identifier.data, static_cast<Variable*>(node->identifier.typeData)});
+      if (node->getChildren().size() == 1) {
+        interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]));
       }
     }
     

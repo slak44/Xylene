@@ -24,6 +24,13 @@ QUOTE(type1 type2), boost::any(new Object::BinaryOp([](Object* l, Object* r) {\
 
 namespace lang {
   OperatorMap opsMap = {
+    {Operator("=", 1, ASSOCIATE_FROM_RIGHT, BINARY), {
+      {"Variable Object", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
+        auto left = dynamic_cast<Variable*>(l);
+        left->assign(r);
+        return r;
+      }))}
+    }},
     {Operator("+", 10), {
       {MAKE_BINARY_OP(String, String, new String(left->toString() + right->toString()) )}, // String concatenation
       EXPAND_NUMERIC_OPS(+)
