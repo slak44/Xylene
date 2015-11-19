@@ -62,8 +62,8 @@ namespace lang {
   
   void SingleChildNode::printTree(int level) {
     printIndent(level);
-    auto child = this->getChild();
-    if (child == 0) {
+    auto child = dynamic_cast<SingleChildNode*>(this->getChild());
+    if (child == nullptr) {
       print("SingleChildNode, empty", "\n");
       return;
     }
@@ -89,7 +89,7 @@ namespace lang {
   void DeclarationNode::printTree(int level) {
     printIndent(level);
     print("Declared ", this->typeName, " as ", this->identifier, "\n");
-    static_cast<ExpressionNode*>(this->getChild())->printTree(level + 1);
+    if (this->getChildren().size() == 1) dynamic_cast<ExpressionNode*>(this->getChild())->printTree(level + 1);
   }
   
   std::vector<TokenType> ExpressionNode::validOperandTypes {
