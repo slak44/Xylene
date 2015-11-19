@@ -200,7 +200,6 @@ namespace lang {
   public:
     Interpreter(AST tree): tree(tree) {
       interpret();
-      print(variables["n"]->read()->toString());
     }
   private:
     void interpret() {
