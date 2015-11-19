@@ -38,22 +38,28 @@ void getConstants() {
   }
 }
 
-SyntaxError::SyntaxError(unsigned int lines):runtime_error("") {
+SyntaxError::SyntaxError(unsigned int lines):
+  runtime_error("") {
   msg = "at line: " + std::to_string(lines);
 }
-SyntaxError::SyntaxError(std::string msg, unsigned int lines):runtime_error(msg.c_str()) {
+SyntaxError::SyntaxError(std::string msg, unsigned int lines):
+  runtime_error(msg.c_str()),
+  msg(msg) {
   this->msg = msg + ", at line: " + std::to_string(lines);
 }
 
 std::string SyntaxError::toString() {
-  return msg;
+  return this->msg;
 }
 
-TypeError::TypeError():runtime_error("") {
+TypeError::TypeError():
+  runtime_error("") {
 }
-TypeError::TypeError(std::string msg):runtime_error(msg.c_str()) {
+TypeError::TypeError(std::string msg):
+  runtime_error(msg.c_str()),
+  msg(msg) {
 }
 
 std::string TypeError::toString() {
-  return msg;
+  return this->msg;
 }

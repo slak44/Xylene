@@ -50,8 +50,12 @@ namespace lang {
     // 1. Get a boost::any instance from the OperatorMap
     // 2. Use boost::any_cast to get a pointer to the operator function
     // 3. Dereference pointer and call function
-    auto result = (*boost::any_cast<std::function<Object*(Args...)>*>(opsMap[*op][funSig]))(pr...);
-    return result;
+    try {
+      auto result = (*boost::any_cast<std::function<Object*(Args...)>*>(opsMap[*op][funSig]))(pr...);
+      return result;
+    } catch (boost::bad_any_cast& bac) {
+      throw TypeError("Cannot find operation for operator '" + op->toString() + "' and operands '" + funSig + "'.\n");
+    }
   }
   
   class Variable : public Object {

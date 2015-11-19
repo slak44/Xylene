@@ -261,7 +261,13 @@ namespace lang {
 
 int main() {
   getConstants();
-  lang::Parser a(INPUT);
-  lang::Interpreter in(a.tree);
+  try {
+    lang::Parser a(INPUT);
+    lang::Interpreter in(a.tree);
+  } catch(SyntaxError& se) {
+    print(se.toString(), "\n");
+  } catch(TypeError& te) {
+    print(te.toString(), "\n");
+  }
   return 0;
 }
