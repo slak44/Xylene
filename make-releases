@@ -1,0 +1,5 @@
+make clean
+make EXECUTABLE=lang-win-i686.exe CC=i686-w64-mingw32-c++ LDFLAGS="-static-libgcc -static-libstdc++ -static" CONFIG=RELEASE
+make clean
+make EXECUTABLE=lang-linux-x86_64 CONFIG=RELEASE
+make clean
