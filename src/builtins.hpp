@@ -42,6 +42,20 @@ namespace lang {
     Object* read();
   };
   
+  class Boolean : public Object {
+  private:
+    bool internal = false;
+  public:
+    Boolean();
+    Boolean(bool b);
+    Boolean(std::string str);
+    
+    std::string toString();
+    std::string getTypeData();
+    
+    bool value();
+  };
+  
   class String : public Object {
   private:
     std::string internal = "";

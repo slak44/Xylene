@@ -35,6 +35,15 @@ namespace lang {
   std::string String::getString() {return this->toString();}  
   std::string String::getTypeData() {return "String";}
   
+  Boolean::Boolean() {}
+  Boolean::Boolean(bool b): internal(b) {}
+  Boolean::Boolean(std::string str): internal(str == "true" ? true : false) {}
+  
+  std::string Boolean::toString() {return this->internal ? "true" : "false";}
+  std::string Boolean::getTypeData() {return "Boolean";}
+  
+  bool Boolean::value() {return this->internal;}
+  
   Float::Float() {}
   Float::Float(double64 f): internal(f) {}
   Float::Float(std::string str) {

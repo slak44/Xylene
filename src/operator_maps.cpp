@@ -22,6 +22,12 @@ QUOTE(type1 type2), boost::any(new Object::BinaryOp([](Object* l, Object* r) {\
 {MAKE_BINARY_OP(Integer, Float, new Float(left->getNumber() operator right->getNumber()) )},\
 {MAKE_BINARY_OP(Float, Integer, new Float(left->getNumber() operator right->getNumber()) )}
 
+#define EXPAND_COMPARISON_OPS(operator) \
+{MAKE_BINARY_OP(Integer, Integer, new Boolean(left->getNumber() operator right->getNumber()) )},\
+{MAKE_BINARY_OP(Float, Float, new Boolean(left->getNumber() operator right->getNumber()) )},\
+{MAKE_BINARY_OP(Integer, Float, new Boolean(left->getNumber() operator right->getNumber()) )},\
+{MAKE_BINARY_OP(Float, Integer, new Boolean(left->getNumber() operator right->getNumber()) )}
+
 namespace lang {
   OperatorMap opsMap = {
     {Operator("=", 1, ASSOCIATE_FROM_RIGHT, BINARY), {
@@ -31,6 +37,28 @@ namespace lang {
         return r;
       }))}
     }},
+    // Comparison operators
+    {Operator("<=", 8), {
+      EXPAND_COMPARISON_OPS(<=)
+    }},
+    {Operator("<", 8), {
+      EXPAND_COMPARISON_OPS(<)
+    }},
+    {Operator(">=", 8), {
+      EXPAND_COMPARISON_OPS(>=)
+    }},
+    {Operator(">", 8), {
+      EXPAND_COMPARISON_OPS(>)
+    }},
+    {Operator("==", 7), {
+      EXPAND_COMPARISON_OPS(==),
+      {MAKE_BINARY_OP(Boolean, Boolean, new Boolean(left->value() == right->value()) )}
+    }},
+    {Operator("!=", 7), {
+      EXPAND_COMPARISON_OPS(!=),
+      {MAKE_BINARY_OP(Boolean, Boolean, new Boolean(left->value() != right->value()) )}
+    }},
+    // Arithmetic operators
     {Operator("+", 10), {
       {MAKE_BINARY_OP(String, String, new String(left->toString() + right->toString()) )}, // String concatenation
       EXPAND_NUMERIC_OPS(+)
@@ -63,10 +91,46 @@ namespace lang {
     {Operator("|", 4), {
       {MAKE_BINARY_OP(Integer, Integer, new Integer(left->getNumber() | right->getNumber()) )}
     }},
-    {Operator("~", 12), {
+    {Operator("~", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
       {MAKE_UNARY_OP(Integer, new Integer(~operand->getNumber()) )}
     }},
+    // Logical operators
+    {Operator("!", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
+      {MAKE_UNARY_OP(Boolean, new Boolean(!operand->value()) )},
+      {MAKE_UNARY_OP(Integer, new Boolean(!operand->getNumber()) )}
+    }},
+    {Operator("&&", 3), {
+      {MAKE_BINARY_OP(Boolean, Boolean, new Boolean(left->value() && right->value()) )},
+      {MAKE_BINARY_OP(Integer, Boolean, new Boolean(left->getNumber() && right->value()) )},
+      {MAKE_BINARY_OP(Boolean, Integer, new Boolean(left->value() && right->getNumber()) )},
+      {MAKE_BINARY_OP(Integer, Integer, new Boolean(left->getNumber() && right->getNumber()) )}
+    }},
+    {Operator("||", 2), {
+      {MAKE_BINARY_OP(Boolean, Boolean, new Boolean(left->value() || right->value()) )},
+      {MAKE_BINARY_OP(Integer, Boolean, new Boolean(left->getNumber() || right->value()) )},
+      {MAKE_BINARY_OP(Boolean, Integer, new Boolean(left->value() || right->getNumber()) )},
+      {MAKE_BINARY_OP(Integer, Integer, new Boolean(left->getNumber() || right->getNumber()) )}
+    }},
     // Other unary ops
-    // TODO: Postfix ops impl
+    {Operator("+", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
+      {MAKE_UNARY_OP(Integer, new Integer(+operand->getNumber()) )},
+      {MAKE_UNARY_OP(Float, new Float(+operand->getNumber()) )}
+    }},
+    {Operator("-", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
+      {MAKE_UNARY_OP(Integer, new Integer(-operand->getNumber()) )},
+      {MAKE_UNARY_OP(Float, new Float(-operand->getNumber()) )}
+    }},
+    {Operator("++", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
+      {MAKE_UNARY_OP(Integer, new Integer(operand->getNumber() + 1) )},
+      {MAKE_UNARY_OP(Float, new Float(operand->getNumber() + 1) )}
+    }},
+    {Operator("--", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
+      {MAKE_UNARY_OP(Integer, new Integer(operand->getNumber() - 1) )},
+      {MAKE_UNARY_OP(Float, new Float(operand->getNumber() - 1) )}
+    }},
+    // TODO: postfix ops
+    // TODO: other assignment ops
+    // TODO: member access op
+    // TODO: maybe comma op
   };
 } /* namespace lang */
