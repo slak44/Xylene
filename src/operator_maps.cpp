@@ -52,10 +52,12 @@ namespace lang {
     }},
     {Operator("==", 7), {
       EXPAND_COMPARISON_OPS(==),
+      {MAKE_BINARY_OP(String, String, new Boolean(left->toString() == right->toString()) )},
       {MAKE_BINARY_OP(Boolean, Boolean, new Boolean(left->value() == right->value()) )}
     }},
     {Operator("!=", 7), {
       EXPAND_COMPARISON_OPS(!=),
+      {MAKE_BINARY_OP(String, String, new Boolean(left->toString() != right->toString()) )},
       {MAKE_BINARY_OP(Boolean, Boolean, new Boolean(left->value() != right->value()) )}
     }},
     // Arithmetic operators
