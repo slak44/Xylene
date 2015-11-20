@@ -1,6 +1,7 @@
 make/
 Lang
-*.exe
+lang-linux-x86_64
+lang-win-i686.exe
 constants.data
 inputs.data
 src/*.gch
