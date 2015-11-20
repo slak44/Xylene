@@ -93,7 +93,7 @@ namespace lang {
   }
   
   std::vector<TokenType> ExpressionNode::validOperandTypes {
-    INTEGER, FLOAT, STRING, ARRAY, TYPE, VARIABLE, FUNCTION, UNPROCESSED
+    INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, UNPROCESSED
   };
   
   ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
@@ -151,9 +151,15 @@ namespace lang {
   
   void ExpressionNode::buildSubtree(void) {
     std::vector<Token> stackCopy(outStack);
-    auto tok = stackCopy.back();
-    stackCopy.pop_back();
-    ExpressionChildNode* node = new ExpressionChildNode(tok, stackCopy);
+    ExpressionChildNode* node;
+    if (stackCopy.size() >= 1) {
+      auto tok = stackCopy.back();
+      stackCopy.pop_back();
+      node = new ExpressionChildNode(tok, stackCopy);
+    } else {
+      throw std::runtime_error("Empty expression.\n");
+    }
+
     this->addChild(node);
   }
   
@@ -168,6 +174,7 @@ namespace lang {
   
   ExpressionChildNode::ExpressionChildNode(Token operand): t(operand) {};
   ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands): t(op) {
+    if (operands.size() == 0) return;
     auto arity = static_cast<Operator*>(op.typeData)->getArity();
     for (int i = 0; i < arity; ++i) {
       auto next = operands[operands.size() - 1];
