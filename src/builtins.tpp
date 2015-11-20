@@ -9,7 +9,7 @@ void concatenateNames(std::string& result, Object*& obj, Args&... args) {
 template<typename... Args>
 Object* runOperator(Operator* op, Args... pr) {
   std::string funSig = "";
-  if (op->toString().back() == '=') funSig = "Variable Object";
+  if (op->toString().back() == '=' && op->getPrecedence() == 1) funSig = "Variable Object";
   else concatenateNames(funSig, pr...);
   // 1. Get a boost::any instance from the OperatorMap
   // 2. Use boost::any_cast to get a pointer to the operator function
