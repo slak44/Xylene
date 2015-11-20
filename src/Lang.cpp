@@ -138,6 +138,11 @@ namespace lang {
           token.data += code[i];
           skipCharacters(i, 1);
         }
+        // Check if the thing is a Boolean
+        if (token.data == "true" || token.data == "false") {
+          token.type = BOOLEAN;
+          token.typeData = new Boolean(token.data);
+        }
         // Check if the thing references a variable
         for (auto tok : variables)
           if (tok.data == token.data) {
@@ -170,7 +175,8 @@ namespace lang {
           DeclarationNode* decl = new DeclarationNode("define", toks[1]);
           decl->setLineNumber(toks[1].line);
           if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
-            ExpressionNode* expr = new ExpressionNode(toks);
+            std::vector<Token> exprToks(toks.begin() + 1, toks.end());
+            ExpressionNode* expr = new ExpressionNode(exprToks);
             expr->buildSubtree();
             decl->addChild(expr);
           }

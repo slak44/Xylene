@@ -11,7 +11,7 @@
 namespace lang {
   
   enum TokenType: int {
-    INTEGER, FLOAT, STRING, ARRAY, // Literals
+    INTEGER, FLOAT, BOOLEAN, STRING, ARRAY, // Literals
     OPERATOR, KEYWORD, CONSTRUCT, // Language parts
     TYPE, VARIABLE, FUNCTION, // Defined structures
     UNPROCESSED
