@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -304,7 +305,16 @@ namespace lang {
 } /* namespace lang */
 
 int main(int argc, char** argv) {
-  getConstants(argv[1]);
+  if (std::string(argv[1]) == "-c") getConstants();
+  else if (std::string(argv[1]) == "-e") INPUT = argv[2];
+  else if (std::string(argv[1]) == "-f") {
+    std::ifstream in(argv[2]);
+    std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    INPUT = contents;
+  } else {
+    print("Use -c to read from constants.data and inputs.data, -e CODE to evaluate code and -f PATH to load code from a file.\n");
+    return 1;
+  }
   try {
     lang::Parser a(INPUT);
     lang::Interpreter in(a.tree);
