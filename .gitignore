@@ -5,3 +5,4 @@ lang-win-i686.exe
 constants.data
 inputs.data
 src/*.gch
+test
