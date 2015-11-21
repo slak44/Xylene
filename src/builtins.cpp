@@ -18,6 +18,7 @@ namespace lang {
   Variable::Variable() {}
   Variable::Variable(Object* obj): internal(obj) {}
   
+  bool Variable::isTruthy() {return this->read()->isTruthy();}
   std::string Variable::toString() {return this->internal->toString();}
   std::string Variable::getTypeData() {return "Variable";}
   
@@ -31,6 +32,7 @@ namespace lang {
   String::String() {}
   String::String(std::string str): internal(str) {}
   
+  bool String::isTruthy() {return this->internal.size() > 0;}
   std::string String::toString() {return this->internal;}
   std::string String::getString() {return this->toString();}  
   std::string String::getTypeData() {return "String";}
@@ -39,6 +41,7 @@ namespace lang {
   Boolean::Boolean(bool b): internal(b) {}
   Boolean::Boolean(std::string str): internal(str == "true" ? true : false) {}
   
+  bool Boolean::isTruthy() {return this->internal;}
   std::string Boolean::toString() {return this->internal ? "true" : "false";}
   std::string Boolean::getTypeData() {return "Boolean";}
   
@@ -50,6 +53,7 @@ namespace lang {
     this->internal = std::stold(str);
   }
   
+  bool Float::isTruthy() {return this->internal != 0;}
   std::string Float::toString() {return std::to_string(internal);}
   std::string Float::getTypeData() {return "Float";}
   
@@ -61,6 +65,7 @@ namespace lang {
     this->internal = std::stoll(str, 0, base);
   }
   
+  bool Integer::isTruthy() {return this->internal != 0;}
   std::string Integer::toString() {return std::to_string(internal);}
   std::string Integer::getTypeData() {return "Integer";}
   

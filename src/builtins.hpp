@@ -24,6 +24,7 @@ namespace lang {
     Object();
     virtual ~Object();
     
+    virtual bool isTruthy() = 0;
     virtual std::string toString() = 0;
     virtual std::string getTypeData() = 0; // Pure virtual, derived classes must implement this
   };
@@ -35,6 +36,7 @@ namespace lang {
     Variable();
     Variable(Object* obj);
     
+    bool isTruthy();
     std::string toString();
     std::string getTypeData();
     
@@ -50,6 +52,7 @@ namespace lang {
     Boolean(bool b);
     Boolean(std::string str);
     
+    bool isTruthy();
     std::string toString();
     std::string getTypeData();
     
@@ -63,6 +66,7 @@ namespace lang {
     String();
     String(std::string str);
     
+    bool isTruthy();
     std::string toString();
     std::string getTypeData();
     
@@ -79,6 +83,7 @@ namespace lang {
     Float(std::string str);
     Float(double64 f);
     
+    bool isTruthy();
     std::string toString();
     std::string getTypeData();
     
@@ -93,6 +98,7 @@ namespace lang {
     Integer(std::string str, int base);
     Integer(int64 i);
     
+    bool isTruthy();
     std::string toString();
     std::string getTypeData();
     
