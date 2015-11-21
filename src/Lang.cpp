@@ -23,6 +23,7 @@ namespace lang {
     
     std::vector<Token> variables {};
     std::vector<std::string> keywords {"define", "if", "while"};
+    std::vector<std::string> constructKeywords {"do", "end", "else"};
   public:
     AST tree = AST();
     
@@ -32,7 +33,7 @@ namespace lang {
         tokenize(code);
         if (PARSER_PRINT_TOKENS) for (auto tok : tokens) print(tok, "\n");
         if (PARSER_PRINT_AS_EXPR) for (auto tok : ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
-        buildTree();
+        buildTree(tokens);
       } catch (SyntaxError &e) {
         print(e.toString(), "\n");
       }
@@ -157,6 +158,7 @@ namespace lang {
         }
         // Check if the thing is a keyword
         if (contains(token.data, keywords)) token.type = KEYWORD;
+        if (contains(token.data, constructKeywords)) token.type = CONSTRUCT;
         
         // Push token
         preventIncrement(i);
@@ -165,10 +167,22 @@ namespace lang {
       }
     }
     
-    void buildTree() {
-      std::function<bool(Token)> isNewLine = [](Token tok) {return tok.data == ";" && tok.type == CONSTRUCT;};
+    void buildTree(std::vector<Token> tokens) {
+      static std::function<bool(Token)> isNewLine = [](Token tok) {
+        return
+        (tok.data == ";" && tok.type == CONSTRUCT) ||
+        (tok.data == "else" && tok.type == CONSTRUCT) ||
+        (tok.data == "do" && tok.type == CONSTRUCT) ||
+        (tok.data == "end" && tok.type == CONSTRUCT);
+      };
+      static std::vector<BlockNode*> blockStack {};
+      static auto addToBlock = [this](ASTNode* child) {
+        if (blockStack.size() == 0) tree.addRootChild(child);
+        else blockStack.back()->addChild(child);
+      };
       auto logicalLines = splitVector(tokens, isNewLine);
-      for (std::vector<Token>& toks : logicalLines) {
+      for (uint64 i = 0; i < logicalLines.size(); i++) {
+        std::vector<Token>& toks = logicalLines[i];
         if (toks.size() == 0) continue;
         // TODO: check for solid types here as well
         if (toks[0].data == "define" && toks[0].type == KEYWORD) {
@@ -180,14 +194,28 @@ namespace lang {
             expr->buildSubtree();
             decl->addChild(expr);
           }
-          if (PARSER_PRINT_DECL_TREE) decl->printTree(0);
-          tree.addRootChild(decl);
+          if (PARSER_PRINT_DECL_TREE) decl->printTree(blockStack.size());
+          addToBlock(decl);
+        } else if (toks[0].data == "if" && toks[0].type == KEYWORD) {
+          std::vector<Token> exprToks = std::vector<Token>(toks.begin() + 1, toks.end() - 1);
+          ExpressionNode* condition = new ExpressionNode(exprToks);
+          condition->buildSubtree();
+          auto cBlock = new ConditionalNode(condition, new BlockNode(), new BlockNode());
+          if (PARSER_PRINT_COND_TREE) cBlock->printTree(blockStack.size());
+          addToBlock(cBlock);
+          blockStack.push_back(cBlock);
+        } else if (toks[0].data == "else" && toks[0].type == CONSTRUCT) {
+          auto cNode = dynamic_cast<ConditionalNode*>(blockStack.back());
+          if (cNode == nullptr) throw SyntaxError("Cannot find conditional structure for token `else`.\n", blockStack.back()->getLineNumber());
+          cNode->nextBlock();
+        } else if (toks[0].data == "end" && toks[0].type == CONSTRUCT) {
+          blockStack.pop_back();
         } else {
           ExpressionNode* expr = new ExpressionNode(toks);
           expr->buildSubtree();
           expr->setLineNumber(dynamic_cast<ExpressionChildNode*>(expr->getChildren()[0])->t.line);
-          if (PARSER_PRINT_EXPR_TREE) expr->printTree(0);
-          tree.addRootChild(expr);
+          if (PARSER_PRINT_EXPR_TREE) expr->printTree(blockStack.size());
+          addToBlock(expr);
         }
       }
     }
@@ -205,11 +233,10 @@ namespace lang {
     std::unordered_map<std::string, Variable*> variables {};
   public:
     Interpreter(AST tree): tree(tree) {
-      interpret();
+      interpret(tree.getRootChildren());
     }
   private:
-    void interpret() {
-      ChildrenNodes nodes = tree.getRootChildren();
+    void interpret(ChildrenNodes nodes) {
       for (uint64 i = 0; i < nodes.size(); ++i) {
         auto nodeType = nodes[i]->getNodeType();
         if (nodeType == "ExpressionNode") {
@@ -218,7 +245,18 @@ namespace lang {
           dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0])->printTree(0);
         } else if (nodeType == "DeclarationNode") {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
+        } else if (nodeType == "ConditionalNode") {
+          resolveCondition(dynamic_cast<ConditionalNode*>(nodes[i]));
         }
+      }
+    }
+    
+    void resolveCondition(ConditionalNode* node) {
+      auto condRes = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
+      if (static_cast<Object*>(condRes->t.typeData)->isTruthy()) {
+        interpret(node->getTrueBlock()->getChildren());
+      } else {
+        interpret(node->getFalseBlock()->getChildren());
       }
     }
     
