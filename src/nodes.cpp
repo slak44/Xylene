@@ -97,7 +97,7 @@ namespace lang {
   };
   
   ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
-    for (unsigned long long i = 0; i < tokens.size(); ++i) {
+    for (uint64 i = 0; i < tokens.size(); ++i) {
       if (EXPRESSION_STEPS) {
         for (auto tok : outStack) print(tok.data, " ");
         print("\n-------\n");
@@ -202,6 +202,55 @@ namespace lang {
     }
   }
   
+  BlockNode::BlockNode() {}
+  
+  std::string BlockNode::getNodeType() {
+    return "BlockNode";
+  }
+  
+  void BlockNode::printTree(int level) {
+    printIndent(level);
+    print("BlockNode\n");
+    for (auto node : children) {
+      node->printTree(level + 1);
+    }
+  }
+  
+  ConditionalNode::ConditionalNode(ExpressionNode* condition, BlockNode* trueBlock, BlockNode* falseBlock) {
+    this->children.push_back(condition);
+    this->children.push_back(trueBlock);
+    this->children.push_back(falseBlock);
+    condition->setParent(this);
+    trueBlock->setParent(this);
+    falseBlock->setParent(this);
+  }
+  
+  ExpressionNode* ConditionalNode::getCondition() {return dynamic_cast<ExpressionNode*>(children[0]);}
+  BlockNode* ConditionalNode::getTrueBlock() {return dynamic_cast<BlockNode*>(children[1]);}
+  BlockNode* ConditionalNode::getFalseBlock() {return dynamic_cast<BlockNode*>(children[2]);}
+  
+  void ConditionalNode::addChild(ASTNode* child) {
+    children[this->block]->addChild(child);
+  }
+  
+  void ConditionalNode::nextBlock() {
+    static bool wasCalled = false;
+    if (!wasCalled) {
+      wasCalled = true;
+      this->block++;
+    } else throw SyntaxError("Multiple else statements.\n", children[2]->getLineNumber());
+  }
+  
+  std::string ConditionalNode::getNodeType() {
+    return "ConditionalNode";
+  }
+  
+  void ConditionalNode::printTree(int level) {
+    printIndent(level);
+    print("Condition\n");
+    this->getCondition()->printTree(level + 1);
+  }
+ 
   AST::AbstractSyntaxTree() {}
   
   void AST::addRootChild(ASTNode* node) {

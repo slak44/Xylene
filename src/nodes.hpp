@@ -90,6 +90,30 @@ namespace lang {
     void printTree(int level);
   };
   
+  class BlockNode: public ASTNode {
+  public:
+    BlockNode();
+    
+    std::string getNodeType();
+    void printTree(int level);
+  };
+  
+  class ConditionalNode: public BlockNode {
+  private:
+    int block = 1;
+  public:
+    ConditionalNode(ExpressionNode* condition, BlockNode* trueBlock, BlockNode* falseBlock);
+    
+    ExpressionNode* getCondition();
+    BlockNode* getTrueBlock();
+    BlockNode* getFalseBlock();
+    
+    void addChild(ASTNode* child);
+    void nextBlock();
+   
+    std::string getNodeType();
+    void printTree(int level);
+  };
   
   class AbstractSyntaxTree {
   private:
