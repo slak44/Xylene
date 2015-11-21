@@ -304,15 +304,23 @@ namespace lang {
   
 } /* namespace lang */
 
+void printHelp() {
+  print("Use -c to read from constants.data and inputs.data, -e [CODE] to evaluate code and -f [PATH] to load code from a file.\n");
+}
+
 int main(int argc, char** argv) {
-  if (std::string(argv[1]) == "-c") getConstants();
+  if (argc == 1) {
+    printHelp();
+    return 1;
+  }
+  else if (std::string(argv[1]) == "-c") getConstants();
   else if (std::string(argv[1]) == "-e") INPUT = argv[2];
   else if (std::string(argv[1]) == "-f") {
     std::ifstream in(argv[2]);
     std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     INPUT = contents;
   } else {
-    print("Use -c to read from constants.data and inputs.data, -e CODE to evaluate code and -f PATH to load code from a file.\n");
+    printHelp();
     return 1;
   }
   try {
