@@ -176,7 +176,7 @@ namespace lang {
         (tok.data == "do" && tok.type == CONSTRUCT) ||
         (tok.data == "end" && tok.type == CONSTRUCT);
       };
-      std::vector<BlockNode*> blockStack {};
+      static std::vector<BlockNode*> blockStack {};
       auto addToBlock = [this](ASTNode* child) {
         if (blockStack.size() == 0) tree.addRootChild(child);
         else blockStack.back()->addChild(child);
