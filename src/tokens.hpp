@@ -45,6 +45,8 @@ namespace lang {
     return os << "Token " << tok.data << ", TokenType " << tok.type << ", at line " << tok.line;
   }
   
+  extern std::function<bool(Token)> isNewLine;
+  
 } /* namespace lang */
 
 #endif /* TOKENS_H_ */

@@ -24,4 +24,12 @@ namespace lang {
     
   }
   
+  std::function<bool(Token)> isNewLine = [](Token tok) {
+    return
+    (tok.data == ";" && tok.type == CONSTRUCT) ||
+    (tok.data == "else" && tok.type == CONSTRUCT) ||
+    (tok.data == "do" && tok.type == CONSTRUCT) ||
+    (tok.data == "end" && tok.type == CONSTRUCT);
+  };
+  
 } /* namespace lang */
