@@ -305,7 +305,13 @@ namespace lang {
 } /* namespace lang */
 
 void printHelp() {
-  print("Use -c to read from constants.data and inputs.data, -e [CODE] to evaluate code and -f [PATH] to load code from a file.\n");
+  print(
+    "Use -c to read from constants.data and inputs.data, -e [CODE] to evaluate code and -f [PATH] to load code from a file.\n",
+    "Examples:\n",
+    "  lang -c\n",
+    "  lang -e \"if true != false do 1 + 1; end\"\n",
+    "  lang -f \"/path/to/file.txt\"\n"
+  );
 }
 
 int main(int argc, char** argv) {
