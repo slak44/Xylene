@@ -169,15 +169,15 @@ namespace lang {
     }
     
     void buildTree(std::vector<Token> tokens) {
-      static std::function<bool(Token)> isNewLine = [](Token tok) {
+      std::function<bool(Token)> isNewLine = [](Token tok) {
         return
         (tok.data == ";" && tok.type == CONSTRUCT) ||
         (tok.data == "else" && tok.type == CONSTRUCT) ||
         (tok.data == "do" && tok.type == CONSTRUCT) ||
         (tok.data == "end" && tok.type == CONSTRUCT);
       };
-      static std::vector<BlockNode*> blockStack {};
-      static auto addToBlock = [this](ASTNode* child) {
+      std::vector<BlockNode*> blockStack {};
+      auto addToBlock = [this](ASTNode* child) {
         if (blockStack.size() == 0) tree.addRootChild(child);
         else blockStack.back()->addChild(child);
       };
