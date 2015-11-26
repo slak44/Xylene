@@ -129,7 +129,7 @@ namespace lang {
         }
         opStack.push_back(tokens[i]);
       } else if (tokens[i].type == CONSTRUCT) {
-        if (tokens[i].data == ";") break;
+        if (isNewLine(tokens[i])) break;
         if (tokens[i].data != "(" && tokens[i].data != ")") {
           throw SyntaxError("Illegal construct in expression. \"" + tokens[i].data + "\"", tokens[i].line);
         } else if (tokens[i].data == "(") {
