@@ -4,29 +4,26 @@ CONFIG = DEBUG
 DEBUG_FLAGS = -c -Wall -std=c++11 -O0 -g3
 RELEASE_FLAGS = -c -std=c++11 -O3
 LDFLAGS = 
-SOURCES = \
-./src/global.cpp \
-./src/operators.cpp \
-./src/tokens.cpp \
-./src/nodes.cpp \
-./src/builtins.cpp \
-./src/operator_maps.cpp \
-./src/Lang.cpp \
+SOURCES = $(wildcard ./src/*.cpp)
+OBJECTS = $(SOURCES:./src/%.cpp=./make/%.o)
 
-OBJECTS=$(SOURCES:./src/%.cpp=./make/%.o)
-	
-./make/%.o: ./src/%.cpp
-	[[ $(CONFIG) == DEBUG ]] && $(CC) $(DEBUG_FLAGS) $< -o $@ || $(CC) $(RELEASE_FLAGS) $< -o $@
+.PHONY: all clean cleanph
 
 all: $(SOURCES) $(EXECUTABLE)
-    
+	
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 	@rm -f .fuse_hidden*
 
+# -include $(OBJECTS:.o=.d)
+
+./make/%.o: ./src/%.cpp
+	[[ $(CONFIG) == DEBUG ]] && $(CC) $(DEBUG_FLAGS) $< -o $@ || $(CC) $(RELEASE_FLAGS) $< -o $@
+	# $(CC) -std=c++11 -MM -MF make/$*.d $<
+
 cleanph:
 	@echo "Cleaning precompiled headers..."
-	@rm src/*.gch
+	@rm -f src/*.gch
 
 clean:
 	@echo "Cleaning precompiled headers..."
