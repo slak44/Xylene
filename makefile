@@ -12,14 +12,16 @@ OBJECTS = $(SOURCES:./src/%.cpp=./make/%.o)
 all: $(SOURCES) $(EXECUTABLE)
 	
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	@echo "Linking executable..."
+	@$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 	@rm -f .fuse_hidden*
 
 # -include $(OBJECTS:.o=.d)
 
 ./make/%.o: ./src/%.cpp
-	[[ $(CONFIG) == DEBUG ]] && $(CC) $(DEBUG_FLAGS) $< -o $@ || $(CC) $(RELEASE_FLAGS) $< -o $@
-	# $(CC) -std=c++11 -MM -MF make/$*.d $<
+	@echo "Compiling file: $@"
+	@[[ $(CONFIG) == DEBUG ]] && $(CC) $(DEBUG_FLAGS) $< -o $@ || $(CC) $(RELEASE_FLAGS) $< -o $@
+	@# $(CC) -std=c++11 -MM -MF make/$*.d $<
 
 cleanph:
 	@echo "Cleaning precompiled headers..."
@@ -33,3 +35,4 @@ clean:
 	@echo "Cleaning executable..."
 	@rm -f $(EXECUTABLE)
 	@rm -f .fuse_hidden*
+
