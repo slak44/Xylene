@@ -1,6 +1,6 @@
 template<typename... Args>
 void concatenateNames(std::string& result, Object*& obj, Args&... args) {
-  if (obj->getTypeData() == "Variable") obj = dynamic_cast<Variable*>(obj)->read();
+  while (obj->getTypeData() == "Variable") obj = dynamic_cast<Variable*>(obj)->read();
   result += obj->getTypeData() + " ";
   concatenateNames(result, args...);
 }
