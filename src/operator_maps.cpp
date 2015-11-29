@@ -29,6 +29,7 @@ QUOTE(type1 type2), boost::any(new Object::BinaryOp([](Object* l, Object* r) {\
 {MAKE_BINARY_OP(Float, Integer, new Boolean(left->getNumber() operator right->getNumber()) )}
 
 namespace lang {
+  // TODO: some operators that affect variables do not change the value of the variable, eg `++i`
   OperatorMap opsMap = {
     {Operator("=", 1, ASSOCIATE_FROM_RIGHT, BINARY), {
       {"Variable Object", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
