@@ -5,6 +5,7 @@ void concatenateNames(std::string& result, Object*& obj, Args&... args) {
   concatenateNames(result, args...);
 }
 
+// TODO: operators with side effects(eg ++ --) do not update the variable they're being pulled from
 // TODO: check for nullptr in any of the arguments, throw SyntaxError. Get line numbers from higher up, maybe default param
 template<typename... Args>
 Object* runOperator(Operator* op, Args... pr) {

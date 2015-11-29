@@ -168,6 +168,13 @@ namespace lang {
       }
     }
     
+    ExpressionNode* evaluateCondition(std::vector<Token>& toks) {
+      std::vector<Token> exprToks = std::vector<Token>(toks.begin() + 1, toks.end() - 1);
+      ExpressionNode* condition = new ExpressionNode(exprToks);
+      condition->buildSubtree();
+      return condition;
+    }
+    
     void buildTree(std::vector<Token> tokens) {
       static std::vector<BlockNode*> blockStack {};
       auto addToBlock = [this](ASTNode* child) {
@@ -190,11 +197,13 @@ namespace lang {
           }
           if (PARSER_PRINT_DECL_TREE) decl->printTree(blockStack.size());
           addToBlock(decl);
+        } else if (toks[0].data == "while" && toks[0].type == KEYWORD) {
+          auto wBlock = new WhileNode(evaluateCondition(toks), new BlockNode());
+          if (PARSER_PRINT_WHILE_TREE) wBlock->printTree(blockStack.size());
+          addToBlock(wBlock);
+          blockStack.push_back(wBlock);
         } else if (toks[0].data == "if" && toks[0].type == KEYWORD) {
-          std::vector<Token> exprToks = std::vector<Token>(toks.begin() + 1, toks.end() - 1);
-          ExpressionNode* condition = new ExpressionNode(exprToks);
-          condition->buildSubtree();
-          auto cBlock = new ConditionalNode(condition, new BlockNode(), new BlockNode());
+          auto cBlock = new ConditionalNode(evaluateCondition(toks), new BlockNode(), new BlockNode());
           if (PARSER_PRINT_COND_TREE) cBlock->printTree(blockStack.size());
           addToBlock(cBlock);
           blockStack.push_back(cBlock);
@@ -241,7 +250,18 @@ namespace lang {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
         } else if (nodeType == "ConditionalNode") {
           resolveCondition(dynamic_cast<ConditionalNode*>(nodes[i]));
+        } else if (nodeType == "WhileNode") {
+          doWhileLoop(dynamic_cast<WhileNode*>(nodes[i]));
         }
+      }
+    }
+    
+    // TODO fix this
+    void doWhileLoop(WhileNode* node) {
+      auto condRes = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
+      while (static_cast<Object*>(condRes->t.typeData)->isTruthy()) {
+        interpret(node->getLoopNode()->getChildren());
+        condRes = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
       }
     }
     
@@ -268,7 +288,6 @@ namespace lang {
       if (node->t.type == OPERATOR) {
         Operator* op = static_cast<Operator*>(node->t.typeData);
         auto ch = node->getChildren();
-        // TODO: could this be multithreaded?
         std::for_each(ch.begin(), ch.end(), [this](ASTNode*& n) {
           auto node = dynamic_cast<ExpressionChildNode*>(n);
           if (node->getChildren().size() != 0) n = interpretExpression(node);

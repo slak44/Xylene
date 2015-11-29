@@ -247,6 +247,30 @@ namespace lang {
   
   void ConditionalNode::printTree(int level) {
     printIndent(level);
+    print("While Condition\n");
+    this->getCondition()->printTree(level + 1);
+  }
+  
+  WhileNode::WhileNode(ExpressionNode* condition, BlockNode* loop) {
+    this->children.push_back(condition);
+    this->children.push_back(loop);
+    condition->setParent(this);
+    loop->setParent(this);
+  }
+  
+  ExpressionNode* WhileNode::getCondition() {return dynamic_cast<ExpressionNode*>(children[0]);}
+  BlockNode* WhileNode::getLoopNode() {return dynamic_cast<BlockNode*>(children[1]);}
+  
+  void WhileNode::addChild(ASTNode* child) {
+    children[1]->addChild(child);
+  }
+  
+  std::string WhileNode::getNodeType() {
+    return "WhileNode";
+  }
+  
+  void WhileNode::printTree(int level) {
+    printIndent(level);
     print("Condition\n");
     this->getCondition()->printTree(level + 1);
   }

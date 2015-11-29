@@ -115,6 +115,19 @@ namespace lang {
     void printTree(int level);
   };
   
+  class WhileNode: public BlockNode {
+  public:
+    WhileNode(ExpressionNode* condition, BlockNode* loop);
+    
+    ExpressionNode* getCondition();
+    BlockNode* getLoopNode();
+    
+    void addChild(ASTNode* child);
+    
+    std::string getNodeType();
+    void printTree(int level);
+  };
+  
   class AbstractSyntaxTree {
   private:
     ASTNode root = ASTNode();
