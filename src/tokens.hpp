@@ -42,7 +42,7 @@ namespace lang {
   };
   
   inline std::ostream& operator<<(std::ostream& os, Token& tok) { 
-    return os << "Token " << tok.data << ", TokenType " << tok.type << ", at line " << tok.line;
+    return os << "Token " << tok.data << ", TokenType " << tok.type << ", with data pointer " << tok.typeData << ", at line " << tok.line;
   }
   
   extern std::function<bool(Token)> isNewLine;
