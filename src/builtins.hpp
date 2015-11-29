@@ -2,6 +2,7 @@
 #define BUILTINS_H_
 
 #include <string>
+#include <sstream>
 #include <unordered_map>
 #include <functional>
 #include <stdexcept>

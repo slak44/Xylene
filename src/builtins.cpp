@@ -19,7 +19,10 @@ namespace lang {
   Variable::Variable(Object* obj): internal(obj) {}
   
   bool Variable::isTruthy() {return this->read()->isTruthy();}
-  std::string Variable::toString() {return this->internal->toString();}
+  std::string Variable::toString() {
+    std::stringstream ss; ss << this;
+    return std::string("Variable ") + ss.str() + ":" + this->internal->toString();
+  }
   std::string Variable::getTypeData() {return "Variable";}
   
   void Variable::assign(Object* newObj) {
