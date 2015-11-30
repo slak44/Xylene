@@ -233,7 +233,7 @@ namespace lang {
   private:
     AST tree;
     // TODO: implement some scope
-    std::unordered_map<std::string, Variable*> variables {};
+    std::unordered_map<std::string, Variable*> globalVars {};
   public:
     Interpreter(AST tree): tree(tree) {
       interpret(tree.getRootChildren());
@@ -272,9 +272,9 @@ namespace lang {
     }
     
     void registerDeclaration(DeclarationNode* node) {
-      variables.insert({node->identifier.data, static_cast<Variable*>(node->identifier.typeData)});
+      globalVars.insert({node->identifier.data, static_cast<Variable*>(node->identifier.typeData)});
       if (node->getChildren().size() == 1) {
-        variables[node->identifier.data]->assign(
+        globalVars[node->identifier.data]->assign(
           static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]))->t.typeData)
         );
       }
