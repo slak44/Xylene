@@ -243,9 +243,7 @@ namespace lang {
       for (uint64 i = 0; i < nodes.size(); ++i) {
         auto nodeType = nodes[i]->getNodeType();
         if (nodeType == "ExpressionNode") {
-          nodes[i]->getChildren()[0] = interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]));
-          print("\n\n");
-          dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0])->printTree(0);
+          interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]))->printTree(0);
         } else if (nodeType == "DeclarationNode") {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
         } else if (nodeType == "ConditionalNode") {
@@ -256,12 +254,11 @@ namespace lang {
       }
     }
     
-    // TODO fix this
     void doWhileLoop(WhileNode* node) {
-      auto condRes = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
-      while (static_cast<Object*>(condRes->t.typeData)->isTruthy()) {
+      while (true) {
+        auto condition = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
+        if (!static_cast<Object*>(condition->t.typeData)->isTruthy()) break;
         interpret(node->getLoopNode()->getChildren());
-        condRes = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
       }
     }
     
