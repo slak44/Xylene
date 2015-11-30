@@ -159,7 +159,7 @@ namespace lang {
     } else {
       throw std::runtime_error("Empty expression.\n");
     }
-
+    this->children.clear();
     this->addChild(node);
   }
   
