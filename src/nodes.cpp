@@ -247,7 +247,7 @@ namespace lang {
   
   void ConditionalNode::printTree(int level) {
     printIndent(level);
-    print("While Condition\n");
+    print("Condition\n");
     this->getCondition()->printTree(level + 1);
   }
   
@@ -271,7 +271,7 @@ namespace lang {
   
   void WhileNode::printTree(int level) {
     printIndent(level);
-    print("Condition\n");
+    print("While Condition\n");
     this->getCondition()->printTree(level + 1);
   }
  
