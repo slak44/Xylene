@@ -43,6 +43,7 @@ namespace lang {
     void tokenize(std::string code) {
       unsigned int lines = 0;
       for (unsigned int i = 0; i < code.length(); ++i) {
+        if (code[i] == '/' && code[i + 1] == '/') while(code[i] != '\n' && code[i] != '\0') skipCharacters(i, 1);
         if (code[i] == '\n') lines++;
         
         // Ignore whitespace
