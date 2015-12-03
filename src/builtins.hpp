@@ -110,13 +110,13 @@ namespace lang {
     return os << "Object[" << obj.toString() << "]";
   }
   
-  void concatenateNames(std::string& result);
+  void concatenateNames(std::string& result, unsigned int line);
   
   template<typename... Args>
-  void concatenateNames(std::string& result, Object*& obj, Args&... args);
+  void concatenateNames(std::string& result, unsigned int line, Object*& obj, Args&... args);
   
   template<typename... Args>
-  Object* runOperator(Operator* op, Args... pr);
+  Object* runOperator(Operator* op, unsigned int line, Args... pr);
   
   #include "builtins.tpp"
   

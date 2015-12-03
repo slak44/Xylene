@@ -2,7 +2,7 @@
 
 namespace lang {
   
-  void concatenateNames(std::string& result) {
+  void concatenateNames(std::string& result, unsigned int line) {
     result.pop_back(); // Remove trailing space
   }
   

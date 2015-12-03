@@ -82,6 +82,7 @@ private:
 public:
   TypeError();
   TypeError(std::string msg);
+  TypeError(std::string msg, unsigned int lines);
   
   std::string toString();
 };

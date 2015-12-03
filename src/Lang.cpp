@@ -293,17 +293,20 @@ namespace lang {
         auto arity = op->getArity();
         Object* result;
         if (arity == UNARY) {
-          Object* operand = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData);
-          result = runOperator(op, operand);
+          auto n = dynamic_cast<ExpressionChildNode*>(ch[0]);
+          Object* operand = static_cast<Object*>(n->t.typeData);
+          result = runOperator(op, static_cast<unsigned int>(n->t.line), operand);
         } else if (arity == BINARY) {
+          auto n = dynamic_cast<ExpressionChildNode*>(ch[0]);
           Object* operandLeft = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData);
-          Object* operandRight = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData);
-          result = runOperator(op, operandLeft, operandRight);
+          Object* operandRight = static_cast<Object*>(n->t.typeData);
+          result = runOperator(op, static_cast<unsigned int>(n->t.line), operandLeft, operandRight);
         } else if (arity == TERNARY) {
+          auto n = dynamic_cast<ExpressionChildNode*>(ch[0]);
           Object* operand1 = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[2])->t.typeData);
           Object* operand2 = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData);
-          Object* operand3 = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[0])->t.typeData);
-          result = runOperator(op, operand1, operand2, operand3);
+          Object* operand3 = static_cast<Object*>(n->t.typeData);
+          result = runOperator(op, static_cast<unsigned int>(n->t.line), operand1, operand2, operand3);
         }
         return new ExpressionChildNode(Token(result, UNPROCESSED, -2));
       }

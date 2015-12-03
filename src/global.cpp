@@ -45,12 +45,12 @@ void getConstants() {
 
 SyntaxError::SyntaxError(unsigned int lines):
   runtime_error("") {
-  msg = "at line: " + std::to_string(lines);
+  msg = "at line: " + std::to_string(lines) + "\n";
 }
 SyntaxError::SyntaxError(std::string msg, unsigned int lines):
   runtime_error(msg.c_str()),
   msg(msg) {
-  this->msg = msg + ", at line: " + std::to_string(lines);
+  this->msg = msg + ", at line: " + std::to_string(lines) + "\n";
 }
 
 std::string SyntaxError::toString() {
@@ -62,7 +62,12 @@ TypeError::TypeError():
 }
 TypeError::TypeError(std::string msg):
   runtime_error(msg.c_str()),
+  msg(msg + "\n") {
+}
+TypeError::TypeError(std::string msg, unsigned int lines):
+  runtime_error(msg.c_str()),
   msg(msg) {
+  this->msg = msg + ", at line: " + std::to_string(lines) + "\n";
 }
 
 std::string TypeError::toString() {
