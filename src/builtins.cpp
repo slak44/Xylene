@@ -1,11 +1,6 @@
 #include "builtins.hpp"
 
 namespace lang {
-  
-  void concatenateNames(std::string& result, unsigned int line) {
-    result.pop_back(); // Remove trailing space
-  }
-  
   Object::Object() {}
   Object::~Object() {}
   

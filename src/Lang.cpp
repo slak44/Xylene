@@ -12,6 +12,7 @@
 #include "tokens.hpp"
 #include "nodes.hpp"
 #include "builtins.hpp"
+#include "operator_maps.hpp"
 
 namespace lang {
   
@@ -155,7 +156,6 @@ namespace lang {
         // Check if the thing is a new variable
         if (tokens.size() > 0 && ((tokens.back().type == KEYWORD && tokens.back().data == "define") || tokens.back().type == TYPE)) {
           token.type = VARIABLE;
-          token.typeData = new Variable();
           variables.push_back(token);
         }
         // Check if the thing is a keyword
@@ -234,7 +234,7 @@ namespace lang {
   private:
     AST tree;
     // TODO: implement some scope
-    std::unordered_map<std::string, Variable*> globalVars {};
+    Scope globalVars {};
   public:
     Interpreter(AST tree): tree(tree) {
       interpret(tree.getRootChildren());
@@ -273,9 +273,9 @@ namespace lang {
     }
     
     void registerDeclaration(DeclarationNode* node) {
-      globalVars.insert({node->identifier.data, static_cast<Variable*>(node->identifier.typeData)});
+      node->getParentScope()->insert({node->identifier.data, new Variable()});
       if (node->getChildren().size() == 1) {
-        globalVars[node->identifier.data]->assign(
+        (*node->getParentScope())[node->identifier.data]->assign(
           static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]))->t.typeData)
         );
       }
@@ -284,31 +284,12 @@ namespace lang {
     ExpressionChildNode* interpretExpression(ExpressionChildNode* node) {
       if (node->getChildren().size() == 0) return node;
       if (node->t.type == OPERATOR) {
-        Operator* op = static_cast<Operator*>(node->t.typeData);
         auto ch = node->getChildren();
         std::for_each(ch.begin(), ch.end(), [this](ASTNode*& n) {
           auto node = dynamic_cast<ExpressionChildNode*>(n);
           if (node->getChildren().size() != 0) n = interpretExpression(node);
         });
-        auto arity = op->getArity();
-        Object* result;
-        if (arity == UNARY) {
-          auto n = dynamic_cast<ExpressionChildNode*>(ch[0]);
-          Object* operand = static_cast<Object*>(n->t.typeData);
-          result = runOperator(op, static_cast<unsigned int>(n->t.line), operand);
-        } else if (arity == BINARY) {
-          auto n = dynamic_cast<ExpressionChildNode*>(ch[0]);
-          Object* operandLeft = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData);
-          Object* operandRight = static_cast<Object*>(n->t.typeData);
-          result = runOperator(op, static_cast<unsigned int>(n->t.line), operandLeft, operandRight);
-        } else if (arity == TERNARY) {
-          auto n = dynamic_cast<ExpressionChildNode*>(ch[0]);
-          Object* operand1 = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[2])->t.typeData);
-          Object* operand2 = static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(ch[1])->t.typeData);
-          Object* operand3 = static_cast<Object*>(n->t.typeData);
-          result = runOperator(op, static_cast<unsigned int>(n->t.line), operand1, operand2, operand3);
-        }
-        return new ExpressionChildNode(Token(result, UNPROCESSED, -2));
+        return new ExpressionChildNode(Token(runOperator(node), UNPROCESSED, -2));
       }
       return nullptr;
     }

@@ -10,13 +10,8 @@
 #include <boost/any.hpp>
 
 #include "global.hpp"
-#include "operators.hpp"
 
 namespace lang {
-
-  typedef std::unordered_map<Operator, std::unordered_map<std::string, boost::any>, OperatorHash> OperatorMap;
-  extern OperatorMap opsMap;
-  
   class Object : Stringifyable {
   public:
     typedef std::function<Object*(Object*, Object*)> BinaryOp;
@@ -106,19 +101,11 @@ namespace lang {
     int64 getNumber();
   };
   
+  typedef std::unordered_map<std::string, Variable*> Scope;
+  
   inline std::ostream& operator<<(std::ostream& os, Object& obj) { 
     return os << "Object[" << obj.toString() << "]";
   }
-  
-  void concatenateNames(std::string& result, unsigned int line);
-  
-  template<typename... Args>
-  void concatenateNames(std::string& result, unsigned int line, Object*& obj, Args&... args);
-  
-  template<typename... Args>
-  Object* runOperator(Operator* op, unsigned int line, Args... pr);
-  
-  #include "builtins.tpp"
   
 }; /* namespace lang */
 

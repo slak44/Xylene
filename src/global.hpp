@@ -2,6 +2,7 @@
 #define GLOBAL_H_
 
 typedef long double double64;
+typedef unsigned int uint;
 typedef long long int int64;
 typedef unsigned long long int uint64;
 

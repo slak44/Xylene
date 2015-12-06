@@ -25,6 +25,14 @@ namespace lang {
     return parent;
   }
   
+  Scope* ASTNode::getScope() {
+    return &local;
+  }
+  
+  Scope* ASTNode::getParentScope() {
+    return &this->parent->local;
+  }
+  
   void ASTNode::setLineNumber(int lines) {
     this->lines = lines;
   }

@@ -1,34 +1,60 @@
-#include "builtins.hpp"
-
-#define Q(x) #x
-#define QUOTE(x) Q(x)
-
-#define MAKE_UNARY_OP(type, returnData) \
-QUOTE(type), boost::any(new Object::UnaryOp([](Object* op) {\
-  auto operand = dynamic_cast<type*>(op);\
-  return (returnData);\
-}))
-
-#define MAKE_BINARY_OP(type1, type2, returnData) \
-QUOTE(type1 type2), boost::any(new Object::BinaryOp([](Object* l, Object* r) {\
-  auto left = dynamic_cast<type1*>(l);\
-  auto right = dynamic_cast<type2*>(r);\
-  return (returnData);\
-}))
-
-#define EXPAND_NUMERIC_OPS(operator) \
-{MAKE_BINARY_OP(Integer, Integer, new Integer(left->getNumber() operator right->getNumber()) )},\
-{MAKE_BINARY_OP(Float, Float, new Float(left->getNumber() operator right->getNumber()) )},\
-{MAKE_BINARY_OP(Integer, Float, new Float(left->getNumber() operator right->getNumber()) )},\
-{MAKE_BINARY_OP(Float, Integer, new Float(left->getNumber() operator right->getNumber()) )}
-
-#define EXPAND_COMPARISON_OPS(operator) \
-{MAKE_BINARY_OP(Integer, Integer, new Boolean(left->getNumber() operator right->getNumber()) )},\
-{MAKE_BINARY_OP(Float, Float, new Boolean(left->getNumber() operator right->getNumber()) )},\
-{MAKE_BINARY_OP(Integer, Float, new Boolean(left->getNumber() operator right->getNumber()) )},\
-{MAKE_BINARY_OP(Float, Integer, new Boolean(left->getNumber() operator right->getNumber()) )}
+#include "operator_maps.hpp"
 
 namespace lang {
+  void concatenateNames(std::string& result, uint line) {
+    result.pop_back(); // Remove trailing space
+  }
+
+  template<typename... Args>
+  void concatenateNames(std::string& result, uint line, Object*& obj, Args&... args) {
+    if (obj == nullptr) throw TypeError("Variable is empty or has not been defined", line);
+    while (obj->getTypeData() == "Variable") {
+      obj = dynamic_cast<Variable*>(obj)->read();
+      if (obj == nullptr) throw TypeError("Variable is empty or has not been defined", line);
+    }
+    result += obj->getTypeData() + " ";
+    concatenateNames(result, line, args...);
+  }
+
+  template<typename... Args>
+  Object* runOperator(ExpressionChildNode* operatorNode, uint line, Args... operands) {
+    Operator* op = static_cast<Operator*>(operatorNode->t.typeData);
+    std::string funSig = "";
+    if (op->toString().back() == '=' && op->getPrecedence() == 1) funSig = "Variable Object";
+    else concatenateNames(funSig, line, operands...);
+    // 1. Get a boost::any instance from the OperatorMap
+    // 2. Use boost::any_cast to get a pointer to the operator function
+    // 3. Dereference pointer and call function
+    try {
+      auto result = (*boost::any_cast<std::function<Object*(Args...)>*>(opsMap[*op][funSig]))(operands...);
+      return result;
+    } catch (boost::bad_any_cast& bac) {
+      throw TypeError("Cannot find operation for operator '" + op->toString() + "' and operands '" + funSig + "'", line);
+    }
+  }
+  
+  Object* fromExprChildNode(ASTNode* node) {
+    return static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(node)->t.typeData);
+  }
+
+  Object* runOperator(ExpressionChildNode* operatorNode) {
+    uint lineNumber = operatorNode->getLineNumber(); // TODO: not all nodes implement line numbers yet
+    auto arity = static_cast<Operator*>(operatorNode->t.typeData)->getArity();
+    if (arity == UNARY) {
+      Object* operand = fromExprChildNode(operatorNode->getChildren()[0]);
+      return runOperator(operatorNode, lineNumber, operand);
+    } else if (arity == BINARY) {
+      Object* operandLeft = fromExprChildNode(operatorNode->getChildren()[1]);
+      Object* operandRight = fromExprChildNode(operatorNode->getChildren()[0]);
+      return runOperator(operatorNode, lineNumber, operandLeft, operandRight);
+    } else if (arity == TERNARY) {
+      Object* operand1 = fromExprChildNode(operatorNode->getChildren()[2]);
+      Object* operand2 = fromExprChildNode(operatorNode->getChildren()[1]);
+      Object* operand3 = fromExprChildNode(operatorNode->getChildren()[0]);
+      return runOperator(operatorNode, lineNumber, operand1, operand2, operand3);
+    } else throw std::runtime_error("Attempt to call operator with more than 3 operands(" + std::to_string(arity) + ")");
+  }
+  
   // TODO: some operators that affect variables do not change the value of the variable, eg `++i`
   OperatorMap opsMap = {
     {Operator("=", 1, ASSOCIATE_FROM_RIGHT, BINARY), {

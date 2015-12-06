@@ -9,13 +9,14 @@
 #include "global.hpp"
 #include "operators.hpp"
 #include "tokens.hpp"
+#include "builtins.hpp"
 
 namespace lang {
-  
   class ASTNode {
   protected:
     ASTNode* parent = nullptr;
     std::vector<ASTNode*> children {};
+    Scope local;
     int lines = -1;
   public:
     ASTNode();
@@ -26,6 +27,9 @@ namespace lang {
     std::vector<ASTNode*>& getChildren();
     void setParent(ASTNode* parent);
     ASTNode* getParent();
+    
+    Scope* getScope();
+    Scope* getParentScope();
     
     void setLineNumber(int lines);
     int getLineNumber();
