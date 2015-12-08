@@ -284,14 +284,16 @@ namespace lang {
     ExpressionChildNode* interpretExpression(ExpressionChildNode* node) {
       if (node->getChildren().size() == 0) return node;
       if (node->t.type == OPERATOR) {
+        ExpressionChildNode* processed = new ExpressionChildNode(node->t);
         auto ch = node->getChildren();
-        std::for_each(ch.begin(), ch.end(), [this](ASTNode*& n) {
+        std::for_each(ch.begin(), ch.end(), [=](ASTNode*& n) {
           auto node = dynamic_cast<ExpressionChildNode*>(n);
-          if (node->getChildren().size() != 0) n = interpretExpression(node);
+          if (node->getChildren().size() != 0) processed->addChild(interpretExpression(node));
+          else processed->addChild(node);
         });
-        return new ExpressionChildNode(Token(runOperator(node), UNPROCESSED, -2));
+        return new ExpressionChildNode(Token(runOperator(processed), UNPROCESSED, -2));
       }
-      return nullptr;
+      throw std::runtime_error("Wrong type of token.\n");
     }
     
   };
