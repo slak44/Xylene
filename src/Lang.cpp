@@ -285,6 +285,7 @@ namespace lang {
       if (node->getChildren().size() == 0) return node;
       if (node->t.type == OPERATOR) {
         ExpressionChildNode* processed = new ExpressionChildNode(node->t);
+        processed->setParent(node->getParent());
         auto ch = node->getChildren();
         std::for_each(ch.begin(), ch.end(), [=](ASTNode*& n) {
           auto node = dynamic_cast<ExpressionChildNode*>(n);

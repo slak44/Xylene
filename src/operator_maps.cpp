@@ -1,27 +1,36 @@
 #include "operator_maps.hpp"
 
 namespace lang {
-  void concatenateNames(std::string& result, uint line) {
+  Variable* resolveNameFrom(ASTNode* localNode, std::string identifier) {
+    if (localNode == nullptr) return nullptr; // Reached tree root and didn't find anything.
+    try {
+      return localNode->getScope()->at(identifier);
+    } catch(std::out_of_range& oor) {
+      return resolveNameFrom(localNode->getParent(), identifier);
+    }
+  }
+  
+  void concatenateNames(std::string& result, ExpressionChildNode* operatorNode) {
     result.pop_back(); // Remove trailing space
   }
 
   template<typename... Args>
-  void concatenateNames(std::string& result, uint line, Object*& obj, Args&... args) {
-    if (obj == nullptr) throw TypeError("Variable is empty or has not been defined", line);
+  void concatenateNames(std::string& result, ExpressionChildNode* operatorNode, Object*& obj, Args&... args) {
+    if (obj == nullptr) throw TypeError("Object has not been defined", operatorNode->getLineNumber());
     while (obj->getTypeData() == "Variable") {
       obj = dynamic_cast<Variable*>(obj)->read();
-      if (obj == nullptr) throw TypeError("Variable is empty or has not been defined", line);
+      if (obj == nullptr) throw TypeError("Variable is empty or has not been defined", operatorNode->getLineNumber());
     }
     result += obj->getTypeData() + " ";
-    concatenateNames(result, line, args...);
+    concatenateNames(result, operatorNode, args...);
   }
 
   template<typename... Args>
-  Object* runOperator(ExpressionChildNode* operatorNode, uint line, Args... operands) {
+  Object* runOperator(ExpressionChildNode* operatorNode, Args... operands) {
     Operator* op = static_cast<Operator*>(operatorNode->t.typeData);
     std::string funSig = "";
     if (op->toString().back() == '=' && op->getPrecedence() == 1) funSig = "Variable Object";
-    else concatenateNames(funSig, line, operands...);
+    else concatenateNames(funSig, operatorNode, operands...);
     // 1. Get a boost::any instance from the OperatorMap
     // 2. Use boost::any_cast to get a pointer to the operator function
     // 3. Dereference pointer and call function
@@ -29,7 +38,7 @@ namespace lang {
       auto result = (*boost::any_cast<std::function<Object*(Args...)>*>(opsMap[*op][funSig]))(operands...);
       return result;
     } catch (boost::bad_any_cast& bac) {
-      throw TypeError("Cannot find operation for operator '" + op->toString() + "' and operands '" + funSig + "'", line);
+      throw TypeError("Cannot find operation for operator '" + op->toString() + "' and operands '" + funSig + "'", operatorNode->getLineNumber());
     }
   }
   
@@ -38,21 +47,24 @@ namespace lang {
   }
 
   Object* runOperator(ExpressionChildNode* operatorNode) {
-    uint lineNumber = operatorNode->getLineNumber(); // TODO: not all nodes implement line numbers yet
     auto arity = static_cast<Operator*>(operatorNode->t.typeData)->getArity();
-    if (arity == UNARY) {
-      Object* operand = fromExprChildNode(operatorNode->getChildren()[0]);
-      return runOperator(operatorNode, lineNumber, operand);
-    } else if (arity == BINARY) {
-      Object* operandLeft = fromExprChildNode(operatorNode->getChildren()[1]);
-      Object* operandRight = fromExprChildNode(operatorNode->getChildren()[0]);
-      return runOperator(operatorNode, lineNumber, operandLeft, operandRight);
-    } else if (arity == TERNARY) {
-      Object* operand1 = fromExprChildNode(operatorNode->getChildren()[2]);
-      Object* operand2 = fromExprChildNode(operatorNode->getChildren()[1]);
-      Object* operand3 = fromExprChildNode(operatorNode->getChildren()[0]);
-      return runOperator(operatorNode, lineNumber, operand1, operand2, operand3);
-    } else throw std::runtime_error("Attempt to call operator with more than 3 operands(" + std::to_string(arity) + ")");
+    std::vector<Object*> operands {};
+    auto operandCount = operatorNode->getChildren().size();
+    for (std::size_t i = operandCount; i != 0; i--) {
+      Object* operand;
+      ExpressionChildNode* operandNode = dynamic_cast<ExpressionChildNode*>(operatorNode->getChildren()[i - 1]);
+      if (operandNode->t.type == VARIABLE) {
+        operand = resolveNameFrom(operandNode, operandNode->t.data);
+      }
+      else operand = fromExprChildNode(operandNode);
+      // TODO: if operand is nullptr
+      operands.push_back(operand);
+    }
+    
+    if (arity == UNARY) return runOperator(operatorNode, operands[0]);
+    else if (arity == BINARY) return runOperator(operatorNode, operands[0], operands[1]);
+    else if (arity == TERNARY) return runOperator(operatorNode, operands[0], operands[1], operands[2]);
+    else throw std::runtime_error("Attempt to call operator with more than 3 operands(" + std::to_string(arity) + ")");
   }
   
   // TODO: some operators that affect variables do not change the value of the variable, eg `++i`
