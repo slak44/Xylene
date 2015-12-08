@@ -233,8 +233,6 @@ namespace lang {
   class Interpreter {
   private:
     AST tree;
-    // TODO: implement some scope
-    Scope globalVars {};
   public:
     Interpreter(AST tree): tree(tree) {
       interpret(tree.getRootChildren());
