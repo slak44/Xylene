@@ -50,14 +50,6 @@ namespace lang {
   bool Operator::operator!=(const Operator& right) const {return !operator==(right);}
   
   std::vector<Operator> opList {
-    Operator(">>", 9),
-    Operator("<<", 9),
-    
-    Operator("<=", 8),
-    Operator("<", 8),
-    Operator(">=", 8),
-    Operator(">", 8),
-    
     Operator("==", 7),
     Operator("!=", 7),
     
@@ -73,6 +65,14 @@ namespace lang {
     Operator("&=", 1, ASSOCIATE_FROM_RIGHT, BINARY),
     Operator("^=", 1, ASSOCIATE_FROM_RIGHT, BINARY),
     Operator("|=", 1, ASSOCIATE_FROM_RIGHT, BINARY),
+    
+    Operator(">>", 9),
+    Operator("<<", 9),
+    
+    Operator("<=", 8),
+    Operator("<", 8),
+    Operator(">=", 8),
+    Operator(">", 8),
     
     // Postfix
     Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY),
