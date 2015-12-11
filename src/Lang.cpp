@@ -290,7 +290,7 @@ namespace lang {
           if (node->getChildren().size() != 0) processed->addChild(interpretExpression(node));
           else processed->addChild(node);
         });
-        return new ExpressionChildNode(Token(runOperator(processed), UNPROCESSED, -2));
+        return new ExpressionChildNode(Token(runOperator(processed), UNPROCESSED, PHONY_TOKEN));
       }
       throw std::runtime_error("Wrong type of token.\n");
     }

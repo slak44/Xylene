@@ -1,7 +1,13 @@
 #ifndef OPERATOR_MAPS_HPP_
 #define OPERATOR_MAPS_HPP_
 
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <boost/any.hpp>
+
 #include "global.hpp"
+#include "tokens.hpp"
 #include "operators.hpp"
 #include "builtins.hpp"
 #include "nodes.hpp"

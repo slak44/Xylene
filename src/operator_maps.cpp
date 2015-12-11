@@ -44,7 +44,7 @@ namespace lang {
   
   template<typename... Args>
   Object* runOperator(Operator op, Args... operands) {
-    return runOperator(new ExpressionChildNode(Token(&op, OPERATOR, -2)), operands...);
+    return runOperator(new ExpressionChildNode(Token(&op, OPERATOR, PHONY_TOKEN)), operands...);
   }
   
   Object* fromExprChildNode(ASTNode* node) {

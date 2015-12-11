@@ -9,6 +9,8 @@
 #include "builtins.hpp"
 
 namespace lang {
+  // This means the token was created by the interpreter
+  #define PHONY_TOKEN -2
   
   enum TokenType: int {
     INTEGER, FLOAT, BOOLEAN, STRING, ARRAY, // Literals
