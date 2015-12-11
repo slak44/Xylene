@@ -42,6 +42,11 @@ namespace lang {
     }
   }
   
+  template<typename... Args>
+  Object* runOperator(Operator op, Args... operands) {
+    return runOperator(new ExpressionChildNode(Token(&op, OPERATOR, -2)), operands...);
+  }
+  
   Object* fromExprChildNode(ASTNode* node) {
     return static_cast<Object*>(dynamic_cast<ExpressionChildNode*>(node)->t.typeData);
   }
@@ -69,6 +74,7 @@ namespace lang {
   
   // TODO: some operators that affect variables do not change the value of the variable, eg `++i`
   OperatorMap opsMap = {
+    // Plain assignment
     {Operator("=", 1, ASSOCIATE_FROM_RIGHT, BINARY), {
       {"Variable Object", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
         auto left = dynamic_cast<Variable*>(l);
@@ -76,6 +82,17 @@ namespace lang {
         return r;
       }))}
     }},
+    // Assignment with extra operation
+    CREATE_ASSIGNMENT_OP(+, 10),
+    CREATE_ASSIGNMENT_OP(-, 10),
+    CREATE_ASSIGNMENT_OP(*, 11),
+    CREATE_ASSIGNMENT_OP(/, 11),
+    CREATE_ASSIGNMENT_OP(%, 11),
+    CREATE_ASSIGNMENT_OP(<<, 9),
+    CREATE_ASSIGNMENT_OP(>>, 9),
+    CREATE_ASSIGNMENT_OP(&, 6),
+    CREATE_ASSIGNMENT_OP(^, 5),
+    CREATE_ASSIGNMENT_OP(|, 4),
     // Comparison operators
     {Operator("<=", 8), {
       EXPAND_COMPARISON_OPS(<=)
@@ -170,7 +187,6 @@ namespace lang {
       {MAKE_UNARY_OP(Float, new Float(operand->getNumber() - 1) )}
     }},
     // TODO: postfix ops
-    // TODO: other assignment ops
     // TODO: member access op
     // TODO: maybe comma op
   };
