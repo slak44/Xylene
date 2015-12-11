@@ -57,7 +57,7 @@ namespace lang {
         operand = resolveNameFrom(operandNode, operandNode->t.data);
       }
       else operand = fromExprChildNode(operandNode);
-      // TODO: if operand is nullptr
+      if (operand == nullptr) throw std::runtime_error("Attempt to call operator " + operatorNode->t.data + " with operand " + std::to_string(operandCount - i) + " set to nullptr.");
       operands.push_back(operand);
     }
     
