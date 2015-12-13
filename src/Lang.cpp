@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <functional>
 #include <unordered_map>
+#include <boost/program_options.hpp>
 
 #include "global.hpp"
 #include "operators.hpp"
@@ -299,31 +300,36 @@ namespace lang {
   
 } /* namespace lang */
 
-void printHelp() {
-  print(
-    "Use -c to read from constants.data and inputs.data, -e [CODE] to evaluate code and -f [PATH] to load code from a file.\n",
-    "Examples:\n",
-    "  lang -c\n",
-    "  lang -e \"if true != false do 1 + 1; end\"\n",
-    "  lang -f \"/path/to/file.txt\"\n"
-  );
-}
-
 int main(int argc, char** argv) {
-  if (argc == 1) {
-    printHelp();
-    return ERROR_BAD_INPUT;
+  namespace po = boost::program_options;
+  po::options_description desc("Allowed options");
+  desc.add_options()
+    ("help,h", "display this help")
+    ("use-existing,c", "use constants.data and inputs.data")
+    ("evaluate,e", po::value<std::string>(), "use to evaluate code from the command line")
+    ("read-file,f", po::value<std::string>(), "use to evaluate code from a file at the specified path")
+  ;
+  po::variables_map vm;
+  po::store(po::parse_command_line(argc, argv, desc), vm);
+  po::notify(vm);
+  
+  if (vm.count("help")) {
+    print(desc, "\n");
+    return 0;
   }
-  else if (std::string(argv[1]) == "-c") getConstants();
-  else if (std::string(argv[1]) == "-e") INPUT = argv[2];
-  else if (std::string(argv[1]) == "-f") {
-    std::ifstream in(argv[2]);
+  if (vm.count("use-existing")) {
+    getConstants();
+  } else if (vm.count("evaluate")) {
+    INPUT = vm["evaluate"].as<std::string>();
+  } else if (vm.count("read-file")) {
+    std::ifstream in(vm["read-file"].as<std::string>());
     std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     INPUT = contents;
   } else {
-    printHelp();
+    print(desc, "\n");
     return ERROR_BAD_INPUT;
   }
+  
   try {
     lang::Parser a(INPUT);
     lang::Interpreter in(a.tree);
