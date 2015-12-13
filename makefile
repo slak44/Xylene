@@ -4,7 +4,7 @@ CONFIG = DEBUG
 DEBUG_FLAGS = -Wall -O0 -g3
 RELEASE_FLAGS = -O3
 CFLAGS = $(shell [[ $(CONFIG) == DEBUG ]] && echo $(DEBUG_FLAGS) || echo $(RELEASE_FLAGS))
-LDFLAGS = 
+LDFLAGS = -lboost_program_options
 SOURCES = $(wildcard ./src/*.cpp)
 OBJECTS = $(SOURCES:./src/%.cpp=./make/%.o)
 
