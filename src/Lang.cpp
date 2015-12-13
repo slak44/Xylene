@@ -72,7 +72,7 @@ namespace lang {
               // Prefix version
               if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new Operator(tmp->toString(), 12, ASSOCIATE_FROM_RIGHT, UNARY);
               // Postfix version
-              else tmp = new Operator(tmp->toString(), 13, ASSOCIATE_FROM_RIGHT, UNARY);
+              else tmp = new Operator(tmp->toString(), 13, ASSOCIATE_FROM_LEFT, UNARY);
             }
             if (tmp->toString() == "+" || tmp->toString() == "-") {
               // Unary version
