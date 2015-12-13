@@ -32,7 +32,7 @@ namespace lang {
     return (returnData);\
   }))
   
-  #define CREATE_ASSIGNMENT_OP(assignmentOperation, operationPrecedence) \
+  #define MAKE_ASSIGNMENT_OP(assignmentOperation, operationPrecedence) \
   {Operator(QUOTE(assignmentOperation=), 1, ASSOCIATE_FROM_RIGHT, BINARY), {\
     {"Variable Object", boost::any(new Object::BinaryOp([](Object* l, Object* r) {\
       auto left = dynamic_cast<Variable*>(l);\
@@ -41,6 +41,18 @@ namespace lang {
       return result;\
     }))}\
   }}
+  
+  #define MAKE_MUTATING_UNARY_OP(operator, sign, returnModified) \
+  operator, {\
+    {"Variable", boost::any(new Object::UnaryOp([](Object* op) {\
+      auto operand = dynamic_cast<Variable*>(op);\
+      Object* original;\
+      if (!returnModified) original = operand->read();\
+      auto result = runOperator(Operator(QUOTE(sign), 10), operand->read(), dynamic_cast<Object*>(new Integer(1)));\
+      operand->assign(result);\
+      return (returnModified) ? result : original;\
+    }))}\
+  }
 
   #define EXPAND_NUMERIC_OPS(operator) \
   {MAKE_BINARY_OP(Integer, Integer, new Integer(left->getNumber() operator right->getNumber()) )},\

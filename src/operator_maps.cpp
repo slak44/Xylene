@@ -29,7 +29,8 @@ namespace lang {
   Object* runOperator(ExpressionChildNode* operatorNode, Args... operands) {
     Operator* op = static_cast<Operator*>(operatorNode->t.typeData);
     std::string funSig = "";
-    if (op->toString().back() == '=' && op->getPrecedence() == 1) funSig = "Variable Object";
+    if (op->toString().back() == '=' && op->getPrecedence() == 1) funSig = "Variable Object"; // Intercepts all assignments
+    else if (op->toString() == "++" || op->toString() == "--") funSig = "Variable";
     else concatenateNames(funSig, operatorNode, operands...);
     // 1. Get a boost::any instance from the OperatorMap
     // 2. Use boost::any_cast to get a pointer to the operator function
@@ -38,7 +39,8 @@ namespace lang {
       auto result = (*boost::any_cast<std::function<Object*(Args...)>*>(opsMap[*op][funSig]))(operands...);
       return result;
     } catch (boost::bad_any_cast& bac) {
-      throw TypeError("Cannot find operation for operator '" + op->toString() + "' and operands '" + funSig + "'", operatorNode->getLineNumber());
+      print(&opsMap[*op][funSig], "  ", *op, "\n");
+      throw TypeError("Cannot find operation for '" + op->toString() + "' and operands '" + funSig + "'", operatorNode->getLineNumber());
     }
   }
   
@@ -83,16 +85,16 @@ namespace lang {
       }))}
     }},
     // Assignment with extra operation
-    CREATE_ASSIGNMENT_OP(+, 10),
-    CREATE_ASSIGNMENT_OP(-, 10),
-    CREATE_ASSIGNMENT_OP(*, 11),
-    CREATE_ASSIGNMENT_OP(/, 11),
-    CREATE_ASSIGNMENT_OP(%, 11),
-    CREATE_ASSIGNMENT_OP(<<, 9),
-    CREATE_ASSIGNMENT_OP(>>, 9),
-    CREATE_ASSIGNMENT_OP(&, 6),
-    CREATE_ASSIGNMENT_OP(^, 5),
-    CREATE_ASSIGNMENT_OP(|, 4),
+    MAKE_ASSIGNMENT_OP(+, 10),
+    MAKE_ASSIGNMENT_OP(-, 10),
+    MAKE_ASSIGNMENT_OP(*, 11),
+    MAKE_ASSIGNMENT_OP(/, 11),
+    MAKE_ASSIGNMENT_OP(%, 11),
+    MAKE_ASSIGNMENT_OP(<<, 9),
+    MAKE_ASSIGNMENT_OP(>>, 9),
+    MAKE_ASSIGNMENT_OP(&, 6),
+    MAKE_ASSIGNMENT_OP(^, 5),
+    MAKE_ASSIGNMENT_OP(|, 4),
     // Comparison operators
     {Operator("<=", 8), {
       EXPAND_COMPARISON_OPS(<=)
@@ -169,7 +171,7 @@ namespace lang {
       {MAKE_BINARY_OP(Boolean, Integer, new Boolean(left->value() || right->getNumber()) )},
       {MAKE_BINARY_OP(Integer, Integer, new Boolean(left->getNumber() || right->getNumber()) )}
     }},
-    // Other unary ops
+    // Signum operators
     {Operator("+", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
       {MAKE_UNARY_OP(Integer, new Integer(+operand->getNumber()) )},
       {MAKE_UNARY_OP(Float, new Float(+operand->getNumber()) )}
@@ -178,15 +180,12 @@ namespace lang {
       {MAKE_UNARY_OP(Integer, new Integer(-operand->getNumber()) )},
       {MAKE_UNARY_OP(Float, new Float(-operand->getNumber()) )}
     }},
-    {Operator("++", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
-      {MAKE_UNARY_OP(Integer, new Integer(operand->getNumber() + 1) )},
-      {MAKE_UNARY_OP(Float, new Float(operand->getNumber() + 1) )}
-    }},
-    {Operator("--", 12, ASSOCIATE_FROM_RIGHT, UNARY), {
-      {MAKE_UNARY_OP(Integer, new Integer(operand->getNumber() - 1) )},
-      {MAKE_UNARY_OP(Float, new Float(operand->getNumber() - 1) )}
-    }},
-    // TODO: postfix ops
+    // Prefix operators
+    {MAKE_MUTATING_UNARY_OP(Operator("++", 12, ASSOCIATE_FROM_RIGHT, UNARY), +, true)},
+    {MAKE_MUTATING_UNARY_OP(Operator("--", 12, ASSOCIATE_FROM_RIGHT, UNARY), -, true)},
+    // Postfix operators
+    {MAKE_MUTATING_UNARY_OP(Operator("++", 13, ASSOCIATE_FROM_LEFT, UNARY), +, false)},
+    {MAKE_MUTATING_UNARY_OP(Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY), -, false)}
     // TODO: member access op
     // TODO: maybe comma op
   };
