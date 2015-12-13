@@ -312,7 +312,7 @@ void printHelp() {
 int main(int argc, char** argv) {
   if (argc == 1) {
     printHelp();
-    return 1;
+    return ERROR_BAD_INPUT;
   }
   else if (std::string(argv[1]) == "-c") getConstants();
   else if (std::string(argv[1]) == "-e") INPUT = argv[2];
@@ -322,15 +322,20 @@ int main(int argc, char** argv) {
     INPUT = contents;
   } else {
     printHelp();
-    return 1;
+    return ERROR_BAD_INPUT;
   }
   try {
     lang::Parser a(INPUT);
     lang::Interpreter in(a.tree);
   } catch(SyntaxError& se) {
     print(se.toString(), "\n");
+    return ERROR_CODE_FAILED;
   } catch(TypeError& te) {
     print(te.toString(), "\n");
+    return ERROR_CODE_FAILED;
+  } catch(std::runtime_error& re) {
+    print(re.what(), "\n");
+    return ERROR_INTERNAL;
   }
   return 0;
 }

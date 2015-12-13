@@ -6,6 +6,10 @@ typedef unsigned int uint;
 typedef long long int int64;
 typedef unsigned long long int uint64;
 
+#define ERROR_BAD_INPUT 1
+#define ERROR_CODE_FAILED 2
+#define ERROR_INTERNAL 3
+
 #include <string>
 #include <vector>
 #include <fstream>
