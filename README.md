@@ -16,4 +16,4 @@ Other options:
 - `DEBUG_FLAGS` and `RELEASE_FLAGS`: compiler flags
 - `LDFLAGS`: linker flags
 
-The script `make-releases` creates a 64bit Linux build and a 32bit Windows one.
+Running `make releases` creates a 64bit Linux build and a 32bit Windows one.

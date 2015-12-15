@@ -8,7 +8,7 @@ LDFLAGS = -lboost_program_options
 SOURCES = $(wildcard ./src/*.cpp)
 OBJECTS = $(SOURCES:./src/%.cpp=./make/%.o)
 
-.PHONY: all clean cleanph
+.PHONY: all releases clean cleanph
 
 all: $(SOURCES) $(EXECUTABLE)
 	@echo "Built executable" $(EXECUTABLE) "with" $(CC)
@@ -38,3 +38,9 @@ clean:
 	@rm -f $(EXECUTABLE)
 	@rm -f .fuse_hidden*
 
+releases:
+	make clean
+	make EXECUTABLE=lang-win-i686.exe CC=i686-w64-mingw32-c++ LDFLAGS="-static -static-libgcc -static-libstdc++ -L. -lboost_program_options_windows" CONFIG=RELEASE
+	make clean
+	make EXECUTABLE=lang-linux-x86_64 CONFIG=RELEASE
+	make clean
