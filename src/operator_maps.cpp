@@ -73,7 +73,6 @@ namespace lang {
     else throw std::runtime_error("Attempt to call operator with more than 3 operands(" + std::to_string(arity) + ")");
   }
   
-  // TODO: some operators that affect variables do not change the value of the variable, eg `++i`
   OperatorMap opsMap = {
     // Plain assignment
     {Operator("=", 1, ASSOCIATE_FROM_RIGHT, BINARY), {
