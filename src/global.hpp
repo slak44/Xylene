@@ -71,23 +71,13 @@ public:
   virtual std::string toString() = 0;
 };
 
-class SyntaxError: std::runtime_error, Stringifyable {
+class Error: std::runtime_error, Stringifyable {
 private:
+  std::string errType;
   std::string msg;
 public:
-  SyntaxError(unsigned int lines);
-  SyntaxError(std::string msg, unsigned int lines);
-  
-  std::string toString();
-};
-
-class TypeError: std::runtime_error, Stringifyable {
-private:
-  std::string msg;
-public:
-  TypeError();
-  TypeError(std::string msg);
-  TypeError(std::string msg, unsigned int lines);
+  Error(std::string errType, unsigned int lines);
+  Error(std::string msg, std::string errType, unsigned int lines);
   
   std::string toString();
 };
