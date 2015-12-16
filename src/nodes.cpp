@@ -139,12 +139,12 @@ namespace lang {
       } else if (tokens[i].type == CONSTRUCT) {
         if (isNewLine(tokens[i])) break;
         if (tokens[i].data != "(" && tokens[i].data != ")") {
-          throw SyntaxError("Illegal construct in expression. \"" + tokens[i].data + "\"", tokens[i].line);
+          throw Error("Illegal construct in expression: \"" + tokens[i].data + "\"", "SyntaxError", tokens[i].line);
         } else if (tokens[i].data == "(") {
           opStack.push_back(tokens[i]);
         } else if (tokens[i].data == ")") {
           while (opStack.size() != 0 && opStack.back().data != "(") popToOut();
-          if (opStack.back().data != "(") throw SyntaxError("Mismatched parenthesis in expression", outStack.back().line);
+          if (opStack.back().data != "(") throw Error("Mismatched parenthesis in expression", "SyntaxError", outStack.back().line);
           opStack.pop_back(); // Get rid of "("
           if (opStack.back().type == FUNCTION) popToOut();
         }
@@ -246,7 +246,7 @@ namespace lang {
     if (!wasCalled) {
       wasCalled = true;
       this->block++;
-    } else throw SyntaxError("Multiple else statements.\n", children[2]->getLineNumber());
+    } else throw Error("Multiple else statements", "SyntaxError", children[2]->getLineNumber());
   }
   
   std::string ConditionalNode::getNodeType() {

@@ -16,10 +16,10 @@ namespace lang {
 
   template<typename... Args>
   void concatenateNames(std::string& result, ExpressionChildNode* operatorNode, Object*& obj, Args&... args) {
-    if (obj == nullptr) throw TypeError("Object has not been defined", operatorNode->getLineNumber());
+    if (obj == nullptr) throw Error("Object has not been defined", "NullPointerError", operatorNode->getLineNumber());
     while (obj->getTypeData() == "Variable") {
       obj = dynamic_cast<Variable*>(obj)->read();
-      if (obj == nullptr) throw TypeError("Variable is empty or has not been defined", operatorNode->getLineNumber());
+      if (obj == nullptr) throw Error("Variable is empty or has not been defined", "NullPointerError", operatorNode->getLineNumber());
     }
     result += obj->getTypeData() + " ";
     concatenateNames(result, operatorNode, args...);
@@ -39,7 +39,7 @@ namespace lang {
       auto result = (*boost::any_cast<std::function<Object*(Args...)>*>(opsMap[*op][funSig]))(operands...);
       return result;
     } catch (boost::bad_any_cast& bac) {
-      throw TypeError("Cannot find operation for '" + op->toString() + "' and operands '" + funSig + "'", operatorNode->getLineNumber());
+      throw Error("Cannot find operation for '" + op->toString() + "' and operands '" + funSig + "'", "NullPointerError", operatorNode->getLineNumber());
     }
   }
   

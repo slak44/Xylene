@@ -37,8 +37,8 @@ namespace lang {
         if (PARSER_PRINT_TOKENS) for (auto tok : tokens) print(tok, "\n");
         if (PARSER_PRINT_AS_EXPR) for (auto tok : ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
         buildTree(tokens);
-      } catch (SyntaxError &e) {
-        print(e.toString(), "\n");
+      } catch (Error &e) {
+        print(e.toString());
       }
     }
     
@@ -107,14 +107,14 @@ namespace lang {
           while (isdigit(code[i]) || code[i] == '.') {
             current += code[i];
             if (code[i] == '.') {
-              if (isFloat) throw SyntaxError("Malformed float, multiple decimal points: \"" + current + "\"", lines);
+              if (isFloat) throw Error("Malformed float, multiple decimal points: \"" + current + "\"", "SyntaxError", lines);
               isFloat = true;
             }
             skipCharacters(i, 1);
           }
           preventIncrement(i);
-          if (current[current.length() - 1] == '.') throw SyntaxError("Malformed float, missing digits after decimal point: \"" + current + "\"", lines);
-          if (base != 10 && isFloat) throw SyntaxError("Floating point numbers must be used with base 10 numbers: \"" + current + "\"", lines);
+          if (current[current.length() - 1] == '.') throw Error("Malformed float, missing digits after decimal point: \"" + current + "\"", "SyntaxError", lines);
+          if (base != 10 && isFloat) throw Error("Floating point numbers must be used with base 10 numbers: \"" + current + "\"", "SyntaxError", lines);
           Token t;
           if (isFloat) t = Token(new Float(current), FLOAT, lines);
           else t = Token(new Integer(current, base), INTEGER, lines);
@@ -211,7 +211,7 @@ namespace lang {
           blockStack.push_back(cBlock);
         } else if (toks[0].data == "else" && toks[0].type == CONSTRUCT) {
           auto cNode = dynamic_cast<ConditionalNode*>(blockStack.back());
-          if (cNode == nullptr) throw SyntaxError("Cannot find conditional structure for token `else`.\n", blockStack.back()->getLineNumber());
+          if (cNode == nullptr) throw Error("Cannot find conditional structure for token `else`", "SyntaxError", blockStack.back()->getLineNumber());
           cNode->nextBlock();
         } else if (toks[0].data == "end" && toks[0].type == CONSTRUCT) {
           blockStack.pop_back();
@@ -304,11 +304,8 @@ int interpretCode() {
   try {
     lang::Parser a(INPUT);
     lang::Interpreter in(a.tree);
-  } catch(SyntaxError& se) {
-    print(se.toString(), "\n");
-    return ERROR_CODE_FAILED;
-  } catch(TypeError& te) {
-    print(te.toString(), "\n");
+  } catch(Error& e) {
+    print(e.toString());
     return ERROR_CODE_FAILED;
   } catch(std::runtime_error& re) {
     print(re.what(), "\n");
