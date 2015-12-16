@@ -40,13 +40,17 @@ clean:
 
 linux64-release:
 	make EXECUTABLE=lang-linux-x86_64 CONFIG=RELEASE
+	@mv lang-linux-x86_64 builds/lang-linux-x86_64
 	
 win32-release:
 	make EXECUTABLE=lang-win-i686.exe CC=i686-w64-mingw32-c++ LDFLAGS="-static-libgcc -static-libstdc++ -L./libs -lboost_program_options_windows" CONFIG=RELEASE
+	@mv lang-win-i686.exe builds/lang-win-i686.exe
 
 releases:
 	make clean
 	make win32-release
+	zip -y -9 lang-win-i686.zip builds/lang-win-i686.exe libs/libwinpthread-1.dll libs/boostlib.dll
+	@mv lang-win-i686.zip builds/lang-win-i686.zip
 	make clean
 	make linux64-release
 	make clean
