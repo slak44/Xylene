@@ -39,7 +39,6 @@ namespace lang {
       auto result = (*boost::any_cast<std::function<Object*(Args...)>*>(opsMap[*op][funSig]))(operands...);
       return result;
     } catch (boost::bad_any_cast& bac) {
-      print(&opsMap[*op][funSig], "  ", *op, "\n");
       throw TypeError("Cannot find operation for '" + op->toString() + "' and operands '" + funSig + "'", operatorNode->getLineNumber());
     }
   }
