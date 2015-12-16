@@ -1,4 +1,5 @@
 make/
+libs/
 Lang
 lang-linux-x86_64
 lang-win-i686.exe

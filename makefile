@@ -42,7 +42,7 @@ linux64-release:
 	make EXECUTABLE=lang-linux-x86_64 CONFIG=RELEASE
 	
 win32-release:
-	make EXECUTABLE=lang-win-i686.exe CC=i686-w64-mingw32-c++ LDFLAGS="-static-libgcc -static-libstdc++ -L. -lboost_program_options_windows" CONFIG=RELEASE
+	make EXECUTABLE=lang-win-i686.exe CC=i686-w64-mingw32-c++ LDFLAGS="-static-libgcc -static-libstdc++ -L./libs -lboost_program_options_windows" CONFIG=RELEASE
 
 releases:
 	make clean
