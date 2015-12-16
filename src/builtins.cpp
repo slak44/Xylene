@@ -27,6 +27,54 @@ namespace lang {
     return this->internal;
   }
   
+  Member::Member(Variable* var, Visibility access):
+    var(var),
+    access(access) {
+  }
+  
+  bool Member::isTruthy() {return this->var->isTruthy();}
+  std::string Member::toString() {
+    return "Member with " + this->var->toString() + " and visibility " + std::to_string(this->access);
+  }
+  std::string Member::getTypeData() {return "Member";}
+  
+  Variable* Member::getVariable() {return this->var;}
+  void Member::setVariable(Variable* var) {this->var = var;}
+  Visibility Member::getVisibility() {return this->access;}
+  
+  Type::Type(std::string name, MemberMap staticMap, MemberMap map):
+    name(name),
+    staticMembers(staticMap),
+    initialMap(map) {
+  }
+  
+  bool Type::isTruthy() {return false;}
+  std::string Type::toString() {
+    return "Type " + this->name;
+  }
+  std::string Type::getTypeData() {return "Type";}
+  
+  std::string Type::getName() {return this->name;}
+  Member* Type::getStaticMember(std::string identifier) {return staticMembers[identifier];}
+  
+  Instance::Instance(Type* t):
+    type(t),
+    members(t->initialMap) {
+  }
+  
+  bool Instance::isTruthy() {return false;}
+  std::string Instance::toString() {
+    return "Instance of " + this->type->toString();
+  }
+  std::string Instance::getTypeData() {return "Instance";}
+  
+  Member* Instance::getMember(std::string identifier) {
+    auto member = this->members[identifier];
+    if (member == nullptr) throw Error("Could not find member " + identifier, "NullPointerError", -2); // TODO: line number
+    if (member->getVisibility() != PUBLIC) throw Error("Member " + identifier + " is not visible", "Error", -2);
+    return member;
+  }
+  
   String::String() {}
   String::String(std::string str): internal(str) {}
   
