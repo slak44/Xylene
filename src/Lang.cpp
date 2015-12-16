@@ -300,6 +300,23 @@ namespace lang {
   
 } /* namespace lang */
 
+int interpretCode() {
+  try {
+    lang::Parser a(INPUT);
+    lang::Interpreter in(a.tree);
+  } catch(SyntaxError& se) {
+    print(se.toString(), "\n");
+    return ERROR_CODE_FAILED;
+  } catch(TypeError& te) {
+    print(te.toString(), "\n");
+    return ERROR_CODE_FAILED;
+  } catch(std::runtime_error& re) {
+    print(re.what(), "\n");
+    return ERROR_INTERNAL;
+  }
+  return 0;
+}
+
 int main(int argc, char** argv) {
   namespace po = boost::program_options;
   po::options_description desc("Allowed options");
@@ -319,29 +336,18 @@ int main(int argc, char** argv) {
   }
   if (vm.count("use-existing")) {
     getConstants();
+    return interpretCode();
   } else if (vm.count("evaluate")) {
     INPUT = vm["evaluate"].as<std::string>();
+    return interpretCode();
   } else if (vm.count("read-file")) {
     std::ifstream in(vm["read-file"].as<std::string>());
     std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     INPUT = contents;
+    return interpretCode();
   } else {
     print(desc, "\n");
     return ERROR_BAD_INPUT;
-  }
-  
-  try {
-    lang::Parser a(INPUT);
-    lang::Interpreter in(a.tree);
-  } catch(SyntaxError& se) {
-    print(se.toString(), "\n");
-    return ERROR_CODE_FAILED;
-  } catch(TypeError& te) {
-    print(te.toString(), "\n");
-    return ERROR_CODE_FAILED;
-  } catch(std::runtime_error& re) {
-    print(re.what(), "\n");
-    return ERROR_INTERNAL;
   }
   return 0;
 }
