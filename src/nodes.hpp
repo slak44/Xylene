@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
-#include <memory>
+#include <climits>
 
 #include "global.hpp"
 #include "operators.hpp"

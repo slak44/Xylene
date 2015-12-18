@@ -283,7 +283,17 @@ namespace lang {
     this->getCondition()->printTree(level + 1);
   }
  
-  AST::AbstractSyntaxTree() {}
+  AST::AbstractSyntaxTree() {
+    Type* integerType = new Type(std::string("Integer"), {
+      // Static members
+      {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
+      {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
+    }, {
+      // Instance members
+      // TODO add members
+    });
+    (*root.getScope())[std::string("Integer")] = new Variable(integerType, {}); // Do not allow assignment by not specifying any allowed types for the Variable
+  }
   
   void AST::addRootChild(ASTNode* node) {
     root.addChild(node);
