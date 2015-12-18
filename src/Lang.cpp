@@ -25,6 +25,7 @@ namespace lang {
     inline void preventIncrement(unsigned int& i) {i--;}
     
     std::vector<Token> variables {};
+    std::vector<std::string> types {"Integer"};
     std::vector<std::string> keywords {"define", "if", "while"};
     std::vector<std::string> constructKeywords {"do", "end", "else"};
   public:
@@ -143,6 +144,11 @@ namespace lang {
           token.data += code[i];
           skipCharacters(i, 1);
         }
+        // TODO: identify type definitions here
+        // Check if the thing references a type
+        if (contains(token.data, types)) {
+          token.type = TYPE;
+        }
         // Check if the thing is a Boolean
         if (token.data == "true" || token.data == "false") {
           token.type = BOOLEAN;
@@ -187,9 +193,8 @@ namespace lang {
       for (uint64 i = 0; i < logicalLines.size(); i++) {
         std::vector<Token>& toks = logicalLines[i];
         if (toks.size() == 0) continue;
-        // TODO: check for solid types here as well
-        if (toks[0].data == "define" && toks[0].type == KEYWORD) {
-          DeclarationNode* decl = new DeclarationNode("define", toks[1]);
+        if ((toks[0].data == "define" && toks[0].type == KEYWORD) || toks[0].type == TYPE) {
+          DeclarationNode* decl = new DeclarationNode(toks[0].data, toks[1]);
           decl->setLineNumber(toks[1].line);
           if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
             std::vector<Token> exprToks(toks.begin() + 1, toks.end());
@@ -272,11 +277,17 @@ namespace lang {
     }
     
     void registerDeclaration(DeclarationNode* node) {
-      node->getParentScope()->insert({node->identifier.data, new Variable()});
+      if (node->typeName == "define") node->getParentScope()->insert({node->identifier.data, new Variable(nullptr, {"define"})});
+      else {
+        Type* type = dynamic_cast<Type*>(resolveNameFrom(node, node->typeName)->read());
+        node->getParentScope()->insert({node->identifier.data, new Variable(type->createInstance(), {node->typeName/*TODO: type list*/})});
+      }
       if (node->getChildren().size() == 1) {
-        (*node->getParentScope())[node->identifier.data]->assign(
-          static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]))->t.typeData)
-        );
+        Variable* variable = (*node->getParentScope())[node->identifier.data];
+        Object* toAssign = static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]))->t.typeData);
+        if (!contains(std::string("define"), variable->getTypes()) && !contains(toAssign->getTypeData(), variable->getTypes()))
+          throw Error("Invalid assignment of type " + toAssign->getTypeData() + " to variable " + node->identifier.data, "TypeError", node->getLineNumber());
+        variable->assign(toAssign);
       }
     }
     
