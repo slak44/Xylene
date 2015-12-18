@@ -282,7 +282,7 @@ namespace lang {
     print("While Condition\n");
     this->getCondition()->printTree(level + 1);
   }
- 
+
   AST::AbstractSyntaxTree() {
     Type* integerType = new Type(std::string("Integer"), {
       // Static members
@@ -293,6 +293,29 @@ namespace lang {
       // TODO add members
     });
     (*root.getScope())[std::string("Integer")] = new Variable(integerType, {}); // Do not allow assignment by not specifying any allowed types for the Variable
+    Type* floatType = new Type(std::string("Float"), {
+      // Static members
+      {"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)},
+      {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
+    }, {
+      // Instance members
+      // TODO add members
+    });
+    (*root.getScope())[std::string("Float")] = new Variable(floatType, {});
+    Type* stringType = new Type(std::string("String"), {
+      // Static members
+    }, {
+      // Instance members
+      // TODO add members
+    });
+    (*root.getScope())[std::string("String")] = new Variable(stringType, {});
+    Type* booleanType = new Type(std::string("Boolean"), {
+      // Static members
+    }, {
+      // Instance members
+      // TODO add members
+    });
+    (*root.getScope())[std::string("Boolean")] = new Variable(booleanType, {});
   }
   
   void AST::addRootChild(ASTNode* node) {

@@ -25,7 +25,7 @@ namespace lang {
     inline void preventIncrement(unsigned int& i) {i--;}
     
     std::vector<Token> variables {};
-    std::vector<std::string> types {"Integer"};
+    std::vector<std::string> types {"Integer", "Float", "String", "Boolean"};
     std::vector<std::string> keywords {"define", "if", "while"};
     std::vector<std::string> constructKeywords {"do", "end", "else"};
   public:
