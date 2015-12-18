@@ -11,7 +11,10 @@ namespace lang {
   std::string Object::getTypeData() {return "Object";}
   
   Variable::Variable() {}
-  Variable::Variable(Object* obj): internal(obj) {}
+  Variable::Variable(Object* obj, std::vector<std::string> types):
+    internal(obj),
+    types(types) {
+  }
   
   bool Variable::isTruthy() {return this->read()->isTruthy();}
   std::string Variable::toString() {
@@ -25,6 +28,9 @@ namespace lang {
   }
   Object* Variable::read() {
     return this->internal;
+  }
+  std::vector<std::string> Variable::getTypes() {
+    return this->types;
   }
   
   Member::Member(Variable* var, Visibility access):
@@ -56,6 +62,9 @@ namespace lang {
   
   std::string Type::getName() {return this->name;}
   Member* Type::getStaticMember(std::string identifier) {return staticMembers[identifier];}
+  Instance* Type::createInstance() {
+    return new Instance(this);
+  }
   
   Instance::Instance(Type* t):
     type(t),

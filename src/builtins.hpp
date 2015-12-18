@@ -31,7 +31,7 @@ namespace lang {
     std::vector<std::string> types {};
   public:
     Variable();
-    Variable(Object* obj);
+    Variable(Object* obj, std::vector<std::string> types);
     
     bool isTruthy();
     std::string toString();
@@ -39,6 +39,7 @@ namespace lang {
     
     void assign(Object* newObj);
     Object* read();
+    std::vector<std::string> getTypes();
   };
   
   enum Visibility : int {
@@ -63,6 +64,22 @@ namespace lang {
   
   typedef std::unordered_map<std::string, Member*> MemberMap;
   
+  class Type;
+  
+  class Instance : public Object {
+  private:
+    Type* type = nullptr;
+    MemberMap members;
+  public:
+    Instance(Type* t);
+    
+    bool isTruthy();
+    std::string toString();
+    std::string getTypeData();
+    
+    Member* getMember(std::string identifier);
+  };
+  
   class Type : public Object {
   private:
     std::string name;
@@ -77,20 +94,7 @@ namespace lang {
     
     std::string getName();
     Member* getStaticMember(std::string identifier);
-  };
-  
-  class Instance : public Object {
-  private:
-    Type* type = nullptr;
-    MemberMap members;
-  public:
-    Instance(Type* t);
-    
-    bool isTruthy();
-    std::string toString();
-    std::string getTypeData();
-    
-    Member* getMember(std::string identifier);
+    Instance* createInstance();
   };
   
   class Boolean : public Object {
