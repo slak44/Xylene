@@ -285,8 +285,6 @@ namespace lang {
       if (node->getChildren().size() == 1) {
         Variable* variable = (*node->getParentScope())[node->identifier.data];
         Object* toAssign = static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]))->t.typeData);
-        if (!contains(std::string("define"), variable->getTypes()) && !contains(toAssign->getTypeData(), variable->getTypes()))
-          throw Error("Invalid assignment of type " + toAssign->getTypeData() + " to variable " + node->identifier.data, "TypeError", node->getLineNumber());
         variable->assign(toAssign);
       }
     }

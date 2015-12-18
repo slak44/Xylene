@@ -24,6 +24,8 @@ namespace lang {
   std::string Variable::getTypeData() {return "Variable";}
   
   void Variable::assign(Object* newObj) {
+    if (!contains(std::string("define"), types) && !contains(newObj->getTypeData(), types))
+      throw Error("Invalid assignment of type " + newObj->getTypeData(), "TypeError", -2); // TODO: line numbers
     this->internal = newObj;
   }
   Object* Variable::read() {
