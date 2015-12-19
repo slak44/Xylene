@@ -1,6 +1,8 @@
 #include "builtins.hpp"
 
 namespace lang {
+  Object::~Object() {}
+  
   Variable::Variable() {}
   Variable::Variable(Object* obj, std::vector<std::string> types):
     internal(obj),
