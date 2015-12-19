@@ -97,13 +97,21 @@ namespace lang {
     // Member access operator
     {Operator(".", 13), {
       {"Object Name", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
-        Type* left = dynamic_cast<Type*>(l);
-        if (left == nullptr) {
-          Instance* leftI = dynamic_cast<Instance*>(l);
-          if (leftI == nullptr) throw Error("Left operand " + l->toString() + " is neither a type nor an instance of one", "TypeError", -2); // TODO: line number
-          return leftI->getMember(r->toString())->getVariable();
-        }
-        return left->getStaticMember(r->toString())->getVariable();
+        Type* leftT = dynamic_cast<Type*>(l);
+        Instance* leftI = dynamic_cast<Instance*>(l);
+        Variable* leftV = dynamic_cast<Variable*>(l);
+        Integer* i = dynamic_cast<Integer*>(l);
+        Float* f = dynamic_cast<Float*>(l);
+        String* s = dynamic_cast<String*>(l);
+        Boolean* b = dynamic_cast<Boolean*>(l);
+        if (leftT != nullptr) return dynamic_cast<Object*>(leftT->getStaticMember(r->toString())->getVariable());
+        else if (leftI != nullptr) return dynamic_cast<Object*>(leftI->getMember(r->toString())->getVariable());
+        else if (leftV != nullptr) return runOperator(Operator(".", 13), leftV->read(), r);
+        else if (i != nullptr) return dynamic_cast<Object*>(i);
+        else if (f != nullptr) return dynamic_cast<Object*>(f);
+        else if (s != nullptr) return dynamic_cast<Object*>(s);
+        else if (b != nullptr) return dynamic_cast<Object*>(b);
+        else throw Error("Left operand " + l->toString() + " is neither a type nor an instance of one", "TypeError", -2); // TODO: line number  
       }))}
     }},
     // Comparison operators
