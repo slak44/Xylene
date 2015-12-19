@@ -100,7 +100,7 @@ namespace lang {
         Type* left = dynamic_cast<Type*>(l);
         if (left == nullptr) {
           Instance* leftI = dynamic_cast<Instance*>(l);
-          if (leftI == nullptr) throw Error("Left operand " + l->toString() + " is neither a type nor an instance of one.", "TypeError", -2); // TODO: line number
+          if (leftI == nullptr) throw Error("Left operand " + l->toString() + " is neither a type nor an instance of one", "TypeError", -2); // TODO: line number
           return leftI->getMember(r->toString())->getVariable();
         }
         return left->getStaticMember(r->toString())->getVariable();
