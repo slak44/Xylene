@@ -69,7 +69,6 @@ namespace lang {
           if (op.toString().length() + i > code.length()) return; // If the operator is longer than the source string, ignore it.
           if (op.toString() == code.substr(i, op.toString().length())) {
             Operator* tmp = &op;
-            // TODO: apply DRY on these ifs
             if (tmp->toString() == "++" || tmp->toString() == "--") {
               // Prefix version
               if (tokens.back().type == OPERATOR || tokens.back().type == CONSTRUCT) tmp = new Operator(tmp->toString(), 12, ASSOCIATE_FROM_RIGHT, UNARY);

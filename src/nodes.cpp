@@ -292,7 +292,6 @@ namespace lang {
   }
 
   AST::AbstractSyntaxTree() {
-    // TODO: fix segfault here
     Type* integerType = new Type(std::string("Integer"), {
       // Static members
       {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
