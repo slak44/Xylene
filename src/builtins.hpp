@@ -37,6 +37,7 @@ namespace lang {
   class Variable : public Object {
   private:
     Object* internal = nullptr;
+    std::string currentType = "";
     std::vector<std::string> types {};
   public:
     Variable();
@@ -48,6 +49,7 @@ namespace lang {
     
     void assign(Object* newObj);
     Object* read();
+    std::string getCurrentType();
     std::vector<std::string> getTypes();
   };
   

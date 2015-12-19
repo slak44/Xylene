@@ -6,6 +6,7 @@ namespace lang {
   Variable::Variable() {}
   Variable::Variable(Object* obj, std::vector<std::string> types):
     internal(obj),
+    currentType(obj->getTypeData()),
     types(types) {
   }
   
@@ -19,10 +20,14 @@ namespace lang {
   void Variable::assign(Object* newObj) {
     if (!contains(std::string("define"), types) && !contains(newObj->getTypeData(), types))
       throw Error("Invalid assignment of type " + newObj->getTypeData(), "TypeError", -2); // TODO: line numbers
+    currentType = newObj->getTypeData();
     this->internal = newObj;
   }
   Object* Variable::read() {
     return this->internal;
+  }
+  std::string Variable::getCurrentType() {
+    return this->currentType;
   }
   std::vector<std::string> Variable::getTypes() {
     return this->types;
