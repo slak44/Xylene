@@ -81,6 +81,7 @@ namespace lang {
   
   Member* Instance::getMember(std::string identifier) {
     auto member = this->members[identifier];
+    if (member == nullptr) member = this->type->getStaticMember(identifier); // Check for a static member
     if (member == nullptr) throw Error("Could not find member " + identifier, "NullPointerError", -2); // TODO: line number
     if (member->getVisibility() != PUBLIC) throw Error("Member " + identifier + " is not visible", "Error", -2);
     return member;
