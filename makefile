@@ -49,7 +49,7 @@ win32-release:
 releases:
 	make clean
 	make win32-release
-	zip -y -j -9 lang-win-i686.zip builds/lang-win-i686.exe libs/libwinpthread-1.dll libs/boostlib.dll
+	zip -y -j -9 lang-win-i686.zip builds/lang-win-i686.exe libs/*.dll libs/*-LICENSE
 	@mv lang-win-i686.zip builds/lang-win-i686.zip
 	make clean
 	make linux64-release
