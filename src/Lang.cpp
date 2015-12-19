@@ -211,11 +211,13 @@ namespace lang {
           addToBlock(decl);
         } else if (toks[0].data == "while" && toks[0].type == KEYWORD) {
           auto wBlock = new WhileNode(evaluateCondition(toks), new BlockNode());
+          wBlock->setLineNumber(toks[0].line);
           if (PARSER_PRINT_WHILE_TREE) wBlock->printTree(blockStack.size());
           addToBlock(wBlock);
           blockStack.push_back(wBlock);
         } else if (toks[0].data == "if" && toks[0].type == KEYWORD) {
           auto cBlock = new ConditionalNode(evaluateCondition(toks), new BlockNode(), new BlockNode());
+          cBlock->setLineNumber(toks[0].line);
           if (PARSER_PRINT_COND_TREE) cBlock->printTree(blockStack.size());
           addToBlock(cBlock);
           blockStack.push_back(cBlock);
@@ -228,7 +230,7 @@ namespace lang {
         } else {
           ExpressionNode* expr = new ExpressionNode(toks);
           expr->buildSubtree();
-          expr->setLineNumber(dynamic_cast<ExpressionChildNode*>(expr->getChildren()[0])->t.line);
+          expr->setLineNumber(toks[0].line);
           if (PARSER_PRINT_EXPR_TREE) expr->printTree(blockStack.size());
           addToBlock(expr);
         }

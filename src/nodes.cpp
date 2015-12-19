@@ -172,6 +172,7 @@ namespace lang {
       auto tok = stackCopy.back();
       stackCopy.pop_back();
       node = new ExpressionChildNode(tok, stackCopy);
+      node->setLineNumber(this->lines);
     } else {
       throw std::runtime_error("Empty expression.\n");
     }
@@ -197,10 +198,12 @@ namespace lang {
       if (next.type == OPERATOR) {
         operands.pop_back();
         auto branch = new ExpressionChildNode(next, operands);
+        branch->setLineNumber(op.line);
         this->addChild(branch);
       } else {
         operands.pop_back();
         auto leaf = new ExpressionChildNode(next);
+        leaf->setLineNumber(op.line);
         this->addChild(leaf);
       }
     }
