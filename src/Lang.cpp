@@ -146,7 +146,7 @@ namespace lang {
         }
         // TODO: rewrite those using else if
         // Check if the thing is a property name
-        if (tokens.back().data == "." && tokens.back().type == OPERATOR) {
+        if (tokens.size() > 0 && tokens.back().type == OPERATOR && tokens.back().data == ".") {
           token.type = MEMBER;
           token.typeData = new Name(token.data);
         }

@@ -101,7 +101,7 @@ namespace lang {
   }
   
   std::vector<TokenType> ExpressionNode::validOperandTypes {
-    INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, UNPROCESSED
+    INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, MEMBER
   };
   
   ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
