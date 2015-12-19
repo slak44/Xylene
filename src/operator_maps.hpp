@@ -66,7 +66,6 @@ namespace lang {
   {MAKE_BINARY_OP(Integer, Float, new Boolean(left->getNumber() operator right->getNumber()) )},\
   {MAKE_BINARY_OP(Float, Integer, new Boolean(left->getNumber() operator right->getNumber()) )}
 
-  Variable* resolveNameFrom(ASTNode* localNode, std::string identifier);
   Object* runOperator(ExpressionChildNode* operatorNode);
 }; /* namespace lang */
 

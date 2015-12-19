@@ -1,15 +1,6 @@
 #include "operator_maps.hpp"
 
 namespace lang {
-  Variable* resolveNameFrom(ASTNode* localNode, std::string identifier) {
-    if (localNode == nullptr) return nullptr; // Reached tree root and didn't find anything.
-    try {
-      return localNode->getScope()->at(identifier);
-    } catch(std::out_of_range& oor) {
-      return resolveNameFrom(localNode->getParent(), identifier);
-    }
-  }
-  
   void concatenateNames(std::string& result, ExpressionChildNode* operatorNode) {
     result.pop_back(); // Remove trailing space
   }
@@ -60,10 +51,16 @@ namespace lang {
     for (std::size_t i = operandCount; i != 0; i--) {
       Object* operand;
       ExpressionChildNode* operandNode = dynamic_cast<ExpressionChildNode*>(operatorNode->getChildren()[i - 1]);
-      if (operandNode->t.type == VARIABLE) {
+      if (operandNode->t.type == TYPE) {
+        Variable* var = resolveNameFrom(operatorNode, operandNode->t.data);
+        if (var == nullptr) throw Error("Type " + operandNode->t.data + " was not declared in current scope", "NullPointerError", operandNode->t.line);
+        operand = var->read();
+      } else if (operandNode->t.type == VARIABLE) {
         operand = resolveNameFrom(operandNode, operandNode->t.data);
+        if (operand == nullptr) throw Error("Variable " + operandNode->t.data + " was not declared in current scope", "NullPointerError", operandNode->t.line);
+      } else {
+        operand = fromExprChildNode(operandNode);
       }
-      else operand = fromExprChildNode(operandNode);
       if (operand == nullptr) throw std::runtime_error("Attempt to call operator " + operatorNode->t.data + " with operand " + std::to_string(operandCount - i) + " set to nullptr.");
       operands.push_back(operand);
     }
@@ -97,20 +94,13 @@ namespace lang {
     // Member access operator
     {Operator(".", 13), {
       {"Object Name", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
+        // TODO: recognize literals here, eg `42.MAX_VALUE` should work
         Type* leftT = dynamic_cast<Type*>(l);
         Instance* leftI = dynamic_cast<Instance*>(l);
         Variable* leftV = dynamic_cast<Variable*>(l);
-        Integer* i = dynamic_cast<Integer*>(l);
-        Float* f = dynamic_cast<Float*>(l);
-        String* s = dynamic_cast<String*>(l);
-        Boolean* b = dynamic_cast<Boolean*>(l);
         if (leftT != nullptr) return dynamic_cast<Object*>(leftT->getStaticMember(r->toString())->getVariable());
         else if (leftI != nullptr) return dynamic_cast<Object*>(leftI->getMember(r->toString())->getVariable());
         else if (leftV != nullptr) return runOperator(Operator(".", 13), leftV->read(), r);
-        else if (i != nullptr) return dynamic_cast<Object*>(i);
-        else if (f != nullptr) return dynamic_cast<Object*>(f);
-        else if (s != nullptr) return dynamic_cast<Object*>(s);
-        else if (b != nullptr) return dynamic_cast<Object*>(b);
         else throw Error("Left operand " + l->toString() + " is neither a type nor an instance of one", "TypeError", -2); // TODO: line number  
       }))}
     }},

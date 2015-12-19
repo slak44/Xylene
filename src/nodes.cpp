@@ -1,6 +1,14 @@
 #include "nodes.hpp"
 
 namespace lang {
+  Variable* resolveNameFrom(ASTNode* localNode, std::string identifier) {
+    if (localNode == nullptr) return nullptr; // Reached tree root and didn't find anything.
+    try {
+      return localNode->getScope()->at(identifier);
+    } catch(std::out_of_range& oor) {
+      return resolveNameFrom(localNode->getParent(), identifier);
+    }
+  }
   
   void printIndent(int level) {
     for (int i = 0; i < level; ++i) print("  ");

@@ -145,6 +145,7 @@ namespace lang {
   
   typedef AbstractSyntaxTree AST;
   
+  Variable* resolveNameFrom(ASTNode* localNode, std::string identifier);
 } /* namespace lang */
 
 #endif /* NODES_H_ */
