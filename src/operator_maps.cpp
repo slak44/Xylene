@@ -30,6 +30,7 @@ namespace lang {
     Operator* op = static_cast<Operator*>(operatorNode->t.typeData);
     std::string funSig = "";
     if (op->toString().back() == '=' && op->getPrecedence() == 1) funSig = "Variable Object"; // Intercepts all assignments
+    else if (op->toString() == ".") funSig = "Object Value";
     else if (op->toString() == "++" || op->toString() == "--") funSig = "Variable";
     else concatenateNames(funSig, operatorNode, operands...);
     // 1. Get a boost::any instance from the OperatorMap
@@ -93,6 +94,18 @@ namespace lang {
     MAKE_ASSIGNMENT_OP(&, 6),
     MAKE_ASSIGNMENT_OP(^, 5),
     MAKE_ASSIGNMENT_OP(|, 4),
+    // Member access operator
+    {Operator(".", 13), {
+      {"Object Value", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
+        Type* left = dynamic_cast<Type*>(l);
+        if (left == nullptr) {
+          Instance* leftI = dynamic_cast<Instance*>(l);
+          if (leftI == nullptr) throw Error("Left operand " + l->toString() + " is neither a type nor an instance of one.", "TypeError", -2); // TODO: line number
+          return leftI->getMember(r->toString())->getVariable();
+        }
+        return left->getStaticMember(r->toString())->getVariable();
+      }))}
+    }},
     // Comparison operators
     {Operator("<=", 8), {
       EXPAND_COMPARISON_OPS(<=)
@@ -184,7 +197,5 @@ namespace lang {
     // Postfix operators
     {MAKE_MUTATING_UNARY_OP(Operator("++", 13, ASSOCIATE_FROM_LEFT, UNARY), +, false)},
     {MAKE_MUTATING_UNARY_OP(Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY), -, false)}
-    // TODO: member access op
-    // TODO: maybe comma op
   };
 } /* namespace lang */
