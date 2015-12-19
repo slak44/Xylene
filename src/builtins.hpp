@@ -13,14 +13,10 @@
 
 namespace lang {
   class Object : Stringifyable {
-  private:
-    std::string name = "";
   public:
     typedef std::function<Object*(Object*, Object*)> BinaryOp;
     typedef std::function<Object*(Object*)> UnaryOp;
     
-    Object();
-    Object(std::string name);
     virtual ~Object();
     
     virtual bool isTruthy() = 0;

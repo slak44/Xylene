@@ -1,16 +1,6 @@
 #include "builtins.hpp"
 
 namespace lang {
-  Object::Object() {}
-  Object::Object(std::string name): name(name) {}
-  Object::~Object() {}
-  
-  bool Object::isTruthy() {return false;}
-  std::string Object::toString() {
-    return name == "" ? std::to_string((int64) this) : this->name;
-  }
-  std::string Object::getTypeData() {return "Object";}
-  
   Variable::Variable() {}
   Variable::Variable(Object* obj, std::vector<std::string> types):
     internal(obj),
