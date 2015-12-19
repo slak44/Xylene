@@ -22,7 +22,7 @@ $(EXECUTABLE): $(OBJECTS)
 
 ./make/%.o: ./src/%.cpp
 	@echo "Compiling file: $@"
-	@$(CC) -c -std=c++11 $(CFLAGS) $< -o $@
+	@$(CC) -c -std=c++11 $(CFLAGS) $< -o ./$@
 	@# $(CC) -std=c++11 -MM -MF make/$*.d $<
 
 cleanph:
