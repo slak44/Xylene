@@ -144,6 +144,12 @@ namespace lang {
           token.data += code[i];
           skipCharacters(i, 1);
         }
+        // TODO: rewrite those using else if
+        // Check if the thing is a property name
+        if (tokens.back().data == "." && tokens.back().type == OPERATOR) {
+          token.type = MEMBER;
+          token.typeData = new Name(token.data);
+        }
         // TODO: identify type definitions here
         // Check if the thing references a type
         if (contains(token.data, types)) {

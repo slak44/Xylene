@@ -24,6 +24,16 @@ namespace lang {
     virtual std::string getTypeData() = 0; // Pure virtual, derived classes must implement this
   };
   
+  class Name : public Object {
+  private:
+    std::string name;
+  public:
+    Name(std::string name): name(name) {};
+    bool isTruthy() {return false;}
+    std::string toString() {return name;}
+    std::string getTypeData() {return "Name";}
+  };
+  
   class Variable : public Object {
   private:
     Object* internal = nullptr;

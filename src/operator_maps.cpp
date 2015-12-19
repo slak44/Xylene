@@ -30,7 +30,7 @@ namespace lang {
     Operator* op = static_cast<Operator*>(operatorNode->t.typeData);
     std::string funSig = "";
     if (op->toString().back() == '=' && op->getPrecedence() == 1) funSig = "Variable Object"; // Intercepts all assignments
-    else if (op->toString() == ".") funSig = "Object Value";
+    else if (op->toString() == ".") funSig = "Object Name";
     else if (op->toString() == "++" || op->toString() == "--") funSig = "Variable";
     else concatenateNames(funSig, operatorNode, operands...);
     // 1. Get a boost::any instance from the OperatorMap
@@ -96,7 +96,7 @@ namespace lang {
     MAKE_ASSIGNMENT_OP(|, 4),
     // Member access operator
     {Operator(".", 13), {
-      {"Object Value", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
+      {"Object Name", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
         Type* left = dynamic_cast<Type*>(l);
         if (left == nullptr) {
           Instance* leftI = dynamic_cast<Instance*>(l);
