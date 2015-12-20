@@ -28,6 +28,7 @@ namespace lang {
     std::vector<std::string> types {"Integer", "Float", "String", "Boolean"};
     std::vector<std::string> keywords {
       "define",
+      "function",
       "type", "constructor", "public", "protected", "private",
       "if", "while"
     };
@@ -237,14 +238,19 @@ namespace lang {
     
     void resolveDefineStatements(std::vector<Token>& toks, std::function<void(ASTNode*)> addToBlock) {
       // Check if it's a simple variable declaration
-      if (toks[0].data == "define" && toks[0].type == KEYWORD && toks[1].type == VARIABLE) {
+      if (toks[1].type == VARIABLE) {
         auto decl = buildDeclaration(std::vector<Token>(toks.begin() + 1, toks.end()), {toks[0].data});
         addToBlock(decl);
         return;
       }
       // Check if it's a type declaration
-      if (toks[0].data == "define" && toks[0].type == KEYWORD && toks[1].data == "type" && toks[1].type == KEYWORD) {
+      if (toks[1].data == "type" && toks[1].type == KEYWORD) {
         // TODO: handle type declaration
+        return;
+      }
+      // Check if it's a function declaration
+      if (toks[1].data == "function" && toks[1].type == KEYWORD) {
+        // TODO: function declarations
         return;
       }
     }
