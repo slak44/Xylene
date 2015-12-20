@@ -191,6 +191,64 @@ namespace lang {
       return condition;
     }
     
+    DeclarationNode* buildDeclaration(std::vector<Token> withoutTypes, std::vector<std::string> types) {
+      DeclarationNode* decl = new DeclarationNode(types, withoutTypes[0]);
+      decl->setLineNumber(withoutTypes[0].line);
+      if (withoutTypes[1].data != ";" || withoutTypes[1].type != CONSTRUCT) {
+        ExpressionNode* expr = new ExpressionNode(withoutTypes);
+        expr->buildSubtree();
+        decl->addChild(expr);
+      }
+      return decl;
+    }
+    
+    ExpressionNode* buildExpression(std::vector<Token> toks) {
+      ExpressionNode* expr = new ExpressionNode(toks);
+      expr->buildSubtree();
+      expr->setLineNumber(toks[0].line);
+      return expr;
+    }
+    
+    void resolveTypeStatements(std::vector<Token>& toks, std::function<void(ASTNode*)> addToBlock) {
+      // Check if it's a type list
+      if (toks[0].type == TYPE && toks[1].type == OPERATOR && toks[1].data == ",") {
+        std::vector<std::string> typeList {};
+        std::size_t count = 0;
+        for (;; count++) {
+          if (toks[count].type == TYPE) typeList.push_back(toks[count].data);
+          else if (toks[count].type == OPERATOR && toks[count].data == ",") continue;
+          else break;
+        }
+        auto decl = buildDeclaration(std::vector<Token>(toks.begin() + count, toks.end()), typeList);
+        addToBlock(decl);
+        return;
+      }
+      // Check if it's just one type in the declaration
+      if (toks[0].type == TYPE && toks[1].type == VARIABLE) {
+        auto decl = buildDeclaration(std::vector<Token>(toks.begin() + 1, toks.end()), {toks[0].data});
+        addToBlock(decl);
+        return;
+      }
+      
+      // If it's none of the above, it's part of an expression
+      auto expr = buildExpression(toks);
+      addToBlock(expr);
+    }
+    
+    void resolveDefineStatements(std::vector<Token>& toks, std::function<void(ASTNode*)> addToBlock) {
+      // Check if it's a simple variable declaration
+      if (toks[0].data == "define" && toks[0].type == KEYWORD && toks[1].type == VARIABLE) {
+        auto decl = buildDeclaration(std::vector<Token>(toks.begin() + 1, toks.end()), {toks[0].data});
+        addToBlock(decl);
+        return;
+      }
+      // Check if it's a type declaration
+      if (toks[0].data == "define" && toks[0].type == KEYWORD && toks[1].data == "type" && toks[1].type == KEYWORD) {
+        // TODO: handle type declaration
+        return;
+      }
+    }
+    
     void buildTree(std::vector<Token> tokens) {
       static std::vector<BlockNode*> blockStack {};
       auto addToBlock = [this](ASTNode* child) {
@@ -200,20 +258,11 @@ namespace lang {
       auto logicalLines = splitVector(tokens, isNewLine);
       for (uint64 i = 0; i < logicalLines.size(); i++) {
         std::vector<Token>& toks = logicalLines[i];
-        if (toks.size() == 0) continue;
-        if (toks[0].data == "define" && toks[0].type == KEYWORD && toks[1].data == "type" && toks[1].type == KEYWORD) {
-          // TODO: handle type declaration
-        } else if ((toks[0].data == "define" && toks[0].type == KEYWORD) || (toks[0].type == TYPE && toks[1].type == VARIABLE)) {
-          DeclarationNode* decl = new DeclarationNode(toks[0].data, toks[1]);
-          decl->setLineNumber(toks[1].line);
-          if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
-            std::vector<Token> exprToks(toks.begin() + 1, toks.end());
-            ExpressionNode* expr = new ExpressionNode(exprToks);
-            expr->buildSubtree();
-            decl->addChild(expr);
-          }
-          if (PARSER_PRINT_DECL_TREE) decl->printTree(blockStack.size());
-          addToBlock(decl);
+        if (toks.size() == 0) continue; // Empty line
+        if (toks[0].type == TYPE) {
+          resolveTypeStatements(toks, addToBlock);
+        } else if (toks[0].data == "define" && toks[0].type == KEYWORD) {
+          resolveDefineStatements(toks, addToBlock);
         } else if (toks[0].data == "while" && toks[0].type == KEYWORD) {
           auto wBlock = new WhileNode(evaluateCondition(toks), new BlockNode());
           wBlock->setLineNumber(toks[0].line);
@@ -233,9 +282,7 @@ namespace lang {
         } else if (toks[0].data == "end" && toks[0].type == CONSTRUCT) {
           blockStack.pop_back();
         } else {
-          ExpressionNode* expr = new ExpressionNode(toks);
-          expr->buildSubtree();
-          expr->setLineNumber(toks[0].line);
+          auto expr = buildExpression(toks);
           if (PARSER_PRINT_EXPR_TREE) expr->printTree(blockStack.size());
           addToBlock(expr);
         }
@@ -280,6 +327,7 @@ namespace lang {
     }
     
     void resolveCondition(ConditionalNode* node) {
+      // TODO: fix segfault when the expression is only a boolean
       auto condRes = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
       if (static_cast<Object*>(condRes->t.typeData)->isTruthy()) {
         interpret(node->getTrueBlock()->getChildren());
@@ -289,11 +337,14 @@ namespace lang {
     }
     
     void registerDeclaration(DeclarationNode* node) {
-      if (node->typeName == "define") node->getParentScope()->insert({node->identifier.data, new Variable(nullptr, {"define"})});
-      else {
-        Type* type = dynamic_cast<Type*>(resolveNameFrom(node, node->typeName)->read());
-        node->getParentScope()->insert({node->identifier.data, new Variable(type->createInstance(), {node->typeName/*TODO: type list*/})});
+      if (!contains(std::string("define"), node->typeNames)) {
+        // Check that types exist
+        for (auto typeName : node->typeNames) {
+          Type* type = dynamic_cast<Type*>(resolveNameFrom(node, typeName)->read());
+          if (type == nullptr) throw Error("Type " + typeName + " was not defined in this scope", "NullPointerError", node->getLineNumber());
+        }
       }
+      node->getParentScope()->insert({node->identifier.data, new Variable(nullptr, node->typeNames)});
       if (node->getChildren().size() == 1) {
         Variable* variable = (*node->getParentScope())[node->identifier.data];
         Object* toAssign = static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]))->t.typeData);

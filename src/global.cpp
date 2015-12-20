@@ -1,5 +1,6 @@
 #include "global.hpp"
 
+// TODO: replace these with useful stuff
 int
 DEBUG_ENV,
 EXPRESSION_STEPS,
