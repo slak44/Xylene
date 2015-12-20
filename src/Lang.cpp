@@ -26,7 +26,11 @@ namespace lang {
     
     std::vector<Token> variables {};
     std::vector<std::string> types {"Integer", "Float", "String", "Boolean"};
-    std::vector<std::string> keywords {"define", "if", "while"};
+    std::vector<std::string> keywords {
+      "define",
+      "type", "constructor", "public", "protected", "private",
+      "if", "while"
+    };
     std::vector<std::string> constructKeywords {"do", "end", "else"};
   public:
     AST tree = AST();
@@ -149,7 +153,6 @@ namespace lang {
           token.type = MEMBER;
           token.typeData = new Name(token.data);
         }
-        // TODO: identify type definitions here
         // Check if the thing references a type
         if (contains(token.data, types)) {
           token.type = TYPE;
@@ -198,7 +201,9 @@ namespace lang {
       for (uint64 i = 0; i < logicalLines.size(); i++) {
         std::vector<Token>& toks = logicalLines[i];
         if (toks.size() == 0) continue;
-        if ((toks[0].data == "define" && toks[0].type == KEYWORD) || (toks[0].type == TYPE && toks[1].type == VARIABLE)) {
+        if (toks[0].data == "define" && toks[0].type == KEYWORD && toks[1].data == "type" && toks[1].type == KEYWORD) {
+          // TODO: handle type declaration
+        } else if ((toks[0].data == "define" && toks[0].type == KEYWORD) || (toks[0].type == TYPE && toks[1].type == VARIABLE)) {
           DeclarationNode* decl = new DeclarationNode(toks[0].data, toks[1]);
           decl->setLineNumber(toks[1].line);
           if (toks[2].data != ";" || toks[2].type != CONSTRUCT) {
