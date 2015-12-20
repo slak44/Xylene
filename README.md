@@ -19,7 +19,7 @@ Other options:
 - `LDFLAGS`: linker flags
 
 Running `make releases` creates a 64bit Linux build and a 32bit Windows one.  
-The Linux executable is not statically liked with anything.  
+The Linux executable is not statically linked with anything.  
 The Windows executable only requires the bundled `libwinpthread` and `libboost_program_options` to be dynamically linked.
 
 ### Syntax And Behavior
