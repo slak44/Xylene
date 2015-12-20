@@ -87,8 +87,8 @@ namespace lang {
     child->printTree(level + 1);
   }
   
-  DeclarationNode::DeclarationNode(std::string typeName, Token identifier) {
-    this->typeName = typeName;
+  DeclarationNode::DeclarationNode(std::vector<std::string> typeNames, Token identifier) {
+    this->typeNames = typeNames;
     this->identifier = identifier;
   }
   
@@ -104,7 +104,7 @@ namespace lang {
   
   void DeclarationNode::printTree(int level) {
     printIndent(level);
-    print("Declared ", this->typeName, " as ", this->identifier, "\n");
+    print("Declared ", this->typeNames, " as ", this->identifier, "\n");
     if (this->getChildren().size() == 1) dynamic_cast<ExpressionNode*>(this->getChild())->printTree(level + 1);
   }
   

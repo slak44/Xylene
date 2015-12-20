@@ -54,10 +54,10 @@ namespace lang {
   
   class DeclarationNode: public SingleChildNode {
   public:
-    std::string typeName;
+    std::vector<std::string> typeNames;
     Token identifier;
     
-    DeclarationNode(std::string typeName, Token identifier);
+    DeclarationNode(std::vector<std::string> typeNames, Token identifier);
     void addChild(ASTNode* child);
     
     std::string getNodeType();
