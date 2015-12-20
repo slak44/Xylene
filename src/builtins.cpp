@@ -6,8 +6,8 @@ namespace lang {
   Variable::Variable() {}
   Variable::Variable(Object* obj, std::vector<std::string> types):
     internal(obj),
-    currentType(obj->getTypeData()),
     types(types) {
+    if (obj != nullptr) currentType = obj->getTypeData();
   }
   
   bool Variable::isTruthy() {return this->read()->isTruthy();}
@@ -18,6 +18,7 @@ namespace lang {
   std::string Variable::getTypeData() {return "Variable";}
   
   void Variable::assign(Object* newObj) {
+    if (newObj == nullptr) throw Error("Attemptted assignment of nullptr on " + this->toString(), "NullPointerError", -2); // TODO: line numbers
     if (!contains(std::string("define"), types) && !contains(newObj->getTypeData(), types))
       throw Error("Invalid assignment of type " + newObj->getTypeData(), "TypeError", -2); // TODO: line numbers
     currentType = newObj->getTypeData();
