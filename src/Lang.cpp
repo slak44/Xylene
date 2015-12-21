@@ -36,7 +36,6 @@ namespace lang {
     std::vector<std::string> constructKeywords {
       "do", "end",
       "else",
-      "=>"
     };
   public:
     AST tree = AST();
@@ -68,6 +67,13 @@ namespace lang {
             code[i] == '(' || code[i] == ')' ||
             code[i] == ';') {
           tokens.push_back(Token(std::string(1, code[i]), CONSTRUCT, lines));
+          continue;
+        }
+        
+        // Fat arrow for function return types
+        if (code[i] == '=' && code[i + 1] == '>') {
+          tokens.push_back(Token("=>", CONSTRUCT, lines));
+          skipCharacters(i, 2);
           continue;
         }
         
@@ -267,7 +273,7 @@ namespace lang {
         std::vector<std::string> returnTypes;
         // Parse arguments
         std::size_t pos = 3;
-        while (toks[pos].data != "=>" || toks[pos].data != "do") {
+        while (toks[pos].data != "=>" && toks[pos].data != "do") {
           if (toks[pos].data == "[") {
             std::vector<Token> argumentData;
             pos++; // Ignore the leading bracket '['
@@ -291,7 +297,7 @@ namespace lang {
             if (argumentData.size() > 0) typeList = tokenToStringTypeList(argumentData);
             if (typeList.size() == 0) typeList = {"define"}; // If an argument has no types specified, it can hold any type
             args->insert({name, new Variable(nullptr, typeList)});
-          } else throw Error("Missing [ in declaration of function " + toks[2].data, "SyntaxError", toks[2].line);
+          } else throw Error("Unexpected token in declaration of function " + toks[2].data, "SyntaxError", toks[2].line);
         }
         // Parse return types
         if (toks[pos].data == "=>") {
