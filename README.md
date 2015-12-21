@@ -79,12 +79,13 @@ define function substract [Integer, Float a] [Integer, Float b] => Integer, Floa
 end
 ```
 Arguments can have zero, one or more types.  
+Arguments must be enclosed in `[]`.
 The return type can be specified with `=>`, but it is not mandatory.  
 The type list can be specified either before or after the parameter name.
 
-Syntax for two parameters:
+Example syntax for two parameters, one postfixed, one prefixed:
 ```
-define function function_name [type_list1 parameter_name1] [type_list2 parameter_name2] => return_type_list do
+define function function_name [type_list1 parameter_name1] [parameter_name2: type_list2] => return_type_list do
   code
 end
 ```
