@@ -29,7 +29,7 @@ namespace lang {
     std::vector<std::string> types {"Integer", "Float", "String", "Boolean"};
     std::vector<std::string> keywords {
       "define",
-      "function",
+      "function", "return",
       "type", "constructor", "public", "protected", "private",
       "if", "while"
     };
@@ -241,11 +241,11 @@ namespace lang {
     }
     
     std::vector<std::string> tokenToStringTypeList(std::vector<Token> typeList) {
-      std::vector<std::string> stringList;
+      std::vector<std::string> stringList {};
       // Remove commas from type list
       std::remove_if(typeList.begin(), typeList.end(), [](Token& tok) {return tok.type == OPERATOR && tok.data == ",";});
       // Map each token to a string, creating the type list
-      std::transform(typeList.begin(), typeList.end(), stringList.begin(), [](Token& tok) {return tok.data;});
+      for (auto e : typeList) stringList.push_back(e.data);
       return stringList;
     }
     
