@@ -77,8 +77,7 @@ namespace lang {
     // Postfix
     Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY),
     Operator("++", 13, ASSOCIATE_FROM_LEFT, UNARY),
-    //  Operator("()", 13), // TODO: find function calls somehow
-    //  Operator("[]", 13), // TODO: find subscript better, treat as macro and preprocess maybe?
+    //  Operator("[]", 13), // TODO: find subscript better
     Operator(".", 13),
     
     // Prefix
