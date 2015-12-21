@@ -13,9 +13,9 @@ namespace lang {
   #define PHONY_TOKEN -2
   
   enum TokenType: int {
-    INTEGER, FLOAT, BOOLEAN, STRING, ARRAY, // Literals
-    OPERATOR, KEYWORD, CONSTRUCT, // Language parts
-    TYPE, MEMBER, VARIABLE, FUNCTION, // Defined structures
+    INTEGER = 0, FLOAT, BOOLEAN, STRING, ARRAY, // Literals
+    OPERATOR = 5, KEYWORD, CONSTRUCT, // Language parts
+    TYPE, MEMBER, VARIABLE = 10, FUNCTION, // Defined structures
     UNPROCESSED
   };
   
