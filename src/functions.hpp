@@ -20,8 +20,6 @@ namespace lang {
     bool isTruthy();
     std::string toString();
     std::string getTypeData();
-    
-    Object* call(Arguments* arguments);
   };
   
 } /* namespace lang */
