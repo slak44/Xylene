@@ -64,6 +64,25 @@ namespace lang {
     void printTree(int level);
   };
   
+  typedef Scope Arguments; // They use the same data type...
+  typedef std::vector<std::string> TypeList; // TODO: use this in more places
+  class FunctionNode : public SingleChildNode {
+  private:
+    std::string name;
+    Arguments* defaultArguments;
+    TypeList returnTypes;
+  public:
+    FunctionNode(std::string name, Arguments* arguments, TypeList returnTypes);
+    void addChild(ASTNode* child);
+    
+    std::string getNodeType();
+    void printTree(int level);
+    
+    std::string getName();
+    Arguments* getArguments();
+    TypeList getReturnTypes();
+  };
+  
   class ExpressionNode : public SingleChildNode {
   private:
     static std::vector<TokenType> validOperandTypes;

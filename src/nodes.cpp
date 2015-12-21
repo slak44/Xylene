@@ -94,7 +94,7 @@ namespace lang {
   
   void DeclarationNode::addChild(ASTNode* child) {
     auto node = dynamic_cast<ExpressionNode*>(child);
-    if (node == 0) throw std::invalid_argument("DeclarationNode only accepts an ExpressionNode as its child.");
+    if (node == nullptr) throw std::invalid_argument("DeclarationNode only accepts an ExpressionNode as its child.");
     this->SingleChildNode::addChild(node);
   }
   
@@ -106,6 +106,29 @@ namespace lang {
     printIndent(level);
     print("Declared ", this->typeNames, " as ", this->identifier, "\n");
     if (this->getChildren().size() == 1) dynamic_cast<ExpressionNode*>(this->getChild())->printTree(level + 1);
+  }
+  
+  FunctionNode::FunctionNode(std::string name, Arguments* arguments, std::vector<std::string> returnTypes):
+    name(name),
+    defaultArguments(arguments),
+    returnTypes(returnTypes) {}
+  
+  void FunctionNode::addChild(ASTNode* child) {
+    auto node = dynamic_cast<BlockNode*>(child);
+    if (node == nullptr) throw std::invalid_argument("FunctionNode only accepts a BlockNode as its child.");
+    this->SingleChildNode::addChild(node);
+  }
+  
+  std::string FunctionNode::getNodeType() {return "FunctionNode";}
+  
+  void FunctionNode::printTree(int level) {
+    printIndent(level);
+    print("Function " + name, "\n");
+    if (this->getChildren().size() == 1) dynamic_cast<BlockNode*>(this->getChild())->printTree(level + 1);
+  }
+  
+  std::string FunctionNode::getName() {
+    return name;
   }
   
   std::vector<TokenType> ExpressionNode::validOperandTypes {
