@@ -358,6 +358,13 @@ namespace lang {
       // TODO add members
     });
     (*root.getScope())[std::string("Boolean")] = new Variable(booleanType, {});
+    Type* functionType = new Type(std::string("Function"), {
+      // Static members
+    }, {
+      // Instance members
+      // TODO add members
+    });
+    (*root.getScope())[std::string("Function")] = new Variable(functionType, {});
   }
   
   void AST::addRootChild(ASTNode* node) {
