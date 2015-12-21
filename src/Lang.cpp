@@ -312,6 +312,7 @@ namespace lang {
           if (returnTypes.size() == 0) throw Error("Missing types in return type specification", "SyntaxError", toks[2].line);
         }
         auto fNode = new FunctionNode(toks[2].data, args, returnTypes);
+        fNode->setLineNumber(toks[2].line);
         addToBlock(fNode);
         addToBlock(new BlockNode());
         return;
@@ -383,7 +384,10 @@ namespace lang {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
         } else if (nodeType == "FunctionNode") {
           FunctionNode* n = dynamic_cast<FunctionNode*>(nodes[i]);
-          registerDeclaration(new DeclarationNode({"Function"}, Token(new Function(n), FUNCTION, PHONY_TOKEN)));
+          auto funDecl = new DeclarationNode({"Function"}, Token(new Function(n), FUNCTION, PHONY_TOKEN));
+          n->getParent()->addChild(funDecl);
+          funDecl->setLineNumber(n->getLineNumber());
+          registerDeclaration(funDecl);
         } else if (nodeType == "ConditionalNode") {
           resolveCondition(dynamic_cast<ConditionalNode*>(nodes[i]));
         } else if (nodeType == "WhileNode") {
@@ -414,8 +418,11 @@ namespace lang {
       if (!contains(std::string("define"), node->typeNames)) {
         // Check that types exist
         for (auto typeName : node->typeNames) {
-          Type* type = dynamic_cast<Type*>(resolveNameFrom(node, typeName)->read());
-          if (type == nullptr) throw Error("Type " + typeName + " was not defined in this scope", "NullPointerError", node->getLineNumber());
+          auto notDefInThisScope = Error("Type " + typeName + " was not defined in this scope", "NullPointerError", node->getLineNumber());
+          auto typeVar = resolveNameFrom(node, typeName);
+          if (typeVar == nullptr) throw notDefInThisScope;
+          Type* type = dynamic_cast<Type*>(typeVar->read());
+          if (type == nullptr) throw notDefInThisScope;
         }
       }
       node->getParentScope()->insert({node->identifier.data, new Variable(nullptr, node->typeNames)});
