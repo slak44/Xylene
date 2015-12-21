@@ -74,7 +74,7 @@ Arrays (dynamic only): `[123, 6.7, "abcd"]`
 
 Definition example:
 ```
-define substract [Integer, Float]a [Integer, Float]b => Integer do
+define function substract [Integer, Float a] [Integer, Float b] => Integer, Float do
   return a - b;
 end
 ```
@@ -84,7 +84,7 @@ The type list can be specified either before or after the parameter name.
 
 Syntax for two parameters:
 ```
-define function_name [type_list1]parameter_name1 [type_list2]parameter_name2 => return_type do
+define function function_name [type_list1 parameter_name1] [type_list2 parameter_name2] => return_type_list do
   code
 end
 ```
@@ -133,13 +133,13 @@ Definition example:
 define type AnotherInt do
   public static Float whatIsThisDoingHere = 6.5;
   private Integer internal;
-  define constructor [Integer, Float]a do
+  define constructor [Integer, Float int] do
     if a.type == Float do
       a = Integer(a);
     end
     internal = a;
   end
-  define public square => Integer do
+  define public function square => Integer do
     return internal = internal * internal;
   end
 end
