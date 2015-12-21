@@ -131,6 +131,14 @@ namespace lang {
     return name;
   }
   
+  Arguments* FunctionNode::getArguments() {
+    return defaultArguments;
+  }
+  
+  TypeList FunctionNode::getReturnTypes() {
+    return returnTypes;
+  }
+  
   std::vector<TokenType> ExpressionNode::validOperandTypes {
     INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, MEMBER
   };
