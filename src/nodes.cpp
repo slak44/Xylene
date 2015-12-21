@@ -22,35 +22,18 @@ namespace lang {
     children.push_back(child);
   }
   
-  std::vector<ASTNode*>& ASTNode::getChildren() {
-    return children;
-  }
+  std::vector<ASTNode*>& ASTNode::getChildren() {return children;}
   
-  void ASTNode::setParent(ASTNode* parent) {
-    this->parent = parent;
-  }
-  ASTNode* ASTNode::getParent() {
-    return parent;
-  }
+  void ASTNode::setParent(ASTNode* parent) {this->parent = parent;}
+  ASTNode* ASTNode::getParent() {return parent;}
   
-  Scope* ASTNode::getScope() {
-    return &local;
-  }
+  Scope* ASTNode::getScope() {return &local;}
+  Scope* ASTNode::getParentScope() {return &this->parent->local;}
   
-  Scope* ASTNode::getParentScope() {
-    return &this->parent->local;
-  }
+  void ASTNode::setLineNumber(int lines) {this->lines = lines;}
+  int ASTNode::getLineNumber() {return this->lines;}
   
-  void ASTNode::setLineNumber(int lines) {
-    this->lines = lines;
-  }
-  int ASTNode::getLineNumber() {
-    return this->lines;
-  }
-  
-  std::string ASTNode::getNodeType() {
-    return "ASTNode";
-  }
+  std::string ASTNode::getNodeType() {return "ASTNode";}
   
   void ASTNode::printTree(int level) {
     printIndent(level);
@@ -67,14 +50,8 @@ namespace lang {
       this->ASTNode::addChild(child);
     }
   }
-  
-  ASTNode* SingleChildNode::getChild() {
-    return children[0];
-  }
-  
-  std::string SingleChildNode::getNodeType() {
-    return "SingleChildNode";
-  }
+  ASTNode* SingleChildNode::getChild() {return children[0];}
+  std::string SingleChildNode::getNodeType() {return "SingleChildNode";}
   
   void SingleChildNode::printTree(int level) {
     printIndent(level);
@@ -98,9 +75,7 @@ namespace lang {
     this->SingleChildNode::addChild(node);
   }
   
-  std::string DeclarationNode::getNodeType() {
-    return "DeclarationNode";
-  }
+  std::string DeclarationNode::getNodeType() {return "DeclarationNode";}
   
   void DeclarationNode::printTree(int level) {
     printIndent(level);
@@ -127,17 +102,9 @@ namespace lang {
     if (this->getChildren().size() == 1) dynamic_cast<BlockNode*>(this->getChild())->printTree(level + 1);
   }
   
-  std::string FunctionNode::getName() {
-    return name;
-  }
-  
-  Arguments* FunctionNode::getArguments() {
-    return defaultArguments;
-  }
-  
-  TypeList FunctionNode::getReturnTypes() {
-    return returnTypes;
-  }
+  std::string FunctionNode::getName() {return name;}
+  Arguments* FunctionNode::getArguments() {return defaultArguments;}
+  TypeList FunctionNode::getReturnTypes() {return returnTypes;}
   
   std::vector<TokenType> ExpressionNode::validOperandTypes {
     INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, MEMBER
@@ -192,9 +159,7 @@ namespace lang {
     while (opStack.size() > 0) popToOut();
   }
   
-  std::vector<Token> ExpressionNode::getRPNOutput() {
-    return outStack;
-  }
+  std::vector<Token> ExpressionNode::getRPNOutput() {return outStack;}
   
   void ExpressionNode::buildSubtree(void) {
     std::vector<Token> stackCopy(outStack);
@@ -211,9 +176,7 @@ namespace lang {
     this->addChild(node);
   }
   
-  std::string ExpressionNode::getNodeType() {
-    return "ExpressionNode";
-  }
+  std::string ExpressionNode::getNodeType() {return "ExpressionNode";}
   
   void ExpressionNode::printTree(int level) {
     auto top = static_cast<ExpressionChildNode*>(this->getChildren()[0]);
@@ -240,9 +203,7 @@ namespace lang {
     }
   };
   
-  std::string ExpressionChildNode::getNodeType() {
-    return "ExpressionChildNode";
-  }
+  std::string ExpressionChildNode::getNodeType() {return "ExpressionChildNode";}
   
   void ExpressionChildNode::printTree(int level) {
     printIndent(level);
@@ -253,10 +214,7 @@ namespace lang {
   }
   
   BlockNode::BlockNode() {}
-  
-  std::string BlockNode::getNodeType() {
-    return "BlockNode";
-  }
+  std::string BlockNode::getNodeType() {return "BlockNode";}
   
   void BlockNode::printTree(int level) {
     printIndent(level);
@@ -291,9 +249,7 @@ namespace lang {
     } else throw Error("Multiple else statements", "SyntaxError", children[2]->getLineNumber());
   }
   
-  std::string ConditionalNode::getNodeType() {
-    return "ConditionalNode";
-  }
+  std::string ConditionalNode::getNodeType() {return "ConditionalNode";}
   
   void ConditionalNode::printTree(int level) {
     printIndent(level);
@@ -315,9 +271,7 @@ namespace lang {
     children[1]->addChild(child);
   }
   
-  std::string WhileNode::getNodeType() {
-    return "WhileNode";
-  }
+  std::string WhileNode::getNodeType() {return "WhileNode";}
   
   void WhileNode::printTree(int level) {
     printIndent(level);
