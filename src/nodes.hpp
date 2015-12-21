@@ -86,6 +86,7 @@ namespace lang {
   class ExpressionNode : public SingleChildNode {
   private:
     static std::vector<TokenType> validOperandTypes;
+    static std::vector<TokenType> possibleFunctionTypes;
     std::vector<Token> opStack = std::vector<Token>();
     std::vector<Token> outStack = std::vector<Token>();
     

@@ -107,7 +107,10 @@ namespace lang {
   TypeList FunctionNode::getReturnTypes() {return returnTypes;}
   
   std::vector<TokenType> ExpressionNode::validOperandTypes {
-    INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, MEMBER
+    INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, MEMBER, UNPROCESSED
+  };
+  std::vector<TokenType> ExpressionNode::possibleFunctionTypes {
+    TYPE, VARIABLE, UNPROCESSED
   };
   
   ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
@@ -118,7 +121,12 @@ namespace lang {
         for (auto tok : opStack) print(tok.data, " ");
         print("\n=======\n");
       }
-      if (contains(tokens[i].type, validOperandTypes)) {
+      
+      // Catch function calls first
+      if (contains(tokens[i].type, possibleFunctionTypes) && tokens[i + 1].data == "(") {
+        outStack.push_back(tokens[i]);
+        opStack.push_back(Token(new Operator("()", 13), OPERATOR, tokens[i + 1].line));
+      } else if (contains(tokens[i].type, validOperandTypes)) {
         outStack.push_back(tokens[i]);
       } else if (tokens[i].type == OPERATOR) {
         /* 
@@ -152,7 +160,6 @@ namespace lang {
           while (opStack.size() != 0 && opStack.back().data != "(") popToOut();
           if (opStack.back().data != "(") throw Error("Mismatched parenthesis in expression", "SyntaxError", outStack.back().line);
           opStack.pop_back(); // Get rid of "("
-          if (opStack.back().type == FUNCTION) popToOut();
         }
       }
     }
@@ -168,7 +175,7 @@ namespace lang {
       auto tok = stackCopy.back();
       stackCopy.pop_back();
       node = new ExpressionChildNode(tok, stackCopy);
-      node->setLineNumber(this->lines);
+      node->setLineNumber(stackCopy.back().line); // TODO: this must happen before the constructor above, or integrate in constructor
     } else {
       throw std::runtime_error("Empty expression.\n");
     }
@@ -186,6 +193,13 @@ namespace lang {
   ExpressionChildNode::ExpressionChildNode(Token operand): t(operand) {};
   ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands): t(op) {
     if (operands.size() == 0) return;
+    if (static_cast<Operator*>(op.typeData)->toString() == "()") {
+      this->addChild(new ExpressionChildNode(operands[0])); // Add the name of the function as the first arg
+      auto last = operands.back();
+      operands = std::vector<Token>(operands.begin() + 1, operands.end() - 1);
+      this->addChild(new ExpressionChildNode(last, operands)); // Add the arguments as a tree
+      return;
+    }
     auto arity = static_cast<Operator*>(op.typeData)->getArity();
     for (int i = 0; i < arity; ++i) {
       auto next = operands[operands.size() - 1];
@@ -197,7 +211,7 @@ namespace lang {
       } else {
         operands.pop_back();
         auto leaf = new ExpressionChildNode(next);
-        leaf->setLineNumber(op.line);
+        leaf->setLineNumber(next.line);
         this->addChild(leaf);
       }
     }
