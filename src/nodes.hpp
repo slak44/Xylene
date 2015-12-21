@@ -39,7 +39,7 @@ namespace lang {
     virtual void printTree(int level);
   };
   
-  class SingleChildNode: public ASTNode {
+  class SingleChildNode : public ASTNode {
   public:
     SingleChildNode();
     
@@ -52,7 +52,7 @@ namespace lang {
   
   typedef std::vector<ASTNode*> ChildrenNodes;
   
-  class DeclarationNode: public SingleChildNode {
+  class DeclarationNode : public SingleChildNode {
   public:
     std::vector<std::string> typeNames;
     Token identifier;
@@ -64,7 +64,7 @@ namespace lang {
     void printTree(int level);
   };
   
-  class ExpressionNode: public SingleChildNode {
+  class ExpressionNode : public SingleChildNode {
   private:
     static std::vector<TokenType> validOperandTypes;
     std::vector<Token> opStack = std::vector<Token>();
@@ -85,7 +85,7 @@ namespace lang {
     void printTree(int level);
   };
   
-  class ExpressionChildNode: public ASTNode {
+  class ExpressionChildNode : public ASTNode {
   public:
     Token t;
     ExpressionChildNode(Token operand);
@@ -95,7 +95,7 @@ namespace lang {
     void printTree(int level);
   };
   
-  class BlockNode: public ASTNode {
+  class BlockNode : public ASTNode {
   public:
     BlockNode();
     
@@ -103,7 +103,7 @@ namespace lang {
     void printTree(int level);
   };
   
-  class ConditionalNode: public BlockNode {
+  class ConditionalNode : public BlockNode {
   private:
     int block = 1;
   public:
@@ -120,7 +120,7 @@ namespace lang {
     void printTree(int level);
   };
   
-  class WhileNode: public BlockNode {
+  class WhileNode : public BlockNode {
   public:
     WhileNode(ExpressionNode* condition, BlockNode* loop);
     
