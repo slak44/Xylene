@@ -46,7 +46,10 @@ namespace lang {
       try {
         tokenize(code);
         if (PARSER_PRINT_TOKENS) for (auto tok : tokens) print(tok, "\n");
-        if (PARSER_PRINT_AS_EXPR) for (auto tok : ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
+        if (PARSER_PRINT_AS_EXPR) {
+          for (auto tok : ExpressionNode(tokens).getRPNOutput()) print(tok.data, " ");
+          print("\n");
+        }
         buildTree(tokens);
       } catch (Error &e) {
         print(e.toString());
