@@ -33,6 +33,7 @@ namespace lang {
       "type", "constructor", "public", "protected", "private",
       "if", "while"
     };
+    // Technically keywords, but constructs for the purpose of this parser
     std::vector<std::string> constructKeywords {
       "do", "end",
       "else",
