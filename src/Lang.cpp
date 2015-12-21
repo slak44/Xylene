@@ -57,12 +57,11 @@ namespace lang {
         // Ignore whitespace
         if (isspace(code[i])) continue;
         
-        // Block begin/end
-        // Parenthesis
-        // Semicolons
+        // Various constructs
         if (code[i] == '{' || code[i] == '}' ||
-        code[i] == '(' || code[i] == ')' ||
-        code[i] == ';') {
+            code[i] == '[' || code[i] == ']' ||
+            code[i] == '(' || code[i] == ')' ||
+            code[i] == ';') {
           tokens.push_back(Token(std::string(1, code[i]), CONSTRUCT, lines));
           continue;
         }
@@ -285,6 +284,8 @@ namespace lang {
           auto cNode = dynamic_cast<ConditionalNode*>(blockStack.back());
           if (cNode == nullptr) throw Error("Cannot find conditional structure for token `else`", "SyntaxError", blockStack.back()->getLineNumber());
           cNode->nextBlock();
+        } else if (toks[0].data == "do" && toks[0].type == CONSTRUCT) {
+          addToBlock(new BlockNode());
         } else if (toks[0].data == "end" && toks[0].type == CONSTRUCT) {
           blockStack.pop_back();
         } else {
