@@ -129,8 +129,10 @@ namespace lang {
     for (auto i : opChars) {
       if (c == i) return true;
     }
+    // TODO: get this list from somewhere else, its duplicate
     std::vector<char> constrChars {
       '{', '}',
+      '[', ']',
       ';', ':',
       '(', ')',
       '?'

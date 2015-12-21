@@ -13,6 +13,7 @@
 #include "tokens.hpp"
 #include "nodes.hpp"
 #include "builtins.hpp"
+#include "functions.hpp"
 #include "operator_maps.hpp"
 
 namespace lang {
@@ -32,7 +33,11 @@ namespace lang {
       "type", "constructor", "public", "protected", "private",
       "if", "while"
     };
-    std::vector<std::string> constructKeywords {"do", "end", "else"};
+    std::vector<std::string> constructKeywords {
+      "do", "end",
+      "else",
+      "=>"
+    };
   public:
     AST tree = AST();
     
@@ -235,6 +240,15 @@ namespace lang {
       addToBlock(expr);
     }
     
+    std::vector<std::string> tokenToStringTypeList(std::vector<Token> typeList) {
+      std::vector<std::string> stringList;
+      // Remove commas from type list
+      std::remove_if(typeList.begin(), typeList.end(), [](Token& tok) {return tok.type == OPERATOR && tok.data == ",";});
+      // Map each token to a string, creating the type list
+      std::transform(typeList.begin(), typeList.end(), stringList.begin(), [](Token& tok) {return tok.data;});
+      return stringList;
+    }
+    
     void resolveDefineStatements(std::vector<Token>& toks, std::function<void(ASTNode*)> addToBlock) {
       // Check if it's a simple variable declaration
       if (toks[1].type == VARIABLE) {
@@ -249,7 +263,51 @@ namespace lang {
       }
       // Check if it's a function declaration
       if (toks[1].data == "function" && toks[1].type == KEYWORD) {
-        // TODO: function declarations
+        Arguments* args = new Arguments();
+        std::vector<std::string> returnTypes;
+        // Parse arguments
+        std::size_t pos = 3;
+        while (toks[pos].data != "=>" || toks[pos].data != "do") {
+          if (toks[pos].data == "[") {
+            std::vector<Token> argumentData;
+            pos++; // Ignore the leading bracket '['
+            while (toks[pos].data != "]") {
+              argumentData.push_back(toks[pos]);
+              pos++;
+              if (pos >= toks.size()) throw Error("Missing ] in declaration of function " + toks[2].data, "SyntaxError", toks[2].line);
+            }
+            pos++; // Ignore the trailing bracket ']'
+            std::vector<std::string> typeList;
+            std::string name;
+            if (argumentData.size() > 2 && argumentData[2].data == ":") {
+              // Is the name prefixed
+              name = argumentData[0].data;
+              argumentData = std::vector<Token>(argumentData.begin() + 2, argumentData.end()); // Remove name and ':' from vector
+            } else {
+              // Is the name postfixed
+              name = argumentData.back().data;
+              argumentData.pop_back(); // Remove name from vector
+            }
+            if (argumentData.size() > 0) typeList = tokenToStringTypeList(argumentData);
+            if (typeList.size() == 0) typeList = {"define"}; // If an argument has no types specified, it can hold any type
+            args->insert({name, new Variable(nullptr, typeList)});
+          } else throw Error("Missing [ in declaration of function " + toks[2].data, "SyntaxError", toks[2].line);
+        }
+        // Parse return types
+        if (toks[pos].data == "=>") {
+          pos++; // Ignore the '=>'
+          std::vector<Token> returnTypesTokens;
+          while (toks[pos].data != "do") {
+            returnTypesTokens.push_back(toks[pos]);
+            pos++;
+            if (pos >= toks.size()) throw Error("Missing block begin 'do' in declaration of function " + toks[2].data, "SyntaxError", toks[2].line);
+          }
+          returnTypes = tokenToStringTypeList(returnTypesTokens);
+          if (returnTypes.size() == 0) throw Error("Missing types in return type specification", "SyntaxError", toks[2].line);
+        }
+        auto fNode = new FunctionNode(toks[2].data, args, returnTypes);
+        addToBlock(fNode);
+        addToBlock(new BlockNode());
         return;
       }
     }
@@ -317,6 +375,9 @@ namespace lang {
           interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]))->printTree(0);
         } else if (nodeType == "DeclarationNode") {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
+        } else if (nodeType == "FunctionNode") {
+          FunctionNode* n = dynamic_cast<FunctionNode*>(nodes[i]);
+          registerDeclaration(new DeclarationNode({"Function"}, Token(new Function(n), FUNCTION, PHONY_TOKEN)));
         } else if (nodeType == "ConditionalNode") {
           resolveCondition(dynamic_cast<ConditionalNode*>(nodes[i]));
         } else if (nodeType == "WhileNode") {
