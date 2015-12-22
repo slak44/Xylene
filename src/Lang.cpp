@@ -385,7 +385,9 @@ namespace lang {
       for (uint64 i = 0; i < nodes.size(); ++i) {
         auto nodeType = nodes[i]->getNodeType();
         if (nodeType == "ExpressionNode") {
-          interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]))->printTree(0);
+          auto result = interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]));
+          if (result == nullptr) print("nullptr?\n");
+          else result->printTree(0);
         } else if (nodeType == "DeclarationNode") {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
         } else if (nodeType == "ConditionalNode") {
@@ -488,6 +490,7 @@ namespace lang {
           for (auto argPair : *currentArgs) functionScope->getScope()->insert(argPair);
           interpret(functionCode->getChildren());
           // TODO: handle return statement. assign value somewhere in the scope, then extract it here
+          return nullptr; // This should return whatever the `functionCode` above returns ^^
         }
         ExpressionChildNode* processed = new ExpressionChildNode(node->t);
         processed->setParent(node->getParent());
