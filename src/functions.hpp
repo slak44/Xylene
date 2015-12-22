@@ -21,6 +21,20 @@ namespace lang {
     FunctionNode* getFNode();
   };
   
+  class NativeBlockNode : public BlockNode {
+  private:
+    std::function<void(ASTNode*)> nativeCode = nullptr;
+  public:
+    NativeBlockNode(std::function<void(ASTNode*)> nativeCode);
+      
+    std::string getNodeType();
+    void addChild(ASTNode* child);
+    std::vector<ASTNode*>& getChildren();
+    
+    void run(ASTNode* funcScope);
+    void setSelfInFunction(FunctionNode* fNode);
+  };
+  
 } /* namespace lang */
 
 #endif /* FUNCTIONS_HPP_ */

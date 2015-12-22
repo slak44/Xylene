@@ -73,7 +73,9 @@ namespace lang {
   
   typedef std::vector<std::pair<std::string, Variable*> > Arguments;
   typedef std::vector<std::string> TypeList; // TODO: use this in more places
+  class NativeBlockNode;
   class FunctionNode : public BlockNode {
+    friend class NativeBlockNode;
   private:
     std::string name;
     Arguments* defaultArguments;
@@ -151,18 +153,6 @@ namespace lang {
     std::string getNodeType();
     void printTree(int level);
   };
-  
-  class AbstractSyntaxTree {
-  private:
-    ASTNode root = ASTNode();
-  public:
-    AbstractSyntaxTree();
-    
-    void addRootChild(ASTNode* node);
-    ChildrenNodes getRootChildren();
-  };
-  
-  typedef AbstractSyntaxTree AST;
   
   Variable* resolveNameFrom(ASTNode* localNode, std::string identifier);
 } /* namespace lang */

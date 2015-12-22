@@ -176,7 +176,7 @@ namespace lang {
       auto tok = stackCopy.back();
       stackCopy.pop_back();
       node = new ExpressionChildNode(tok, stackCopy);
-      node->setLineNumber(stackCopy.back().line); // TODO: this must happen before the constructor above, or integrate in constructor
+      // node->setLineNumber(stackCopy.back().line); // TODO: this must happen before the constructor above, or integrate in constructor
     } else {
       throw std::runtime_error("Empty expression.\n");
     }
@@ -294,54 +294,4 @@ namespace lang {
     this->getCondition()->printTree(level + 1);
   }
 
-  AST::AbstractSyntaxTree() {
-    Type* integerType = new Type(std::string("Integer"), {
-      // Static members
-      {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
-      {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
-    }, {
-      // Instance members
-      // TODO add members
-    });
-    (*root.getScope())[std::string("Integer")] = new Variable(integerType, {}); // Do not allow assignment by not specifying any allowed types for the Variable
-    Type* floatType = new Type(std::string("Float"), {
-      // Static members
-      {"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)},
-      {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
-    }, {
-      // Instance members
-      // TODO add members
-    });
-    (*root.getScope())[std::string("Float")] = new Variable(floatType, {});
-    Type* stringType = new Type(std::string("String"), {
-      // Static members
-    }, {
-      // Instance members
-      // TODO add members
-    });
-    (*root.getScope())[std::string("String")] = new Variable(stringType, {});
-    Type* booleanType = new Type(std::string("Boolean"), {
-      // Static members
-    }, {
-      // Instance members
-      // TODO add members
-    });
-    (*root.getScope())[std::string("Boolean")] = new Variable(booleanType, {});
-    Type* functionType = new Type(std::string("Function"), {
-      // Static members
-    }, {
-      // Instance members
-      // TODO add members
-    });
-    (*root.getScope())[std::string("Function")] = new Variable(functionType, {});
-  }
-  
-  void AST::addRootChild(ASTNode* node) {
-    root.addChild(node);
-  }
-  
-  ChildrenNodes AST::getRootChildren() {
-    return root.getChildren();
-  }
-  
 } /* namespace lang */

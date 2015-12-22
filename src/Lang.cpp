@@ -17,6 +17,75 @@
 #include "operator_maps.hpp"
 
 namespace lang {
+  class AbstractSyntaxTree {
+  private:
+    ASTNode root = ASTNode();
+  public:
+    AbstractSyntaxTree() {
+      FunctionNode* printNode = new FunctionNode(std::string("print"), new Arguments {{"data", new Variable(nullptr, {"define"})}}, {});
+      NativeBlockNode* bn = new NativeBlockNode([=](ASTNode* funcScope) {
+        Variable* arg = resolveNameFrom(funcScope, "data");
+        Object* somethingToPrint = arg->read();
+        if (somethingToPrint == nullptr) return;
+        auto type = somethingToPrint->getTypeData();
+        if (type == "String") print(dynamic_cast<String*>(somethingToPrint)->getString());
+        else if (type == "Integer") print(dynamic_cast<Integer*>(somethingToPrint)->getNumber());
+        else if (type == "Float") print(dynamic_cast<Float*>(somethingToPrint)->getNumber());
+        else if (type == "Boolean") print(dynamic_cast<Boolean*>(somethingToPrint)->value() ? "true" : "false");
+        else if (type == "Function") print("Function " + dynamic_cast<Function*>(somethingToPrint)->getFNode()->getName());
+        else if (type == "Type") print("Type " + dynamic_cast<Type*>(somethingToPrint)->getName());
+      });
+      bn->setSelfInFunction(printNode);
+      (*root.getScope())[std::string("print")] = new Variable(new Function(printNode), {});
+      Type* integerType = new Type(std::string("Integer"), {
+        // Static members
+        {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
+        {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
+      }, {
+        // Instance members
+        // TODO add members
+      });
+      (*root.getScope())[std::string("Integer")] = new Variable(integerType, {}); // Do not allow assignment by not specifying any allowed types for the Variable
+      Type* floatType = new Type(std::string("Float"), {
+        // Static members
+        {"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)},
+        {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
+      }, {
+        // Instance members
+        // TODO add members
+      });
+      (*root.getScope())[std::string("Float")] = new Variable(floatType, {});
+      Type* stringType = new Type(std::string("String"), {
+        // Static members
+      }, {
+        // Instance members
+        // TODO add members
+      });
+      (*root.getScope())[std::string("String")] = new Variable(stringType, {});
+      Type* booleanType = new Type(std::string("Boolean"), {
+        // Static members
+      }, {
+        // Instance members
+        // TODO add members
+      });
+      (*root.getScope())[std::string("Boolean")] = new Variable(booleanType, {});
+      Type* functionType = new Type(std::string("Function"), {
+        // Static members
+      }, {
+        // Instance members
+        // TODO add members
+      });
+      (*root.getScope())[std::string("Function")] = new Variable(functionType, {});
+    }
+    
+    void addRootChild(ASTNode* node) {
+      root.addChild(node);
+    }
+    ChildrenNodes getRootChildren() {
+      return root.getChildren();
+    }
+  };
+  typedef AbstractSyntaxTree AST;
   
   class Parser {
   private:
@@ -385,9 +454,7 @@ namespace lang {
       for (uint64 i = 0; i < nodes.size(); ++i) {
         auto nodeType = nodes[i]->getNodeType();
         if (nodeType == "ExpressionNode") {
-          auto result = interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]));
-          if (result == nullptr) print("nullptr?\n");
-          else result->printTree(0);
+          interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]));
         } else if (nodeType == "DeclarationNode") {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
         } else if (nodeType == "ConditionalNode") {
@@ -459,10 +526,12 @@ namespace lang {
           // This catches the last argument, because the last comma has two leafs and no branch
           if (lastNode->t.data != ",") listOfArgs.push_back(static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(lastNode))->t.typeData));
         }
+        print(listOfArgs.size(), "abc\n");
         std::reverse(listOfArgs.begin(), listOfArgs.end());
         std::size_t pos = 0;
         for (auto arg : listOfArgs) {
           // Don't care if there's more args than necesary, just ignore them:
+          // TODO: varargs functions
           if (pos >= args->size()) break;
           args->at(pos).second->assign(arg);
           pos++;
@@ -488,7 +557,8 @@ namespace lang {
           functionScope->setParent(node);
           functionCode->setParent(functionScope);
           for (auto argPair : *currentArgs) functionScope->getScope()->insert(argPair);
-          interpret(functionCode->getChildren());
+          if (functionCode->getNodeType() == "NativeBlockNode") dynamic_cast<NativeBlockNode*>(functionCode)->run(functionScope);
+          else interpret(functionCode->getChildren());
           // TODO: handle return statement. assign value somewhere in the scope, then extract it here
           return nullptr; // This should return whatever the `functionCode` above returns ^^
         }
