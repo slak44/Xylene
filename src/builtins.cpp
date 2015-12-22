@@ -4,7 +4,7 @@ namespace lang {
   Object::~Object() {}
   
   Variable::Variable() {}
-  Variable::Variable(Object* obj, std::vector<std::string> types):
+  Variable::Variable(Object* obj, TypeList types):
     internal(obj),
     types(types) {
     if (obj != nullptr) currentType = obj->getTypeData();
@@ -30,7 +30,7 @@ namespace lang {
   std::string Variable::getCurrentType() {
     return this->currentType;
   }
-  std::vector<std::string> Variable::getTypes() {
+  TypeList Variable::getTypes() {
     return this->types;
   }
   

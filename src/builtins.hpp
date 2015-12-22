@@ -12,6 +12,7 @@
 #include "global.hpp"
 
 namespace lang {
+  typedef std::vector<std::string> TypeList;
   class Object : Stringifyable {
   public:
     typedef std::function<Object*(Object*, Object*)> BinaryOp;
@@ -38,10 +39,10 @@ namespace lang {
   private:
     Object* internal = nullptr;
     std::string currentType = "";
-    std::vector<std::string> types {};
+    TypeList types {};
   public:
     Variable();
-    Variable(Object* obj, std::vector<std::string> types);
+    Variable(Object* obj, TypeList types);
     
     bool isTruthy();
     std::string toString();
@@ -50,7 +51,7 @@ namespace lang {
     void assign(Object* newObj);
     Object* read();
     std::string getCurrentType();
-    std::vector<std::string> getTypes();
+    TypeList getTypes();
   };
   
   enum Visibility : int {

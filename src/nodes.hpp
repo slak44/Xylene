@@ -61,10 +61,10 @@ namespace lang {
   
   class DeclarationNode : public SingleChildNode {
   public:
-    std::vector<std::string> typeNames;
+    TypeList typeNames;
     Token identifier;
     
-    DeclarationNode(std::vector<std::string> typeNames, Token identifier);
+    DeclarationNode(TypeList typeNames, Token identifier);
     void addChild(ASTNode* child);
     
     std::string getNodeType();
@@ -72,7 +72,6 @@ namespace lang {
   };
   
   typedef std::vector<std::pair<std::string, Variable*> > Arguments;
-  typedef std::vector<std::string> TypeList; // TODO: use this in more places
   class NativeBlockNode;
   class FunctionNode : public BlockNode {
     friend class NativeBlockNode;

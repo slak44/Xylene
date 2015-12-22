@@ -64,7 +64,7 @@ namespace lang {
     child->printTree(level + 1);
   }
   
-  DeclarationNode::DeclarationNode(std::vector<std::string> typeNames, Token identifier) {
+  DeclarationNode::DeclarationNode(TypeList typeNames, Token identifier) {
     this->typeNames = typeNames;
     this->identifier = identifier;
   }
@@ -83,7 +83,7 @@ namespace lang {
     if (this->getChildren().size() == 1) dynamic_cast<ExpressionNode*>(this->getChild())->printTree(level + 1);
   }
   
-  FunctionNode::FunctionNode(std::string name, Arguments* arguments, std::vector<std::string> returnTypes):
+  FunctionNode::FunctionNode(std::string name, Arguments* arguments, TypeList returnTypes):
     name(name),
     defaultArguments(arguments),
     returnTypes(returnTypes) {

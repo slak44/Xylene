@@ -275,7 +275,7 @@ namespace lang {
       return condition;
     }
     
-    DeclarationNode* buildDeclaration(std::vector<Token> withoutTypes, std::vector<std::string> types) {
+    DeclarationNode* buildDeclaration(std::vector<Token> withoutTypes, TypeList types) {
       DeclarationNode* decl = new DeclarationNode(types, withoutTypes[0]);
       decl->setLineNumber(withoutTypes[0].line);
       if (withoutTypes[1].data != ";" || withoutTypes[1].type != CONSTRUCT) {
@@ -296,7 +296,7 @@ namespace lang {
     void resolveTypeStatements(std::vector<Token>& toks, const std::function<void(ASTNode*)>& addToBlock) {
       // Check if it's a type list
       if (toks[0].type == TYPE && toks[1].type == OPERATOR && toks[1].data == ",") {
-        std::vector<std::string> typeList {};
+        TypeList typeList {};
         std::size_t count = 0;
         for (;; count++) {
           if (toks[count].type == TYPE) typeList.push_back(toks[count].data);
@@ -319,8 +319,8 @@ namespace lang {
       addToBlock(expr);
     }
     
-    std::vector<std::string> tokenToStringTypeList(std::vector<Token> typeList) {
-      std::vector<std::string> stringList {};
+    TypeList tokenToStringTypeList(std::vector<Token> typeList) {
+      TypeList stringList {};
       // Remove commas from type list
       std::remove_if(typeList.begin(), typeList.end(), [](Token& tok) {return tok.type == OPERATOR && tok.data == ",";});
       // Map each token to a string, creating the type list
@@ -343,7 +343,7 @@ namespace lang {
       // Check if it's a function declaration
       if (toks[1].data == "function" && toks[1].type == KEYWORD) {
         Arguments* args = new Arguments();
-        std::vector<std::string> returnTypes;
+        TypeList returnTypes;
         // Parse arguments
         std::size_t pos = 3;
         while (toks[pos].data != "=>" && toks[pos].data != "do") {
@@ -356,7 +356,7 @@ namespace lang {
               if (pos >= toks.size()) throw Error("Missing ] in declaration of function " + toks[2].data, "SyntaxError", toks[2].line);
             }
             pos++; // Ignore the trailing bracket ']'
-            std::vector<std::string> typeList;
+            TypeList typeList;
             std::string name;
             if (argumentData.size() > 2 && argumentData[2].data == ":") {
               // Is the name prefixed
