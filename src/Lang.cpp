@@ -451,11 +451,13 @@ namespace lang {
       if (node->t.type != OPERATOR && node->t.data != ",") {
         args->at(0).second->assign(static_cast<Object*>(interpretExpression(node)->t.typeData));
       } else if (node->t.type == OPERATOR && node->t.data == ",") {
-        ExpressionChildNode* lastNode = dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]);
+        ExpressionChildNode* lastNode = node;
         std::vector<Object*> listOfArgs;
         while (lastNode->t.data == ",") {
           listOfArgs.push_back(static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(lastNode->getChildren()[0]))->t.typeData));
           lastNode = dynamic_cast<ExpressionChildNode*>(lastNode->getChildren()[1]);
+          // This catches the last argument, because the last comma has two leafs and no branch
+          if (lastNode->t.data != ",") listOfArgs.push_back(static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(lastNode))->t.typeData));
         }
         std::reverse(listOfArgs.begin(), listOfArgs.end());
         std::size_t pos = 0;
