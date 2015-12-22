@@ -574,16 +574,19 @@ namespace lang {
   
 } /* namespace lang */
 
+static bool exitCodes = false;
+#define EXIT(code) (exitCodes ? code : 0)
+
 int interpretCode() {
   try {
     lang::Parser a(INPUT);
     lang::Interpreter in(a.tree);
   } catch(Error& e) {
     print(e.toString());
-    return ERROR_CODE_FAILED;
+    return EXIT(ERROR_CODE_FAILED);
   } catch(std::runtime_error& re) {
     print(re.what(), "\n");
-    return ERROR_INTERNAL;
+    return EXIT(ERROR_INTERNAL);
   }
   return 0;
 }
@@ -596,6 +599,7 @@ int main(int argc, char** argv) {
     ("use-existing,c", "use constants.data and inputs.data")
     ("evaluate,e", po::value<std::string>(), "use to evaluate code from the command line")
     ("read-file,f", po::value<std::string>(), "use to evaluate code from a file at the specified path")
+    ("exit-codes", "use to send non-0 exit codes on failure")
   ;
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -604,6 +608,9 @@ int main(int argc, char** argv) {
   if (vm.count("help")) {
     print(desc, "\n");
     return 0;
+  }
+  if (vm.count("exit-codes")) {
+    exitCodes = true;
   }
   if (vm.count("use-existing")) {
     getConstants();
@@ -618,7 +625,7 @@ int main(int argc, char** argv) {
     return interpretCode();
   } else {
     print(desc, "\n");
-    return ERROR_BAD_INPUT;
+    return EXIT(ERROR_BAD_INPUT);
   }
   return 0;
 }
