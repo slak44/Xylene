@@ -449,8 +449,6 @@ namespace lang {
     Arguments* parseArgumentsTree(Function* f, ExpressionChildNode* node) {
       Arguments* args = f->getFNode()->getArguments();
       if (node->t.type != OPERATOR && node->t.data != ",") {
-        args->at(0).second->assign(static_cast<Object*>(node->t.typeData));
-      } else if (node->t.type == OPERATOR && node->t.data != ",") {
         args->at(0).second->assign(static_cast<Object*>(interpretExpression(node)->t.typeData));
       } else if (node->t.type == OPERATOR && node->t.data == ",") {
         ExpressionChildNode* lastNode = dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]);
