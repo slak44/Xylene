@@ -10,9 +10,9 @@
 
 #include "global.hpp"
 #include "operators.hpp"
+#include "builtins.hpp"
 #include "tokens.hpp"
 #include "nodes.hpp"
-#include "builtins.hpp"
 #include "functions.hpp"
 #include "operator_maps.hpp"
 
@@ -300,7 +300,7 @@ namespace lang {
             }
             if (argumentData.size() > 0) typeList = tokenToStringTypeList(argumentData);
             if (typeList.size() == 0) typeList = {"define"}; // If an argument has no types specified, it can hold any type
-            args->insert({name, new Variable(nullptr, typeList)});
+            args->push_back({name, new Variable(nullptr, typeList)});
           } else throw Error("Unexpected token in declaration of function " + toks[2].data, "SyntaxError", toks[2].line);
         }
         // Parse return types
@@ -437,9 +437,51 @@ namespace lang {
       }
     }
     
+    Arguments* parseArgumentsTree(Function* f, ExpressionChildNode* node) {
+      Arguments* args = f->getFNode()->getArguments();
+      if (node->t.type != OPERATOR && node->t.data != ",") {
+        args->at(0).second->assign(static_cast<Object*>(node->t.typeData));
+      } else if (node->t.type == OPERATOR && node->t.data != ",") {
+        args->at(0).second->assign(static_cast<Object*>(interpretExpression(node)->t.typeData));
+      } else if (node->t.type == OPERATOR && node->t.data == ",") {
+        ExpressionChildNode* lastNode = dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]);
+        std::vector<Object*> listOfArgs;
+        while (lastNode->t.data == ",") {
+          listOfArgs.push_back(static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(lastNode->getChildren()[0]))->t.typeData));
+          lastNode = dynamic_cast<ExpressionChildNode*>(lastNode->getChildren()[1]);
+        }
+        std::reverse(listOfArgs.begin(), listOfArgs.end());
+        std::size_t pos = 0;
+        for (auto arg : listOfArgs) {
+          // Don't care if there's more args than necesary, just ignore them:
+          if (pos >= args->size()) break;
+          args->at(pos).second->assign(arg);
+          pos++;
+        }
+      } else {
+        throw Error("Wrong data as argument of function " + f->getFNode()->getName(), "TypeError", node->getLineNumber());
+      }
+      return args;
+    }
+    
     ExpressionChildNode* interpretExpression(ExpressionChildNode* node) {
       if (node->getChildren().size() == 0) return node;
       if (node->t.type == OPERATOR) {
+        if (node->t.data == "()") {
+          auto name = dynamic_cast<ExpressionChildNode*>(node->getChildren()[0])->t.data;
+          Variable* funVar = resolveNameFrom(node, name);
+          if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
+          Function* func = dynamic_cast<Function*>(funVar->read());
+          if (func == nullptr) throw Error("Variable " + name + " is not a function", "TypeError", node->t.line);
+          Arguments* currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]));
+          BlockNode* functionScope = new BlockNode();
+          BlockNode* functionCode = dynamic_cast<BlockNode*>(func->getFNode()->getChild());
+          functionScope->setParent(node);
+          functionCode->setParent(functionScope);
+          for (auto argPair : *currentArgs) functionScope->getScope()->insert(argPair);
+          interpret(functionCode->getChildren());
+          // TODO: handle return statement. assign value somewhere in the scope, then extract it here
+        }
         ExpressionChildNode* processed = new ExpressionChildNode(node->t);
         processed->setParent(node->getParent());
         auto ch = node->getChildren();

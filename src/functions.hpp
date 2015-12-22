@@ -2,7 +2,6 @@
 #define FUNCTIONS_HPP_
 
 #include <string>
-#include <vector>
 
 #include "global.hpp"
 #include "builtins.hpp"
@@ -12,14 +11,14 @@ namespace lang {
   class Function : public Object {
   private:
     FunctionNode* functionCode = nullptr;
-    Arguments* functionScope = nullptr;
-    std::vector<std::string> returnTypes = {};
   public:
     Function(FunctionNode* node);
     
     bool isTruthy();
     std::string toString();
     std::string getTypeData();
+    
+    FunctionNode* getFNode();
   };
   
 } /* namespace lang */

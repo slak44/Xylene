@@ -25,7 +25,7 @@ namespace lang {
     virtual ~ASTNode();
     
     virtual void addChild(ASTNode* child);
-    std::vector<ASTNode*>& getChildren();
+    std::vector<ASTNode*>& getChildren(); // TODO: make some subclasses overload this, too many dynamic_casts
     void setParent(ASTNode* parent);
     ASTNode* getParent();
     
@@ -44,7 +44,7 @@ namespace lang {
     SingleChildNode();
     
     void addChild(ASTNode* child);
-    ASTNode* getChild();
+    ASTNode* getChild(); // TODO: make some subclasses overload this, too many dynamic_casts
     
     std::string getNodeType();
     void printTree(int level);
@@ -64,7 +64,7 @@ namespace lang {
     void printTree(int level);
   };
   
-  typedef Scope Arguments; // They use the same data type...
+  typedef std::vector<std::pair<std::string, Variable*> > Arguments;
   typedef std::vector<std::string> TypeList; // TODO: use this in more places
   class FunctionNode : public SingleChildNode {
   private:
