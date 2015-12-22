@@ -6,3 +6,5 @@ constants.data
 inputs.data
 src/*.gch
 test
+node_modules/
+.jshintrc
