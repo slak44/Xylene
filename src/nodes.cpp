@@ -86,12 +86,13 @@ namespace lang {
   FunctionNode::FunctionNode(std::string name, Arguments* arguments, std::vector<std::string> returnTypes):
     name(name),
     defaultArguments(arguments),
-    returnTypes(returnTypes) {}
+    returnTypes(returnTypes) {
+    this->children.push_back(new BlockNode());
+    this->children[0]->setParent(this);
+  }
   
   void FunctionNode::addChild(ASTNode* child) {
-    auto node = dynamic_cast<BlockNode*>(child);
-    if (node == nullptr) throw std::invalid_argument("FunctionNode only accepts a BlockNode as its child.");
-    this->SingleChildNode::addChild(node);
+    this->getChildren()[0]->addChild(child);
   }
   
   std::string FunctionNode::getNodeType() {return "FunctionNode";}
@@ -99,7 +100,7 @@ namespace lang {
   void FunctionNode::printTree(int level) {
     printIndent(level);
     print("Function " + name, "\n");
-    if (this->getChildren().size() == 1) dynamic_cast<BlockNode*>(this->getChild())->printTree(level + 1);
+    if (this->getChildren().size() == 1) dynamic_cast<BlockNode*>(this->getChildren()[0])->printTree(level + 1);
   }
   
   std::string FunctionNode::getName() {return name;}

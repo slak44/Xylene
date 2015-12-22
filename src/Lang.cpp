@@ -224,7 +224,7 @@ namespace lang {
       return expr;
     }
     
-    void resolveTypeStatements(std::vector<Token>& toks, std::function<void(ASTNode*)> addToBlock) {
+    void resolveTypeStatements(std::vector<Token>& toks, const std::function<void(ASTNode*)>& addToBlock) {
       // Check if it's a type list
       if (toks[0].type == TYPE && toks[1].type == OPERATOR && toks[1].data == ",") {
         std::vector<std::string> typeList {};
@@ -259,7 +259,7 @@ namespace lang {
       return stringList;
     }
     
-    void resolveDefineStatements(std::vector<Token>& toks, std::function<void(ASTNode*)> addToBlock) {
+    void resolveDefineStatements(std::vector<Token>& toks, const std::function<void(ASTNode*)>& addToBlock, std::vector<ASTNode*>& blockStack) {
       // Check if it's a simple variable declaration
       if (toks[1].type == VARIABLE) {
         auto decl = buildDeclaration(std::vector<Token>(toks.begin() + 1, toks.end()), {toks[0].data});
@@ -318,13 +318,13 @@ namespace lang {
         auto fNode = new FunctionNode(toks[2].data, args, returnTypes);
         fNode->setLineNumber(toks[2].line);
         addToBlock(fNode);
-        addToBlock(new BlockNode());
+        blockStack.push_back(fNode);
         return;
       }
     }
     
     void buildTree(std::vector<Token> tokens) {
-      static std::vector<BlockNode*> blockStack {};
+      static std::vector<ASTNode*> blockStack {};
       auto addToBlock = [this](ASTNode* child) {
         if (blockStack.size() == 0) tree.addRootChild(child);
         else blockStack.back()->addChild(child);
@@ -336,7 +336,7 @@ namespace lang {
         if (toks[0].type == TYPE) {
           resolveTypeStatements(toks, addToBlock);
         } else if (toks[0].data == "define" && toks[0].type == KEYWORD) {
-          resolveDefineStatements(toks, addToBlock);
+          resolveDefineStatements(toks, addToBlock, blockStack);
         } else if (toks[0].data == "while" && toks[0].type == KEYWORD) {
           auto wBlock = new WhileNode(evaluateCondition(toks), new BlockNode());
           wBlock->setLineNumber(toks[0].line);
@@ -354,7 +354,9 @@ namespace lang {
           if (cNode == nullptr) throw Error("Cannot find conditional structure for token `else`", "SyntaxError", blockStack.back()->getLineNumber());
           cNode->nextBlock();
         } else if (toks[0].data == "do" && toks[0].type == CONSTRUCT) {
-          addToBlock(new BlockNode());
+          auto newBlock = new BlockNode();
+          addToBlock(newBlock);
+          blockStack.push_back(newBlock);
         } else if (toks[0].data == "end" && toks[0].type == CONSTRUCT) {
           blockStack.pop_back();
         } else {
@@ -386,16 +388,21 @@ namespace lang {
           interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]))->printTree(0);
         } else if (nodeType == "DeclarationNode") {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
-        } else if (nodeType == "FunctionNode") {
-          FunctionNode* n = dynamic_cast<FunctionNode*>(nodes[i]);
-          auto funDecl = new DeclarationNode({"Function"}, Token(new Function(n), FUNCTION, PHONY_TOKEN));
-          n->getParent()->addChild(funDecl);
-          funDecl->setLineNumber(n->getLineNumber());
-          registerDeclaration(funDecl);
         } else if (nodeType == "ConditionalNode") {
           resolveCondition(dynamic_cast<ConditionalNode*>(nodes[i]));
         } else if (nodeType == "WhileNode") {
           doWhileLoop(dynamic_cast<WhileNode*>(nodes[i]));
+        } else if (nodeType == "FunctionNode") {
+          FunctionNode* n = dynamic_cast<FunctionNode*>(nodes[i]);
+          // Create a fake decl node so name resolution can find it
+          auto pseudoDecl = new DeclarationNode({"Function"}, Token(n->getName(), VARIABLE, PHONY_TOKEN));
+          // Make it look like it's in the place of the FunctionNode
+          pseudoDecl->setParent(n->getParent());
+          pseudoDecl->setLineNumber(n->getLineNumber());
+          // Add it to the scope
+          registerDeclaration(pseudoDecl);
+          // Assign the Function object to the newly created declaration, so it can be executed
+          pseudoDecl->getParentScope()->at(n->getName())->assign(new Function(n));
         }
       }
     }
@@ -475,7 +482,7 @@ namespace lang {
           if (func == nullptr) throw Error("Variable " + name + " is not a function", "TypeError", node->t.line);
           Arguments* currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]));
           BlockNode* functionScope = new BlockNode();
-          BlockNode* functionCode = dynamic_cast<BlockNode*>(func->getFNode()->getChild());
+          BlockNode* functionCode = dynamic_cast<BlockNode*>(func->getFNode()->getChildren()[0]);
           functionScope->setParent(node);
           functionCode->setParent(functionScope);
           for (auto argPair : *currentArgs) functionScope->getScope()->insert(argPair);

@@ -38,6 +38,7 @@ namespace lang {
     virtual std::string getNodeType();
     virtual void printTree(int level);
   };
+  typedef std::vector<ASTNode*> ChildrenNodes;
   
   class SingleChildNode : public ASTNode {
   public:
@@ -50,7 +51,13 @@ namespace lang {
     void printTree(int level);
   };
   
-  typedef std::vector<ASTNode*> ChildrenNodes;
+  class BlockNode : public ASTNode {
+  public:
+    BlockNode();
+    
+    std::string getNodeType();
+    void printTree(int level);
+  };
   
   class DeclarationNode : public SingleChildNode {
   public:
@@ -66,7 +73,7 @@ namespace lang {
   
   typedef std::vector<std::pair<std::string, Variable*> > Arguments;
   typedef std::vector<std::string> TypeList; // TODO: use this in more places
-  class FunctionNode : public SingleChildNode {
+  class FunctionNode : public BlockNode {
   private:
     std::string name;
     Arguments* defaultArguments;
@@ -110,14 +117,6 @@ namespace lang {
     Token t;
     ExpressionChildNode(Token operand);
     ExpressionChildNode(Token op, std::vector<Token>& operands);
-    
-    std::string getNodeType();
-    void printTree(int level);
-  };
-  
-  class BlockNode : public ASTNode {
-  public:
-    BlockNode();
     
     std::string getNodeType();
     void printTree(int level);
