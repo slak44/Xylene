@@ -25,7 +25,7 @@ namespace lang {
     virtual ~ASTNode();
     
     virtual void addChild(ASTNode* child);
-    std::vector<ASTNode*>& getChildren(); // TODO: make some subclasses overload this, too many dynamic_casts
+    std::vector<ASTNode*>& getChildren();
     void setParent(ASTNode* parent);
     ASTNode* getParent();
     
@@ -45,7 +45,7 @@ namespace lang {
     SingleChildNode();
     
     void addChild(ASTNode* child);
-    ASTNode* getChild(); // TODO: make some subclasses overload this, too many dynamic_casts
+    ASTNode* getChild();
     
     std::string getNodeType();
     void printTree(int level);

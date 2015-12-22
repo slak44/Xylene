@@ -43,7 +43,6 @@ namespace lang {
         {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
       }, {
         // Instance members
-        // TODO add members
       });
       (*root.getScope())[std::string("Integer")] = new Variable(integerType, {}); // Do not allow assignment by not specifying any allowed types for the Variable
       Type* floatType = new Type(std::string("Float"), {
@@ -52,28 +51,24 @@ namespace lang {
         {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
       }, {
         // Instance members
-        // TODO add members
       });
       (*root.getScope())[std::string("Float")] = new Variable(floatType, {});
       Type* stringType = new Type(std::string("String"), {
         // Static members
       }, {
         // Instance members
-        // TODO add members
       });
       (*root.getScope())[std::string("String")] = new Variable(stringType, {});
       Type* booleanType = new Type(std::string("Boolean"), {
         // Static members
       }, {
         // Instance members
-        // TODO add members
       });
       (*root.getScope())[std::string("Boolean")] = new Variable(booleanType, {});
       Type* functionType = new Type(std::string("Function"), {
         // Static members
       }, {
         // Instance members
-        // TODO add members
       });
       (*root.getScope())[std::string("Function")] = new Variable(functionType, {});
     }
