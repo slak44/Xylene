@@ -24,7 +24,7 @@ The Windows executable only requires the bundled `libwinpthread` and `libboost_p
 
 ### Tests
 
-Tests require `node` and `npm`.  
+Tests require `node` and `npm`. An executable must be present in the default location (run `make all`).  
 Run `npm install` in the tests directory to install dependencies.  
 To execute tests, use `node cli.js --color`.
 
