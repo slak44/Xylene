@@ -22,6 +22,12 @@ Running `make releases` creates a 64bit Linux build and a 32bit Windows one.
 The Linux executable is not statically linked with anything.  
 The Windows executable only requires the bundled `libwinpthread` and `libboost_program_options` to be dynamically linked.
 
+### Tests
+
+Tests require `node` and `npm`.  
+Run `npm install` in the tests directory to install dependencies.  
+To execute tests, use `node cli.js --color`.
+
 ### Syntax And Behavior
 - NOTE: not everything is implemented yet
 
