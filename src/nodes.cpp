@@ -176,7 +176,6 @@ namespace lang {
       auto tok = stackCopy.back();
       stackCopy.pop_back();
       node = new ExpressionChildNode(tok, stackCopy);
-      // node->setLineNumber(stackCopy.back().line); // TODO: this must happen before the constructor above, or integrate in constructor
     } else {
       throw std::runtime_error("Empty expression.\n");
     }
@@ -191,8 +190,12 @@ namespace lang {
     top->printTree(level);
   }
   
-  ExpressionChildNode::ExpressionChildNode(Token operand): t(operand) {};
+  ExpressionChildNode::ExpressionChildNode(Token operand):
+    t(operand) {
+    this->setLineNumber(operand.line);
+  };
   ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands): t(op) {
+    this->setLineNumber(op.line);
     if (operands.size() == 0) return;
     if (static_cast<Operator*>(op.typeData)->toString() == "()") {
       this->addChild(new ExpressionChildNode(operands[0])); // Add the name of the function as the first arg
@@ -207,12 +210,10 @@ namespace lang {
       if (next.type == OPERATOR) {
         operands.pop_back();
         auto branch = new ExpressionChildNode(next, operands);
-        branch->setLineNumber(op.line);
         this->addChild(branch);
       } else {
         operands.pop_back();
         auto leaf = new ExpressionChildNode(next);
-        leaf->setLineNumber(next.line);
         this->addChild(leaf);
       }
     }
