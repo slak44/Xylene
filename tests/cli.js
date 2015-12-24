@@ -16,7 +16,7 @@ fs.stat('../Lang', function (err, stats) {
 
 function equalityTest(name, expectedOutput, command) {
   return function (callback) {
-    cp.exec(`../Lang ${command}`, function (err, stdout, stderr) {
+    let child = cp.exec(`../Lang ${command}`, function (err, stdout, stderr) {
       if (err) {
         testFinished(name, `${err.message}\nSignal: ${chalk.red(err.signal)}`, callback);
         return;
@@ -24,14 +24,17 @@ function equalityTest(name, expectedOutput, command) {
       if (stdout === expectedOutput) testFinished(name, callback);
       else testFinished(name, `Command: ${command}\nExpected output: ${expectedOutput}\nRecieved output: ${stdout}`, callback);
     });
+    setTimeout(() => {
+      child.kill('SIGKILL');
+    }, 5 * 1000 /* Kill it after 5 seconds */);
   };
 }
 
 let tests = {
-  integers: equalityTest('Integers', '1', '-e "print(1)"'),
-  strings: equalityTest('Strings', 'qwerty1234{}/*-~?', '-e \'print("qwerty1234{}/*-~?")\''),
-  booleans: equalityTest('Booleans', 'true', '-e \'print(true)\''),
-  floats: equalityTest('Floats', '1.2', '-e \'print(1.2)\''),
+  integers: equalityTest('Integer Literals', '1', '-e "print(1)"'),
+  strings: equalityTest('String Literals', 'qwerty1234{}/*-~?', '-e \'print("qwerty1234{}/*-~?")\''),
+  booleans: equalityTest('Boolean Literals', 'true', '-e \'print(true)\''),
+  floats: equalityTest('Float Literals', '1.2', '-e \'print(1.2)\''),
   intPlus: equalityTest('Integer Addition', '16', '-e \'print(8 + 8)\''),
   fltPlus: equalityTest('Float Addition', '16.32', '-e \'print(8.16 + 8.16)\''),
   strPlus: equalityTest('String Concatenation', 'abcdef', '-e \'print("abc" + "def")\''),
@@ -61,6 +64,62 @@ let tests = {
     print(420);
   end
   '`),
+  whileLoop: equalityTest('While Loop', '0123',
+  `-e '
+  Integer i = 0;
+  while i < 4 do
+    print(i++);
+  end
+  '`),
+  increment: equalityTest('Increment Operators', '10',
+  `-e '
+  Integer i = 0;
+  print(++i);
+  i = 0;
+  print(i++);
+  '`),
+  decrement: equalityTest('Decrement Operators', '-10',
+  `-e '
+  Integer i = 0;
+  print(--i);
+  i = 0;
+  print(i--);
+  '`),
+  basicFunc: equalityTest('Basic Function', '1',
+  `-e '
+  define function printsOne do
+    print(1);
+  end
+  printOne();
+  '`),
+  argumentFunc: equalityTest('Function With Arguments', '4.2',
+  `-e '
+  define function add [Integer, Float a] [Integer, Float b] do
+    print(a + b);
+  end
+  add(1, 3.2);
+  '`),
+  returnFunc: equalityTest('Function With Return Values', '4',
+  `-e '
+  define function random => Integer do
+    return 4; // Chosen by fair dice roll
+  end
+  print(random());
+  '`),
+  fullFunc: equalityTest('Complete Function', '4.2',
+  `-e '
+  define function add [Integer, Float a] [Integer, Float b] => Integer, Float do
+    return a + b;
+  end
+  print(add(1, 3.2));
+  '`),
+  prefixArgs: equalityTest('Prefix Arguments', '4.2',
+  `-e '
+  define function add [a: Integer, Float] [b: Integer, Float] do
+    print(a + b);
+  end
+  add(1, 3.2);
+  '`),
 };
 
 function testFinished(testName, errorString, callback) {
@@ -81,7 +140,7 @@ function runTests() {
     if (successfulTests === testCount) {
       console.log(chalk.underline.green('All tests ok!'));
     } else {
-      console.log(`${chalk.green(successfulTests)} tests ok.\n${chalk.red(String(testCount - successfulTests))} tests failed`);
+      console.log(`${chalk.green(successfulTests)} tests ok\n${chalk.red(String(testCount - successfulTests))} tests failed`);
     }
   });
 }
