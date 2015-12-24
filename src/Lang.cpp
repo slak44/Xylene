@@ -514,9 +514,7 @@ namespace lang {
     
     Arguments* parseArgumentsTree(Function* f, ExpressionChildNode* node) {
       Arguments* args = f->getFNode()->getArguments();
-      if (node->t.type != OPERATOR && node->t.data != ",") {
-        args->at(0).second->assign(static_cast<Object*>(interpretExpression(node)->t.typeData));
-      } else if (node->t.type == OPERATOR && node->t.data == ",") {
+      if (node->t.type == OPERATOR && node->t.data == ",") {
         ExpressionChildNode* lastNode = node;
         std::vector<Object*> listOfArgs;
         while (lastNode->t.data == ",") {
@@ -535,7 +533,7 @@ namespace lang {
           pos++;
         }
       } else {
-        throw Error("Wrong data as argument of function " + f->getFNode()->getName(), "TypeError", node->getLineNumber());
+        args->at(0).second->assign(static_cast<Object*>(interpretExpression(node)->t.typeData));
       }
       return args;
     }
