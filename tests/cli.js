@@ -45,7 +45,7 @@ let tests = {
   '`),
   booleanCond: equalityTest('Boolean Expression', 'false',
   `-e '
-  !(true || false && true || false)
+  print(!(true || false && true || false));
   '`),
   ifTest: equalityTest('Simple Conditional', '42',
   `-e '
