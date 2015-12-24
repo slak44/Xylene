@@ -28,6 +28,10 @@ namespace lang {
         Object* somethingToPrint = arg->read();
         if (somethingToPrint == nullptr) return;
         auto type = somethingToPrint->getTypeData();
+        while (type == "Variable") {
+          somethingToPrint = dynamic_cast<Variable*>(somethingToPrint)->read();
+          type = somethingToPrint->getTypeData();
+        }
         if (type == "String") print(dynamic_cast<String*>(somethingToPrint)->getString());
         else if (type == "Integer") print(dynamic_cast<Integer*>(somethingToPrint)->getNumber());
         else if (type == "Float") print(dynamic_cast<Float*>(somethingToPrint)->getNumber());
@@ -521,7 +525,6 @@ namespace lang {
           // This catches the last argument, because the last comma has two leafs and no branch
           if (lastNode->t.data != ",") listOfArgs.push_back(static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(lastNode))->t.typeData));
         }
-        print(listOfArgs.size(), "abc\n");
         std::reverse(listOfArgs.begin(), listOfArgs.end());
         std::size_t pos = 0;
         for (auto arg : listOfArgs) {
@@ -538,7 +541,6 @@ namespace lang {
     }
     
     ExpressionChildNode* interpretExpression(ExpressionChildNode* node) {
-      if (node->getChildren().size() == 0) return node;
       if (node->t.type == OPERATOR) {
         if (node->t.data == "()") {
           auto name = dynamic_cast<ExpressionChildNode*>(node->getChildren()[0])->t.data;
@@ -566,7 +568,12 @@ namespace lang {
           else processed->addChild(node);
         });
         return new ExpressionChildNode(Token(runOperator(processed), UNPROCESSED, PHONY_TOKEN));
+      } else if (node->t.type == VARIABLE) {
+        Variable* var = resolveNameFrom(node, node->t.data);
+        if (var == nullptr) throw Error("Variable " + node->t.data + " was not declared in this scope", "NullPointerError", node->t.line);
+        return new ExpressionChildNode(Token(var, VARIABLE, PHONY_TOKEN));
       }
+      if (node->getChildren().size() == 0) return node;
       throw std::runtime_error("Wrong type of token.\n");
     }
     
