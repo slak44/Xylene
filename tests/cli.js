@@ -87,7 +87,7 @@ let tests = {
   '`),
   basicFunc: equalityTest('Basic Function', '1',
   `-e '
-  define function printsOne do
+  define function printOne do
     print(1);
   end
   printOne();
