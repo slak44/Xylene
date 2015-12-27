@@ -335,7 +335,6 @@ namespace lang {
         fNode->setLineNumber(toks[2].line);
         addToBlock(fNode);
         blockStack.push_back(fNode);
-        return;
       }
     }
     
@@ -486,6 +485,11 @@ namespace lang {
       return args;
     }
     
+    // If no arguments were provided
+    Arguments* parseArgumentsTree(Function* f) {
+      return f->getFNode()->getArguments();
+    }
+    
     ExpressionChildNode* interpretExpression(ExpressionChildNode* node) {
       if (node->t.type == OPERATOR) {
         if (node->t.data == "()") {
@@ -494,7 +498,9 @@ namespace lang {
           if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
           Function* func = dynamic_cast<Function*>(funVar->read());
           if (func == nullptr) throw Error("Variable " + name + " is not a function", "TypeError", node->t.line);
-          Arguments* currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]));
+          Arguments* currentArgs;
+          if (node->getChildren().size() >= 2) currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]));
+          else currentArgs = parseArgumentsTree(func);
           BlockNode* functionScope = new BlockNode();
           BlockNode* functionCode = dynamic_cast<BlockNode*>(func->getFNode()->getChildren()[0]);
           functionScope->setParent(node);

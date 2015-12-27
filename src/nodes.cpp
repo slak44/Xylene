@@ -200,6 +200,7 @@ namespace lang {
     if (static_cast<Operator*>(op.typeData)->toString() == "()") {
       this->addChild(new ExpressionChildNode(operands[0])); // Add the name of the function as the first arg
       auto last = operands.back();
+      if (operands.size() < 2) return;
       operands = std::vector<Token>(operands.begin() + 1, operands.end() - 1);
       this->addChild(new ExpressionChildNode(last, operands)); // Add the arguments as a tree
       return;
