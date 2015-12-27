@@ -21,9 +21,9 @@ namespace lang {
   class Parser {
   private:
     std::vector<Token> tokens {};
-    inline void skipCharacters(unsigned int& i, int by) {i += by;}
+    inline void skipCharacters(uint64& i, int by) {i += by;}
     // If we're already at the next character, but the loop will increment i by 1
-    inline void preventIncrement(unsigned int& i) {i--;}
+    inline void preventIncrement(uint64& i) {i--;}
     
     std::vector<Token> variables {};
     std::vector<std::string> types {"Integer", "Float", "String", "Boolean"};
@@ -57,10 +57,26 @@ namespace lang {
     }
     
     void tokenize(std::string code) {
-      unsigned int lines = 0;
-      for (unsigned int i = 0; i < code.length(); ++i) {
-        if (code[i] == '/' && code[i + 1] == '/') while(code[i] != '\n' && code[i] != '\0') skipCharacters(i, 1);
+      uint lines = 1;
+      bool isInComment = false;
+      for (uint64 i = 0; i < code.length(); ++i) {
         if (code[i] == '\n') lines++;
+        
+        // Line comments
+        if (code[i] == '/' && code[i + 1] == '/') while (code[i] != '\n' && code[i] != '\0') skipCharacters(i, 1);
+        
+        // Multi-line comments
+        if (code[i] == '/' && code[i + 1] == '*') {
+          i += 2;
+          isInComment = true;
+        }
+        if (code[i] == '*' && code[i + 1] == '/') {
+          i += 2;
+          isInComment = false;
+        }
+        
+        // Ignore comments
+        if (isInComment) continue;
         
         // Ignore whitespace
         if (isspace(code[i])) continue;
