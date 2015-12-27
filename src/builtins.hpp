@@ -74,7 +74,10 @@ namespace lang {
     Visibility getVisibility();
   };
   
-  typedef std::unordered_map<std::string, Member*> MemberMap;
+  class Instance;
+  
+  typedef std::unordered_map<std::string, Member*> StaticMemberMap;
+  typedef std::unordered_map<std::string, std::function<Member*(Instance*)> > MemberMap;
   
   class Type;
   
@@ -95,10 +98,10 @@ namespace lang {
   class Type : public Object {
   private:
     std::string name;
-    MemberMap staticMembers;
+    StaticMemberMap staticMembers;
   public:
     MemberMap initialMap;
-    Type(std::string name, MemberMap staticMap, MemberMap map);
+    Type(std::string name, StaticMemberMap staticMap, MemberMap map);
     
     bool isTruthy();
     std::string toString();

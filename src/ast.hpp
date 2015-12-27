@@ -33,7 +33,6 @@ namespace lang {
       });
       bn->setSelfInFunction(printNode);
       (*root.getScope())[std::string("print")] = new Variable(new Function(printNode), {});
-      // TODO: find a non-retarded way to define members (pass the instance to the member calls for example)
       Type* integerType = new Type(std::string("Integer"), {
         // Static members
         {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
@@ -54,13 +53,16 @@ namespace lang {
         // Static members
       }, {
         // Instance members
+        {"length", [](Instance* ins) {
+          // TODO: placeholder
+          return new Member(new Variable(new Integer(123), {}), PUBLIC);
+        }}
       });
       (*root.getScope())[std::string("String")] = new Variable(stringType, {});
       Type* booleanType = new Type(std::string("Boolean"), {
         // Static members
       }, {
         // Instance members
-        // TODO: implement .length and .substr() so rule 110 can work
       });
       (*root.getScope())[std::string("Boolean")] = new Variable(booleanType, {});
       Type* functionType = new Type(std::string("Function"), {

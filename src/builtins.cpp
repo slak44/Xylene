@@ -49,7 +49,7 @@ namespace lang {
   void Member::setVariable(Variable* var) {this->var = var;}
   Visibility Member::getVisibility() {return this->access;}
   
-  Type::Type(std::string name, MemberMap staticMap, MemberMap map):
+  Type::Type(std::string name, StaticMemberMap staticMap, MemberMap map):
     name(name),
     staticMembers(staticMap),
     initialMap(map) {
@@ -79,7 +79,7 @@ namespace lang {
   std::string Instance::getTypeData() {return "Instance";}
   
   Member* Instance::getMember(std::string identifier) {
-    auto member = this->members[identifier];
+    auto member = this->members[identifier](this);
     if (member == nullptr) member = this->type->getStaticMember(identifier); // Check for a static member
     if (member == nullptr) throw Error("Could not find member " + identifier, "NullPointerError", -2); // TODO: line number
     if (member->getVisibility() != PUBLIC) throw Error("Member " + identifier + " is not visible", "Error", -2);
