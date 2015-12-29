@@ -32,44 +32,12 @@ namespace lang {
         else if (type == "Type") print("Type " + dynamic_cast<Type*>(somethingToPrint)->getName());
       });
       bn->setSelfInFunction(printNode);
+      // Do not allow assignment by not specifying any allowed types for the Variable
       (*root.getScope())[std::string("print")] = new Variable(new Function(printNode), {});
-      Type* integerType = new Type(std::string("Integer"), {
-        // Static members
-        {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
-        {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
-      }, {
-        // Instance members
-      });
-      (*root.getScope())[std::string("Integer")] = new Variable(integerType, {}); // Do not allow assignment by not specifying any allowed types for the Variable
-      Type* floatType = new Type(std::string("Float"), {
-        // Static members
-        {"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)},
-        {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
-      }, {
-        // Instance members
-      });
+      (*root.getScope())[std::string("Integer")] = new Variable(integerType, {});
       (*root.getScope())[std::string("Float")] = new Variable(floatType, {});
-      Type* stringType = new Type(std::string("String"), {
-        // Static members
-      }, {
-        // Instance members
-        {"length", [](Instance* ins) {
-          // TODO: placeholder
-          return new Member(new Variable(new Integer(123), {}), PUBLIC);
-        }}
-      });
       (*root.getScope())[std::string("String")] = new Variable(stringType, {});
-      Type* booleanType = new Type(std::string("Boolean"), {
-        // Static members
-      }, {
-        // Instance members
-      });
       (*root.getScope())[std::string("Boolean")] = new Variable(booleanType, {});
-      Type* functionType = new Type(std::string("Function"), {
-        // Static members
-      }, {
-        // Instance members
-      });
       (*root.getScope())[std::string("Function")] = new Variable(functionType, {});
     }
     

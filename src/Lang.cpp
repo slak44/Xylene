@@ -10,12 +10,13 @@
 
 #include "global.hpp"
 #include "operators.hpp"
+#include "objects.hpp"
 #include "builtins.hpp"
 #include "tokens.hpp"
 #include "nodes.hpp"
 #include "functions.hpp"
-#include "operator_maps.hpp"
 #include "ast.hpp"
+#include "operator_maps.hpp"
 
 namespace lang {
   class Parser {

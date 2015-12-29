@@ -8,31 +8,38 @@
 #include "nodes.hpp"
 
 namespace lang {
+  // Type* functionType = new Type(std::string("Function"), {
+  //   // Static members
+  // }, {
+  //   // Instance members
+  // });
+  
   class Function : public Object {
   private:
     FunctionNode* functionCode = nullptr;
   public:
-    Function(FunctionNode* node);
+    Function(FunctionNode* node): functionCode(node) {}
+
+    bool isTruthy() {return false;}
+    std::string toString() {return "Function";}
+    std::string getTypeData() {return "Function";}
     
-    bool isTruthy();
-    std::string toString();
-    std::string getTypeData();
-    
-    FunctionNode* getFNode();
+    FunctionNode* getFNode() {return functionCode;}
   };
   
   class NativeBlockNode : public BlockNode {
   private:
     std::function<void(ASTNode*)> nativeCode = nullptr;
   public:
-    NativeBlockNode(std::function<void(ASTNode*)> nativeCode);
-      
-    std::string getNodeType();
-    void addChild(ASTNode* child);
-    std::vector<ASTNode*>& getChildren();
+    NativeBlockNode(std::function<void(ASTNode*)> nativeCode): nativeCode(nativeCode) {}
     
-    void run(ASTNode* funcScope);
-    void setSelfInFunction(FunctionNode* fNode);
+    std::string getNodeType() {return "NativeBlockNode";}
+    // Does nothing on purpose
+    void addChild(ASTNode* child) {}
+    // Will always return an empty vector
+    std::vector<ASTNode*>& getChildren() {return this->children;}
+    void run(ASTNode* funcScope) {nativeCode(funcScope);}
+    void setSelfInFunction(FunctionNode* fNode) {fNode->children[0] = this;}
   };
   
 } /* namespace lang */
