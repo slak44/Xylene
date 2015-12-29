@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
-#include <climits>
-#include <cfloat>
 
 #include "global.hpp"
 #include "operators.hpp"
