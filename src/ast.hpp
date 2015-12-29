@@ -34,6 +34,41 @@ namespace lang {
       bn->setSelfInFunction(printNode);
       (*root.getScope())["print"] = new Variable(new Function(printNode), {});
       
+      Type* booleanType = new Type("Boolean", {
+        // Static members
+      }, {
+        // Instance members
+      });
+      
+      Type* integerType = new Type("Integer", {
+        // Static members
+        {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
+        {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
+      }, {
+        // Instance members
+      });
+      
+      Type* floatType = new Type("Float", {
+        // Static members
+        {"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)},
+        {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
+      }, {
+        // Instance members
+      });
+      
+      FunctionNode* stringLength = new FunctionNode("length", new Arguments {}, {});
+      NativeBlockNode* stringLengthCode = new NativeBlockNode([=](ASTNode* funcScope) {
+        print("LENGTH\n");
+      });
+      stringLengthCode->setSelfInFunction(stringLength);
+      
+      Type* stringType = new Type("String", {
+        // Static members
+      }, {
+        // Instance members
+        {"length", new Member(new Variable(new Function(stringLength), {}), PUBLIC)}
+      });
+      
       Type* functionType = new Type("Function", {}, {});
       
       // Do not allow assignment by not specifying any allowed types for the Variable

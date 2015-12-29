@@ -72,34 +72,6 @@ namespace lang {
     int64 getNumber() {return this->internal;}
   };
   
-  Type* booleanType = new Type("Boolean", {
-    // Static members
-  }, {
-    // Instance members
-  });
-  
-  Type* integerType = new Type("Integer", {
-    // Static members
-    {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
-    {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
-  }, {
-    // Instance members
-  });
-  
-  Type* floatType = new Type("Float", {
-    // Static members
-    {"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)},
-    {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
-  }, {
-    // Instance members
-  });
-  
-  Type* stringType = new Type("String", {
-    // Static members
-  }, {
-    // Instance members
-  });
-  
 }; /* namespace lang */
 
 #endif /* BUILTINS_H_ */
