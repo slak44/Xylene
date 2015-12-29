@@ -113,7 +113,6 @@ namespace lang {
     
     std::string getName() {return this->name;}
     Member* getStaticMember(std::string identifier) {return staticMembers[identifier];}
-    Instance* createInstance();
   };
   
   class Instance : public Object {
@@ -140,7 +139,6 @@ namespace lang {
       return member;
     }
   };
-  Instance* Type::createInstance() {return new Instance(this);}
   
   typedef std::unordered_map<std::string, Variable*> Scope;
   

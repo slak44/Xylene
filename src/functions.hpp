@@ -8,12 +8,6 @@
 #include "nodes.hpp"
 
 namespace lang {
-  // Type* functionType = new Type(std::string("Function"), {
-  //   // Static members
-  // }, {
-  //   // Instance members
-  // });
-  
   class Function : public Object {
   private:
     FunctionNode* functionCode = nullptr;

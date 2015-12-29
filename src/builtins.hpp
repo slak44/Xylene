@@ -14,38 +14,6 @@
 #include "objects.hpp"
 
 namespace lang {
-  // Type* booleanType = new Type(std::string("Boolean"), {
-  //   // Static members
-  // }, {
-  //   // Instance members
-  // });
-  // 
-  // Type* integerType = new Type(std::string("Integer"), {
-  //   // Static members
-  //   {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
-  //   {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
-  // }, {
-  //   // Instance members
-  // });
-  // 
-  // Type* floatType = new Type(std::string("Float"), {
-  //   // Static members
-  //   {"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)},
-  //   {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
-  // }, {
-  //   // Instance members
-  // });
-  // 
-  // Type* stringType = new Type(std::string("String"), {
-  //   // Static members
-  // }, {
-  //   // Instance members
-  //   {"length", [](Instance* ins) {
-  //     // TODO: placeholder
-  //     return new Member(new Variable(new Integer(123), {}), PUBLIC);
-  //   }}
-  // });
-    
   class Boolean : public Object {
   private:
     bool internal = false;
@@ -103,6 +71,34 @@ namespace lang {
     
     int64 getNumber() {return this->internal;}
   };
+  
+  Type* booleanType = new Type("Boolean", {
+    // Static members
+  }, {
+    // Instance members
+  });
+  
+  Type* integerType = new Type("Integer", {
+    // Static members
+    {"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)},
+    {"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)}
+  }, {
+    // Instance members
+  });
+  
+  Type* floatType = new Type("Float", {
+    // Static members
+    {"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)},
+    {"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)}
+  }, {
+    // Instance members
+  });
+  
+  Type* stringType = new Type("String", {
+    // Static members
+  }, {
+    // Instance members
+  });
   
 }; /* namespace lang */
 

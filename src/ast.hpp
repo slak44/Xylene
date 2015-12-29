@@ -14,7 +14,7 @@ namespace lang {
     ASTNode root = ASTNode();
   public:
     AbstractSyntaxTree() {
-      FunctionNode* printNode = new FunctionNode(std::string("print"), new Arguments {{"data", new Variable(nullptr, {"define"})}}, {});
+      FunctionNode* printNode = new FunctionNode("print", new Arguments {{"data", new Variable(nullptr, {"define"})}}, {});
       NativeBlockNode* bn = new NativeBlockNode([=](ASTNode* funcScope) {
         Variable* arg = resolveNameFrom(funcScope, "data");
         Object* somethingToPrint = arg->read();
@@ -32,13 +32,16 @@ namespace lang {
         else if (type == "Type") print("Type " + dynamic_cast<Type*>(somethingToPrint)->getName());
       });
       bn->setSelfInFunction(printNode);
+      (*root.getScope())["print"] = new Variable(new Function(printNode), {});
+      
+      Type* functionType = new Type("Function", {}, {});
+      
       // Do not allow assignment by not specifying any allowed types for the Variable
-      (*root.getScope())[std::string("print")] = new Variable(new Function(printNode), {});
-      (*root.getScope())[std::string("Integer")] = new Variable(integerType, {});
-      (*root.getScope())[std::string("Float")] = new Variable(floatType, {});
-      (*root.getScope())[std::string("String")] = new Variable(stringType, {});
-      (*root.getScope())[std::string("Boolean")] = new Variable(booleanType, {});
-      (*root.getScope())[std::string("Function")] = new Variable(functionType, {});
+      (*root.getScope())["Integer"] = new Variable(integerType, {});
+      (*root.getScope())["Float"] = new Variable(floatType, {});
+      (*root.getScope())["String"] = new Variable(stringType, {});
+      (*root.getScope())["Boolean"] = new Variable(booleanType, {});
+      (*root.getScope())["Function"] = new Variable(functionType, {});
     }
     
     void addRootChild(ASTNode* node) {
