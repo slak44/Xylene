@@ -142,5 +142,7 @@ function runTests() {
     } else {
       console.log(`${chalk.green(successfulTests)} tests ok\n${chalk.red(String(testCount - successfulTests))} tests failed`);
     }
+    // If we got here, it means no test is still alive, so the parent can kill itself as well
+    process.exit(0);
   });
 }
