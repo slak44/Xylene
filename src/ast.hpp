@@ -58,7 +58,7 @@ namespace lang {
       
       FunctionNode* stringLength = new FunctionNode("length", new Arguments {}, {});
       NativeBlockNode* stringLengthCode = new NativeBlockNode([=](ASTNode* funcScope) {
-        print("LENGTH\n");
+        print("LENGTH\n"); // TODO: find a way to get the instance on which this is called
       });
       stringLengthCode->setSelfInFunction(stringLength);
       

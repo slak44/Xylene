@@ -112,7 +112,11 @@ namespace lang {
     std::string getTypeData() {return "Type";}
     
     std::string getName() {return this->name;}
-    Member* getStaticMember(std::string identifier) {return staticMembers[identifier];}
+    Member* getStaticMember(std::string identifier) {
+      auto member = staticMembers[identifier];
+      if (member == nullptr) throw Error("Could not find static member " + identifier, "NullPointerError", -2); // TODO: line number
+      return member;
+    }
   };
   
   class Instance : public Object {
