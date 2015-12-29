@@ -77,6 +77,10 @@ namespace lang {
   class Instance;
   
   typedef std::unordered_map<std::string, Member*> StaticMemberMap;
+  /*
+    Functions in here should NEVER throw.
+    ALWAYS return nullptr.
+  */
   typedef std::unordered_map<std::string, std::function<Member*(Instance*)> > MemberMap;
   
   class Type;
@@ -127,7 +131,7 @@ namespace lang {
     bool value();
   };
   
-  class String : public Object {
+  class String : public Instance {
   private:
     std::string internal = "";
   public:
@@ -141,9 +145,7 @@ namespace lang {
     std::string getString();
   };
 
-  // TODO: Number<T> class, with T = int64 || double64
-  
-  class Float : public Object {
+  class Float : public Instance {
   private:
     double64 internal = 0.0;
   public:
@@ -158,7 +160,7 @@ namespace lang {
     double64 getNumber();
   };
   
-  class Integer : public Object {
+  class Integer : public Instance {
   private:
     int64 internal = 0;
   public:
