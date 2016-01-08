@@ -6,7 +6,7 @@
 
 #include "global.hpp"
 #include "operators.hpp"
-#include "builtins.hpp"
+#include "objects.hpp"
 
 namespace lang {
   // This means the token was created by the interpreter
@@ -29,6 +29,7 @@ namespace lang {
     * For INTEGER: Integer*
     * For FLOAT: Float*
     * For VARIABLE: Variable*
+    * etc..
     */
     void* typeData = nullptr;
     /*
