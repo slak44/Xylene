@@ -18,7 +18,7 @@ namespace lang {
       NativeBlockNode* bn = new NativeBlockNode([=](ASTNode* funcScope) {
         Variable* arg = resolveNameFrom(funcScope, "data");
         Object* somethingToPrint = arg->read();
-        if (somethingToPrint == nullptr) return;
+        if (somethingToPrint == nullptr) return nullptr;
         auto type = somethingToPrint->getTypeData();
         while (type == "Variable") {
           somethingToPrint = dynamic_cast<Variable*>(somethingToPrint)->read();
@@ -30,6 +30,7 @@ namespace lang {
         else if (type == "Boolean") print(dynamic_cast<Boolean*>(somethingToPrint)->value() ? "true" : "false");
         else if (type == "Function") print("Function " + dynamic_cast<Function*>(somethingToPrint)->getFNode()->getName());
         else if (type == "Type") print("Type " + dynamic_cast<Type*>(somethingToPrint)->getName());
+        return nullptr;
       });
       bn->setSelfInFunction(printNode);
       (*root.getScope())["print"] = new Variable(new Function(printNode), {});
@@ -58,7 +59,11 @@ namespace lang {
       
       FunctionNode* stringLength = new FunctionNode("length", new Arguments {}, {});
       NativeBlockNode* stringLengthCode = new NativeBlockNode([=](ASTNode* funcScope) {
-        print("LENGTH\n"); // TODO: find a way to get the instance on which this is called
+        Variable* context = resolveNameFrom(funcScope, "this");
+        if (context->read() == nullptr) throw Error("'this' was not defined in this context", "NullPointerError", funcScope->getLineNumber());
+        String* string = dynamic_cast<String*>(context->read());
+        if (string == nullptr) throw Error("This function can only be called on Strings", "NullPointerError", funcScope->getLineNumber());
+        return new Integer(string->getString().length());
       });
       stringLengthCode->setSelfInFunction(stringLength);
       
