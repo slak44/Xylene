@@ -94,13 +94,17 @@ namespace lang {
     // Member access operator
     {Operator(".", 13), {
       {"Object Name", boost::any(new Object::BinaryOp([](Object* l, Object* r) {
-        // TODO: recognize literals here, eg `42.MAX_VALUE` should work
         Type* leftT = dynamic_cast<Type*>(l);
         Instance* leftI = dynamic_cast<Instance*>(l);
         Variable* leftV = dynamic_cast<Variable*>(l);
+        Integer* leftInt = dynamic_cast<Integer*>(l);
+        Float* leftFlt = dynamic_cast<Float*>(l);
+        String* leftStr = dynamic_cast<String*>(l);
+        Boolean* leftBool = dynamic_cast<Boolean*>(l);
         if (leftT != nullptr) return dynamic_cast<Object*>(leftT->getStaticMember(r->toString())->getVariable());
-        else if (leftI != nullptr) return dynamic_cast<Object*>(leftI->getMember(r->toString())->getVariable());
         else if (leftV != nullptr) return runOperator(Operator(".", 13), leftV->read(), r);
+        else if (leftI != nullptr || leftInt != nullptr || leftFlt != nullptr || leftStr != nullptr || leftBool != nullptr)
+          return dynamic_cast<Object*>(leftI->getMember(r->toString())->getVariable());
         else throw Error("Left operand " + l->toString() + " is neither a type nor an instance of one", "TypeError", -2); // TODO: line number  
       }))}
     }},
