@@ -111,7 +111,7 @@ namespace lang {
     INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, MEMBER, UNPROCESSED
   };
   std::vector<TokenType> ExpressionNode::possibleFunctionTypes {
-    TYPE, VARIABLE, UNPROCESSED
+    TYPE, VARIABLE, MEMBER, UNPROCESSED
   };
   
   ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
