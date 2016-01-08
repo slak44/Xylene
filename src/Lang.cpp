@@ -525,10 +525,17 @@ namespace lang {
       functionCode->setParent(functionScope);
       functionCode->setLineNumber(node->t.line);
       // Execute code
-      if (functionCode->getNodeType() == "NativeBlockNode") dynamic_cast<NativeBlockNode*>(functionCode)->run(functionScope);
-      else interpret(functionCode->getChildren());
-      // TODO: handle return statement. assign value somewhere in the scope, then extract it here
-      return nullptr; // This should return whatever the `functionCode` above returns ^^
+      if (functionCode->getNodeType() == "NativeBlockNode") {
+        // Native functions
+        Object* functionResult = dynamic_cast<NativeBlockNode*>(functionCode)->run(functionScope);
+        if (functionResult == nullptr) return nullptr;
+        else return new ExpressionChildNode(Token(functionResult, UNPROCESSED, PHONY_TOKEN));
+      } else {
+        // Normal functions
+        interpret(functionCode->getChildren());
+        // TODO: handle return statement. assign value somewhere in the scope, then extract it here
+        return nullptr; // This should return whatever the `functionCode` above returns ^^
+      }
     }
     
     ExpressionChildNode* interpretExpression(ExpressionChildNode* node) {

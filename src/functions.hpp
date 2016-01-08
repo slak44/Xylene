@@ -32,7 +32,7 @@ namespace lang {
     void addChild(ASTNode* child) {}
     // Will always return an empty vector
     std::vector<ASTNode*>& getChildren() {return this->children;}
-    void run(ASTNode* funcScope) {nativeCode(funcScope);}
+    Object* run(ASTNode* funcScope) {return nativeCode(funcScope);}
     void setSelfInFunction(FunctionNode* fNode) {fNode->children[0] = this;}
   };
   
