@@ -23,9 +23,9 @@ namespace lang {
   
   class NativeBlockNode : public BlockNode {
   private:
-    std::function<void(ASTNode*)> nativeCode = nullptr;
+    std::function<Object*(ASTNode*)> nativeCode = nullptr;
   public:
-    NativeBlockNode(std::function<void(ASTNode*)> nativeCode): nativeCode(nativeCode) {}
+    NativeBlockNode(std::function<Object*(ASTNode*)> nativeCode): nativeCode(nativeCode) {}
     
     std::string getNodeType() {return "NativeBlockNode";}
     // Does nothing on purpose
