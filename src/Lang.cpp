@@ -492,27 +492,35 @@ namespace lang {
     }
     
     ExpressionChildNode* runFunction(ExpressionChildNode* node) {
+      // Try to get 'this' context
+      // Function must have the member access operator "." as a parent and must be the second child, eg something.fun()
       Object* thisObject = nullptr;
       ExpressionChildNode* parent = dynamic_cast<ExpressionChildNode*>(node->getParent());
-      // Function must have the member access operator "." as a parent and must be the second child, eg something.fun()
       if (parent != nullptr && parent->getChildren()[1] == node && parent->t.type == OPERATOR && parent->t.data == ".") {
         ExpressionChildNode* callerNode = dynamic_cast<ExpressionChildNode*>(node->getParent()->getChildren()[0]);
         thisObject = static_cast<Object*>(callerNode->t.typeData);
       }
+      // Find function object
       auto name = dynamic_cast<ExpressionChildNode*>(node->getChildren()[0])->t.data;
       Variable* funVar = resolveNameFrom(node, name);
       if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
       Function* func = dynamic_cast<Function*>(funVar->read());
       if (func == nullptr) throw Error("Variable " + name + " is not a function", "TypeError", node->t.line);
+      // Parse arguments
       Arguments* currentArgs;
       if (node->getChildren().size() >= 2) currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]));
       else currentArgs = parseArgumentsTree(func);
+      // Setup scope
       BlockNode* functionScope = new BlockNode();
-      BlockNode* functionCode = dynamic_cast<BlockNode*>(func->getFNode()->getChildren()[0]);
       functionScope->setParent(node);
-      functionCode->setParent(functionScope);
+      functionScope->setLineNumber(node->t.line);
       functionScope->getScope()->insert({"this", new Variable(thisObject, {})});
       for (auto argPair : *currentArgs) functionScope->getScope()->insert(argPair);
+      // Prepare code
+      BlockNode* functionCode = dynamic_cast<BlockNode*>(func->getFNode()->getChildren()[0]);
+      functionCode->setParent(functionScope);
+      functionCode->setLineNumber(node->t.line);
+      // Execute code
       if (functionCode->getNodeType() == "NativeBlockNode") dynamic_cast<NativeBlockNode*>(functionCode)->run(functionScope);
       else interpret(functionCode->getChildren());
       // TODO: handle return statement. assign value somewhere in the scope, then extract it here
