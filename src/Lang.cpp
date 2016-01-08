@@ -19,6 +19,10 @@
 #include "operator_maps.hpp"
 
 namespace lang {
+  Type* Boolean::booleanType = new Type("Boolean", {}, {});
+  Type* String::stringType = new Type("String", {}, {});
+  Type* Float::floatType = new Type("Float", {}, {});
+  Type* Integer::integerType = new Type("Integer", {}, {});
   class Parser {
   private:
     std::vector<Token> tokens {};

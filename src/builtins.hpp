@@ -14,13 +14,19 @@
 #include "objects.hpp"
 
 namespace lang {
-  class Boolean : public Object {
+  class Boolean : public Instance {
   private:
     bool internal = false;
   public:
-    Boolean() {}
-    Boolean(bool b): internal(b) {}
-    Boolean(std::string str): internal(str == "true" ? true : false) {}
+    static Type* booleanType;
+    Boolean():
+      Instance(booleanType) {}
+    Boolean(bool b):
+      Instance(booleanType),
+      internal(b) {}
+    Boolean(std::string str):
+      Instance(booleanType),
+      internal(str == "true" ? true : false) {}
     
     bool isTruthy() {return this->internal;}
     std::string toString() {return this->internal ? "true" : "false";}
@@ -29,12 +35,16 @@ namespace lang {
     bool value() {return this->internal;}
   };
   
-  class String : public Object {
+  class String : public Instance {
   private:
     std::string internal = "";
   public:
-    String() {}
-    String(std::string str): internal(str) {}
+    static Type* stringType;
+    String():
+      Instance(stringType) {}
+    String(std::string str):
+      Instance(stringType),
+      internal(str) {}
     
     bool isTruthy() {return this->internal.size() > 0;}
     std::string toString() {return this->internal;}
@@ -42,13 +52,19 @@ namespace lang {
     std::string getTypeData() {return "String";}
   };
   
-  class Float : public Object {
+  class Float : public Instance {
   private:
     double64 internal = 0.0;
   public:
-    Float() {}
-    Float(double64 f): internal(f) {}
-    Float(std::string str): internal(std::stold(str)) {}
+    static Type* floatType;
+    Float():
+      Instance(floatType) {}
+    Float(double64 f):
+      Instance(floatType),
+      internal(f) {}
+    Float(std::string str):
+      Instance(floatType),
+      internal(std::stold(str)) {}
     
     bool isTruthy() {return this->internal != 0.0;}
     std::string toString() {return std::to_string(internal);}
@@ -57,13 +73,19 @@ namespace lang {
     double64 getNumber() {return this->internal;}
   };
   
-  class Integer : public Object {
+  class Integer : public Instance {
   private:
     int64 internal = 0;
   public:
-    Integer() {}
-    Integer(int64 i): internal(i) {}
-    Integer(std::string str, int base): internal(std::stoll(str, 0, base)) {}
+    static Type* integerType;
+    Integer():
+      Instance(integerType) {}
+    Integer(int64 i):
+      Instance(integerType),
+      internal(i) {}
+    Integer(std::string str, int base):
+      Instance(integerType),
+      internal(std::stoll(str, 0, base)) {}
     
     bool isTruthy() {return this->internal != 0;}
     std::string toString() {return std::to_string(internal);}

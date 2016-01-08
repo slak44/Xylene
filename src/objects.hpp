@@ -117,6 +117,8 @@ namespace lang {
       if (member == nullptr) throw Error("Could not find static member " + identifier, "NullPointerError", -2); // TODO: line number
       return member;
     }
+    MemberMap& getStaticMap() {return staticMembers;}
+    MemberMap& getInstanceMap() {return instanceMembers;}
   };
   
   class Instance : public Object {
@@ -136,6 +138,7 @@ namespace lang {
     std::string getTypeData() {return "Instance";}
     
     Member* getMember(std::string identifier) {
+      // TODO: these ifs don't make sense
       auto member = this->members[identifier];
       if (member == nullptr) member = this->type->getStaticMember(identifier); // Check for a static member
       if (member == nullptr) throw Error("Could not find member " + identifier, "NullPointerError", -2); // TODO: line number
