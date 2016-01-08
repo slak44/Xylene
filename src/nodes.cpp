@@ -122,9 +122,10 @@ namespace lang {
         for (auto tok : opStack) print(tok.data, " ");
         print("\n=======\n");
       }
-      
-      // Catch function calls first
-      if (contains(tokens[i].type, possibleFunctionTypes) && tokens[i + 1].data == "(") {
+      if (outStack.size() > 0 && outStack.back().data == "()" && opStack.size() > 0) {
+        popToOut();
+        outStack.push_back(tokens[i]);
+      } else if (contains(tokens[i].type, possibleFunctionTypes) && tokens[i + 1].data == "(") {
         outStack.push_back(tokens[i]);
         opStack.push_back(Token(new Operator("()", 13), OPERATOR, tokens[i + 1].line));
       } else if (contains(tokens[i].type, validOperandTypes)) {
