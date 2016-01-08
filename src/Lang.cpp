@@ -491,27 +491,29 @@ namespace lang {
       return f->getFNode()->getArguments();
     }
     
+    ExpressionChildNode* runFunction(ExpressionChildNode* node) {
+      auto name = dynamic_cast<ExpressionChildNode*>(node->getChildren()[0])->t.data;
+      Variable* funVar = resolveNameFrom(node, name);
+      if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
+      Function* func = dynamic_cast<Function*>(funVar->read());
+      if (func == nullptr) throw Error("Variable " + name + " is not a function", "TypeError", node->t.line);
+      Arguments* currentArgs;
+      if (node->getChildren().size() >= 2) currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]));
+      else currentArgs = parseArgumentsTree(func);
+      BlockNode* functionScope = new BlockNode();
+      BlockNode* functionCode = dynamic_cast<BlockNode*>(func->getFNode()->getChildren()[0]);
+      functionScope->setParent(node);
+      functionCode->setParent(functionScope);
+      for (auto argPair : *currentArgs) functionScope->getScope()->insert(argPair);
+      if (functionCode->getNodeType() == "NativeBlockNode") dynamic_cast<NativeBlockNode*>(functionCode)->run(functionScope);
+      else interpret(functionCode->getChildren());
+      // TODO: handle return statement. assign value somewhere in the scope, then extract it here
+      return nullptr; // This should return whatever the `functionCode` above returns ^^
+    }
+    
     ExpressionChildNode* interpretExpression(ExpressionChildNode* node) {
       if (node->t.type == OPERATOR) {
-        if (node->t.data == "()") {
-          auto name = dynamic_cast<ExpressionChildNode*>(node->getChildren()[0])->t.data;
-          Variable* funVar = resolveNameFrom(node, name);
-          if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
-          Function* func = dynamic_cast<Function*>(funVar->read());
-          if (func == nullptr) throw Error("Variable " + name + " is not a function", "TypeError", node->t.line);
-          Arguments* currentArgs;
-          if (node->getChildren().size() >= 2) currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]));
-          else currentArgs = parseArgumentsTree(func);
-          BlockNode* functionScope = new BlockNode();
-          BlockNode* functionCode = dynamic_cast<BlockNode*>(func->getFNode()->getChildren()[0]);
-          functionScope->setParent(node);
-          functionCode->setParent(functionScope);
-          for (auto argPair : *currentArgs) functionScope->getScope()->insert(argPair);
-          if (functionCode->getNodeType() == "NativeBlockNode") dynamic_cast<NativeBlockNode*>(functionCode)->run(functionScope);
-          else interpret(functionCode->getChildren());
-          // TODO: handle return statement. assign value somewhere in the scope, then extract it here
-          return nullptr; // This should return whatever the `functionCode` above returns ^^
-        }
+        if (node->t.data == "()") return runFunction(node);
         ExpressionChildNode* processed = new ExpressionChildNode(node->t);
         processed->setParent(node->getParent());
         auto ch = node->getChildren();
