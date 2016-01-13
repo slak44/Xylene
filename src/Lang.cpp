@@ -496,23 +496,27 @@ namespace lang {
     }
     
     ExpressionChildNode* runFunction(ExpressionChildNode* node) {
+      if (node->getChildren().size() == 0) throw std::runtime_error("Function call without caller");
+      auto functionData = dynamic_cast<ExpressionChildNode*>(node->getChildren().back());
       // Try to get 'this' context
-      // Function must have the member access operator "." as a parent and must be the second child, eg something.fun()
-      Object* thisObject = nullptr;
-      ExpressionChildNode* parent = dynamic_cast<ExpressionChildNode*>(node->getParent());
-      if (parent != nullptr && parent->getChildren()[1] == node && parent->t.type == OPERATOR && parent->t.data == ".") {
-        ExpressionChildNode* callerNode = dynamic_cast<ExpressionChildNode*>(node->getParent()->getChildren()[0]);
-        thisObject = static_cast<Object*>(callerNode->t.typeData);
-      }
+      Object* thisObject = static_cast<Object*>(functionData->t.typeData);
       // Find function object
-      auto name = dynamic_cast<ExpressionChildNode*>(node->getChildren()[0])->t.data;
-      Variable* funVar = resolveNameFrom(node, name);
-      if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
-      Function* func = dynamic_cast<Function*>(funVar->read());
-      if (func == nullptr) throw Error("Variable " + name + " is not a function", "TypeError", node->t.line);
+      Object* wannabeFunction = nullptr;
+      if (functionData->t.type == OPERATOR) {
+        Variable* funVar = dynamic_cast<Variable*>(static_cast<Object*>(interpretExpression(functionData)->t.typeData));
+        if (funVar == nullptr) throw Error("Variable is empty or undefined", "NullPointerError", node->t.line);
+        wannabeFunction = funVar->read();
+      } else if (functionData->t.type == UNPROCESSED) {
+        auto name = functionData->t.data;
+        Variable* funVar = resolveNameFrom(node, name);
+        if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
+        wannabeFunction = funVar->read();
+      }
+      Function* func = dynamic_cast<Function*>(wannabeFunction);
+      if (func == nullptr) throw Error("Attempt to call a variable that is not a function", "TypeError", node->t.line);
       // Parse arguments
       Arguments* currentArgs;
-      if (node->getChildren().size() >= 2) currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[1]));
+      if (node->getChildren().size() >= 2) currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[0]));
       else currentArgs = parseArgumentsTree(func);
       // Setup scope
       BlockNode* functionScope = new BlockNode();
