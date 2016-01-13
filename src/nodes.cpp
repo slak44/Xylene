@@ -199,7 +199,7 @@ namespace lang {
     if (static_cast<Operator*>(op.typeData)->toString() == "()") unknownOperandCount = true;
     auto arity = static_cast<Operator*>(op.typeData)->getArity();
     for (int i = 0; i < arity || unknownOperandCount; i++) {
-      if (unknownOperandCount && operands.size() > 1) break;
+      if (unknownOperandCount && operands.size() == 0) break;
       auto next = operands[operands.size() - 1];
       if (next.type == OPERATOR) {
         operands.pop_back();

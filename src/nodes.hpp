@@ -23,7 +23,7 @@ namespace lang {
     virtual ~ASTNode();
     
     virtual void addChild(ASTNode* child);
-    std::vector<ASTNode*>& getChildren();
+    std::vector<ASTNode*>& getChildren(); // TODO: implement [] operator for easy children access
     void setParent(ASTNode* parent);
     ASTNode* getParent();
     
