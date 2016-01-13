@@ -14,6 +14,7 @@ namespace lang {
   };
   
   enum Arity: int {
+    NULLARY = 0,
     UNARY = 1,
     BINARY = 2,
     TERNARY = 3
