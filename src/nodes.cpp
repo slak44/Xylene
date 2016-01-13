@@ -111,7 +111,7 @@ namespace lang {
     INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, MEMBER, UNPROCESSED
   };
   std::vector<TokenType> ExpressionNode::possibleFunctionTypes {
-    TYPE, VARIABLE, MEMBER, UNPROCESSED
+    TYPE, VARIABLE, MEMBER, CONSTRUCT, UNPROCESSED
   };
   
   ExpressionNode::ExpressionNode(std::vector<Token>& tokens) {
@@ -122,12 +122,9 @@ namespace lang {
         for (auto tok : opStack) print(tok.data, " ");
         print("\n=======\n");
       }
-      if (outStack.size() > 0 && outStack.back().data == "()" && opStack.size() > 0) {
-        popToOut();
-        outStack.push_back(tokens[i]);
-      } else if (contains(tokens[i].type, possibleFunctionTypes) && tokens[i + 1].data == "(") {
-        outStack.push_back(tokens[i]);
-        opStack.push_back(Token(new Operator("()", 13), OPERATOR, tokens[i + 1].line));
+      if (tokens[i].data == "(" && contains(tokens[i - 1].type, possibleFunctionTypes)) {
+        tokens.insert(tokens.begin() + i, Token(new Operator("()", 13, ASSOCIATE_FROM_LEFT, NULLARY), OPERATOR, tokens[i - 1].line));
+        i--; // Force the inserted function operator to go through the associativity/precedence check below
       } else if (contains(tokens[i].type, validOperandTypes)) {
         outStack.push_back(tokens[i]);
       } else if (tokens[i].type == OPERATOR) {
@@ -198,16 +195,11 @@ namespace lang {
   ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands): t(op) {
     this->setLineNumber(op.line);
     if (operands.size() == 0) return;
-    if (static_cast<Operator*>(op.typeData)->toString() == "()") {
-      this->addChild(new ExpressionChildNode(operands[0])); // Add the name of the function as the first arg
-      auto last = operands.back();
-      if (operands.size() < 2) return;
-      operands = std::vector<Token>(operands.begin() + 1, operands.end() - 1);
-      this->addChild(new ExpressionChildNode(last, operands)); // Add the arguments as a tree
-      return;
-    }
+    bool unknownOperandCount = false;
+    if (static_cast<Operator*>(op.typeData)->toString() == "()") unknownOperandCount = true;
     auto arity = static_cast<Operator*>(op.typeData)->getArity();
-    for (int i = 0; i < arity; ++i) {
+    for (int i = 0; i < arity || unknownOperandCount; i++) {
+      if (unknownOperandCount && operands.size() > 1) break;
       auto next = operands[operands.size() - 1];
       if (next.type == OPERATOR) {
         operands.pop_back();
