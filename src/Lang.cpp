@@ -43,6 +43,19 @@ namespace lang {
       "do", "end",
       "else",
     };
+    std::unordered_map<char, char> singleCharEscapeSeqences {
+      {'a', '\a'},
+      {'b', '\b'},
+      {'f', '\f'},
+      {'n', '\n'},
+      {'r', '\r'},
+      {'t', '\t'},
+      {'v', '\v'},
+      {'\\', '\\'},
+      {'\'', '\''},
+      {'"', '\"'},
+      {'?', '\?'},
+    };
   public:
     AST tree = AST();
     
@@ -167,7 +180,23 @@ namespace lang {
           skipCharacters(i, 1); // Skip the double quote
           std::string current = "";
           while (code[i] != '"') {
-            // TODO: add escape sequences
+            if (code[i] == '\\') {
+              code.erase(i, 1); // Erase the slash
+              try {
+                code[i] = singleCharEscapeSeqences.at(code[i]); // Now that the slash is gone, code[i] is the escaped char, eg the `n` in \n
+              } catch (std::out_of_range& oor) {
+                // This error means it wasn't found in the escape sequence map
+                if (code[i] == 'x') {
+                  std::string hexNumber = "" + code[i + 1] + code[i + 2];
+                  code.erase(i + 1, 2); // Erase the 2 digits after the `x`
+                  code[i] = std::stoi(hexNumber, 0, 16); // Replace `x` with escaped char
+                } else if (isdigit(code[i])) {
+                  std::string octalNumber = "" + code[i] + code[i + 1] + code[i + 2];
+                  code.erase(i + 1, 2); // Erase the 2 last digits
+                  code[i] = std::stoi(octalNumber, 0, 8); // Replace the remaining digit with escaped char
+                } else throw Error("Invalid escape code", "SyntaxError", lines);
+              }
+            }
             current += code[i];
             skipCharacters(i, 1);
           }
