@@ -130,7 +130,9 @@ namespace lang {
         print("\n=======\n");
       }
       if (tokens[i].data == "(" && contains(tokens[i - 1].type, possibleFunctionTypes)) {
-        tokens.insert(tokens.begin() + i, Token(new Operator("()", 13, ASSOCIATE_FROM_LEFT, NULLARY), OPERATOR, tokens[i - 1].line));
+        Arity functionAr = BINARY;
+        if (tokens[i + 1].data == ")") functionAr = UNARY; // This means the function has no arguments, and the only child is the thing being called
+        tokens.insert(tokens.begin() + i, Token(new Operator("()", 13, ASSOCIATE_FROM_LEFT, functionAr), OPERATOR, tokens[i - 1].line));
         i--; // Force the inserted function operator to go through the associativity/precedence check below
       } else if (contains(tokens[i].type, validOperandTypes)) {
         outStack.push_back(tokens[i]);
@@ -206,11 +208,8 @@ namespace lang {
   ExpressionChildNode::ExpressionChildNode(Token op, std::vector<Token>& operands): t(op) {
     this->setLineNumber(op.line);
     if (operands.size() == 0) return;
-    bool unknownOperandCount = false;
-    if (static_cast<Operator*>(op.typeData)->toString() == "()") unknownOperandCount = true;
     auto arity = static_cast<Operator*>(op.typeData)->getArity();
-    for (int i = 0; i < arity || unknownOperandCount; i++) {
-      if (unknownOperandCount && operands.size() == 0) break;
+    for (int i = 0; i < arity; i++) {
       auto next = operands[operands.size() - 1];
       if (next.type == OPERATOR) {
         operands.pop_back();
