@@ -31,6 +31,7 @@ function equalityTest(name, expectedOutput, command) {
 }
 
 let tests = {
+  escapechars: equalityTest('Escape Characters', '123\n,\\,\b', '-e \'print("123\\n,\\\\,\\b")\''),
   integers: equalityTest('Integer Literals', '1', '-e "print(1)"'),
   strings: equalityTest('String Literals', 'qwerty1234{}/*-~?', '-e \'print("qwerty1234{}/*-~?")\''),
   booleans: equalityTest('Boolean Literals', 'true', '-e \'print(true)\''),
