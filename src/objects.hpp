@@ -54,9 +54,14 @@ namespace lang {
     std::string getTypeData() {return "Variable";}
     
     void assign(Object* newObj) {
-      if (newObj == nullptr) throw Error("Attemptted assignment of nullptr on " + this->toString(), "NullPointerError", -2); // TODO: line numbers
+      auto nullAssign = Error("Attemptted assignment of nullptr on " + this->toString(), "NullPointerError", -2); // TODO: line numbers
+      if (newObj == nullptr) throw nullAssign;
       if (!(newObj->getTypeData() == "Variable" || contains(std::string("define"), types) || contains(newObj->getTypeData(), types)))
         throw Error("Invalid assignment of type " + newObj->getTypeData(), "TypeError", -2); // TODO: line numbers
+      while (newObj->getTypeData() == "Variable") {
+        if (newObj == nullptr) throw nullAssign;
+        newObj = dynamic_cast<Variable*>(newObj)->read();
+      }
       currentType = newObj->getTypeData();
       this->internal = newObj;
     }
