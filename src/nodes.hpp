@@ -89,6 +89,7 @@ namespace lang {
     TypeList getReturnTypes();
   };
   
+  class ExpressionChildNode;
   class ExpressionNode : public SingleChildNode {
   private:
     static std::vector<TokenType> validOperandTypes;
@@ -104,6 +105,7 @@ namespace lang {
   public:
     ExpressionNode(std::vector<Token>& tokens);
     
+    ExpressionChildNode* getChild();
     std::vector<Token> getRPNOutput();
     void buildSubtree();
     

@@ -165,6 +165,10 @@ namespace lang {
     while (opStack.size() > 0) popToOut();
   }
   
+  ExpressionChildNode* ExpressionNode::getChild() {
+    return dynamic_cast<ExpressionChildNode*>(children[0]);
+  }
+  
   std::vector<Token> ExpressionNode::getRPNOutput() {return outStack;}
   
   void ExpressionNode::buildSubtree(void) {

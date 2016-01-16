@@ -405,7 +405,7 @@ namespace lang {
       for (uint64 i = 0; i < nodes.size(); ++i) {
         auto nodeType = nodes[i]->getNodeType();
         if (nodeType == "ExpressionNode") {
-          interpretExpression(dynamic_cast<ExpressionChildNode*>(nodes[i]->getChildren()[0]));
+          interpretExpression(dynamic_cast<ExpressionNode*>(nodes[i])->getChild());
         } else if (nodeType == "DeclarationNode") {
           registerDeclaration(dynamic_cast<DeclarationNode*>(nodes[i]));
         } else if (nodeType == "ConditionalNode") {
@@ -429,15 +429,14 @@ namespace lang {
     
     void doWhileLoop(WhileNode* node) {
       while (true) {
-        auto condition = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
+        auto condition = interpretExpression(node->getCondition()->getChild());
         if (!static_cast<Object*>(condition->t.typeData)->isTruthy()) break;
         interpret(node->getLoopNode()->getChildren());
       }
     }
     
     void resolveCondition(ConditionalNode* node) {
-      // TODO: fix segfault when the expression is only a boolean
-      auto condRes = interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getCondition()->getChild()));
+      auto condRes = interpretExpression(node->getCondition()->getChild());
       if (static_cast<Object*>(condRes->t.typeData)->isTruthy()) {
         interpret(node->getTrueBlock()->getChildren());
       } else {
@@ -459,7 +458,7 @@ namespace lang {
       node->getParentScope()->insert({node->identifier.data, new Variable(nullptr, node->typeNames)});
       if (node->getChildren().size() == 1) {
         Variable* variable = (*node->getParentScope())[node->identifier.data];
-        Object* toAssign = static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(node->getChild()->getChildren()[0]))->t.typeData);
+        Object* toAssign = static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionNode*>(node->getChild())->getChild())->t.typeData);
         variable->assign(toAssign);
       }
     }
