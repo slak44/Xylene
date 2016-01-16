@@ -33,32 +33,32 @@ function equalityTest(name, expectedOutput, command) {
 
 let tests = {
   escapechars: equalityTest('Escape Characters', '123\n,\\,\b', '-e \'print("123\\n,\\\\,\\b")\''),
-  integers: equalityTest('Integer Literals', '1', '-e "print(1)"'),
-  strings: equalityTest('String Literals', 'qwerty1234{}/*-~?', '-e \'print("qwerty1234{}/*-~?")\''),
-  booleans: equalityTest('Boolean Literals', 'true', '-e \'print(true)\''),
-  floats: equalityTest('Float Literals', '1.2', '-e \'print(1.2)\''),
-  intPlus: equalityTest('Integer Addition', '16', '-e \'print(8 + 8)\''),
-  fltPlus: equalityTest('Float Addition', '16.32', '-e \'print(8.16 + 8.16)\''),
+  integers: equalityTest('Literals, Integer', '1', '-e "print(1)"'),
+  strings: equalityTest('Literals, String', 'qwerty1234{}/*-~?', '-e \'print("qwerty1234{}/*-~?")\''),
+  booleans: equalityTest('Literals, Boolean', 'true', '-e \'print(true)\''),
+  floats: equalityTest('Literals, Float', '1.2', '-e \'print(1.2)\''),
+  intPlus: equalityTest('Addition, Integer', '16', '-e \'print(8 + 8)\''),
+  fltPlus: equalityTest('Addition, Float', '16.32', '-e \'print(8.16 + 8.16)\''),
   strPlus: equalityTest('String Concatenation', 'abcdef', '-e \'print("abc" + "def")\''),
-  assignment: equalityTest('Basic Assignment', '123abc', '-e \'define a = 123; print(a); a = "abc"; print(a);\''),
-  multiTypeDef: equalityTest('Multiple Types', '03.14',
+  assignment: equalityTest('Assignment, Basic', '123abc', '-e \'define a = 123; print(a); a = "abc"; print(a);\''),
+  multiTypeDef: equalityTest('Types, Multiple', '03.14',
   `-e '
   Integer, Float number = 0;
   print(number);
   number = 3.14;
   print(number);
   '`),
-  booleanCond: equalityTest('Boolean Expression', 'false',
+  booleanCond: equalityTest('Expression, Boolean', 'false',
   `-e '
   print(!(true || false && true || false));
   '`),
-  ifTest: equalityTest('Simple Conditional', '42',
+  ifTest: equalityTest('Conditional, Simple', '42',
   `-e '
   if true do
     print(42);
   end
   '`),
-  ifComplexTest: equalityTest('Full Conditional', '42',
+  ifComplexTest: equalityTest('Conditional, Full', '42',
   `-e '
   if true do
     print(42);
@@ -66,68 +66,68 @@ let tests = {
     print(420);
   end
   '`),
-  whileLoop: equalityTest('While Loop', '0123',
+  whileLoop: equalityTest('Loop, While', '0123',
   `-e '
   Integer i = 0;
   while i < 4 do
     print(i++);
   end
   '`),
-  increment: equalityTest('Increment Operators', '10',
+  increment: equalityTest('Operators, Increment', '10',
   `-e '
   Integer i = 0;
   print(++i);
   i = 0;
   print(i++);
   '`),
-  decrement: equalityTest('Decrement Operators', '-10',
+  decrement: equalityTest('Operators, Decrement', '-10',
   `-e '
   Integer i = 0;
   print(--i);
   i = 0;
   print(i--);
   '`),
-  basicFunc: equalityTest('Basic Function', '1',
+  basicFunc: equalityTest('Function, Basic', '1',
   `-e '
   define function printOne do
     print(1);
   end
   printOne();
   '`),
-  argumentFunc: equalityTest('Function With Arguments', '4.2',
+  argumentFunc: equalityTest('Function, Arguments', '4.2',
   `-e '
   define function add [Integer, Float a] [Integer, Float b] do
     print(a + b);
   end
   add(1, 3.2);
   '`),
-  returnFunc: equalityTest('Function With Return Values', '4',
+  returnFunc: equalityTest('Function, Return Values', '4',
   `-e '
   define function random => Integer do
     return 4; // Chosen by fair dice roll
   end
   print(random());
   '`),
-  fullFunc: equalityTest('Complete Function', '4.2',
+  fullFunc: equalityTest('Function, Complete', '4.2',
   `-e '
   define function add [Integer, Float a] [Integer, Float b] => Integer, Float do
     return a + b;
   end
   print(add(1, 3.2));
   '`),
-  prefixArgs: equalityTest('Function With Prefix Arguments', '4.2',
+  prefixArgs: equalityTest('Function, Prefix Arguments', '4.2',
   `-e '
   define function add [a: Integer, Float] [b: Integer, Float] do
     print(a + b);
   end
   add(1, 3.2);
   '`),
-  comments1: equalityTest('Line Comments', '123',
+  comments1: equalityTest('Comments, Line', '123',
   `-e '
   // print(1234);
   print(123);
   '`),
-  comments2: equalityTest('Multi-Line Comments', '123',
+  comments2: equalityTest('Comments, Multi-Line', '123',
   `-e '
   /* print(1234);
   print(90);
