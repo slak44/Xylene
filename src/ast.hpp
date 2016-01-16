@@ -14,6 +14,7 @@ namespace lang {
     ASTNode root = ASTNode();
   public:
     AbstractSyntaxTree() {
+      // TODO: add function to get args and do checks in nativecodeblocks
       FunctionNode* printNode = new FunctionNode("print", new Arguments {{"data", new Variable(nullptr, {"define"})}}, {});
       NativeBlockNode* bn = new NativeBlockNode([=](ASTNode* funcScope) {
         Variable* arg = resolveNameFrom(funcScope, "data");
@@ -44,6 +45,7 @@ namespace lang {
       FunctionNode* stringLength = new FunctionNode("length", new Arguments {}, {});
       NativeBlockNode* stringLengthCode = new NativeBlockNode([=](ASTNode* funcScope) {
         Variable* context = resolveNameFrom(funcScope, "this");
+        while (context->read() != nullptr && context->read()->getTypeData() == "Variable") context = static_cast<Variable*>(context->read());
         if (context->read() == nullptr) throw Error("'this' was not defined in this context", "NullPointerError", funcScope->getLineNumber());
         String* string = dynamic_cast<String*>(context->read());
         if (string == nullptr) throw Error("This function can only be called on Strings", "NullPointerError", funcScope->getLineNumber());
@@ -51,6 +53,28 @@ namespace lang {
       });
       stringLengthCode->setSelfInFunction(stringLength);
       String::stringType->getInstanceMap().insert({"length", new Member(new Variable(new Function(stringLength), {}), PUBLIC)});
+      
+      FunctionNode* stringSubstr = new FunctionNode("substr", new Arguments {
+        {"pos", new Variable(nullptr, {"Integer"})},
+        {"len", new Variable(nullptr, {"Integer"})}
+      }, {});
+      NativeBlockNode* stringSubstrCode = new NativeBlockNode([=](ASTNode* funcScope) {
+        Variable* context = resolveNameFrom(funcScope, "this");
+        while (context->read() != nullptr && context->read()->getTypeData() == "Variable") context = static_cast<Variable*>(context->read());
+        if (context->read() == nullptr) throw Error("'this' was not defined in this context", "NullPointerError", funcScope->getLineNumber());
+        String* string = dynamic_cast<String*>(context->read());
+        if (string == nullptr) throw Error("This function can only be called on Strings", "NullPointerError", funcScope->getLineNumber());
+        auto nullErr = Error("One or more arguments are null", "NullPointerError", funcScope->getLineNumber());
+        Variable* pos = resolveNameFrom(funcScope, "pos");
+        Variable* len = resolveNameFrom(funcScope, "len");
+        if (pos == nullptr || len == nullptr) throw nullErr;
+        Integer* posInt = static_cast<Integer*>(pos->read());
+        Integer* lenInt = static_cast<Integer*>(len->read());
+        if (posInt == nullptr || lenInt == nullptr) throw nullErr;
+        return new String(string->getString().substr(posInt->getNumber(), lenInt->getNumber()));
+      });
+      stringSubstrCode->setSelfInFunction(stringSubstr);
+      String::stringType->getInstanceMap().insert({"substr", new Member(new Variable(new Function(stringSubstr), {}), PUBLIC)});
       
       Type* functionType = new Type("Function", {}, {});
       // Do not allow assignment by not specifying any allowed types for the Variable
