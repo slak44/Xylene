@@ -115,7 +115,7 @@ let tests = {
   end
   print(add(1, 3.2));
   '`),
-  prefixArgs: equalityTest('Prefix Arguments', '4.2',
+  prefixArgs: equalityTest('Function With Prefix Arguments', '4.2',
   `-e '
   define function add [a: Integer, Float] [b: Integer, Float] do
     print(a + b);
