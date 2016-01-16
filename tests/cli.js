@@ -121,6 +121,18 @@ let tests = {
   end
   add(1, 3.2);
   '`),
+  comments1: equalityTest('Line Comments', '123',
+  `-e '
+  // print(1234);
+  print(123);
+  '`),
+  comments2: equalityTest('Multi-Line Comments', '123',
+  `-e '
+  /* print(1234);
+  print(90);
+  */
+  print(123);
+  '`),
 };
 
 function testFinished(testName, errorString, callback) {
