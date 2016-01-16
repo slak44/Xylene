@@ -32,6 +32,25 @@ function equalityTest(name, expectedOutput, command) {
 }
 
 let tests = {
+  turingComplete: equalityTest('Turing Completeness', '010 1 ', `-e '
+  // Rule 110
+  String str = "111010111";
+  while str.length() >= 3 do
+    String newState = "";
+    Integer i = 0;
+    while str.length() > i do
+      String result = str.substr(i, 3);
+      i += 3;
+      if result == "000" || result == "100" || result == "111" do
+        newState += "0";
+      else
+        newState += "1";
+      end
+    end
+    str = newState;
+    print(str + " ");
+  end
+  '`),
   escapechars: equalityTest('Escape Characters', '123\n,\\,\b', '-e \'print("123\\n,\\\\,\\b")\''),
   integers: equalityTest('Literals, Integer', '1', '-e "print(1)"'),
   strings: equalityTest('Literals, String', 'qwerty1234{}/*-~?', '-e \'print("qwerty1234{}/*-~?")\''),
