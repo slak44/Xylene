@@ -39,7 +39,8 @@ let tests = {
   floats: equalityTest('Literals, Float', '1.2', '-e \'print(1.2)\''),
   intPlus: equalityTest('Addition, Integer', '16', '-e \'print(8 + 8)\''),
   fltPlus: equalityTest('Addition, Float', '16.32', '-e \'print(8.16 + 8.16)\''),
-  strPlus: equalityTest('String Concatenation', 'abcdef', '-e \'print("abc" + "def")\''),
+  strPlus: equalityTest('String, Concatenation', 'abcdef', '-e \'print("abc" + "def")\''),
+  strLen: equalityTest('String, Length', '9', '-e \'print("123456789".length())\''),
   assignment: equalityTest('Assignment, Basic', '123abc', '-e \'define a = 123; print(a); a = "abc"; print(a);\''),
   multiTypeDef: equalityTest('Types, Multiple', '03.14',
   `-e '
