@@ -67,9 +67,11 @@ namespace lang {
         auto nullErr = Error("One or more arguments are null", "NullPointerError", funcScope->getLineNumber());
         Variable* pos = resolveNameFrom(funcScope, "pos");
         Variable* len = resolveNameFrom(funcScope, "len");
+        while (pos->read() != nullptr && pos->read()->getTypeData() == "Variable") pos = static_cast<Variable*>(pos->read());
+        while (len->read() != nullptr && len->read()->getTypeData() == "Variable") len = static_cast<Variable*>(len->read());
         if (pos == nullptr || len == nullptr) throw nullErr;
-        Integer* posInt = static_cast<Integer*>(pos->read());
-        Integer* lenInt = static_cast<Integer*>(len->read());
+        Integer* posInt = dynamic_cast<Integer*>(pos->read());
+        Integer* lenInt = dynamic_cast<Integer*>(len->read());
         if (posInt == nullptr || lenInt == nullptr) throw nullErr;
         return new String(string->getString().substr(posInt->getNumber(), lenInt->getNumber()));
       });
