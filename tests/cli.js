@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const async = require('async');
 
 let successfulTests = 0;
+let testMessages = [];
 
 fs.stat('../Lang', function (err, stats) {
   if (err) {
@@ -138,11 +139,11 @@ let tests = {
 function testFinished(testName, errorString, callback) {
   if (arguments.length == 2) callback = errorString;
   if (errorString && typeof errorString === 'string') {
-    console.error(`Test '${chalk.yellow(testName)}' ${chalk.red('failed')}\n${errorString}`);
+    testMessages.push(`Test '${chalk.yellow(testName)}' ${chalk.red('failed')}\n${errorString}`);
     callback();
     return;
   }
-  console.log(`Test '${chalk.yellow(testName)}' ok ${chalk.green('✓')}`);
+  testMessages.push(`Test '${chalk.yellow(testName)}' ok ${chalk.green('✓')}`);
   successfulTests++;
   callback();
 }
@@ -150,6 +151,7 @@ function testFinished(testName, errorString, callback) {
 function runTests() {
   let testCount = Object.keys(tests).length;
   async.parallel(tests, function (err) {
+    console.log(testMessages.sort().join('\n'));
     if (successfulTests === testCount) {
       console.log(chalk.underline.green('All tests ok!'));
     } else {
