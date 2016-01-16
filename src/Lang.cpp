@@ -80,6 +80,8 @@ namespace lang {
       for (uint64 i = 0; i < code.length(); ++i) {
         if (code[i] == '\n') lines++;
         
+        // TODO: comments mess with line numbers
+        
         // Line comments
         if (code[i] == '/' && code[i + 1] == '/') while (code[i] != '\n' && code[i] != '\0') skipCharacters(i, 1);
         
