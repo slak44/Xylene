@@ -23,6 +23,13 @@ namespace lang {
   }
   
   std::vector<ASTNode*>& ASTNode::getChildren() {return children;}
+  ASTNode* ASTNode::operator[](int64 pos) {
+    if (pos < 0) {
+      pos = children.size() + pos; // Negative indices count from the end of the vector
+    }
+    if (static_cast<uint64>(pos) > children.size() || pos < 0) throw std::runtime_error("Index out of array bounds");
+    return children[pos];
+  }
   
   void ASTNode::setParent(ASTNode* parent) {this->parent = parent;}
   ASTNode* ASTNode::getParent() {return parent;}
