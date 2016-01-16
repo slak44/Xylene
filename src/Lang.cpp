@@ -499,14 +499,16 @@ namespace lang {
       if (node->getChildren().size() == 0) throw std::runtime_error("Function call without caller");
       auto functionData = dynamic_cast<ExpressionChildNode*>(node->getChildren().back());
       // Try to get 'this' context
-      Object* thisObject = static_cast<Object*>(functionData->t.typeData);
+      Object* thisObject = nullptr;
       // Find function object
       Object* wannabeFunction = nullptr;
       if (functionData->t.type == OPERATOR) {
+        thisObject = static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(functionData->getChildren().back()))->t.typeData);
         Variable* funVar = dynamic_cast<Variable*>(static_cast<Object*>(interpretExpression(functionData)->t.typeData));
         if (funVar == nullptr) throw Error("Variable is empty or undefined", "NullPointerError", node->t.line);
         wannabeFunction = funVar->read();
       } else if (functionData->t.type == UNPROCESSED) {
+        thisObject = nullptr; // Has no caller
         auto name = functionData->t.data;
         Variable* funVar = resolveNameFrom(node, name);
         if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
