@@ -61,7 +61,8 @@ namespace lang {
       } else {
         operand = fromExprChildNode(operandNode);
       }
-      if (operand == nullptr) throw std::runtime_error("Attempt to call operator " + operatorNode->t.data + " with operand " + std::to_string(operandCount - i) + " set to nullptr.");
+      if (operand == nullptr)
+        throw std::runtime_error("Attempt to call operator " + operatorNode->t.data + " with operand " + std::to_string(operandCount - i) + " set to nullptr, line " + std::to_string(operandNode->t.line));
       operands.push_back(operand);
     }
     
