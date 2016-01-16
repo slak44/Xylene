@@ -55,7 +55,7 @@ namespace lang {
     
     void assign(Object* newObj) {
       if (newObj == nullptr) throw Error("Attemptted assignment of nullptr on " + this->toString(), "NullPointerError", -2); // TODO: line numbers
-      if (!contains(std::string("define"), types) && !contains(newObj->getTypeData(), types))
+      if (!(newObj->getTypeData() == "Variable" || contains(std::string("define"), types) || contains(newObj->getTypeData(), types)))
         throw Error("Invalid assignment of type " + newObj->getTypeData(), "TypeError", -2); // TODO: line numbers
       currentType = newObj->getTypeData();
       this->internal = newObj;
