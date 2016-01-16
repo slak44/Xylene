@@ -117,6 +117,8 @@ namespace lang {
     ExpressionChildNode(Token operand);
     ExpressionChildNode(Token op, std::vector<Token>& operands);
     
+    ExpressionChildNode* operator[](int64 pos);
+    
     std::string getNodeType();
     void printTree(int level);
   };

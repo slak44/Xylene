@@ -50,7 +50,7 @@ namespace lang {
     auto operandCount = operatorNode->getChildren().size();
     for (std::size_t i = operandCount; i != 0; i--) {
       Object* operand;
-      ExpressionChildNode* operandNode = dynamic_cast<ExpressionChildNode*>(operatorNode->getChildren()[i - 1]);
+      ExpressionChildNode* operandNode = (*operatorNode)[i - 1];
       if (operandNode->t.type == TYPE) {
         Variable* var = resolveNameFrom(operatorNode, operandNode->t.data);
         if (var == nullptr) throw Error("Type " + operandNode->t.data + " was not declared in current scope", "NullPointerError", operandNode->t.line);

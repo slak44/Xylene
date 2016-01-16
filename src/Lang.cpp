@@ -467,13 +467,13 @@ namespace lang {
     Arguments* parseArgumentsTree(Function* f, ExpressionChildNode* node) {
       Arguments* args = f->getFNode()->getArguments();
       if (node->t.type == OPERATOR && node->t.data == ",") {
-        ExpressionChildNode* lastNode = node;
+        ExpressionChildNode lastNode = *node;
         std::vector<Object*> listOfArgs;
-        while (lastNode->t.data == ",") {
-          listOfArgs.push_back(static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(lastNode->getChildren()[0]))->t.typeData));
-          lastNode = dynamic_cast<ExpressionChildNode*>(lastNode->getChildren()[1]);
+        while (lastNode.t.data == ",") {
+          listOfArgs.push_back(static_cast<Object*>(interpretExpression(lastNode[0])->t.typeData));
+          lastNode = *(lastNode[1]);
           // This catches the last argument, because the last comma has two leafs and no branch
-          if (lastNode->t.data != ",") listOfArgs.push_back(static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(lastNode))->t.typeData));
+          if (lastNode.t.data != ",") listOfArgs.push_back(static_cast<Object*>(interpretExpression(&lastNode)->t.typeData));
         }
         std::reverse(listOfArgs.begin(), listOfArgs.end());
         std::size_t pos = 0;
@@ -497,19 +497,19 @@ namespace lang {
     
     ExpressionChildNode* runFunction(ExpressionChildNode* node) {
       if (node->getChildren().size() == 0) throw std::runtime_error("Function call without caller");
-      auto functionData = dynamic_cast<ExpressionChildNode*>(node->getChildren().back());
+      ExpressionChildNode functionData = *((*node)[-1]);
       // Try to get 'this' context
       Object* thisObject = nullptr;
       // Find function object
       Object* wannabeFunction = nullptr;
-      if (functionData->t.type == OPERATOR) {
-        thisObject = static_cast<Object*>(interpretExpression(dynamic_cast<ExpressionChildNode*>(functionData->getChildren().back()))->t.typeData);
-        Variable* funVar = dynamic_cast<Variable*>(static_cast<Object*>(interpretExpression(functionData)->t.typeData));
+      if (functionData.t.type == OPERATOR) {
+        thisObject = static_cast<Object*>(interpretExpression(functionData[-1])->t.typeData);
+        Variable* funVar = dynamic_cast<Variable*>(static_cast<Object*>(interpretExpression(&functionData)->t.typeData));
         if (funVar == nullptr) throw Error("Variable is empty or undefined", "NullPointerError", node->t.line);
         wannabeFunction = funVar->read();
-      } else if (functionData->t.type == UNPROCESSED) {
+      } else if (functionData.t.type == UNPROCESSED) {
         thisObject = nullptr; // Has no caller
-        auto name = functionData->t.data;
+        auto name = functionData.t.data;
         Variable* funVar = resolveNameFrom(node, name);
         if (funVar == nullptr) throw Error("Function " + name + " was not declared in this scope", "NullPointerError", node->t.line);
         wannabeFunction = funVar->read();
@@ -518,7 +518,7 @@ namespace lang {
       if (func == nullptr) throw Error("Attempt to call a variable that is not a function", "TypeError", node->t.line);
       // Parse arguments
       Arguments* currentArgs;
-      if (node->getChildren().size() >= 2) currentArgs = parseArgumentsTree(func, dynamic_cast<ExpressionChildNode*>(node->getChildren()[0]));
+      if (node->getChildren().size() >= 2) currentArgs = parseArgumentsTree(func, (*node)[0]);
       else currentArgs = parseArgumentsTree(func);
       // Setup scope
       BlockNode* functionScope = new BlockNode();
