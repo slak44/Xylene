@@ -78,12 +78,11 @@ namespace lang {
       uint lines = 1;
       bool isInComment = false;
       for (uint64 i = 0; i < code.length(); ++i) {
-        if (code[i] == '\n') lines++;
-        
-        // TODO: comments mess with line numbers
-        
         // Line comments
         if (code[i] == '/' && code[i + 1] == '/') while (code[i] != '\n' && code[i] != '\0') skipCharacters(i, 1);
+        
+        // Count lines
+        if (code[i] == '\n') lines++;
         
         // Multi-line comments
         if (code[i] == '/' && code[i + 1] == '*') {
