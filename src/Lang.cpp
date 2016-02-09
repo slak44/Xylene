@@ -32,18 +32,18 @@ namespace lang {
     
     std::vector<Token> variables {};
     std::vector<std::string> types {"Integer", "Float", "String", "Boolean"};
-    std::vector<std::string> keywords {
+    const std::vector<std::string> keywords {
       "define",
       "function", "return",
       "type", "constructor", "public", "protected", "private",
       "if", "while"
     };
     // Technically keywords, but constructs for the purpose of this parser
-    std::vector<std::string> constructKeywords {
+    const std::vector<std::string> constructKeywords {
       "do", "end",
       "else",
     };
-    std::unordered_map<char, char> singleCharEscapeSeqences {
+    const std::unordered_map<char, char> singleCharEscapeSeqences {
       {'a', '\a'},
       {'b', '\b'},
       {'f', '\f'},
