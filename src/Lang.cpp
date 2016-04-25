@@ -277,8 +277,9 @@ namespace lang {
     }
     
     void resolveTypeStatements(std::vector<Token>& toks, const std::function<void(ASTNode*)>& addToBlock) {
+      if (toks[0].type != TYPE) throw std::runtime_error("The first token for resolveTypeStatements must be a type");
       // Check if it's a type list
-      if (toks[0].type == TYPE && toks[1].type == OPERATOR && toks[1].data == ",") {
+      if (toks[1].type == OPERATOR && toks[1].data == ",") {
         TypeList typeList {};
         std::size_t count = 0;
         for (;; count++) {
@@ -290,16 +291,22 @@ namespace lang {
         addToBlock(decl);
         return;
       }
+      
       // Check if it's just one type in the declaration
-      if (toks[0].type == TYPE && toks[1].type == VARIABLE) {
+      if (toks[1].type == VARIABLE) {
         auto decl = buildDeclaration(std::vector<Token>(toks.begin() + 1, toks.end()), {toks[0].data});
         addToBlock(decl);
         return;
       }
       
       // If it's none of the above, it's part of an expression
-      auto expr = buildExpression(toks);
-      addToBlock(expr);
+      if (toks[1].type == OPERATOR) {
+        auto expr = buildExpression(toks);
+        addToBlock(expr);
+        return;
+      }
+      
+      throw Error("Types can only be followed by a declaration or an expression", "SyntaxError", toks[0].line);
     }
     
     TypeList tokenToStringTypeList(std::vector<Token> typeList) {
