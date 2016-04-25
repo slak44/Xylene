@@ -188,13 +188,13 @@ namespace lang {
               } catch (std::out_of_range& oor) {
                 // This error means it wasn't found in the escape sequence map
                 if (code[i] == 'x') {
-                  std::string hexNumber = "" + code[i + 1] + code[i + 2];
-                  code.erase(i + 1, 2); // Erase the 2 digits after the `x`
-                  code[i] = std::stoi(hexNumber, 0, 16); // Replace `x` with escaped char
+                  std::string hexNumber = code.substr(i + 1, 2);
+                  code.erase(i + 1, 2); // Erase the 2 digits, replace the 'x'
+                  code[i] = static_cast<char>(std::stoll(hexNumber, 0, 16));
                 } else if (isdigit(code[i])) {
-                  std::string octalNumber = "" + code[i] + code[i + 1] + code[i + 2];
-                  code.erase(i + 1, 2); // Erase the 2 last digits
-                  code[i] = std::stoi(octalNumber, 0, 8); // Replace the remaining digit with escaped char
+                  std::string octalNumber = code.substr(i, 3);
+                  code.erase(i + 1, 2); // Erase 2 digits, replace the last
+                  code[i] = static_cast<char>(std::stoll(octalNumber, 0, 8));
                 } else throw Error("Invalid escape code", "SyntaxError", lines);
               }
             }
