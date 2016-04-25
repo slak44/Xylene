@@ -58,9 +58,15 @@ let tests = {
   `-e '
   print("\\n,\\\\,\\b,\\x4A,\\124")
   '`),
-  integers: equalityTest('Literals, Integer', '1',
+  integers: equalityTest('Literals, Integer', '1 255 5 89',
   `-e '
   print(1);
+  print(" ");
+  print(0xFF);
+  print(" ");
+  print(0b101);
+  print(" ");
+  print(0o131);
   '`),
   strings: equalityTest('Literals, String', 'qwerty1234{}/*-~?',
   `-e '
