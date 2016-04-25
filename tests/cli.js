@@ -61,8 +61,8 @@ let tests = {
   floats: equalityTest('Literals, Float', '1.2', '-e \'print(1.2)\''),
   intPlus: equalityTest('Addition, Integer', '16', '-e \'print(8 + 8)\''),
   fltPlus: equalityTest('Addition, Float', '16.32', '-e \'print(8.16 + 8.16)\''),
-  strPlus: equalityTest('String, Concatenation', 'abcdef', '-e \'print("abc" + "def")\''),
-  strLen: equalityTest('String, Length', '9', '-e \'print("123456789".length())\''),
+  strPlus: equalityTest('Strings, Concatenation', 'abcdef', '-e \'print("abc" + "def")\''),
+  strLen: equalityTest('Strings, Length', '9', '-e \'print("123456789".length())\''),
   assignment: equalityTest('Assignment, Basic', '123abc', '-e \'define a = 123; print(a); a = "abc"; print(a);\''),
   multiTypeDef: equalityTest('Types, Multiple', '03.14',
   `-e '
@@ -71,17 +71,17 @@ let tests = {
   number = 3.14;
   print(number);
   '`),
-  booleanCond: equalityTest('Expression, Boolean', 'false',
+  booleanCond: equalityTest('Expressions, Boolean', 'false',
   `-e '
   print(!(true || false && true || false));
   '`),
-  ifTest: equalityTest('Conditional, Simple', '42',
+  ifTest: equalityTest('Conditionals, Simple', '42',
   `-e '
   if true do
     print(42);
   end
   '`),
-  ifComplexTest: equalityTest('Conditional, Full', '42',
+  ifComplexTest: equalityTest('Conditionals, Full', '42',
   `-e '
   if true do
     print(42);
@@ -89,7 +89,7 @@ let tests = {
     print(420);
   end
   '`),
-  whileLoop: equalityTest('Loop, While', '0123',
+  whileLoop: equalityTest('Loops, While', '0123',
   `-e '
   Integer i = 0;
   while i < 4 do
@@ -110,35 +110,35 @@ let tests = {
   i = 0;
   print(i--);
   '`),
-  basicFunc: equalityTest('Function, Basic', '1',
+  basicFunc: equalityTest('Functions, Basic', '1',
   `-e '
   define function printOne do
     print(1);
   end
   printOne();
   '`),
-  argumentFunc: equalityTest('Function, Arguments', '4.2',
+  argumentFunc: equalityTest('Functions, Arguments', '4.2',
   `-e '
   define function add [Integer, Float a] [Integer, Float b] do
     print(a + b);
   end
   add(1, 3.2);
   '`),
-  returnFunc: equalityTest('Function, Return Values', '4',
+  returnFunc: equalityTest('Functions, Return Values', '4',
   `-e '
   define function random => Integer do
     return 4; // Chosen by fair dice roll
   end
   print(random());
   '`),
-  fullFunc: equalityTest('Function, Complete', '4.2',
+  fullFunc: equalityTest('Functions, Complete', '4.2',
   `-e '
   define function add [Integer, Float a] [Integer, Float b] => Integer, Float do
     return a + b;
   end
   print(add(1, 3.2));
   '`),
-  prefixArgs: equalityTest('Function, Prefix Arguments', '4.2',
+  prefixArgs: equalityTest('Functions, Prefix Arguments', '4.2',
   `-e '
   define function add [a: Integer, Float] [b: Integer, Float] do
     print(a + b);
