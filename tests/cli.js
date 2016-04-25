@@ -54,9 +54,9 @@ let tests = {
     print(newState + "\n");
   end
   '`),
-  escapechars: equalityTest('Escape Characters', '123\n,\\,\b',
+  escapechars: equalityTest('Escape Characters', '\n,\\,\b,J,T',
   `-e '
-  print("123\\n,\\\\,\\b")
+  print("\\n,\\\\,\\b,\\x4A,\\124")
   '`),
   integers: equalityTest('Literals, Integer', '1',
   `-e '
