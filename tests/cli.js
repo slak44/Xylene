@@ -157,6 +157,10 @@ let tests = {
   */
   print(123);
   '`),
+  expressions1: equalityTest('Expressions, Simple', '124',
+  `-e '
+  print((123 + 123) / 2 + 2 >> 1);
+  '`),
 };
 
 function testFinished(testName, errorString, callback) {
