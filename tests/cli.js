@@ -63,6 +63,11 @@ let tests = {
   fltPlus: equalityTest('Addition, Float', '16.32', '-e \'print(8.16 + 8.16)\''),
   strPlus: equalityTest('Strings, Concatenation', 'abcdef', '-e \'print("abc" + "def")\''),
   strLen: equalityTest('Strings, Length', '9', '-e \'print("123456789".length())\''),
+  strSub: equalityTest('Strings, Substr', 'sd',
+  `-e '
+  String aaa = "asdfghjkl";
+  print(aaa.substr(1, 2));
+  '`),
   assignment: equalityTest('Assignment, Basic', '123abc', '-e \'define a = 123; print(a); a = "abc"; print(a);\''),
   multiTypeDef: equalityTest('Types, Multiple', '03.14',
   `-e '
