@@ -10,6 +10,8 @@ typedef unsigned long long int uint64;
 #define ERROR_CODE_FAILED 2
 #define ERROR_INTERNAL 3
 
+#define EXTRANEOUS_ERROR(msg) (std::string(msg) + " in file " + __FILE__ + ", at line " + std::to_string(__LINE__))
+
 #include <string>
 #include <vector>
 #include <fstream>

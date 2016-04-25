@@ -54,6 +54,7 @@ namespace lang {
     std::string getTypeData() {return "Variable";}
     
     void assign(Object* newObj) {
+      if (this == nullptr) throw std::runtime_error(EXTRANEOUS_ERROR("Attemptted assignment to nullptr"));
       auto nullAssign = Error("Attemptted assignment of nullptr on " + this->toString(), "NullPointerError", -2); // TODO: line numbers
       if (newObj == nullptr) throw nullAssign;
       if (!(newObj->getTypeData() == "Variable" || contains(std::string("define"), types) || contains(newObj->getTypeData(), types)))

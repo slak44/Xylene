@@ -27,7 +27,7 @@ namespace lang {
     if (pos < 0) {
       pos = children.size() + pos; // Negative indices count from the end of the vector
     }
-    if (static_cast<uint64>(pos) > children.size() || pos < 0) throw std::runtime_error("Index out of array bounds");
+    if (static_cast<uint64>(pos) > children.size() || pos < 0) throw std::runtime_error(EXTRANEOUS_ERROR("Index out of array bounds"));
     return children[pos];
   }
   
@@ -52,7 +52,7 @@ namespace lang {
   
   SingleChildNode::SingleChildNode() {};
   void SingleChildNode::addChild(ASTNode* child) {
-    if (this->getChildren().size() >= 1) throw std::runtime_error("Trying to add more than one child to SingleChildNode.");
+    if (this->getChildren().size() >= 1) throw std::runtime_error(EXTRANEOUS_ERROR("Trying to add more than one child to SingleChildNode"));
     else {
       this->ASTNode::addChild(child);
     }
@@ -188,7 +188,7 @@ namespace lang {
       stackCopy.pop_back();
       node = new ExpressionChildNode(tok, stackCopy);
     } else {
-      throw std::runtime_error("Empty expression.\n");
+      throw std::runtime_error(EXTRANEOUS_ERROR("Empty expression"));
     }
     this->children.clear();
     this->addChild(node);
@@ -227,7 +227,7 @@ namespace lang {
     if (pos < 0) {
       pos = children.size() + pos; // Negative indices count from the end of the vector
     }
-    if (static_cast<uint64>(pos) > children.size() || pos < 0) throw std::runtime_error("Index out of array bounds");
+    if (static_cast<uint64>(pos) > children.size() || pos < 0) throw std::runtime_error(EXTRANEOUS_ERROR("Index out of array bounds"));
     return dynamic_cast<ExpressionChildNode*>(children[pos]);
   }
   

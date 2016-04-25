@@ -277,7 +277,7 @@ namespace lang {
     }
     
     void resolveTypeStatements(std::vector<Token>& toks, const std::function<void(ASTNode*)>& addToBlock) {
-      if (toks[0].type != TYPE) throw std::runtime_error("The first token for resolveTypeStatements must be a type");
+      if (toks[0].type != TYPE) throw std::runtime_error(EXTRANEOUS_ERROR("The first token for resolveTypeStatements must be a type"));
       // Check if it's a type list
       if (toks[1].type == OPERATOR && toks[1].data == ",") {
         TypeList typeList {};
@@ -533,7 +533,7 @@ namespace lang {
     }
     
     ExpressionChildNode* runFunction(ExpressionChildNode* node) {
-      if (node->getChildren().size() == 0) throw std::runtime_error("Function call without caller");
+      if (node->getChildren().size() == 0) throw std::runtime_error(EXTRANEOUS_ERROR("Function call without caller"));
       ExpressionChildNode functionData = *((*node)[-1]);
       // Try to get 'this' context
       Object* thisObject = nullptr;
@@ -599,7 +599,7 @@ namespace lang {
         return new ExpressionChildNode(Token(var, VARIABLE, PHONY_TOKEN));
       }
       if (node->getChildren().size() == 0) return node;
-      throw std::runtime_error("Wrong type of token.\n");
+      throw std::runtime_error(EXTRANEOUS_ERROR("Wrong type of token"));
     }
     
   };

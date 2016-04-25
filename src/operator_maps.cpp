@@ -62,14 +62,16 @@ namespace lang {
         operand = fromExprChildNode(operandNode);
       }
       if (operand == nullptr)
-        throw std::runtime_error("Attempt to call operator " + operatorNode->t.data + " with operand " + std::to_string(operandCount - i) + " set to nullptr, line " + std::to_string(operandNode->t.line));
+        throw std::runtime_error(EXTRANEOUS_ERROR(
+          "Attempt to call operator " + operatorNode->t.data + " with operand " + std::to_string(operandCount - i) + " set to nullptr, input line " + std::to_string(operandNode->t.line)
+        ));
       operands.push_back(operand);
     }
     
     if (arity == UNARY) return runOperator(operatorNode, operands[0]);
     else if (arity == BINARY) return runOperator(operatorNode, operands[0], operands[1]);
     else if (arity == TERNARY) return runOperator(operatorNode, operands[0], operands[1], operands[2]);
-    else throw std::runtime_error("Attempt to call operator with more than 3 operands(" + std::to_string(arity) + ")");
+    else throw std::runtime_error(EXTRANEOUS_ERROR("Attempt to call operator with more than 3 operands(" + std::to_string(arity) + ")"));
   }
   
   OperatorMap opsMap = {
