@@ -158,11 +158,20 @@ namespace lang {
             }
           }
           bool isFloat = false;
-          while (isdigit(code[i]) || code[i] == '.') {
-            current += code[i];
+          while (true) {
             if (code[i] == '.') {
               if (isFloat) throw Error("Malformed float, multiple decimal points: \"" + current + "\"", "SyntaxError", lines);
               isFloat = true;
+              current += code[i];
+            } else if (isdigit(code[i])) {
+              current += code[i];
+            } else if (base > 10 && (
+                (code[i] >= 'A' && code[i] < 'A' + base - 10) ||
+                (code[i] >= 'a' && code[i] < 'a' + base - 10)
+              )) {
+              current += code[i];
+            } else {
+              break;
             }
             skipCharacters(i, 1);
           }
