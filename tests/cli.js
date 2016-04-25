@@ -161,6 +161,10 @@ let tests = {
   `-e '
   print((123 + 123) / 2 + 2 >> 1);
   '`),
+  expressions2: equalityTest('Expressions, Function', '0',
+  `-e '
+  print("abc".length() - 3);
+  '`),
 };
 
 function testFinished(testName, errorString, callback) {
