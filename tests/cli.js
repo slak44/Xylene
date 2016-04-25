@@ -54,21 +54,53 @@ let tests = {
     print(newState + "\n");
   end
   '`),
-  escapechars: equalityTest('Escape Characters', '123\n,\\,\b', '-e \'print("123\\n,\\\\,\\b")\''),
-  integers: equalityTest('Literals, Integer', '1', '-e "print(1)"'),
-  strings: equalityTest('Literals, String', 'qwerty1234{}/*-~?', '-e \'print("qwerty1234{}/*-~?")\''),
-  booleans: equalityTest('Literals, Boolean', 'true', '-e \'print(true)\''),
-  floats: equalityTest('Literals, Float', '1.2', '-e \'print(1.2)\''),
-  intPlus: equalityTest('Addition, Integer', '16', '-e \'print(8 + 8)\''),
-  fltPlus: equalityTest('Addition, Float', '16.32', '-e \'print(8.16 + 8.16)\''),
-  strPlus: equalityTest('Strings, Concatenation', 'abcdef', '-e \'print("abc" + "def")\''),
-  strLen: equalityTest('Strings, Length', '9', '-e \'print("123456789".length())\''),
+  escapechars: equalityTest('Escape Characters', '123\n,\\,\b',
+  `-e '
+  print("123\\n,\\\\,\\b")
+  '`),
+  integers: equalityTest('Literals, Integer', '1',
+  `-e '
+  print(1);
+  '`),
+  strings: equalityTest('Literals, String', 'qwerty1234{}/*-~?',
+  `-e '
+  print("qwerty1234{}/*-~?")
+  '`),
+  booleans: equalityTest('Literals, Boolean', 'true',
+  `-e '
+  print(true)
+  '`),
+  floats: equalityTest('Literals, Float', '1.2',
+  `-e '
+  print(1.2)
+  '`),
+  intPlus: equalityTest('Addition, Integer', '16',
+  `-e '
+  print(8 + 8)
+  '`),
+  fltPlus: equalityTest('Addition, Float', '16.32',
+  `-e '
+  print(8.16 + 8.16)
+  '`),
+  strPlus: equalityTest('Strings, Concatenation', 'abcdef',
+  `-e '
+  print("abc" + "def")
+  '`),
+  strLen: equalityTest('Strings, Length', '9',
+  `-e '
+  print("123456789".length())
+  '`),
   strSub: equalityTest('Strings, Substr', 'sd',
   `-e '
   String aaa = "asdfghjkl";
   print(aaa.substr(1, 2));
   '`),
-  assignment: equalityTest('Assignment, Basic', '123abc', '-e \'define a = 123; print(a); a = "abc"; print(a);\''),
+  assignment: equalityTest('Assignment, Basic', '123abc',
+  `-e '
+  define a = 123;
+  print(a); a = "abc";
+  print(a);
+  '`),
   multiTypeDef: equalityTest('Types, Multiple', '03.14',
   `-e '
   Integer, Float number = 0;
