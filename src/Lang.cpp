@@ -258,6 +258,7 @@ namespace lang {
     }
     
     DeclarationNode* buildDeclaration(std::vector<Token> withoutTypes, TypeList types) {
+      if (withoutTypes[0].type != VARIABLE) throw Error("Invalid identifier", "SyntaxError", withoutTypes[0].line);
       DeclarationNode* decl = new DeclarationNode(types, withoutTypes[0]);
       decl->setLineNumber(withoutTypes[0].line);
       if (withoutTypes[1].data != ";" || withoutTypes[1].type != CONSTRUCT) {
