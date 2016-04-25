@@ -114,10 +114,10 @@ namespace lang {
   Arguments* FunctionNode::getArguments() {return defaultArguments;}
   TypeList FunctionNode::getReturnTypes() {return returnTypes;}
   
-  std::vector<TokenType> ExpressionNode::validOperandTypes {
+  const std::vector<TokenType> ExpressionNode::validOperandTypes {
     INTEGER, FLOAT, STRING, BOOLEAN, ARRAY, TYPE, VARIABLE, FUNCTION, MEMBER, UNPROCESSED
   };
-  std::vector<TokenType> ExpressionNode::possibleFunctionTypes {
+  const std::vector<TokenType> ExpressionNode::possibleFunctionTypes {
     TYPE, VARIABLE, MEMBER, CONSTRUCT, UNPROCESSED
   };
   
