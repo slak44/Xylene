@@ -608,12 +608,27 @@ namespace lang {
 
 static bool exitCodes = false;
 static bool noInterpret = false;
+static bool throwAll = false;
+
 #define EXIT(code) (exitCodes ? code : 0)
 
+void useInput() {
+  lang::Parser a(INPUT);
+  if (!noInterpret) lang::Interpreter in(a.tree);
+}
+
 int interpretCode() {
+  if (throwAll) {
+    try {
+      useInput();
+    } catch(Error& e) {
+      print(e.toString());
+      return EXIT(ERROR_CODE_FAILED);
+    }
+    return 0;
+  }
   try {
-    lang::Parser a(INPUT);
-    if (!noInterpret) lang::Interpreter in(a.tree);
+    useInput();
   } catch(Error& e) {
     print(e.toString());
     return EXIT(ERROR_CODE_FAILED);
@@ -634,6 +649,7 @@ int main(int argc, char** argv) {
     ("read-file,f", po::value<std::string>(), "use to evaluate code from a file at the specified path")
     ("no-interpret,n", "don't interpret the parsed code")
     ("exit-codes", "use to send non-0 exit codes on failure")
+    ("throw-all", "don't catch internal errors; let them crash")
   ;
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -643,12 +659,10 @@ int main(int argc, char** argv) {
     print(desc, "\n");
     return 0;
   }
-  if (vm.count("exit-codes")) {
-    exitCodes = true;
-  }
-  if (vm.count("no-interpret")) {
-    noInterpret = true;
-  }
+  if (vm.count("exit-codes")) exitCodes = true;
+  if (vm.count("no-interpret")) noInterpret = true;
+  if (vm.count("throw-all")) throwAll = true;
+  
   if (vm.count("use-existing")) {
     getConstants();
     return interpretCode();
