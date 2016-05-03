@@ -7,7 +7,7 @@ const async = require('async');
 let successfulTests = 0;
 let testMessages = [];
 
-fs.stat('../Lang', function (err, stats) {
+fs.stat('../lang', function (err, stats) {
   if (err) {
     console.error(chalk.red('Could not stat executable'));
     return;
