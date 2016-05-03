@@ -1,4 +1,4 @@
-EXECUTABLE = Lang
+EXECUTABLE = lang
 CC = g++
 CONFIG = DEBUG
 DEBUG_FLAGS = -Wall -O0 -g3
