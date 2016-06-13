@@ -17,7 +17,7 @@ fs.stat('../lang', function (err, stats) {
 
 function equalityTest(name, expectedOutput, command) {
   return function (callback) {
-    let child = cp.exec(`../Lang ${command}`, function (err, stdout, stderr) {
+    let child = cp.exec(`../lang ${command}`, function (err, stdout, stderr) {
       if (err) {
         testFinished(name, `${err.message}\nSignal: ${chalk.red(err.signal)}`, callback);
         return;
