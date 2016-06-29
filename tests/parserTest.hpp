@@ -45,7 +45,7 @@ TEST_F(ParserTest, ExpressionParsing) {
   shift->addChild(division);
   shift->addChild(ExprNode::make(Token(L_INTEGER, "1", 1)));
   rootBlock->addChild(shift);
-  noLexer.root = *rootBlock;
+  noLexer.setRoot(*rootBlock);
   
   EXPECT_EQ(manualLexer, lexerLexer);
   EXPECT_EQ(manualLexer, noLexer);
@@ -62,7 +62,7 @@ TEST_F(ParserTest, SimpleASTEquality) {
   op->addChild(operand2);
   auto rootBlock = Node<BlockNode>::make();
   rootBlock->addChild(op);
-  tree.root = *rootBlock;
+  tree.setRoot(*rootBlock);
   ASSERT_EQ(px.getTree(), tree);
 }
 
