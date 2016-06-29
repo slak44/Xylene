@@ -1,8 +1,0 @@
-{
-  "name": "test-lang-tests",
-  "version": "0.1.0",
-  "dependencies": {
-    "async": "*",
-    "chalk": "*"
-  }
-}

@@ -1,10 +1,5 @@
-make/
+bin/
+build/
 libs/
-builds/
-lang
-constants.data
-inputs.data
-src/*.gch
-test
-node_modules/
-.jshintrc
+.gcc-flags.json
+lg

@@ -1,100 +1,256 @@
-#ifndef AST_HPP_
-#define AST_HPP_
+#ifndef AST_HPP
+#define AST_HPP
 
 #include <string>
+#include <vector>
+#include <set>
+#include <memory>
+#include <numeric>
+#include <typeinfo>
 
-#include "global.hpp"
-#include "builtins.hpp"
-#include "nodes.hpp"
-#include "functions.hpp"
+#include "error.hpp"
+#include "token.hpp"
+#include "util.hpp"
+#include "operator.hpp"
 
-namespace lang {
-  class AbstractSyntaxTree {
-  private:
-    ASTNode root = ASTNode();
-  public:
-    AbstractSyntaxTree() {
-      // TODO: add function to get args and do checks in nativecodeblocks
-      FunctionNode* printNode = new FunctionNode("print", new Arguments {{"data", new Variable(nullptr, {"define"})}}, {});
-      NativeBlockNode* bn = new NativeBlockNode([=](ASTNode* funcScope) {
-        Variable* arg = resolveNameFrom(funcScope, "data");
-        Object* somethingToPrint = arg->read();
-        if (somethingToPrint == nullptr) return nullptr;
-        auto type = somethingToPrint->getTypeData();
-        while (type == "Variable") {
-          somethingToPrint = dynamic_cast<Variable*>(somethingToPrint)->read();
-          type = somethingToPrint->getTypeData();
-        }
-        if (type == "String") print(dynamic_cast<String*>(somethingToPrint)->getString());
-        else if (type == "Integer") print(dynamic_cast<Integer*>(somethingToPrint)->getNumber());
-        else if (type == "Float") print(dynamic_cast<Float*>(somethingToPrint)->getNumber());
-        else if (type == "Boolean") print(dynamic_cast<Boolean*>(somethingToPrint)->value() ? "true" : "false");
-        else if (type == "Function") print("Function " + dynamic_cast<Function*>(somethingToPrint)->getFNode()->getName());
-        else if (type == "Type") print("Type " + dynamic_cast<Type*>(somethingToPrint)->getName());
-        return nullptr;
-      });
-      bn->setSelfInFunction(printNode);
-      (*root.getScope())["print"] = new Variable(new Function(printNode), {});
-      
-      Integer::integerType->getStaticMap().insert({"MAX_VALUE", new Member(new Variable(new Integer(LLONG_MAX), {}), PUBLIC)});
-      Integer::integerType->getStaticMap().insert({"MIN_VALUE", new Member(new Variable(new Integer(LLONG_MIN), {}), PUBLIC)});
-      
-      Float::floatType->getStaticMap().insert({"MAX_VALUE", new Member(new Variable(new Float(FLT_MAX), {}), PUBLIC)});
-      Float::floatType->getStaticMap().insert({"MIN_VALUE", new Member(new Variable(new Float(FLT_MIN), {}), PUBLIC)});
-      
-      FunctionNode* stringLength = new FunctionNode("length", new Arguments {}, {});
-      NativeBlockNode* stringLengthCode = new NativeBlockNode([=](ASTNode* funcScope) {
-        Variable* context = resolveNameFrom(funcScope, "this");
-        while (context->read() != nullptr && context->read()->getTypeData() == "Variable") context = static_cast<Variable*>(context->read());
-        if (context->read() == nullptr) throw Error("'this' was not defined in this context", "NullPointerError", funcScope->getLineNumber());
-        String* string = dynamic_cast<String*>(context->read());
-        if (string == nullptr) throw Error("This function can only be called on Strings", "NullPointerError", funcScope->getLineNumber());
-        return new Integer(string->getString().length());
-      });
-      stringLengthCode->setSelfInFunction(stringLength);
-      String::stringType->getInstanceMap().insert({"length", new Member(new Variable(new Function(stringLength), {}), PUBLIC)});
-      
-      FunctionNode* stringSubstr = new FunctionNode("substr", new Arguments {
-        {"pos", new Variable(nullptr, {"Integer"})},
-        {"len", new Variable(nullptr, {"Integer"})}
-      }, {});
-      NativeBlockNode* stringSubstrCode = new NativeBlockNode([=](ASTNode* funcScope) {
-        Variable* context = resolveNameFrom(funcScope, "this");
-        while (context->read() != nullptr && context->read()->getTypeData() == "Variable") context = static_cast<Variable*>(context->read());
-        if (context->read() == nullptr) throw Error("'this' was not defined in this context", "NullPointerError", funcScope->getLineNumber());
-        String* string = dynamic_cast<String*>(context->read());
-        if (string == nullptr) throw Error("This function can only be called on Strings", "NullPointerError", funcScope->getLineNumber());
-        auto nullErr = Error("One or more arguments are null", "NullPointerError", funcScope->getLineNumber());
-        Variable* pos = resolveNameFrom(funcScope, "pos");
-        Variable* len = resolveNameFrom(funcScope, "len");
-        while (pos->read() != nullptr && pos->read()->getTypeData() == "Variable") pos = static_cast<Variable*>(pos->read());
-        while (len->read() != nullptr && len->read()->getTypeData() == "Variable") len = static_cast<Variable*>(len->read());
-        if (pos == nullptr || len == nullptr) throw nullErr;
-        Integer* posInt = dynamic_cast<Integer*>(pos->read());
-        Integer* lenInt = dynamic_cast<Integer*>(len->read());
-        if (posInt == nullptr || lenInt == nullptr) throw nullErr;
-        return new String(string->getString().substr(posInt->getNumber(), lenInt->getNumber()));
-      });
-      stringSubstrCode->setSelfInFunction(stringSubstr);
-      String::stringType->getInstanceMap().insert({"substr", new Member(new Variable(new Function(stringSubstr), {}), PUBLIC)});
-      
-      Type* functionType = new Type("Function", {}, {});
-      // Do not allow assignment by not specifying any allowed types for the Variable
-      (*root.getScope())["Integer"] = new Variable(Integer::integerType, {});
-      (*root.getScope())["Float"] = new Variable(Float::floatType, {});
-      (*root.getScope())["String"] = new Variable(String::stringType, {});
-      (*root.getScope())["Boolean"] = new Variable(Boolean::booleanType, {});
-      (*root.getScope())["Function"] = new Variable(functionType, {});
+typedef std::set<std::string> TypeList;
+
+class ASTNode: public std::enable_shared_from_this<ASTNode> {
+public:
+  typedef std::shared_ptr<ASTNode> Link;
+  typedef std::weak_ptr<ASTNode> WeakLink;
+  typedef std::vector<Link> Children;
+protected:
+  WeakLink parent = WeakLink();
+  Children children {};
+  uint64 lineNumber = 0;
+  
+  static void printIndent(uint level) {
+    for (uint i = 0; i < level; i++) print("  ");
+  }
+public:
+  ASTNode(uint64 lineNumber = 0): lineNumber(lineNumber) {}
+  virtual ~ASTNode() {};
+  
+  virtual void addChild(Link child) {
+    child->setParent(shared_from_this());
+    children.push_back(child);
+  }
+  
+  Children getChildren() const {
+    return children;
+  }
+  
+  Link at(int64 pos) const {
+    if (pos < 0) {
+      pos = children.size() + pos; // Negative indices count from the end of the vector
     }
+    if (abs(pos) > children.size() || pos < 0) {
+      throw InternalError("Index out of array bounds", {METADATA_PAIRS, {"index", std::to_string(pos)}});
+    }
+    return children[pos];
+  }
+  
+  void setParent(WeakLink newParent) {parent = newParent;}
+  WeakLink getParent() const {return parent;}
+  
+  void setLineNumber(uint64 newLineNumber) {lineNumber = newLineNumber;}
+  uint64 getLineNumber() const {return lineNumber;}
+  
+  virtual void printTree(uint level) const {
+    printIndent(level);
+    println("Base ASTNode");
+    for (auto& child : children) child->printTree(level + 1);
+  }
+  
+  virtual bool operator==(const ASTNode& rhs) const {
+    if (typeid(*this) != typeid(rhs)) return false;
+    if (children.size() != rhs.getChildren().size()) return false;
+    for (uint64 i = 0; i < children.size(); i++) {
+      if (*(this->at(i)) != *(rhs.at(i))) return false;
+    }
+    return true;
+  }
+  
+  virtual bool operator!=(const ASTNode& rhs) const {
+    return !operator==(rhs);
+  }
+};
+
+template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
+struct Node {
+  typedef std::shared_ptr<T> Link;
+  typedef std::weak_ptr<T> WeakLink;
+  template<typename... Args>
+  static Link make(Args... args) {
+    return std::make_shared<T>(args...);
+  }
+};
+
+class BlockNode: public ASTNode {
+  void printTree(uint level) const {
+    printIndent(level);
+    println("Block Node");
+    for (auto& child : children) child->printTree(level + 1);
+  }
+  bool operator==(const ASTNode& rhs) const {
+    return ASTNode::operator==(rhs);
+  }
+  bool operator!=(const ASTNode& rhs) const {
+    return !operator==(rhs);
+  }
+};
+
+class ExpressionNode: public ASTNode {
+private:
+  Token tok = Token(UNPROCESSED, 0);
+public:
+  ExpressionNode() {}
+  ExpressionNode(Token token): tok(token) {
+    switch (tok.type) {
+      case IDENTIFIER:
+      case OPERATOR:
+      case L_INTEGER:
+      case L_FLOAT:
+      case L_STRING:
+      case L_BOOLEAN:
+        break;
+      default: throw InternalError("Trying to add unsupported token to ExpressionNode", {METADATA_PAIRS, {"token", token.toString()}});
+    }
+  }
+  
+  std::shared_ptr<ExpressionNode> at(int64 pos) {
+    return std::dynamic_pointer_cast<ExpressionNode>(ASTNode::at(pos));
+  }
+  
+  Token getToken() const {
+    return tok;
+  }
+  
+  void printTree(uint level) const {
+    printIndent(level);
+    println("Expression Node:", tok);
+    for (auto& child : children) child->printTree(level + 1);
+  }
+  
+  bool operator==(const ASTNode& rhs) const {
+    if (!ASTNode::operator==(rhs)) return false;
+    if (this->tok != dynamic_cast<const ExpressionNode&>(rhs).tok) return false;
+    return true;
+  }
+  bool operator!=(const ASTNode& rhs) const {
+    return !operator==(rhs);
+  }
+};
+
+class DeclarationNode: public ASTNode {
+private:
+  std::string identifier;
+  TypeList typeList;
+  bool dynamic;
+public:
+  DeclarationNode(std::string identifier, TypeList typeList):
+    identifier(identifier), typeList(typeList), dynamic(false) {}
+  DeclarationNode(std::string identifier):
+    identifier(identifier), typeList({}), dynamic(true) {}
     
-    void addRootChild(ASTNode* node) {
-      root.addChild(node);
-    }
-    ChildrenNodes getRootChildren() {
-      return root.getChildren();
-    }
-  };
-  typedef AbstractSyntaxTree AST;
-} /* namespace lang */
+  std::string getIdentifier() {
+    return identifier;
+  }
+  
+  TypeList getTypeList() {
+    return typeList;
+  }
+  
+  bool isDynamic() {
+    return dynamic;
+  }
+  
+  void addChild(Link child) {
+    if (children.size() >= 1) throw InternalError("Trying to add more than one child to a DeclarationNode", {METADATA_PAIRS});
+    if (std::dynamic_pointer_cast<Node<ExpressionNode>::Link>(child)) throw InternalError("DeclarationNode only supports ExpressionNode as its child", {METADATA_PAIRS});
+    ASTNode::addChild(child);
+  }
+  
+  void printTree(uint level) const {
+    printIndent(level);
+    std::string collatedTypes = std::accumulate(++typeList.begin(), typeList.end(), *typeList.begin(),
+    [](const std::string& prev, const std::string& current) {
+      return prev + ", " + current;
+    });
+    println("Declaration Node: " + identifier + " (valid types: " + collatedTypes + ")");
+    if (children.size() > 0) children[0]->printTree(level + 1);
+  }
+  
+  bool operator==(const ASTNode& rhs) const {
+    if (!ASTNode::operator==(rhs)) return false;
+    auto decl = dynamic_cast<const DeclarationNode&>(rhs);
+    if (this->identifier != decl.identifier) return false;
+    if (this->typeList != decl.typeList) return false;
+    if (this->dynamic != decl.dynamic) return false;
+    return true;
+  }
+  bool operator!=(const ASTNode& rhs) const {
+    return !operator==(rhs);
+  }
+};
 
-#endif /* AST_HPP_ */
+class BranchNode: public ASTNode {
+public:
+  BranchNode() {
+    children = {nullptr, nullptr, nullptr};
+  }
+  
+  void addChild(Link child) {
+    UNUSED(child);
+    throw InternalError("Cannot add children directly to BranchNode", {METADATA_PAIRS});
+  }
+  
+  void addCondition(Node<ExpressionNode>::Link cond) {
+    children[0] = cond;
+  }
+  
+  Link getCondition() {
+    return children[0];
+  }
+  
+  void addSuccessBlock(Node<BlockNode>::Link success) {
+    children[1] = success;
+  }
+  
+  Link getSuccessBlock() {
+    return children[1];
+  }
+  
+  void addFailiureBlock(Link failiure) {
+    children[2] = failiure;
+  }
+  
+  Link getFailiureBlock() {
+    return children[2];
+  }
+  
+  bool operator==(const ASTNode& rhs) const {
+    return ASTNode::operator==(rhs);
+  }
+  bool operator!=(const ASTNode& rhs) const {
+    return !operator==(rhs);
+  }
+};
+
+class AST {
+public:
+  ASTNode root = ASTNode();
+  bool operator==(const AST& rhs) const {
+    if (this->root != rhs.root) return false;
+    return true;
+  }
+  bool operator!=(const AST& rhs) const {
+    return !operator==(rhs);
+  }
+  void print() {
+    root.printTree(0);
+  }
+};
+
+#endif
