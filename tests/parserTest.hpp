@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 
+#include "lexer.hpp"
 #include "parser.hpp"
 #include "token.hpp"
 
@@ -11,15 +12,44 @@ protected:
   Parser px = Parser();
 };
 
-TEST_F(ParserTest, Expression) {
-  return;
+TEST_F(ParserTest, ExpressionParsing) {
   // (-12 + -3) / 1.5 >> 1
+  
+  // Manually lexed
   px.parse({
     Token(C_PAREN_LEFT, "(", 1), Token(OPERATOR, 24, 1), Token(L_INTEGER, "12", 1),
     Token(OPERATOR, 31, 1), Token(OPERATOR, 24, 1), Token(L_INTEGER, "3", 1), Token(C_PAREN_RIGHT, ")", 1),
     Token(OPERATOR, 29, 1), Token(L_FLOAT, "1.5", 1), Token(OPERATOR, 13, 1), Token(L_INTEGER, "1", 1), Token(FILE_END, "", 1)
   });
-  ASTNode root = px.getTree().root;
+  AST manualLexer = px.getTree();
+  
+  // Lexed by Lexer class
+  px.parse(Lexer().tokenize("(-12 + -3) / 1.5 >> 1").getTokens());
+  AST lexerLexer = px.getTree();
+  
+  // No lexing or parsing; AST created directly
+  AST noLexer = AST();
+  using ExprNode = Node<ExpressionNode>;
+  auto rootBlock = Node<BlockNode>::make();
+  auto shift = ExprNode::make(Token(OPERATOR, 13, 1));
+  auto division = ExprNode::make(Token(OPERATOR, 29, 1));
+  auto addition = ExprNode::make(Token(OPERATOR, 31, 1));
+  auto negInt1 = ExprNode::make(Token(OPERATOR, 24, 1));
+  negInt1->addChild(ExprNode::make(Token(L_INTEGER, "12", 1)));
+  auto negInt2 = ExprNode::make(Token(OPERATOR, 24, 1));
+  negInt2->addChild(ExprNode::make(Token(L_INTEGER, "3", 1)));
+  addition->addChild(negInt1);
+  addition->addChild(negInt2);
+  division->addChild(addition);
+  division->addChild(ExprNode::make(Token(L_FLOAT, "1.5", 1)));
+  shift->addChild(division);
+  shift->addChild(ExprNode::make(Token(L_INTEGER, "1", 1)));
+  rootBlock->addChild(shift);
+  noLexer.root = *rootBlock;
+  
+  EXPECT_EQ(manualLexer, lexerLexer);
+  EXPECT_EQ(manualLexer, noLexer);
+  EXPECT_EQ(lexerLexer, noLexer);
 }
 
 TEST_F(ParserTest, SimpleASTEquality) {
