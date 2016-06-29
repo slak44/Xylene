@@ -254,6 +254,11 @@ public:
       noIncrement();
       // No point in looking for it anywhere if it's empty
       if (str.length() == 0) continue;
+      // Check for boolean literals
+      if (str == "true" || str == "false") {
+        addToken(Token(L_BOOLEAN, str, currentLine));
+        continue;
+      }
       // Check for keywords
       try {
         TokenType type = keywordsMap.at(str);

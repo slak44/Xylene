@@ -48,6 +48,11 @@ TEST_F(LexerTest, FloatLiterals) {
   EXPECT_THROW(getTokens("0x12.123")[0], Error);
 }
 
+TEST_F(LexerTest, BooleanLiterals) {
+  EXPECT_EQ(getTokens("true")[0], Token(L_BOOLEAN, "true", 1));
+  EXPECT_EQ(getTokens("false")[0], Token(L_BOOLEAN, "false", 1));
+}
+
 TEST_F(LexerTest, StringLiterals) {
   EXPECT_EQ(getTokens("\"qwerty123\"")[0], Token(L_STRING, "qwerty123", 1));
   EXPECT_THROW(getTokens("\"qwerty123")[0], Error);
