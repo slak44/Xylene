@@ -11,7 +11,7 @@ void run(std::string code, bool printTokens, bool doNotParse) {
   if (doNotParse) return;
   auto px = Parser();
   px.parse(lx.getTokens());
-  px.getTree().root.printTree(0);
+  px.getTree().print();
 }
 
 int main(int argc, const char* argv[]) {
