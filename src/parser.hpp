@@ -264,7 +264,7 @@ public:
     this->input = input;
     pos = 0;
     tree = AST();
-    tree.root = *block(ROOT_BLOCK);
+    tree.setRoot(*block(ROOT_BLOCK));
   }
   
   AST getTree() {

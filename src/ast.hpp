@@ -239,17 +239,28 @@ public:
 };
 
 class AST {
-public:
+private:
   ASTNode root = ASTNode();
+public:
   bool operator==(const AST& rhs) const {
     if (this->root != rhs.root) return false;
     return true;
   }
+  
   bool operator!=(const AST& rhs) const {
     return !operator==(rhs);
   }
-  void print() {
+  
+  void print() const {
     root.printTree(0);
+  }
+  
+  void setRoot(ASTNode rootNode) {
+    root = rootNode;
+  }
+  
+  ASTNode getRoot() const {
+    return root;
   }
 };
 
