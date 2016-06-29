@@ -154,15 +154,15 @@ public:
   DeclarationNode(std::string identifier):
     identifier(identifier), typeList({}), dynamic(true) {}
     
-  std::string getIdentifier() {
+  std::string getIdentifier() const {
     return identifier;
   }
   
-  TypeList getTypeList() {
+  TypeList getTypeList() const {
     return typeList;
   }
   
-  bool isDynamic() {
+  bool isDynamic() const {
     return dynamic;
   }
   
@@ -210,7 +210,7 @@ public:
     children[0] = cond;
   }
   
-  Link getCondition() {
+  Link getCondition() const {
     return children[0];
   }
   
@@ -218,7 +218,7 @@ public:
     children[1] = success;
   }
   
-  Link getSuccessBlock() {
+  Link getSuccessBlock() const {
     return children[1];
   }
   
@@ -226,7 +226,7 @@ public:
     children[2] = failiure;
   }
   
-  Link getFailiureBlock() {
+  Link getFailiureBlock() const {
     return children[2];
   }
   
