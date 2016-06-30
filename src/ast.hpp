@@ -78,12 +78,17 @@ public:
 };
 
 template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
-struct Node {
-  typedef std::shared_ptr<T> Link;
-  typedef std::weak_ptr<T> WeakLink;
-  template<typename... Args>
-  static Link make(Args... args) {
-    return std::make_shared<T>(args...);
+struct Node: public PtrUtil<T> {
+  typedef typename PtrUtil<T>::Link Link;
+  typedef typename PtrUtil<T>::WeakLink WeakLink;
+  
+  
+  static inline bool isSameType(ASTNode::Link node) {
+    return typeid(T) == typeid(*node);
+  }
+  
+  static inline Link dynPtrCast(ASTNode::Link node) {
+    return std::dynamic_pointer_cast<T>(node);
   }
 };
 
@@ -168,7 +173,7 @@ public:
   
   void addChild(Link child) {
     if (children.size() >= 1) throw InternalError("Trying to add more than one child to a DeclarationNode", {METADATA_PAIRS});
-    if (std::dynamic_pointer_cast<Node<ExpressionNode>::Link>(child)) throw InternalError("DeclarationNode only supports ExpressionNode as its child", {METADATA_PAIRS});
+    if (Node<ExpressionNode>::dynPtrCast(child)) throw InternalError("DeclarationNode only supports ExpressionNode as its child", {METADATA_PAIRS});
     ASTNode::addChild(child);
   }
   
@@ -261,6 +266,10 @@ public:
   
   ASTNode getRoot() const {
     return root;
+  }
+  
+  ASTNode::Link getRootAsLink() const {
+    return Node<ASTNode>::make(root);
   }
 };
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <typeinfo>
 
 #define abs(x) (x < 0 ? -x : x)
 #define UNUSED(expr) (void)(expr)
@@ -57,5 +58,26 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
   }
   return os;
 }
+
+template<typename T>
+struct PtrUtil {
+  typedef std::shared_ptr<T> Link;
+  typedef std::weak_ptr<T> WeakLink;
+  
+  template<typename... Args>
+  static Link make(Args... args) {
+    return std::make_shared<T>(args...);
+  }
+  
+  template<typename U>
+  static inline bool isSameType(std::shared_ptr<U> link) {
+    return typeid(T) == typeid(*link);
+  }
+  
+  template<typename U>
+  static inline Link dynPtrCast(std::shared_ptr<U> link) {
+    return std::dynamic_pointer_cast<T>(link);
+  }
+};
 
 #endif
