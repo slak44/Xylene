@@ -41,6 +41,10 @@ private:
     if (tok.isTerminal()) {
       switch (tok.type) {
         case L_INTEGER: return PtrUtil<Integer>::make(tok.data, 10);
+        case L_FLOAT: return PtrUtil<Float>::make(tok.data);
+        case L_STRING: return PtrUtil<String>::make(tok.data);
+        case L_BOOLEAN: return PtrUtil<Boolean>::make(tok.data);
+        // TODO: IDENTIFIER case
         default: throw InternalError("Unimplemented types in interpreter", {METADATA_PAIRS});
       };
     } else if (tok.isOperator()) {
