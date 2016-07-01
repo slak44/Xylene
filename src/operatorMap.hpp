@@ -22,8 +22,7 @@ typedef std::unordered_map<OperandTypeList, OperatorFunction, VectorHash<std::st
 std::unordered_map<std::string, Operations> operatorMap {
   {"Add", {
     {{"Integer", "Integer"}, OPERATION {
-      int64 result = CAST(operands[0], Integer)->getInt() + CAST(operands[1], Integer)->getInt();
-      return PtrUtil<Integer>::make(result);
+      return PtrUtil<Integer>::make(CAST(operands[0], Integer)->getValue() + CAST(operands[1], Integer)->getValue());
     }}
     
   }}
