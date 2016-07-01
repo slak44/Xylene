@@ -27,7 +27,7 @@ private:
       return;
     } else if (Node<ExpressionNode>::isSameType(statement)) {
       auto obj = interpretExpression(Node<ExpressionNode>::dynPtrCast(statement));
-      print(*PtrUtil<Integer>::dynPtrCast(obj));
+      println(obj->toString());
       return;
     }
   }
