@@ -73,6 +73,9 @@ private:
       throw Error("SyntaxError", errorMessage + " (found: " + currentData + ")", current().line);
     }
   }
+  inline bool isEndOfExpression() {
+    return accept(C_SEMI) || accept(C_PAREN_RIGHT) || accept(FILE_END);
+  }
   inline Node<ExpressionNode>::Link exprFromCurrent() {
     return Node<ExpressionNode>::make(current());
   }
@@ -116,6 +119,7 @@ private:
     
     Node<ExpressionNode>::Link lastExpr = nullptr;
     Token tok = current();
+    if (isEndOfExpression()) return lhs;
     while (tok.hasArity(BINARY) && tok.getPrecedence() >= minPrecedence) {
       auto tokExpr = Node<ExpressionNode>::make(tok);
       tokExpr->addChild(lhs);
@@ -140,7 +144,7 @@ private:
         lastExpr->addChild(tokExpr);
         lastExpr = tokExpr;
       }
-      if (accept(C_SEMI) || accept(C_PAREN_RIGHT) || accept(FILE_END)) break;
+      if (isEndOfExpression()) break;
     }
     if (base == nullptr) {
       base = lhs;

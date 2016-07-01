@@ -66,4 +66,19 @@ TEST_F(ParserTest, SimpleASTEquality) {
   ASSERT_EQ(px.getTree(), tree);
 }
 
+TEST_F(ParserTest, NoBinaryOperators) {
+  px.parse({
+    Token(OPERATOR, operatorNameMap["Unary -"], 1),
+    Token(L_INTEGER, "1", 1),
+    Token(FILE_END, "", 1)
+  });
+  AST tree = AST();
+  auto op = Node<ExpressionNode>::make(Token(OPERATOR, operatorNameMap["Unary -"], 1));
+  op->addChild(Node<ExpressionNode>::make(Token(L_INTEGER, "1", 1)));
+  auto rootBlock = Node<BlockNode>::make();
+  rootBlock->addChild(op);
+  tree.setRoot(*rootBlock);
+  ASSERT_EQ(tree, px.getTree());
+}
+
 #endif
