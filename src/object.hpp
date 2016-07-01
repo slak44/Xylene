@@ -12,6 +12,7 @@ public:
   
   virtual bool isTruthy() const = 0;
   virtual std::string getTypeName() const = 0;
+  virtual std::string toString() const = 0;
 };
 
 class Integer: public Object {
@@ -28,6 +29,10 @@ public:
   
   bool isTruthy() const {
     return internal == 0;
+  }
+  
+  std::string toString() const {
+    return "Integer " + std::to_string(internal) + " (" + getAddressStringFrom(this) + ")";
   }
   
   std::string getTypeName() const {
@@ -51,6 +56,10 @@ public:
     return internal == 0;
   }
   
+  std::string toString() const {
+    return "Float " + std::to_string(internal) + " (" + getAddressStringFrom(this) + ")";
+  }
+  
   std::string getTypeName() const {
     return "Float";
   }
@@ -69,6 +78,10 @@ public:
   
   bool isTruthy() const {
     return internal != "";
+  }
+  
+  std::string toString() const {
+    return "String \'" + internal + "\' (" + getAddressStringFrom(this) + ")";
   }
   
   std::string getTypeName() const {
@@ -92,6 +105,10 @@ public:
     return internal;
   }
   
+  std::string toString() const {
+    return "Boolean " + std::to_string(internal) + " (" + getAddressStringFrom(this) + ")";
+  }
+  
   std::string getTypeName() const {
     return "Boolean";
   }
@@ -99,7 +116,7 @@ public:
 
 #define OSTREAM_OVERLOAD(type) \
 std::ostream& operator<<(std::ostream& os, type obj) {\
-  return os << #type << " " << obj.getValue() << " (" << &obj << ")";\
+  return os << obj.toString();\
 }
 
 OSTREAM_OVERLOAD(Integer);

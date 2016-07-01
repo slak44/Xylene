@@ -94,4 +94,8 @@ struct VectorHash {
   }
 };
 
+std::string getAddressStringFrom(const void* ptr) {
+  return std::to_string(reinterpret_cast<std::uintptr_t>(ptr));
+}
+
 #endif
