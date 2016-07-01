@@ -2,6 +2,7 @@
 #define UTIL_HPP
 
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -95,7 +96,9 @@ struct VectorHash {
 };
 
 std::string getAddressStringFrom(const void* ptr) {
-  return std::to_string(reinterpret_cast<std::uintptr_t>(ptr));
+  std::stringstream ss;
+  ss << "0x" << std::hex << reinterpret_cast<std::uintptr_t>(ptr);
+  return ss.str();
 }
 
 #endif
