@@ -1,11 +1,13 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#include <string>
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <memory>
 #include <typeinfo>
+#include <functional>
 
 #define abs(x) (x < 0 ? -x : x)
 #define UNUSED(expr) (void)(expr)
@@ -77,6 +79,18 @@ struct PtrUtil {
   template<typename U>
   static inline Link dynPtrCast(std::shared_ptr<U> link) {
     return std::dynamic_pointer_cast<T>(link);
+  }
+};
+
+template<typename T>
+struct VectorHash {
+  std::size_t operator()(const std::vector<T>& vec) const {
+    std::size_t seed = vec.size();
+    std::hash<T> hash;
+    for (const T& i : vec) {
+      seed ^= hash(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    }
+    return seed;
   }
 };
 
