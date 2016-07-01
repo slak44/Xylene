@@ -118,6 +118,50 @@ const std::vector<Operator> operatorList {
   Operator(",", 0) // 38
 };
 
+typedef std::string OperatorName;
+
+std::map<OperatorName, uint> operatorNameMap {
+  {"Equality", 0},
+  {"Inequality", 1},
+  {"Assignment", 2},
+  {"+Assignment", 3},
+  {"-Assignment", 4},
+  {"*Assignment", 5},
+  {"/Assignment", 6},
+  {"%Assignment", 7},
+  {"<<Assignment", 8},
+  {">>Assignment", 9},
+  {"&Assignment", 10},
+  {"^Assignment", 11},
+  {"|Assignment", 12},
+  {"Bitshift >>", 13},
+  {"Bitshift <<", 14},
+  {"Less or equal", 15},
+  {"Less", 16},
+  {"Greater or equal", 17},
+  {"Greater", 18},
+  {"Postfix --", 19},
+  {"Postfix ++", 20},
+  {"Member access", 21},
+  {"Prefix --", 22},
+  {"Prefix ++", 23},
+  {"Unary -", 24},
+  {"Unary +", 25},
+  {"Bitwise NOT", 26},
+  {"Logical NOT", 27},
+  {"Multiply", 28},
+  {"Divide", 29},
+  {"Modulo", 30},
+  {"Add", 31},
+  {"Substract", 32},
+  {"Logical AND", 33},
+  {"Logical OR", 34},
+  {"Bitwise AND", 35},
+  {"Bitwise XOR", 36},
+  {"Bitwise OR", 37},
+  {"Comma", 38},
+};
+
 std::vector<char> getOperatorCharacters() {
   static std::vector<char> chars {};
   if (chars.size() == 0) {
@@ -135,6 +179,18 @@ std::vector<char> getOperatorCharacters() {
 std::vector<char> getConstructCharacters() {
   const static std::vector<char> chars {' ', '\n', '\0', '(', ')', '[', ']', '?', ';', ':'};
   return chars;
+}
+
+const Operator& operatorFrom(const OperatorName& name) {
+  return operatorList[operatorNameMap[name]];
+}
+
+OperatorName operatorNameFrom(uint64 index) {
+  auto it = std::find_if(ALL(operatorNameMap), [=](auto mapPair) {
+    return mapPair.second == index;
+  });
+  if (it == operatorNameMap.end()) throw InternalError("No such operator index", {METADATA_PAIRS, {"index", std::to_string(index)}});
+  return it->first;
 }
 
 #endif
