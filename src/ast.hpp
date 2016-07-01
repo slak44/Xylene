@@ -93,6 +93,7 @@ struct Node: public PtrUtil<T> {
 };
 
 class BlockNode: public ASTNode {
+public:
   void printTree(uint level) const {
     printIndent(level);
     println("Block Node");
@@ -245,7 +246,7 @@ public:
 
 class AST {
 private:
-  ASTNode root = ASTNode();
+  BlockNode root = BlockNode();
 public:
   bool operator==(const AST& rhs) const {
     if (this->root != rhs.root) return false;
@@ -260,16 +261,16 @@ public:
     root.printTree(0);
   }
   
-  void setRoot(ASTNode rootNode) {
+  void setRoot(BlockNode rootNode) {
     root = rootNode;
   }
   
-  ASTNode getRoot() const {
+  BlockNode getRoot() const {
     return root;
   }
   
-  ASTNode::Link getRootAsLink() const {
-    return Node<ASTNode>::make(root);
+  Node<BlockNode>::Link getRootAsLink() const {
+    return Node<BlockNode>::make(root);
   }
 };
 
