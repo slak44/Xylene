@@ -15,6 +15,18 @@ typedef std::vector<Object::Link> OperandList; // The list of actual operands
 typedef std::function<Object::Link(OperandList)> OperatorFunction; // The code that runs for a specific operand list
 typedef std::unordered_map<OperandTypeList, OperatorFunction, VectorHash<std::string>> Operations; // Maps specific operand types to their respective code
 
+/*
+  Dereference all PtrUtil<Reference> in the operand list, by replacing them with the value they reference.
+  Use if the operator does not mutate the referenced thing.
+*/
+void dereferenceAll(OperandList& list) {
+  std::for_each(ALL(list), [](Object::Link& element) {
+    if (element->getTypeName() == "Reference") {
+      element = PtrUtil<Reference>::dynPtrCast(element)->getValue();
+    }
+  });
+}
+
 #define OPERATION [](OperandList operands) -> Object::Link
 #define CAST(what, type) PtrUtil<type>::dynPtrCast(what)
 
@@ -26,6 +38,7 @@ typedef std::unordered_map<OperandTypeList, OperatorFunction, VectorHash<std::st
 */
 #define BINARY_ARITHMETIC_OP(type1, type2, resultType, op) \
 {{#type1, #type2}, OPERATION {\
+  dereferenceAll(operands);\
   return PtrUtil<resultType>::make(CAST(operands[0], type1)->getValue() op CAST(operands[1], type2)->getValue());\
 }}
 
