@@ -54,8 +54,12 @@ public:
   void setParent(WeakLink newParent) {parent = newParent;}
   WeakLink getParent() const {return parent;}
   
-  void setLineNumber(uint64 newLineNumber) {lineNumber = newLineNumber;}
-  uint64 getLineNumber() const {return lineNumber;}
+  void inline setLineNumber(uint64 newLineNumber) {
+    lineNumber = newLineNumber;
+  }
+  uint64 inline getLineNumber() const {
+    return lineNumber;
+  }
   
   virtual void printTree(uint level) const {
     printIndent(level);

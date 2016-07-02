@@ -77,7 +77,9 @@ private:
     return accept(C_SEMI) || accept(C_PAREN_RIGHT) || accept(FILE_END);
   }
   inline Node<ExpressionNode>::Link exprFromCurrent() {
-    return Node<ExpressionNode>::make(current());
+    auto e = Node<ExpressionNode>::make(current());
+    e->setLineNumber(current().line);
+    return e;
   }
   Node<ExpressionNode>::Link expression() {
     return expressionImpl(parseExpressionPrimary(), 0);
@@ -122,6 +124,7 @@ private:
     if (isEndOfExpression()) return lhs;
     while (tok.hasArity(BINARY) && tok.getPrecedence() >= minPrecedence) {
       auto tokExpr = Node<ExpressionNode>::make(tok);
+      tokExpr->setLineNumber(tok.line);
       tokExpr->addChild(lhs);
       skip();
       auto rhs = parseExpressionPrimary();
@@ -166,8 +169,10 @@ private:
   }
   Node<DeclarationNode>::Link declarationFromTypes(TypeList typeList) {
     auto name = current().data;
+    auto line = current().line;
     skip();
     auto decl = Node<DeclarationNode>::make(name, typeList);
+    decl->setLineNumber(line);
     initialize(decl);
     expectSemi();
     return decl;
@@ -175,6 +180,7 @@ private:
   // This function assumes K_IF has been skipped
   Node<BranchNode>::Link parseIfStatement() {
     auto branch = Node<BranchNode>::make();
+    branch->setLineNumber(current().line);
     branch->addCondition(expression());
     branch->addSuccessBlock(block(IF_BLOCK));
     skip(-1); // Go back to the block termination token
@@ -199,8 +205,10 @@ private:
       // Dynamic variable declaration
       if (accept(IDENTIFIER)) {
         auto name = current().data;
+        auto line = current().line;
         skip();
         auto decl = Node<DeclarationNode>::make(name);
+        decl->setLineNumber(line);
         initialize(decl);
         expectSemi();
         return decl;
@@ -253,6 +261,7 @@ private:
   Node<BlockNode>::Link block(BlockType type) {
     if (type != ROOT_BLOCK) expect(K_DO, "Expected code block");
     Node<BlockNode>::Link block = Node<BlockNode>::make();
+    block->setLineNumber(current().line);
     while (!accept(K_END)) {
       if (type == IF_BLOCK && accept(K_ELSE)) break;
       if (type == ROOT_BLOCK && accept(FILE_END)) break;
