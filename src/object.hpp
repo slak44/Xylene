@@ -4,15 +4,51 @@
 #include <string>
 
 #include "util.hpp"
+#include "error.hpp"
 
 class Object {
 public:
   typedef PtrUtil<Object>::Link Link;
+  typedef PtrUtil<Object>::WeakLink WeakLink;
   virtual ~Object() {}
   
   virtual bool isTruthy() const = 0;
   virtual std::string getTypeName() const = 0;
   virtual std::string toString() const = 0;
+};
+
+class Reference: public Object {
+private:
+  Object::Link ref;
+  
+  void throwIfNull() const {
+    if (!ref) throw InternalError("Null reference access", {METADATA_PAIRS});
+  }
+public:
+  Reference(Object::Link obj): ref(obj) {}
+  
+  Object::Link getValue() const {
+    throwIfNull();
+    return ref;
+  }
+  
+  void setValue(Object::Link newRef) {
+    ref = newRef;
+  }
+  
+  bool isTruthy() const {
+    throwIfNull();
+    return ref->isTruthy();
+  }
+  
+  std::string getTypeName() const {
+    return "Reference";
+  }
+  
+  std::string toString() const {
+    throwIfNull();
+    return "Reference " + getAddressStringFrom(this) + ": " + ref->toString();
+  }
 };
 
 class Integer: public Object {
