@@ -23,17 +23,20 @@ typedef std::map<std::string, std::string> ErrorData;
 
 class InternalError: public std::runtime_error {
 private:
-  static std::string buildErrorMessage(std::string msg, ErrorData data) {
+  static std::string buildErrorMessage(std::string errorName, std::string msg, ErrorData data) {
     std::stringstream ss;
-    ss << "\n" << "InternalError: " << msg << "\n";
+    ss << "\n" << errorName << ": " << msg << "\n";
     for (auto& extra : data) {
       ss << "\t" << extra.first << ": " << extra.second << "\n";
     }
     return ss.str();
   }
+protected:
+  InternalError(std::string errorName, std::string msg, ErrorData data):
+    runtime_error(buildErrorMessage(errorName, msg, data)) {}
 public:
   InternalError(std::string msg, ErrorData data):
-    runtime_error(buildErrorMessage(msg, data)) {}
+    runtime_error(buildErrorMessage("InternalError", msg, data)) {}
 };
 
 #endif
