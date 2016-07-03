@@ -36,7 +36,11 @@ private:
   }
   
   void interpretDeclaration(Scope::Link currentScope, Node<DeclarationNode>::Link decl) {
-    // TODO
+    Object::Link init = decl->hasInit() ? interpretExpression(currentScope, decl->getInit()) : Object::Link();
+    std::unique_ptr<Reference> ref;
+    if (decl->isDynamic()) ref = std::make_unique<Reference>(init);
+    else ref = std::make_unique<Reference>(init, decl->getTypeList());
+    currentScope->insert(decl->getIdentifier(), *ref);
   }
   
   Object::Link interpretExpression(Scope::Link currentScope, Node<ExpressionNode>::Link expr) {
