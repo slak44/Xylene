@@ -113,7 +113,11 @@ private:
       lastNode->addChild(parseExpressionPrimary());
       return expr;
     } else {
-      throw InternalError("Unimplemented primary expression", {METADATA_PAIRS, {"token", current().toString()}});
+      throw InternalError("Unimplemented primary expression", {
+        METADATA_PAIRS,
+        {"token", current().toString()},
+        {"token pos", std::to_string(pos)}
+      });
     }
   }
   Node<ExpressionNode>::Link expressionImpl(Node<ExpressionNode>::Link lhs, int minPrecedence) {
@@ -255,7 +259,9 @@ private:
     } else if (accept(K_DO)) {
       return block(CODE_BLOCK);
     } else {
-      return expression();
+      auto e = expression();
+      expectSemi();
+      return e;
     }
   }
   Node<BlockNode>::Link block(BlockType type) {
