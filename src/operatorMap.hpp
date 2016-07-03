@@ -85,18 +85,22 @@ OperandTypeList typeListFrom(OperandList list) {
   OperandTypeList t {};
   t.resize(list.size());
   std::transform(ALL(list), t.begin(), [](const Object::Link& operand) {
-    return operand->getTypeName();
+    auto name = operand->getTypeName();
+    if (name == "Reference") return PtrUtil<Reference>::dynPtrCast(operand)->getValue()->getTypeName();
+    return name;
   });
   return t;
 }
 
-inline OperatorFunction tryFindingDefault(OperatorName opName, Operations ops) {
+inline OperatorFunction tryFindingDefault(OperatorName opName, OperandTypeList tl, Operations ops) {
   try {
     return ops.at({});
   } catch (std::out_of_range& oor) {
     throw InternalError("No specific or default operation found", {
       METADATA_PAIRS,
-      {"operator name", opName}
+      {"operator name", opName},
+      {"operator list", std::accumulate(++tl.begin(), tl.end(), *tl.begin(),
+        [](std::string prev, std::string curr) {return prev + " " + curr;})}
     });
   }
 }
@@ -110,7 +114,7 @@ Object::Link executeOperator(OperatorName opName, OperandList list) {
     try {
       func = ops.at(tl);
     } catch (std::out_of_range& oor) {
-      func = tryFindingDefault(opName, ops);
+      func = tryFindingDefault(opName, tl, ops);
     }
   } catch (std::out_of_range& oor) {
     throw InternalError("Unknown operator", {
