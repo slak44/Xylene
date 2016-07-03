@@ -176,9 +176,17 @@ public:
     return dynamic;
   }
   
+  bool hasInit() const {
+    return children.size() == 1;
+  }
+  
+  Node<ExpressionNode>::Link getInit() const {
+    return Node<ExpressionNode>::dynPtrCast(children[0]);
+  }
+  
   void addChild(Link child) {
     if (children.size() >= 1) throw InternalError("Trying to add more than one child to a DeclarationNode", {METADATA_PAIRS});
-    if (Node<ExpressionNode>::dynPtrCast(child)) throw InternalError("DeclarationNode only supports ExpressionNode as its child", {METADATA_PAIRS});
+    if (!Node<ExpressionNode>::dynPtrCast(child)) throw InternalError("DeclarationNode only supports ExpressionNode as its child", {METADATA_PAIRS});
     ASTNode::addChild(child);
   }
   
