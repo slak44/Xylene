@@ -2,9 +2,13 @@
 #define OBJECT_HPP
 
 #include <string>
+#include <set>
+#include <numeric>
 
 #include "util.hpp"
 #include "error.hpp"
+
+typedef std::set<std::string> TypeList;
 
 class Object {
 public:
@@ -20,12 +24,15 @@ public:
 class Reference: public Object {
 private:
   Object::Link ref;
+  bool isDynamic;
+  TypeList allowed;
   
   void throwIfNull() const {
     if (!ref) throw InternalError("Null reference access", {METADATA_PAIRS});
   }
 public:
-  Reference(Object::Link obj): ref(obj) {}
+  Reference(Object::Link obj): ref(obj), isDynamic(true), allowed({}) {}
+  Reference(Object::Link obj, TypeList list): ref(obj), isDynamic(false), allowed(list) {}
   
   Object::Link getValue() const {
     throwIfNull();
@@ -33,7 +40,19 @@ public:
   }
   
   void setValue(Object::Link newRef) {
+    if (!canStoreType(newRef->getTypeName())) throw InternalError("Type mismatch", {
+      METADATA_PAIRS,
+      {"new type", newRef->getTypeName()},
+      {"type list", std::accumulate(ALL(allowed), std::string {},
+        [](std::string prev, std::string curr) {return prev + " " + curr;})},
+      {"is dynamic", std::to_string(isDynamic)}
+    });
     ref = newRef;
+  }
+  
+  bool canStoreType(std::string typeName) const {
+    if (isDynamic) return true;
+    else return std::find(ALL(allowed), typeName) != allowed.end();
   }
   
   bool isTruthy() const {

@@ -21,7 +21,7 @@ public:
   typedef PtrUtil<Scope>::Link Link;
   typedef PtrUtil<Scope>::WeakLink WeakLink;
   
-  Reference get(std::string ident) const {
+  const Reference& get(std::string ident) const {
     WeakLink lastParent = parent;
     while (!lastParent.expired()) {
       try {
@@ -34,7 +34,15 @@ public:
   }
   
   void set(std::string ident, Object::Link obj) {
-    map[ident] = Reference(obj);
+    try {
+      map.at(ident).setValue(obj);
+    } catch (std::out_of_range& oor) {
+      throw NotFoundError({METADATA_PAIRS, {"identifier", ident}});
+    }
+  }
+  
+  void insert(std::string ident, Reference ref) {
+    map.insert({ident, ref});
   }
   
   WeakLink getParent() const {
