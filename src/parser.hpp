@@ -244,7 +244,9 @@ private:
         return declarationFromTypes(types);
       }
       skip(-1); // Undo the skip above, so the identifier is included in the expression
-      return expression();
+      auto e = expression();
+      expectSemi();
+      return e;
     } else if (accept(K_IF)) {
       skip();
       return parseIfStatement();
