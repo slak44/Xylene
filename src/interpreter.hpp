@@ -37,10 +37,10 @@ private:
   
   void interpretDeclaration(Scope::Link currentScope, Node<DeclarationNode>::Link decl) {
     Object::Link init = decl->hasInit() ? interpretExpression(currentScope, decl->getInit()) : Object::Link();
-    std::unique_ptr<Reference> ref;
-    if (decl->isDynamic()) ref = std::make_unique<Reference>(init);
-    else ref = std::make_unique<Reference>(init, decl->getTypeList());
-    currentScope->insert(decl->getIdentifier(), *ref);
+    Reference::Link ref;
+    if (decl->isDynamic()) ref = PtrUtil<Reference>::make(init);
+    else ref = PtrUtil<Reference>::make(init, decl->getTypeList());
+    currentScope->insert(decl->getIdentifier(), ref);
   }
   
   Object::Link interpretExpression(Scope::Link currentScope, Node<ExpressionNode>::Link expr) {
@@ -51,7 +51,7 @@ private:
         case L_FLOAT: return PtrUtil<Float>::make(tok.data);
         case L_STRING: return PtrUtil<String>::make(tok.data);
         case L_BOOLEAN: return PtrUtil<Boolean>::make(tok.data);
-        case IDENTIFIER: return PtrUtil<Reference>::make(currentScope->get(tok.data));
+        case IDENTIFIER: return currentScope->get(tok.data).lock();
         default: throw InternalError("Unimplemented types in interpreter", {METADATA_PAIRS});
       };
     } else if (tok.isOperator()) {

@@ -16,12 +16,12 @@ public:
 class Scope {
 private:
   PtrUtil<Scope>::WeakLink parent;
-  std::unordered_map<std::string, Reference> map {};
+  std::unordered_map<std::string, Reference::Link> map {};
 public:
   typedef PtrUtil<Scope>::Link Link;
   typedef PtrUtil<Scope>::WeakLink WeakLink;
   
-  const Reference& get(std::string ident) const {
+  Reference::WeakLink get(std::string ident) const {
     WeakLink lastParent = parent;
     while (!lastParent.expired()) {
       try {
@@ -35,13 +35,13 @@ public:
   
   void set(std::string ident, Object::Link obj) {
     try {
-      map.at(ident).setValue(obj);
+      map.at(ident)->setValue(obj);
     } catch (std::out_of_range& oor) {
       throw NotFoundError({METADATA_PAIRS, {"identifier", ident}});
     }
   }
   
-  void insert(std::string ident, Reference ref) {
+  void insert(std::string ident, Reference::Link ref) {
     map.insert({ident, ref});
   }
   

@@ -31,6 +31,9 @@ private:
     if (!ref) throw InternalError("Null reference access", {METADATA_PAIRS});
   }
 public:
+  typedef PtrUtil<Reference>::Link Link;
+  typedef PtrUtil<Reference>::WeakLink WeakLink;
+  
   Reference(Object::Link obj): ref(obj), isDynamic(true), allowed({}) {}
   Reference(Object::Link obj, TypeList list): ref(obj), isDynamic(false), allowed(list) {}
   
