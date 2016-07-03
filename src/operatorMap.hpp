@@ -13,7 +13,12 @@
 typedef std::vector<std::string> OperandTypeList; // The types of the operands
 typedef std::vector<Object::Link> OperandList; // The list of actual operands
 typedef std::function<Object::Link(OperandList)> OperatorFunction; // The code that runs for a specific operand list
-typedef std::unordered_map<OperandTypeList, OperatorFunction, VectorHash<std::string>> Operations; // Maps specific operand types to their respective code
+
+/*
+  Maps specific operand types to their respective code.
+  Using an empty vector as a key sets it as the default operation.
+*/
+typedef std::unordered_map<OperandTypeList, OperatorFunction, VectorHash<std::string>> Operations;
 
 /*
   Dereference all PtrUtil<Reference> in the operand list, by replacing them with the value they reference.
@@ -50,6 +55,13 @@ BINARY_ARITHMETIC_OP(Float, Float, Float, op)
 
 // Maps an operator name to the operations that use it
 std::unordered_map<std::string, Operations> operatorMap {
+  {"Assignment", {
+    {{}, OPERATION {
+      PtrUtil<Reference>::Link ref = PtrUtil<Reference>::dynPtrCast(operands[0]);
+      ref->setValue(operands[1]);
+      return ref;
+    }}
+  }},
   {"Add", {
     BINARY_ARITHMETIC_SET(+),
   }},
@@ -78,9 +90,34 @@ OperandTypeList typeListFrom(OperandList list) {
   return t;
 }
 
+inline OperatorFunction tryFindingDefault(OperatorName opName, Operations ops) {
+  try {
+    return ops.at({});
+  } catch (std::out_of_range& oor) {
+    throw InternalError("No specific or default operation found", {
+      METADATA_PAIRS,
+      {"operator name", opName}
+    });
+  }
+}
+
 Object::Link executeOperator(OperatorName opName, OperandList list) {
   OperandTypeList tl = typeListFrom(list);
-  OperatorFunction func = operatorMap[opName][tl];
+  Operations ops;
+  OperatorFunction func;
+  try {
+    ops = operatorMap.at(opName);
+    try {
+      func = ops.at(tl);
+    } catch (std::out_of_range& oor) {
+      func = tryFindingDefault(opName, ops);
+    }
+  } catch (std::out_of_range& oor) {
+    throw InternalError("Unknown operator", {
+      METADATA_PAIRS,
+      {"operator name", opName}
+    });
+  }
   return func(list);
 }
 
