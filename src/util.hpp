@@ -9,6 +9,7 @@
 #include <memory>
 #include <typeinfo>
 #include <functional>
+#include <cxxabi.h>
 
 #define abs(x) (x < 0 ? -x : x)
 #define UNUSED(expr) (void)(expr)
@@ -99,6 +100,11 @@ std::string getAddressStringFrom(const void* ptr) {
   std::stringstream ss;
   ss << "0x" << std::hex << reinterpret_cast<std::uintptr_t>(ptr);
   return ss.str();
+}
+
+std::string demangle(std::string name) {
+  int status;
+  return abi::__cxa_demangle(name.c_str(), 0, 0, &status);
 }
 
 #endif
