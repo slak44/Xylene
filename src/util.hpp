@@ -65,8 +65,14 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
 
 template<typename T>
 struct PtrUtil {
+  typedef std::unique_ptr<T> U;
   typedef std::shared_ptr<T> Link;
   typedef std::weak_ptr<T> WeakLink;
+  
+  template<typename... Args>
+  static U unique(Args... args) {
+    return std::make_unique<T>(args...);
+  }
   
   template<typename... Args>
   static Link make(Args... args) {
