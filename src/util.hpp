@@ -55,6 +55,14 @@ bool contains(std::vector<T> vec, T item) {
   return std::find(vec.begin(), vec.end(), item) != vec.end();
 }
 
+std::vector<std::string> split(const std::string& str, char delim) {
+  std::vector<std::string> vec {};
+  std::stringstream ss(str);
+  std::string item;
+  while (getline(ss, item, delim)) vec.push_back(item);
+  return vec;
+}
+
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
   for (auto obj : vec) {
