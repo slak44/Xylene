@@ -82,24 +82,39 @@ const std::unordered_map<char, TokenType> constructMap {
   {'?', C_QUESTION},
 };
 
+const static std::unordered_map<TokenType, std::string> tokenTypeMap {
+  {L_INTEGER, "Integer"},
+  {L_FLOAT, "Float"},
+  {L_BOOLEAN, "Boolean"},
+  {L_STRING, "String"},
+  {C_SEMI, "Semicolon"},
+  {C_2POINT, "Colon"},
+  {C_QUESTION, "Question mark"},
+  {C_PAREN_LEFT, "Left parenthesis"},
+  {C_PAREN_RIGHT, "Right parenthesis"},
+  {C_PAREN_LEFT, "Left square parenthesis"},
+  {C_PAREN_RIGHT, "Right square parenthesis"},
+  {FILE_END, "End of file"},
+  {OPERATOR, "Operator"},
+  {IDENTIFIER, "Identifier"},
+  {UNPROCESSED, "Unprocessed?"}
+};
+
+TokenType getTokenTypeByName(std::string name) {
+  try {
+    return keywordsMap.at(name);
+  } catch (std::out_of_range& oor) {}
+  try {
+    return constructMap.at(name[0]);
+  } catch (std::out_of_range& oor) {}
+  auto it = std::find_if(ALL(tokenTypeMap), [=](const std::pair<TokenType, std::string>& elem) {
+    return elem.second == name;
+  });
+  if (it != tokenTypeMap.end()) return it->first;
+  else throw InternalError("Cannot determine token type", {METADATA_PAIRS, {"name", name}});
+}
+
 std::string getTokenTypeName(const TokenType& tt) {
-  const static std::unordered_map<TokenType, std::string> tokenTypeMap {
-    {L_INTEGER, "Integer"},
-    {L_FLOAT, "Float"},
-    {L_BOOLEAN, "Boolean"},
-    {L_STRING, "String"},
-    {C_SEMI, "Semicolon"},
-    {C_2POINT, "Colon"},
-    {C_QUESTION, "Question mark"},
-    {C_PAREN_LEFT, "Left parenthesis"},
-    {C_PAREN_RIGHT, "Right parenthesis"},
-    {C_PAREN_LEFT, "Left square parenthesis"},
-    {C_PAREN_RIGHT, "Right square parenthesis"},
-    {FILE_END, "End of file"},
-    {OPERATOR, "Operator"},
-    {IDENTIFIER, "Identifier"},
-    {UNPROCESSED, "Unprocessed?"}
-  };
   try {
     // Try to use the map above
     return tokenTypeMap.at(tt);
