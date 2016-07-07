@@ -1,0 +1,10 @@
+<!-- (12 + 3) / 1.5 -->
+<block>
+  <expr type="Operator" value="Divide">
+    <expr type="Operator" value="Add">
+      <expr type="Integer" value="12"></expr>
+      <expr type="Integer" value="3"></expr>
+    </expr>
+    <expr type="Float" value="1.5"></expr>
+  </expr>
+</block>

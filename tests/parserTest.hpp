@@ -2,6 +2,7 @@
 #define PARSER_TEST_HPP
 
 #include <gtest/gtest.h>
+#include <rapidxml_utils.hpp>
 
 #include "lexer.hpp"
 #include "parser.hpp"
@@ -19,12 +20,12 @@ TEST_F(ParserTest, ExpressionParsing) {
   px.parse({
     Token(C_PAREN_LEFT, "(", 1), Token(OPERATOR, 24, 1), Token(L_INTEGER, "12", 1),
     Token(OPERATOR, 31, 1), Token(OPERATOR, 24, 1), Token(L_INTEGER, "3", 1), Token(C_PAREN_RIGHT, ")", 1),
-    Token(OPERATOR, 29, 1), Token(L_FLOAT, "1.5", 1), Token(OPERATOR, 13, 1), Token(L_INTEGER, "1", 1), Token(FILE_END, "", 1)
+    Token(OPERATOR, 29, 1), Token(L_FLOAT, "1.5", 1), Token(OPERATOR, 13, 1), Token(L_INTEGER, "1", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)
   });
   AST manualLexer = px.getTree();
   
   // Lexed by Lexer class
-  px.parse(Lexer().tokenize("(-12 + -3) / 1.5 >> 1").getTokens());
+  px.parse(Lexer().tokenize("(-12 + -3) / 1.5 >> 1;").getTokens());
   AST lexerLexer = px.getTree();
   
   // No lexing or parsing; AST created directly
@@ -53,7 +54,7 @@ TEST_F(ParserTest, ExpressionParsing) {
 }
 
 TEST_F(ParserTest, SimpleASTEquality) {
-  px.parse({Token(L_INTEGER, "1", 1), Token(OPERATOR, 31, 1), Token(L_INTEGER, "1", 1), Token(FILE_END, "", 1)});
+  px.parse({Token(L_INTEGER, "1", 1), Token(OPERATOR, 31, 1), Token(L_INTEGER, "1", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)});
   AST tree = AST();
   auto operand1 = Node<ExpressionNode>::make(Token(L_INTEGER, "1", 1));
   auto operand2 = Node<ExpressionNode>::make(Token(L_INTEGER, "1", 1));
@@ -70,6 +71,7 @@ TEST_F(ParserTest, NoBinaryOperators) {
   px.parse({
     Token(OPERATOR, operatorNameMap["Unary -"], 1),
     Token(L_INTEGER, "1", 1),
+    Token(C_SEMI, ";", 1),
     Token(FILE_END, "", 1)
   });
   AST tree = AST();
@@ -79,6 +81,18 @@ TEST_F(ParserTest, NoBinaryOperators) {
   rootBlock->addChild(op);
   tree.setRoot(*rootBlock);
   ASSERT_EQ(tree, px.getTree());
+}
+
+TEST_F(ParserTest, XMLParse) {
+  // (12 + 3) / 1.5
+  px.parse({
+    Token(C_PAREN_LEFT, "(", 1), Token(L_INTEGER, "12", 1),
+    Token(OPERATOR, 31, 1), Token(L_INTEGER, "3", 1), Token(C_PAREN_RIGHT, ")", 1),
+    Token(OPERATOR, 29, 1), Token(L_FLOAT, "1.5", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)
+  });
+  AST tree = AST();
+  tree.fromXML(rapidxml::file<>("tests/data/simple_expr.xml").data());
+  ASSERT_EQ(px.getTree(), tree);
 }
 
 #endif
