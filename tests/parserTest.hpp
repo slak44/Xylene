@@ -99,7 +99,7 @@ TEST_F(ParserTest, IfStatement) {
   px.parse(Lexer().tokenize(R"(
     if true == false do
       1 + 2;
-    else
+    else do
       100 - 101;
     end
   )").getTokens());
