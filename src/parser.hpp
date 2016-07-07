@@ -74,7 +74,7 @@ private:
     }
   }
   inline bool isEndOfExpression() {
-    return accept(C_SEMI) || accept(C_PAREN_RIGHT) || accept(FILE_END);
+    return accept(C_SEMI) || accept(C_PAREN_RIGHT) || accept(FILE_END) || accept(K_DO);
   }
   inline Node<ExpressionNode>::Link exprFromCurrent() {
     auto e = Node<ExpressionNode>::make(current());
@@ -267,7 +267,10 @@ private:
     }
   }
   Node<BlockNode>::Link block(BlockType type) {
-    if (type != ROOT_BLOCK) expect(K_DO, "Expected code block");
+    if (type != ROOT_BLOCK) {
+      expect(K_DO, "Expected code block");
+      skip();
+    }
     Node<BlockNode>::Link block = Node<BlockNode>::make();
     block->setLineNumber(current().line);
     while (!accept(K_END)) {
