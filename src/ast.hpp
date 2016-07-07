@@ -256,6 +256,25 @@ public:
   bool operator!=(const ASTNode& rhs) const {
     return !operator==(rhs);
   }
+  
+  void printTree(uint level) const {
+    printIndent(level);
+    println("Branch Node:");
+    
+    printIndent(level + 1);
+    println("Condition:");
+    children[0]->printTree(level + 1);
+    
+    printIndent(level + 1);
+    println("Success:");
+    children[1]->printTree(level + 1);
+    
+    if (children[2] != nullptr) {
+      printIndent(level + 1);
+      println("Failiure:");
+      children[2]->printTree(level + 1);
+    }
+  }
 };
 
 class AST {
