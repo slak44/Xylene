@@ -25,8 +25,10 @@
 #### PROJECT SETTINGS ####
 # The name of the executable to be created
 BIN_NAME := lg
-# Compiler used
+# Compiler
 CXX ?= g++
+# Windows compiler
+WIN_CXX ?= /usr/i686-w64-mingw32/bin/g++
 # Extension of source files used in the project
 SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
@@ -51,6 +53,8 @@ LINK_FLAGS =
 RLINK_FLAGS =
 # Additional debug-specific linker settings
 DLINK_FLAGS =
+# Additional windows-specific linker settings
+WLINK_FLAGS = -static-libstdc++ -static-libgcc -static -lpthread
 # Additional test-specific linker settings
 TLINK_FLAGS = -pthread libs/googletest-release-1.7.0/libgtest.a
 # Destination directory, like a jail or mounted system
@@ -100,6 +104,8 @@ ifeq ($(V),true)
 endif
 
 # Combine compiler and linker flags
+windows: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS)
+windows: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS) $(WLINK_FLAGS)
 release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS)
 release: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS)
 debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(DCOMPILE_FLAGS)
@@ -108,6 +114,8 @@ test: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(TCOMPILE_FLAGS)
 test: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(TLINK_FLAGS)
 
 # Build and output paths
+windows: export BUILD_PATH := build/windows
+windows: export BIN_PATH := bin/windows
 release: export BUILD_PATH := build/release
 release: export BIN_PATH := bin/release
 test: export BUILD_PATH := build/test
@@ -202,6 +210,19 @@ else
 endif
 	@$(START_TIME)
 	@$(MAKE) all --no-print-directory SRC_PATH=$(SRC_PATH)
+	@echo -n "Total build time: "
+	@$(END_TIME)
+
+# Windows build (cross compiled)
+.PHONY: windows
+windows: dirs
+ifeq ($(USE_VERSION), true)
+	@echo "Beginning windows build v$(VERSION_STRING)"
+else
+	@echo "Beginning windows build"
+endif
+	@$(START_TIME)
+	@$(MAKE) all --no-print-directory SRC_PATH=$(SRC_PATH) CXX=$(WIN_CXX)
 	@echo -n "Total build time: "
 	@$(END_TIME)
 
