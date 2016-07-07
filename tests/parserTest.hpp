@@ -95,4 +95,17 @@ TEST_F(ParserTest, XMLParse) {
   ASSERT_EQ(px.getTree(), tree);
 }
 
+TEST_F(ParserTest, IfStatement) {
+  px.parse(Lexer().tokenize(R"(
+    if true == false do
+      1 + 2;
+    else
+      100 - 101;
+    end
+  )").getTokens());
+  AST tree = AST();
+  tree.fromXML(rapidxml::file<>("tests/data/if_statement.xml").data());
+  ASSERT_EQ(px.getTree(), tree);
+}
+
 #endif
