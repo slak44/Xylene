@@ -81,10 +81,16 @@ private:
     e->setLineNumber(current().line);
     return e;
   }
-  Node<ExpressionNode>::Link expression() {
-    return expressionImpl(parseExpressionPrimary(), 0);
+  Node<ExpressionNode>::Link expression(bool throwIfEmpty = true) {
+    auto primary = parseExpressionPrimary();
+    if (primary == nullptr) {
+      if (throwIfEmpty) throw InternalError("Empty expression", {METADATA_PAIRS});
+      else return nullptr;
+    }
+    return expressionImpl(primary, 0);
   }
   Node<ExpressionNode>::Link parseExpressionPrimary() {
+    if (accept(C_SEMI)) return nullptr; // Semicolon is a no-op
     Node<ExpressionNode>::Link expr;
     if (accept(C_PAREN_LEFT)) {
       skip();
@@ -171,16 +177,6 @@ private:
     expect(C_SEMI, "Expected semicolon");
     skip();
   }
-  Node<DeclarationNode>::Link declarationFromTypes(TypeList typeList) {
-    auto name = current().data;
-    auto line = current().line;
-    skip();
-    auto decl = Node<DeclarationNode>::make(name, typeList);
-    decl->setLineNumber(line);
-    initialize(decl);
-    expectSemi();
-    return decl;
-  }
   // This function assumes K_IF has been skipped
   Node<BranchNode>::Link parseIfStatement() {
     auto branch = Node<BranchNode>::make();
@@ -203,19 +199,23 @@ private:
     }
     return branch;
   }
-  ASTNode::Link statement() {
+  Node<DeclarationNode>::Link declarationFromTypes(TypeList typeList) {
+    auto name = current().data;
+    auto line = current().line;
+    skip();
+    Node<DeclarationNode>::Link decl;
+    if (typeList.size() == 0) decl = Node<DeclarationNode>::make(name);
+    else decl = Node<DeclarationNode>::make(name, typeList);
+    decl->setLineNumber(line);
+    initialize(decl);
+    return decl;
+  }
+  Node<DeclarationNode>::Link declaration() {
     if (accept(K_DEFINE)) {
       skip();
       // Dynamic variable declaration
       if (accept(IDENTIFIER)) {
-        auto name = current().data;
-        auto line = current().line;
-        skip();
-        auto decl = Node<DeclarationNode>::make(name);
-        decl->setLineNumber(line);
-        initialize(decl);
-        expectSemi();
-        return decl;
+        return declarationFromTypes({});
       // Function declaration
       } else if (accept(K_FUNCTION)) {
         skip();
@@ -243,23 +243,47 @@ private:
         expect(IDENTIFIER);
         return declarationFromTypes(types);
       }
-      skip(-1); // Undo the skip above, so the identifier is included in the expression
-      auto e = expression();
-      expectSemi();
-      return e;
-    } else if (accept(K_IF)) {
+    }
+    throw InternalError("Invalid declaration", {METADATA_PAIRS});
+  }
+  ASTNode::Link statement() {
+    if (accept(K_IF)) {
       skip();
       return parseIfStatement();
     } else if (accept(K_FOR)) {
-      skip();
-      // TODO
-      throw InternalError("Unimplemented", {METADATA_PAIRS, {"token", "for loop"}});
+      auto loop = Node<LoopNode>::make();
+      loop->setLineNumber(current().line);
+      skip(); // Skip "for"
+      loop->setInit(declaration());
+      expectSemi();
+      loop->setCondition(expression(false));
+      expectSemi();
+      loop->setUpdate(expression(false));
+      expectSemi();
+      loop->setCode(block(CODE_BLOCK));
+      return loop;
     } if (accept(K_WHILE)) {
       skip();
       // TODO
       throw InternalError("Unimplemented", {METADATA_PAIRS, {"token", "while loop"}});
     } else if (accept(K_DO)) {
       return block(CODE_BLOCK);
+    } else if (accept(K_DEFINE)) {
+      auto decl = declaration();
+      expectSemi();
+      return decl;
+    } else if (accept(IDENTIFIER)) {
+      skip();
+      if (accept(IDENTIFIER) || accept(",")) {
+        skip(-1); // Go back to the prev identifier
+        auto decl = declaration();
+        expectSemi();
+        return decl;
+      } else {
+        auto e = expression();
+        expectSemi();
+        return e;
+      }
     } else {
       auto e = expression();
       expectSemi();
