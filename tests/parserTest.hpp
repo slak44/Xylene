@@ -2,6 +2,7 @@
 #define PARSER_TEST_HPP
 
 #include <gtest/gtest.h>
+#include <rapidxml_utils.hpp>
 
 #include "lexer.hpp"
 #include "parser/tokenParser.hpp"
@@ -13,8 +14,8 @@ protected:
   TokenParser px = TokenParser();
   XMLParser xpx = XMLParser();
   
-  char* xmlFileContents(std::string filePath) {
-    return rapidxml::file<>(filePath.c_str()).data();
+  inline rapidxml::file<> xmlFile(std::string path) {
+    return rapidxml::file<>(path.c_str());
   }
 };
 
@@ -90,13 +91,13 @@ TEST_F(ParserTest, NoBinaryOperators) {
   ASSERT_EQ(tree, px.getTree());
 }
 TEST_F(ParserTest, XMLParse) {
-  // (12 + 3) / 1.5
+  // (12 + 3) / 1.5;
   px.parse({
     Token(C_PAREN_LEFT, "(", 1), Token(L_INTEGER, "12", 1),
     Token(OPERATOR, 31, 1), Token(L_INTEGER, "3", 1), Token(C_PAREN_RIGHT, ")", 1),
     Token(OPERATOR, 29, 1), Token(L_FLOAT, "1.5", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)
   });
-  xpx.parse(xmlFileContents("tests/data/simple_expr.xml"));
+  xpx.parse(xmlFile("tests/data/simple_expr.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
@@ -108,7 +109,7 @@ TEST_F(ParserTest, IfStatement) {
       100 - 101;
     end
   )").getTokens());
-  xpx.parse(xmlFileContents("tests/data/if_statement.xml"));
+  xpx.parse(xmlFile("tests/data/if_statement.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
