@@ -220,10 +220,18 @@ public:
   
   void printTree(uint level) const {
     printIndent(level);
-    std::string collatedTypes = std::accumulate(++typeList.begin(), typeList.end(), *typeList.begin(),
-    [](const std::string& prev, const std::string& current) {
-      return prev + ", " + current;
-    });
+    std::string collatedTypes = "";
+    if (dynamic) collatedTypes = "[dynamic]";
+    if (!dynamic && typeList.size() == 0) throw InternalError("No types in typed declaration", {METADATA_PAIRS});
+    if (typeList.size() == 1) {
+      collatedTypes = *typeList.begin();
+    }
+    if (typeList.size() >= 2) {
+      collatedTypes = std::accumulate(++typeList.begin(), typeList.end(), *typeList.begin(),
+      [](const std::string& prev, const std::string& current) {
+        return prev + ", " + current;
+      });
+    }
     println("Declaration Node: " + identifier + " (valid types: " + collatedTypes + ")");
     if (children.size() > 0) children[0]->printTree(level + 1);
   }
@@ -269,7 +277,7 @@ class LoopNode: public NoMoreChildrenNode {
 public:
   LoopNode(): NoMoreChildrenNode(4) {}
   
-  GET_SET_FOR(0, Init, ExpressionNode)
+  GET_SET_FOR(0, Init, DeclarationNode)
   GET_SET_FOR(1, Condition, ExpressionNode)
   GET_SET_FOR(2, Update, ExpressionNode)
   GET_SET_FOR(3, Code, BlockNode)
