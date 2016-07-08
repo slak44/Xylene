@@ -14,4 +14,6 @@ public:
   }
 };
 
+inline BaseParser::~BaseParser() {}
+
 #endif

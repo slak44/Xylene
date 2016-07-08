@@ -71,7 +71,7 @@ private:
   }
 public:
   XMLParser() {}
-
+  
   void parse(char* str) {
     rapidxml::xml_document<char> doc;
     try {
