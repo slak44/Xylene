@@ -2,7 +2,7 @@
 
 #include "util.hpp"
 #include "lexer.hpp"
-#include "parser.hpp"
+#include "parser/tokenParser.hpp"
 #include "interpreter.hpp"
 
 int main(int argc, const char* argv[]) {
@@ -20,7 +20,7 @@ int main(int argc, const char* argv[]) {
     if (printTokens.getValue()) for (auto tok : lx.getTokens()) println(tok);
     
     if (doNotParse.getValue()) return 0;
-    auto px = Parser();
+    auto px = TokenParser();
     px.parse(lx.getTokens());
     if (printAST.getValue()) px.getTree().print();
     

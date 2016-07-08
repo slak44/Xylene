@@ -1,12 +1,14 @@
 #ifndef XML_PARSER_HPP
 #define XML_PARSER_HPP
 
+#include <string>
+#include <rapidxml_utils.hpp>
+
+#include "baseParser.hpp"
 #include "ast.hpp"
 
-class XMLParser {
+class XMLParser: public BaseParser {
 private:
-  AST ast;
-  
   void parseChildren(rapidxml::xml_node<>* node, ASTNode::Link target) {
     for (auto child = node->first_node(); child; child = child->next_sibling()) {
       auto parsedChild = parseXMLNode(child);
@@ -76,11 +78,11 @@ public:
       });
     }
     auto root = Node<BlockNode>::dynPtrCast(parseXMLNode(doc.first_node()));
-    ast.setRoot(*root);
+    tree.setRoot(*root);
   }
   
-  AST getTree() const {
-    return ast;
+  void parse(rapidxml::file<> xmlFile) {
+    parse(xmlFile.data());
   }
 };
 

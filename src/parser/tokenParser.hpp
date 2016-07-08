@@ -1,9 +1,10 @@
-#ifndef PARSER_HPP
-#define PARSER_HPP
+#ifndef TOKEN_PARSER_HPP
+#define TOKEN_PARSER_HPP
 
 #include <string>
 #include <vector>
 
+#include "baseParser.hpp"
 #include "ast.hpp"
 #include "token.hpp"
 #include "operator.hpp"
@@ -34,10 +35,9 @@
   ident = ? any valid identifier ? ;
 */
 
-class Parser {
+class TokenParser: public BaseParser {
 private:
   std::vector<Token> input;
-  AST tree = AST();
   uint64 pos = 0;
   
   enum BlockType {
@@ -282,17 +282,13 @@ private:
     return block;
   }
 public:
-  Parser() {}
+  TokenParser() {}
   
   void parse(std::vector<Token> input) {
     this->input = input;
     pos = 0;
     tree = AST();
     tree.setRoot(*block(ROOT_BLOCK));
-  }
-  
-  AST getTree() {
-    return tree;
   }
 };
 

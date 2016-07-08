@@ -2,17 +2,20 @@
 #define PARSER_TEST_HPP
 
 #include <gtest/gtest.h>
-#include <rapidxml_utils.hpp>
 
 #include "lexer.hpp"
-#include "parser.hpp"
-#include "xmlParser.hpp"
+#include "parser/tokenParser.hpp"
+#include "parser/xmlParser.hpp"
 #include "token.hpp"
 
 class ParserTest: public ::testing::Test {
 protected:
-  Parser px = Parser();
+  TokenParser px = TokenParser();
   XMLParser xpx = XMLParser();
+  
+  char* xmlFileContents(std::string filePath) {
+    return rapidxml::file<>(filePath.c_str()).data();
+  }
 };
 
 TEST_F(ParserTest, ExpressionParsing) {
@@ -56,6 +59,7 @@ TEST_F(ParserTest, ExpressionParsing) {
 }
 
 TEST_F(ParserTest, SimpleASTEquality) {
+  // 1 + 1;
   px.parse({Token(L_INTEGER, "1", 1), Token(OPERATOR, 31, 1), Token(L_INTEGER, "1", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)});
   AST tree = AST();
   auto operand1 = Node<ExpressionNode>::make(Token(L_INTEGER, "1", 1));
@@ -70,6 +74,7 @@ TEST_F(ParserTest, SimpleASTEquality) {
 }
 
 TEST_F(ParserTest, NoBinaryOperators) {
+  // -1;
   px.parse({
     Token(OPERATOR, operatorNameMap["Unary -"], 1),
     Token(L_INTEGER, "1", 1),
@@ -84,7 +89,6 @@ TEST_F(ParserTest, NoBinaryOperators) {
   tree.setRoot(*rootBlock);
   ASSERT_EQ(tree, px.getTree());
 }
-
 TEST_F(ParserTest, XMLParse) {
   // (12 + 3) / 1.5
   px.parse({
@@ -92,7 +96,7 @@ TEST_F(ParserTest, XMLParse) {
     Token(OPERATOR, 31, 1), Token(L_INTEGER, "3", 1), Token(C_PAREN_RIGHT, ")", 1),
     Token(OPERATOR, 29, 1), Token(L_FLOAT, "1.5", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)
   });
-  xpx.parse(rapidxml::file<>("tests/data/simple_expr.xml").data());
+  xpx.parse(xmlFileContents("tests/data/simple_expr.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
@@ -104,7 +108,7 @@ TEST_F(ParserTest, IfStatement) {
       100 - 101;
     end
   )").getTokens());
-  xpx.parse(rapidxml::file<>("tests/data/if_statement.xml").data());
+  xpx.parse(xmlFileContents("tests/data/if_statement.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
