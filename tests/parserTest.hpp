@@ -6,11 +6,13 @@
 
 #include "lexer.hpp"
 #include "parser.hpp"
+#include "xmlParser.hpp"
 #include "token.hpp"
 
 class ParserTest: public ::testing::Test {
 protected:
   Parser px = Parser();
+  XMLParser xpx = XMLParser();
 };
 
 TEST_F(ParserTest, ExpressionParsing) {
@@ -90,9 +92,8 @@ TEST_F(ParserTest, XMLParse) {
     Token(OPERATOR, 31, 1), Token(L_INTEGER, "3", 1), Token(C_PAREN_RIGHT, ")", 1),
     Token(OPERATOR, 29, 1), Token(L_FLOAT, "1.5", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)
   });
-  AST tree = AST();
-  tree.fromXML(rapidxml::file<>("tests/data/simple_expr.xml").data());
-  ASSERT_EQ(px.getTree(), tree);
+  xpx.parse(rapidxml::file<>("tests/data/simple_expr.xml").data());
+  ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
 TEST_F(ParserTest, IfStatement) {
@@ -103,9 +104,8 @@ TEST_F(ParserTest, IfStatement) {
       100 - 101;
     end
   )").getTokens());
-  AST tree = AST();
-  tree.fromXML(rapidxml::file<>("tests/data/if_statement.xml").data());
-  ASSERT_EQ(px.getTree(), tree);
+  xpx.parse(rapidxml::file<>("tests/data/if_statement.xml").data());
+  ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
 #endif
