@@ -267,9 +267,9 @@ public:
   void printTree(uint level) const {
     printIndent(level);
     println("Branch Node:");
-    PRETTY_PRINT_FOR(0, "Condition")
-    PRETTY_PRINT_FOR(1, "Success")
-    if (notNull(2)) PRETTY_PRINT_FOR(2, "Failiure")
+    PRETTY_PRINT_FOR(0, Condition)
+    PRETTY_PRINT_FOR(1, Success)
+    if (notNull(2)) PRETTY_PRINT_FOR(2, Failiure)
   }
 };
 
@@ -285,10 +285,10 @@ public:
   void printTree(uint level) const {
     printIndent(level);
     println("Loop Node");
-    if (notNull(0)) PRETTY_PRINT_FOR(0, "Init")
-    if (notNull(1)) PRETTY_PRINT_FOR(1, "Condition")
-    if (notNull(2)) PRETTY_PRINT_FOR(2, "Update")
-    if (notNull(3)) PRETTY_PRINT_FOR(3, "Code")
+    if (notNull(0)) PRETTY_PRINT_FOR(0, Init)
+    if (notNull(1)) PRETTY_PRINT_FOR(1, Condition)
+    if (notNull(2)) PRETTY_PRINT_FOR(2, Update)
+    if (notNull(3)) PRETTY_PRINT_FOR(3, Code)
   }
   bool operator==(const ASTNode& rhs) const {
     return ASTNode::operator==(rhs);
