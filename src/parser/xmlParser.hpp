@@ -44,7 +44,8 @@ private:
     } else if (name == "decl") {
       Node<DeclarationNode>::Link decl;
       std::string ident = node->first_attribute("ident")->value();
-      bool dynamic = node->first_attribute("dynamic")->value() == std::string("true");
+      auto dynAttr = node->first_attribute("dynamic");
+      bool dynamic = dynAttr != 0 && dynAttr->value() == std::string("true");
       if (dynamic) {
         decl = Node<DeclarationNode>::make(ident);
       } else {

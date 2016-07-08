@@ -1,0 +1,16 @@
+<!--
+define a = 1;
+Integer i = 2;
+Float, Integer nr = 3.3;
+-->
+<block>
+  <decl ident="a" dynamic="true">
+    <expr type="Integer" value="1"/>
+  </decl>
+  <decl ident="i" types="Integer">
+    <expr type="Integer" value="2"/>
+  </decl>
+  <decl ident="nr" types="Float Integer">
+    <expr type="Float" value="3.3"/>
+  </decl>
+</block>

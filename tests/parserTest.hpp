@@ -113,4 +113,14 @@ TEST_F(ParserTest, IfStatement) {
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
+TEST_F(ParserTest, Declarations) {
+  px.parse(Lexer().tokenize(R"(
+    define a = 1;
+    Integer i = 2;
+    Float, Integer nr = 3.3;
+  )").getTokens());
+  xpx.parse(xmlFile("tests/data/declarations.xml"));
+  ASSERT_EQ(px.getTree(), xpx.getTree());
+}
+
 #endif
