@@ -315,6 +315,7 @@ private:
   }
   
   ASTNode::Link parseXMLNode(rapidxml::xml_node<>* node) {
+    if (node == nullptr) throw InternalError("Null node", {METADATA_PAIRS});
     std::string name = node->name();
     if (name == "block") {
       auto block = Node<BlockNode>::make();
