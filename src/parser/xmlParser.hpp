@@ -60,13 +60,13 @@ private:
       auto branch = Node<BranchNode>::make();
       auto cond = node->first_node();
       if (cond == 0) throw XMLParseError("Missing condition in branch", {METADATA_PAIRS});
-      branch->addCondition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
+      branch->setCondition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
       auto success = cond->next_sibling();
       if (success == 0) throw XMLParseError("Missing success node in branch", {METADATA_PAIRS});
-      branch->addSuccessBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(success)));
+      branch->setSuccessBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(success)));
       auto failiure = success->next_sibling();
       if (failiure != 0) {
-        branch->addFailiureBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(failiure)));
+        branch->setFailiureBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(failiure)));
       }
       return branch;
     }

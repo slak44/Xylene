@@ -185,18 +185,18 @@ private:
   Node<BranchNode>::Link parseIfStatement() {
     auto branch = Node<BranchNode>::make();
     branch->setLineNumber(current().line);
-    branch->addCondition(expression());
-    branch->addSuccessBlock(block(IF_BLOCK));
+    branch->setCondition(expression());
+    branch->setSuccessBlock(block(IF_BLOCK));
     skip(-1); // Go back to the block termination token
     if (accept(K_ELSE)) {
       skip();
       // Else-if structure
       if (accept(K_IF)) {
         skip();
-        branch->addFailiureBlock(parseIfStatement());
+        branch->setFailiureBlock(parseIfStatement());
       // Simple else block
       } else if (accept(K_DO)) {
-        branch->addFailiureBlock(block(CODE_BLOCK));
+        branch->setFailiureBlock(block(CODE_BLOCK));
       } else {
         throw Error("SyntaxError", "Else must be followed by a block or an if statement", current().line);
       }

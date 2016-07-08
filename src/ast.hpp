@@ -83,11 +83,37 @@ public:
   }
 };
 
+#define GET_SET_FOR(childIndex, nameOf, linkType) \
+void set##nameOf(Node<linkType>::Link newNode) {children[childIndex] = newNode;}\
+ASTNode::Link get##nameOf() const {return children[childIndex];}
+
+#define PRETTY_PRINT_FOR(childIndex, name) \
+{\
+  printIndent(level + 1);\
+  println(#name":");\
+  children[childIndex]->printTree(level + 1);\
+}
+
+class NoMoreChildrenNode: public ASTNode {
+public:
+  NoMoreChildrenNode(int childrenCount) {
+    children.resize(childrenCount, nullptr);
+  }
+  
+  void addChild(Link child) {
+    UNUSED(child);
+    throw InternalError("Cannot add children to NoMoreChildrenNode", {METADATA_PAIRS});
+  }
+  
+  bool inline notNull(uint childIndex) const {
+    return children[childIndex] != nullptr;
+  }
+};
+
 template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
 struct Node: public PtrUtil<T> {
   typedef typename PtrUtil<T>::Link Link;
   typedef typename PtrUtil<T>::WeakLink WeakLink;
-  
   
   static inline bool isSameType(ASTNode::Link node) {
     return typeid(T) == typeid(*node);
@@ -215,40 +241,13 @@ public:
   }
 };
 
-class BranchNode: public ASTNode {
+class BranchNode: public NoMoreChildrenNode {
 public:
-  BranchNode() {
-    children = {nullptr, nullptr, nullptr};
-  }
+  BranchNode(): NoMoreChildrenNode(3) {}
   
-  void addChild(Link child) {
-    UNUSED(child);
-    throw InternalError("Cannot add children directly to BranchNode", {METADATA_PAIRS});
-  }
-  
-  void addCondition(Node<ExpressionNode>::Link cond) {
-    children[0] = cond;
-  }
-  
-  Link getCondition() const {
-    return children[0];
-  }
-  
-  void addSuccessBlock(Node<BlockNode>::Link success) {
-    children[1] = success;
-  }
-  
-  Link getSuccessBlock() const {
-    return children[1];
-  }
-  
-  void addFailiureBlock(Link failiure) {
-    children[2] = failiure;
-  }
-  
-  Link getFailiureBlock() const {
-    return children[2];
-  }
+  GET_SET_FOR(0, Condition, ExpressionNode)
+  GET_SET_FOR(1, SuccessBlock, BlockNode)
+  GET_SET_FOR(2, FailiureBlock, ASTNode)
   
   bool operator==(const ASTNode& rhs) const {
     return ASTNode::operator==(rhs);
@@ -260,20 +259,34 @@ public:
   void printTree(uint level) const {
     printIndent(level);
     println("Branch Node:");
-    
-    printIndent(level + 1);
-    println("Condition:");
-    children[0]->printTree(level + 1);
-    
-    printIndent(level + 1);
-    println("Success:");
-    children[1]->printTree(level + 1);
-    
-    if (children[2] != nullptr) {
-      printIndent(level + 1);
-      println("Failiure:");
-      children[2]->printTree(level + 1);
-    }
+    PRETTY_PRINT_FOR(0, "Condition")
+    PRETTY_PRINT_FOR(1, "Success")
+    if (notNull(2)) PRETTY_PRINT_FOR(2, "Failiure")
+  }
+};
+
+class LoopNode: public NoMoreChildrenNode {
+public:
+  LoopNode(): NoMoreChildrenNode(4) {}
+  
+  GET_SET_FOR(0, Init, ExpressionNode)
+  GET_SET_FOR(1, Condition, ExpressionNode)
+  GET_SET_FOR(2, Update, ExpressionNode)
+  GET_SET_FOR(3, Code, BlockNode)
+  
+  void printTree(uint level) const {
+    printIndent(level);
+    println("Loop Node");
+    if (notNull(0)) PRETTY_PRINT_FOR(0, "Init")
+    if (notNull(1)) PRETTY_PRINT_FOR(1, "Condition")
+    if (notNull(2)) PRETTY_PRINT_FOR(2, "Update")
+    if (notNull(3)) PRETTY_PRINT_FOR(3, "Code")
+  }
+  bool operator==(const ASTNode& rhs) const {
+    return ASTNode::operator==(rhs);
+  }
+  bool operator!=(const ASTNode& rhs) const {
+    return !operator==(rhs);
   }
 };
 
@@ -306,5 +319,8 @@ public:
     return Node<BlockNode>::make(root);
   }
 };
+
+#undef PRETTY_PRINT_FOR
+#undef GET_SET_FOR
 
 #endif
