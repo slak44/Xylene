@@ -69,6 +69,27 @@ private:
         branch->setFailiureBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(failiure)));
       }
       return branch;
+    } else if (name == "loop") {
+      auto loop = Node<LoopNode>::make();
+      auto init = node->first_node("loop_init");
+      if (init != 0) {
+        loop->setInit(Node<DeclarationNode>::dynPtrCast(parseXMLNode(init)));
+      }
+      auto cond = node->first_node("loop_condition");
+      if (cond != 0) {
+        loop->setCondition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
+      }
+      auto update = node->first_node("loop_update");
+      if (update != 0) {
+        loop->setUpdate(Node<ExpressionNode>::dynPtrCast(parseXMLNode(update)));
+      }
+      auto code = node->first_node("block");
+      if (code != 0) {
+        loop->setCode(Node<BlockNode>::dynPtrCast(parseXMLNode(code)));
+      }
+      return loop;
+    } else if (name == "loop_init" || name == "loop_condition" || name == "loop_update") {
+      return parseXMLNode(node->first_node());
     }
     throw XMLParseError("Unknown type of node", {METADATA_PAIRS, {"node name", name}});
   }

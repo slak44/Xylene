@@ -1,0 +1,31 @@
+<!--
+for define x = 1; x < 3; ++x do
+  1+1;
+end
+-->
+<block>
+  <loop>
+    <loop_init>
+      <decl ident="x" dynamic="true">
+        <expr type="Integer" value="1"/>
+      </decl>
+    </loop_init>
+    <loop_condition>
+      <expr type="Operator" value="Less">
+        <expr type="Identifier" value="x"/>
+        <expr type="Integer" value="3"/>
+      </expr>
+    </loop_condition>
+    <loop_update>
+      <expr type="Operator" value="Prefix ++">
+        <expr type="Identifier" value="x"/>
+      </expr>
+    </loop_update>
+    <block>
+      <expr type="Operator" value="Add">
+        <expr type="Integer" value="1"/>
+        <expr type="Integer" value="1"/>
+      </expr>
+    </block>
+  </loop>
+</block>
