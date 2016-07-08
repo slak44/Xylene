@@ -7,6 +7,12 @@
 #include "baseParser.hpp"
 #include "ast.hpp"
 
+class XMLParseError: public InternalError {
+public:
+  XMLParseError(std::string msg, ErrorData data):
+    InternalError("XMLParseError", msg, data) {}
+};
+
 class XMLParser: public BaseParser {
 private:
   void parseChildren(rapidxml::xml_node<>* node, ASTNode::Link target) {
@@ -17,7 +23,7 @@ private:
   }
   
   ASTNode::Link parseXMLNode(rapidxml::xml_node<>* node) {
-    if (node == nullptr) throw InternalError("Null node", {METADATA_PAIRS});
+    if (node == nullptr) throw XMLParseError("Null node", {METADATA_PAIRS});
     std::string name = node->name();
     if (name == "block") {
       auto block = Node<BlockNode>::make();
@@ -61,7 +67,7 @@ private:
       }
       return branch;
     }
-    throw InternalError("Unknown type of node", {METADATA_PAIRS, {"node name", name}});
+    throw XMLParseError("Unknown type of node", {METADATA_PAIRS, {"node name", name}});
   }
 public:
   XMLParser() {}
@@ -71,7 +77,7 @@ public:
     try {
       doc.parse<0>(str);
     } catch (rapidxml::parse_error& pe) {
-      throw InternalError("XML parsing failed", {
+      throw XMLParseError("XML parsing failed", {
         METADATA_PAIRS,
         {"xml error", pe.what()},
         {"position", std::to_string(*pe.where<int>())}
