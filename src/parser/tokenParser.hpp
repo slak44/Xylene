@@ -90,7 +90,7 @@ private:
     return expressionImpl(primary, 0);
   }
   Node<ExpressionNode>::Link parseExpressionPrimary() {
-    if (accept(C_SEMI)) return nullptr; // Semicolon is a no-op
+    if (accept(C_SEMI) || accept(K_DO)) return nullptr; // Empty expression
     Node<ExpressionNode>::Link expr;
     if (accept(C_PAREN_LEFT)) {
       skip();
@@ -210,7 +210,11 @@ private:
     initialize(decl);
     return decl;
   }
-  Node<DeclarationNode>::Link declaration() {
+  Node<DeclarationNode>::Link declaration(bool throwIfEmpty = true) {
+    if (accept(C_SEMI)) {
+      if (throwIfEmpty) throw InternalError("Empty declaration", {METADATA_PAIRS});
+      else return nullptr;
+    }
     if (accept(K_DEFINE)) {
       skip();
       // Dynamic variable declaration
@@ -254,12 +258,11 @@ private:
       auto loop = Node<LoopNode>::make();
       loop->setLineNumber(current().line);
       skip(); // Skip "for"
-      loop->setInit(declaration());
+      loop->setInit(declaration(false));
       expectSemi();
       loop->setCondition(expression(false));
       expectSemi();
       loop->setUpdate(expression(false));
-      expectSemi();
       loop->setCode(block(CODE_BLOCK));
       return loop;
     } if (accept(K_WHILE)) {
