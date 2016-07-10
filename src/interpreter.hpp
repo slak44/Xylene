@@ -27,11 +27,30 @@ private:
   void interpretStatement(Scope::Link currentScope, Node<ASTNode>::Link statement) {
     if (Node<DeclarationNode>::isSameType(statement)) {
       interpretDeclaration(currentScope, Node<DeclarationNode>::dynPtrCast(statement));
-      return;
     } else if (Node<ExpressionNode>::isSameType(statement)) {
       auto obj = interpretExpression(currentScope, Node<ExpressionNode>::dynPtrCast(statement));
       println(obj->toString());
+    } else if (Node<BranchNode>::isSameType(statement)) {
+      interpretBranch(currentScope, Node<BranchNode>::dynPtrCast(statement));
+    } else {
+      throw InternalError("Unimplemented statement", {METADATA_PAIRS});
+    }
+  }
+  
+  void interpretBranch(Scope::Link currentScope, Node<BranchNode>::Link branch) {
+    bool isConditionTrue = interpretExpression(currentScope, branch->getCondition())->isTruthy();
+    if (isConditionTrue) {
+      interpretBlock(currentScope, branch->getSuccessBlock());
       return;
+    }
+    auto failiureBlock = branch->getFailiureBlock();
+    if (failiureBlock == nullptr) return;
+    if (Node<BlockNode>::isSameType(failiureBlock)) {
+      interpretBlock(currentScope, Node<BlockNode>::dynPtrCast(failiureBlock));
+    } else if (Node<BranchNode>::isSameType(failiureBlock)) {
+      interpretBranch(currentScope, Node<BranchNode>::dynPtrCast(failiureBlock));
+    } else {
+      throw InternalError("Wrong node type in branch block", {METADATA_PAIRS});
     }
   }
   
