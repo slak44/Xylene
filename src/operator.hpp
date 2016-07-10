@@ -5,7 +5,7 @@
 #include <vector>
 #include <functional>
 
-#include "error.hpp"
+#include "utils/error.hpp"
 
 enum Associativity: int {
   ASSOCIATE_FROM_LEFT,

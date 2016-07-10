@@ -9,9 +9,9 @@
 #include <typeinfo>
 #include <rapidxml.hpp>
 
-#include "error.hpp"
+#include "utils/error.hpp"
 #include "token.hpp"
-#include "util.hpp"
+#include "utils/util.hpp"
 #include "operator.hpp"
 
 typedef std::set<std::string> TypeList;

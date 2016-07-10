@@ -1,6 +1,6 @@
 #include <tclap/CmdLine.h>
 
-#include "util.hpp"
+#include "utils/util.hpp"
 #include "lexer.hpp"
 #include "parser/tokenParser.hpp"
 #include "interpreter.hpp"

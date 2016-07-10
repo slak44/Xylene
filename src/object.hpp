@@ -4,8 +4,8 @@
 #include <string>
 #include <set>
 
-#include "util.hpp"
-#include "error.hpp"
+#include "utils/util.hpp"
+#include "utils/error.hpp"
 
 typedef std::set<std::string> TypeList;
 

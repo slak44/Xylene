@@ -5,8 +5,8 @@
 #include <vector>
 
 #include "ast.hpp"
-#include "error.hpp"
-#include "util.hpp"
+#include "utils/error.hpp"
+#include "utils/util.hpp"
 #include "object.hpp"
 #include "token.hpp"
 #include "operatorMap.hpp"

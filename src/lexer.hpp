@@ -4,10 +4,10 @@
 #include <vector>
 #include <string>
 
-#include "error.hpp"
+#include "utils/error.hpp"
 #include "token.hpp"
 #include "operator.hpp"
-#include "util.hpp"
+#include "utils/util.hpp"
 
 class Lexer {
 private:

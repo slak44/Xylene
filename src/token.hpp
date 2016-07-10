@@ -6,9 +6,9 @@
 #include <vector>
 #include <unordered_map>
 
-#include "util.hpp"
+#include "utils/util.hpp"
 #include "operator.hpp"
-#include "error.hpp"
+#include "utils/error.hpp"
 
 /*
   L: literal

@@ -5,7 +5,7 @@
 #include <string>
 
 #include "object.hpp"
-#include "error.hpp"
+#include "utils/error.hpp"
 
 class NotFoundError: public InternalError {
 public:

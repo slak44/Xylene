@@ -8,6 +8,7 @@
 #include "ast.hpp"
 #include "token.hpp"
 #include "operator.hpp"
+#include "utils/error.hpp"
 
 /*
   EBNF-ish format of a program:

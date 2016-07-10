@@ -5,10 +5,10 @@
 
 #include <vector>
 
-#include "util.hpp"
+#include "utils/util.hpp"
 #include "token.hpp"
 #include "lexer.hpp"
-#include "error.hpp"
+#include "utils/error.hpp"
 
 class LexerTest: public ::testing::Test {
 protected:
