@@ -83,11 +83,17 @@ public:
   }
 };
 
-#define GET_SET_FOR(childIndex, nameOf, linkType) \
-void set##nameOf(Node<linkType>::Link newNode) {children[childIndex] = newNode;}\
+#define GET_FOR(childIndex, nameOf, linkType) \
 Node<linkType>::Link get##nameOf() const {\
   return Node<linkType>::dynPtrCast(children[childIndex]);\
 }
+
+#define SET_FOR(childIndex, nameOf, linkType) \
+void set##nameOf(std::shared_ptr<linkType> newNode) {children[childIndex] = newNode;}
+
+#define GET_SET_FOR(childIndex, nameOf, linkType) \
+GET_FOR(childIndex, nameOf, linkType) \
+SET_FOR(childIndex, nameOf, linkType)
 
 #define PRETTY_PRINT_FOR(childIndex, name) \
 {\
@@ -257,7 +263,9 @@ public:
   
   GET_SET_FOR(0, Condition, ExpressionNode)
   GET_SET_FOR(1, SuccessBlock, BlockNode)
-  GET_SET_FOR(2, FailiureBlock, ASTNode)
+  GET_FOR(2, FailiureBlock, ASTNode)
+  SET_FOR(2, FailiureBlock, BlockNode)
+  SET_FOR(2, FailiureBlock, BranchNode)
   
   bool operator==(const ASTNode& rhs) const {
     return ASTNode::operator==(rhs);
@@ -331,6 +339,8 @@ public:
 };
 
 #undef PRETTY_PRINT_FOR
+#undef GET_FOR
+#undef SET_FOR
 #undef GET_SET_FOR
 
 #endif
