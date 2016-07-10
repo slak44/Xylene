@@ -3,7 +3,7 @@
 #include "utils/util.hpp"
 #include "lexer.hpp"
 #include "parser/tokenParser.hpp"
-#include "interpreter.hpp"
+#include "interpreter/interpreter.hpp"
 
 int main(int argc, const char* argv[]) {
   try {
