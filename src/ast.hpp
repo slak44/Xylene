@@ -85,7 +85,9 @@ public:
 
 #define GET_SET_FOR(childIndex, nameOf, linkType) \
 void set##nameOf(Node<linkType>::Link newNode) {children[childIndex] = newNode;}\
-ASTNode::Link get##nameOf() const {return children[childIndex];}
+Node<linkType>::Link get##nameOf() const {\
+  return Node<linkType>::dynPtrCast(children[childIndex]);\
+}
 
 #define PRETTY_PRINT_FOR(childIndex, name) \
 {\
