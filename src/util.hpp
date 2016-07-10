@@ -5,11 +5,12 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <memory>
 #include <typeinfo>
 #include <functional>
 #include <cxxabi.h>
+
+#include "suppressWarnings.hpp"
 
 #define abs(x) (x < 0 ? -x : x)
 #define UNUSED(expr) (void)(expr)

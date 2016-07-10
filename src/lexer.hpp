@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include <algorithm>
 
 #include "error.hpp"
 #include "token.hpp"

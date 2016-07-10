@@ -3,7 +3,6 @@
 
 #include <string>
 #include <set>
-#include <numeric>
 
 #include "util.hpp"
 #include "error.hpp"

@@ -6,7 +6,6 @@
 #include <vector>
 #include <set>
 #include <memory>
-#include <numeric>
 #include <typeinfo>
 #include <rapidxml.hpp>
 

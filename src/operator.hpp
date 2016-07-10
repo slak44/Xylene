@@ -3,9 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <functional>
-#include <numeric>
 
 #include "error.hpp"
 
