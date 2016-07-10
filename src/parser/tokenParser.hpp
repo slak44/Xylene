@@ -266,9 +266,12 @@ private:
       loop->setCode(block(CODE_BLOCK));
       return loop;
     } if (accept(K_WHILE)) {
-      skip();
-      // TODO
-      throw InternalError("Unimplemented", {METADATA_PAIRS, {"token", "while loop"}});
+      skip(); // Skip "while"
+      auto loop = Node<LoopNode>::make();
+      loop->setLineNumber(current().line);
+      loop->setCondition(expression());
+      loop->setCode(block(CODE_BLOCK));
+      return loop;
     } else if (accept(K_DO)) {
       return block(CODE_BLOCK);
     } else if (accept(K_DEFINE)) {
