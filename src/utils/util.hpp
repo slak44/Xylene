@@ -127,10 +127,12 @@ std::string demangle(std::string name) {
 
 #define COLLATE_TYPE const typename Container::value_type&
 
+static const auto defaultCollateCombine = [](std::string prev, std::string current) {return prev + ", " + current;};
+
 template<typename Container>
 std::string collate(Container c,
   std::function<std::string(COLLATE_TYPE)> objToString,
-  std::function<std::string(std::string, std::string)> combine = [](std::string prev, std::string current) {return prev + ", " + current;}
+  std::function<std::string(std::string, std::string)> combine = defaultCollateCombine
   ) {
   if (c.size() == 0) return "";
   if (c.size() == 1) return objToString(*c.begin());
