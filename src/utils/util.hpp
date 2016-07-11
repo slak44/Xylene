@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <set>
 #include <memory>
 #include <typeinfo>
 #include <functional>
@@ -19,6 +20,8 @@
 typedef long long int64;
 typedef unsigned long long uint64;
 typedef unsigned int uint;
+
+typedef std::set<std::string> TypeList;
 
 template<typename T>
 void println(T thing) {
@@ -120,6 +123,18 @@ std::string getAddressStringFrom(const void* ptr) {
 std::string demangle(std::string name) {
   int status;
   return abi::__cxa_demangle(name.c_str(), 0, 0, &status);
+}
+
+std::string collateTypeList(TypeList typeList) {
+  if (typeList.size() == 0) return "";
+  if (typeList.size() == 1) return *typeList.begin();
+  if (typeList.size() >= 2) {
+    return std::accumulate(++typeList.begin(), typeList.end(), *typeList.begin(),
+    [](const std::string& prev, const std::string& current) {
+      return prev + ", " + current;
+    });
+  }
+  throw std::logic_error("Size of container must be a positive integer");
 }
 
 #endif

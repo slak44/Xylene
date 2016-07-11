@@ -14,8 +14,6 @@
 #include "utils/util.hpp"
 #include "operator.hpp"
 
-typedef std::set<std::string> TypeList;
-
 class ASTNode: public std::enable_shared_from_this<ASTNode> {
 public:
   typedef std::shared_ptr<ASTNode> Link;
@@ -229,16 +227,8 @@ public:
     printIndent(level);
     std::string collatedTypes = "";
     if (dynamic) collatedTypes = "[dynamic]";
-    if (!dynamic && typeList.size() == 0) throw InternalError("No types in typed declaration", {METADATA_PAIRS});
-    if (typeList.size() == 1) {
-      collatedTypes = *typeList.begin();
-    }
-    if (typeList.size() >= 2) {
-      collatedTypes = std::accumulate(++typeList.begin(), typeList.end(), *typeList.begin(),
-      [](const std::string& prev, const std::string& current) {
-        return prev + ", " + current;
-      });
-    }
+    else if (!dynamic && typeList.size() == 0) throw InternalError("No types in typed declaration", {METADATA_PAIRS});
+    else collatedTypes = collateTypeList(typeList);
     println("Declaration Node: " + identifier + " (valid types: " + collatedTypes + ")");
     if (children.size() > 0) children[0]->printTree(level + 1);
   }

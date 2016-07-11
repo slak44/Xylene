@@ -7,8 +7,6 @@
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 
-typedef std::set<std::string> TypeList;
-
 class Object {
 public:
   typedef PtrUtil<Object>::Link Link;
