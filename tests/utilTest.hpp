@@ -47,4 +47,9 @@ TEST(UtilTest, Collate) {
   EXPECT_EQ(collated3, "1 AYY LMAO 54 AYY LMAO 72364 AYY LMAO 985123");
 }
 
+TEST(UtilTest, Split) {
+  auto splitted = split("Lorem ipsum dolor sit amet", ' ');
+  ASSERT_EQ(splitted, std::vector<std::string>({"Lorem", "ipsum", "dolor", "sit", "amet"}));
+}
+
 #endif
