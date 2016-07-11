@@ -22,7 +22,7 @@ enum TokenType: int {
   K_FUNCTION, K_RETURN,
   K_DO, K_END,
   K_IF, K_ELSE, K_WHILE, K_FOR,
-  K_FAT_ARROW,
+  K_FAT_ARROW, K_VOID,
   K_TYPE, K_CONSTR, K_PUBLIC, K_PRIVATE, K_PROTECT, K_STATIC,
   K_THROW, K_TRY, K_CATCH,
   
@@ -55,7 +55,8 @@ const std::unordered_map<std::string, TokenType> keywordsMap {
   {"throw", K_THROW},
   {"try", K_TRY},
   {"catch", K_CATCH},
-  {"=>", K_FAT_ARROW}
+  {"=>", K_FAT_ARROW},
+  {"void", K_VOID}
 };
 
 const std::unordered_map<char, char> singleCharEscapeSeqences {
