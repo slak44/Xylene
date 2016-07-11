@@ -125,16 +125,29 @@ std::string demangle(std::string name) {
   return abi::__cxa_demangle(name.c_str(), 0, 0, &status);
 }
 
-std::string collateTypeList(TypeList typeList) {
-  if (typeList.size() == 0) return "";
-  if (typeList.size() == 1) return *typeList.begin();
-  if (typeList.size() >= 2) {
-    return std::accumulate(++typeList.begin(), typeList.end(), *typeList.begin(),
-    [](const std::string& prev, const std::string& current) {
-      return prev + ", " + current;
+#define COLLATE_TYPE const typename Container::value_type&
+
+template<typename Container>
+std::string collate(Container c,
+  std::function<std::string(COLLATE_TYPE)> objToString,
+  std::function<std::string(std::string, std::string)> combine = [](std::string prev, std::string current) {return prev + ", " + current;}
+  ) {
+  if (c.size() == 0) return "";
+  if (c.size() == 1) return objToString(*c.begin());
+  if (c.size() >= 2) {
+    std::string str = objToString(*c.begin());
+    std::for_each(++c.begin(), c.end(), [&str, &objToString, &combine](COLLATE_TYPE object) {
+      str = combine(str, objToString(object));
     });
+    return str;
   }
   throw std::logic_error("Size of container must be a positive integer");
+}
+
+#undef COLLATE_TYPE
+
+std::string collateTypeList(TypeList typeList) {
+  return collate<TypeList>(typeList, [](std::string s) {return s;});
 }
 
 #endif
