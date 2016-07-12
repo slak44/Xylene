@@ -58,7 +58,7 @@ private:
     Object::Link init = decl->hasInit() ? interpretExpression(currentScope, decl->getInit()) : Object::Link();
     Reference::Link ref;
     if (decl->isDynamic()) ref = PtrUtil<Reference>::make(init);
-    else ref = PtrUtil<Reference>::make(init, decl->getTypeList());
+    else ref = PtrUtil<Reference>::make(init, decl->getTypeInfo().getEvalTypeList());
     currentScope->insert(decl->getIdentifier(), ref);
   }
   

@@ -47,14 +47,16 @@ private:
       auto dynAttr = node->first_attribute("dynamic");
       bool dynamic = dynAttr != 0 && dynAttr->value() == std::string("true");
       if (dynamic) {
-        decl = Node<DeclarationNode>::make(ident);
+        decl = Node<DeclarationNode>::make(ident, TypeList {});
       } else {
         std::string tlValue = node->first_attribute("types")->value();
-        std::istringstream iss(tlValue);
         auto vec = split(tlValue, ' ');
         decl = Node<DeclarationNode>::make(ident, TypeList(ALL(vec)));
       }
-      parseChildren(node, decl);
+      auto expr = node->first_node("expr");
+      if (expr != 0) {
+        decl->setInit(Node<ExpressionNode>::dynPtrCast(parseXMLNode(expr)));
+      }
       return decl;
     } else if (name == "branch") {
       auto branch = Node<BranchNode>::make();

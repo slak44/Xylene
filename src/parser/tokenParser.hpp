@@ -171,7 +171,7 @@ private:
     // Do initialization only if it exists
     if (accept("=")) {
       skip();
-      decl->addChild(expression());
+      decl->setInit(expression());
     }
   }
   inline void expectSemi() {
@@ -204,9 +204,7 @@ private:
     auto name = current().data;
     auto line = current().line;
     skip();
-    Node<DeclarationNode>::Link decl;
-    if (typeList.size() == 0) decl = Node<DeclarationNode>::make(name);
-    else decl = Node<DeclarationNode>::make(name, typeList);
+    auto decl = Node<DeclarationNode>::make(name, typeList);
     decl->setLineNumber(line);
     initialize(decl);
     return decl;

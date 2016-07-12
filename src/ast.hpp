@@ -13,6 +13,7 @@
 #include "token.hpp"
 #include "utils/util.hpp"
 #include "operator.hpp"
+#include "utils/typeInfo.hpp"
 
 class ASTNode: public std::enable_shared_from_this<ASTNode> {
 public:
@@ -186,50 +187,35 @@ public:
   }
 };
 
-class DeclarationNode: public ASTNode {
+class DeclarationNode: public NoMoreChildrenNode {
 private:
   std::string identifier;
-  TypeList typeList;
-  bool dynamic;
+  DefiniteTypeInfo info;
 public:
   DeclarationNode(std::string identifier, TypeList typeList):
-    identifier(identifier), typeList(typeList), dynamic(false) {}
-  DeclarationNode(std::string identifier):
-    identifier(identifier), typeList({}), dynamic(true) {}
+    NoMoreChildrenNode(1), identifier(identifier), info(typeList) {}
     
   std::string getIdentifier() const {
     return identifier;
   }
   
-  TypeList getTypeList() const {
-    return typeList;
+  DefiniteTypeInfo getTypeInfo() const {
+    return info;
   }
   
   bool isDynamic() const {
-    return dynamic;
+    return info.isDynamic();
   }
+  
+  GET_SET_FOR(0, Init, ExpressionNode)
   
   bool hasInit() const {
-    return children.size() == 1;
-  }
-  
-  Node<ExpressionNode>::Link getInit() const {
-    return Node<ExpressionNode>::dynPtrCast(children[0]);
-  }
-  
-  void addChild(Link child) {
-    if (children.size() >= 1) throw InternalError("Trying to add more than one child to a DeclarationNode", {METADATA_PAIRS});
-    if (!Node<ExpressionNode>::dynPtrCast(child)) throw InternalError("DeclarationNode only supports ExpressionNode as its child", {METADATA_PAIRS});
-    ASTNode::addChild(child);
+    return children[0] != nullptr;
   }
   
   void printTree(uint level) const {
     printIndent(level);
-    std::string collatedTypes = "";
-    if (dynamic) collatedTypes = "[dynamic]";
-    else if (!dynamic && typeList.size() == 0) throw InternalError("No types in typed declaration", {METADATA_PAIRS});
-    else collatedTypes = collateTypeList(typeList);
-    println("Declaration Node: " + identifier + " (valid types: " + collatedTypes + ")");
+    println("Declaration Node: " + identifier + " (" + info.toString() + ")");
     if (children.size() > 0) children[0]->printTree(level + 1);
   }
   
@@ -237,8 +223,7 @@ public:
     if (!ASTNode::operator==(rhs)) return false;
     auto decl = dynamic_cast<const DeclarationNode&>(rhs);
     if (this->identifier != decl.identifier) return false;
-    if (this->typeList != decl.typeList) return false;
-    if (this->dynamic != decl.dynamic) return false;
+    if (this->info != decl.info) return false;
     return true;
   }
   bool operator!=(const ASTNode& rhs) const {
