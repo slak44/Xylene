@@ -7,7 +7,6 @@
 #include <set>
 #include <memory>
 #include <typeinfo>
-#include <rapidxml.hpp>
 
 #include "utils/error.hpp"
 #include "token.hpp"
