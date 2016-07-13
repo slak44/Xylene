@@ -118,7 +118,7 @@ const std::vector<Operator> operatorList {
 
 typedef std::string OperatorName;
 
-std::map<OperatorName, uint> operatorNameMap {
+std::map<OperatorName, int> operatorNameMap {
   {"Equality", 0},
   {"Inequality", 1},
   {"Assignment", 2},
@@ -183,7 +183,7 @@ const Operator& operatorFrom(const OperatorName& name) {
   return operatorList[operatorNameMap[name]];
 }
 
-OperatorName operatorNameFrom(uint64 index) {
+OperatorName operatorNameFrom(int64 index) {
   auto it = std::find_if(ALL(operatorNameMap), [=](auto mapPair) {
     return mapPair.second == index;
   });
