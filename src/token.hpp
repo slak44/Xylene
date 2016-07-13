@@ -178,6 +178,10 @@ public:
     return operatorList[operatorIndex];
   }
   
+  inline bool hasOperator(OperatorName name) {
+    return operatorIndex == operatorNameMap[name];
+  }
+  
   bool hasArity(Arity arity) const {
     operatorCheck(GET_ERR_METADATA);
     return getOperator().getArity() == arity;
