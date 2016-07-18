@@ -54,12 +54,26 @@ public:
   };
   
   bool operator==(const TypeInfo& rhs) const {
-    return isVoidType == rhs.isVoidType || evalValue == rhs.evalValue;
+    if (isVoidType != rhs.isVoidType) return false;
+    return evalValue == rhs.evalValue;
   }
   
   bool operator!=(const TypeInfo& rhs) const {
     return !operator==(rhs);
   }
+};
+
+/*
+  TypeInfo with a singular non-void, non-dynamic type.
+*/
+class StaticTypeInfo: public TypeInfo {
+public:
+  StaticTypeInfo(std::string type): TypeInfo({type}) {}
+  StaticTypeInfo(const char* type): StaticTypeInfo(std::string(type)) {}
+  
+  std::string toString() const {
+    return "StaticTypeInfo: " + *std::begin(evalValue);
+  };
 };
 
 /*
