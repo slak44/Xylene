@@ -102,6 +102,13 @@ struct PtrUtil {
   }
 };
 
+struct Identity {
+  template<typename T>
+  constexpr auto operator()(T&& v) const noexcept -> decltype(std::forward<T>(v)) {
+    return std::forward<T>(v);
+  }
+};
+
 template<typename T>
 struct VectorHash {
   std::size_t operator()(const std::vector<T>& vec) const {
@@ -131,7 +138,7 @@ static const auto defaultCollateCombine = [](std::string prev, std::string curre
 
 template<typename Container>
 std::string collate(Container c,
-  std::function<std::string(COLLATE_TYPE)> objToString,
+  std::function<std::string(COLLATE_TYPE)> objToString = Identity(),
   std::function<std::string(std::string, std::string)> combine = defaultCollateCombine
   ) {
   if (c.size() == 0) return "";
@@ -149,7 +156,7 @@ std::string collate(Container c,
 #undef COLLATE_TYPE
 
 std::string collateTypeList(TypeList typeList) {
-  return collate<TypeList>(typeList, [](std::string s) {return s;});
+  return collate<TypeList>(typeList);
 }
 
 #endif
