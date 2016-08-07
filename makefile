@@ -46,9 +46,9 @@ DCOMPILE_FLAGS = -D DEBUG -O0 -g3
 # Additional test-specific flags
 TCOMPILE_FLAGS = -D DEBUG -O0 -g3
 # Add additional include paths
-INCLUDES = -I $(SOURCE_PATH) -Ilibs/tclap-1.2.1/include -Ilibs/googletest-release-1.7.0/include -Ilibs/rapidxml-1.13 -Ilibs
+INCLUDES = -I $(SOURCE_PATH) -I $(shell llvm-config --includedir) -Ilibs/tclap-1.2.1/include -Ilibs/googletest-release-1.7.0/include -Ilibs/rapidxml-1.13 -Ilibs
 # General linker settings
-LINK_FLAGS =
+LINK_FLAGS = $(shell llvm-config --ldflags --system-libs --libs all)
 # Additional release-specific linker settings
 RLINK_FLAGS =
 # Additional debug-specific linker settings
