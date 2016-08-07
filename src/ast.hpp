@@ -14,6 +14,9 @@
 #include "operator.hpp"
 #include "utils/typeInfo.hpp"
 
+class ASTVisitor;
+using ASTVisitorLink = PtrUtil<ASTVisitor>::Link;
+
 class ASTNode: public std::enable_shared_from_this<ASTNode> {
 public:
   typedef std::shared_ptr<ASTNode> Link;
@@ -78,6 +81,22 @@ public:
   virtual bool operator!=(const ASTNode& rhs) const {
     return !operator==(rhs);
   }
+  
+  virtual void visit(ASTVisitorLink visitor) = 0;
+};
+
+template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
+struct Node: public PtrUtil<T> {
+  typedef typename PtrUtil<T>::Link Link;
+  typedef typename PtrUtil<T>::WeakLink WeakLink;
+  
+  static inline bool isSameType(ASTNode::Link node) {
+    return typeid(T) == typeid(*node);
+  }
+  
+  static inline Link dynPtrCast(ASTNode::Link node) {
+    return std::dynamic_pointer_cast<T>(node);
+  }
 };
 
 #define GET_FOR(childIndex, nameOf, linkType) \
@@ -115,20 +134,6 @@ public:
   }
 };
 
-template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
-struct Node: public PtrUtil<T> {
-  typedef typename PtrUtil<T>::Link Link;
-  typedef typename PtrUtil<T>::WeakLink WeakLink;
-  
-  static inline bool isSameType(ASTNode::Link node) {
-    return typeid(T) == typeid(*node);
-  }
-  
-  static inline Link dynPtrCast(ASTNode::Link node) {
-    return std::dynamic_pointer_cast<T>(node);
-  }
-};
-
 class BlockNode: public ASTNode {
 public:
   void printTree(uint level) const {
@@ -142,6 +147,8 @@ public:
   bool operator!=(const ASTNode& rhs) const {
     return !operator==(rhs);
   }
+  
+  void visit(ASTVisitorLink visitor);
 };
 
 class ExpressionNode: public ASTNode {
@@ -184,6 +191,8 @@ public:
   bool operator!=(const ASTNode& rhs) const {
     return !operator==(rhs);
   }
+  
+  void visit(ASTVisitorLink visitor);
 };
 
 class DeclarationNode: public NoMoreChildrenNode {
@@ -228,6 +237,8 @@ public:
   bool operator!=(const ASTNode& rhs) const {
     return !operator==(rhs);
   }
+  
+  void visit(ASTVisitorLink visitor);
 };
 
 class BranchNode: public NoMoreChildrenNode {
@@ -254,6 +265,8 @@ public:
     PRETTY_PRINT_FOR(1, Success)
     if (notNull(2)) PRETTY_PRINT_FOR(2, Failiure)
   }
+  
+  void visit(ASTVisitorLink visitor);
 };
 
 class LoopNode: public NoMoreChildrenNode {
@@ -279,6 +292,8 @@ public:
   bool operator!=(const ASTNode& rhs) const {
     return !operator==(rhs);
   }
+  
+  void visit(ASTVisitorLink visitor);
 };
 
 class AST {
@@ -310,6 +325,32 @@ public:
     return Node<BlockNode>::make(root);
   }
 };
+
+#define VISITOR_IMPL(nodeName) virtual void visit##nodeName(nodeName##Node* node) = 0;
+
+class ASTVisitor {
+public:
+  VISITOR_IMPL(Block)
+  VISITOR_IMPL(Expression)
+  VISITOR_IMPL(Declaration)
+  VISITOR_IMPL(Branch)
+  VISITOR_IMPL(Loop)
+};
+
+#undef VISITOR_IMPL
+
+#define VISITED_NODE_FUNC(nodeName) \
+void nodeName##Node::visit(ASTVisitorLink visitor) {\
+  visitor->visit##nodeName(this);\
+}
+
+VISITED_NODE_FUNC(Block)
+VISITED_NODE_FUNC(Expression)
+VISITED_NODE_FUNC(Declaration)
+VISITED_NODE_FUNC(Branch)
+VISITED_NODE_FUNC(Loop)
+
+#undef VISITED_NODE_FUNC
 
 #undef PRETTY_PRINT_FOR
 #undef GET_FOR
