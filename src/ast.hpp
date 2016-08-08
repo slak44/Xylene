@@ -296,6 +296,27 @@ public:
   void visit(ASTVisitorLink visitor);
 };
 
+class ReturnNode: public NoMoreChildrenNode {
+public:
+  ReturnNode(): NoMoreChildrenNode(1) {}
+  
+  GET_SET_FOR(0, Value, ExpressionNode)
+  
+  void printTree(uint level) const {
+    printIndent(level);
+    println("Return Node");
+    if (notNull(0)) PRETTY_PRINT_FOR(0, Value)
+  }
+  bool operator==(const ASTNode& rhs) const {
+    return ASTNode::operator==(rhs);
+  }
+  bool operator!=(const ASTNode& rhs) const {
+    return !operator==(rhs);
+  }
+  
+  void visit(ASTVisitorLink visitor);
+};
+
 class AST {
 private:
   BlockNode root = BlockNode();
@@ -335,6 +356,7 @@ public:
   VISITOR_IMPL(Declaration)
   VISITOR_IMPL(Branch)
   VISITOR_IMPL(Loop)
+  VISITOR_IMPL(Return)
 };
 
 #undef VISITOR_IMPL
@@ -349,6 +371,7 @@ VISITED_NODE_FUNC(Expression)
 VISITED_NODE_FUNC(Declaration)
 VISITED_NODE_FUNC(Branch)
 VISITED_NODE_FUNC(Loop)
+VISITED_NODE_FUNC(Return)
 
 #undef VISITED_NODE_FUNC
 

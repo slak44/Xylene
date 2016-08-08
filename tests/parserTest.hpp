@@ -133,4 +133,12 @@ TEST_F(ParserTest, ForLoop) {
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
+TEST_F(ParserTest, ReturnStatement) {
+  px.parse(Lexer().tokenize(R"(
+    return 1 + 1;
+  )").getTokens());
+  xpx.parse(xmlFile("tests/data/simple_return.xml"));
+  ASSERT_EQ(px.getTree(), xpx.getTree());
+}
+
 #endif

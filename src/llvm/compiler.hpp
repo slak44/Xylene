@@ -116,6 +116,11 @@ private:
     throw ni;
   }
   
+  void visitReturn(ReturnNode* node) {
+    UNUSED(node);
+    throw ni;
+  }
+  
 };
 
 #endif

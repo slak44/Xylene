@@ -289,6 +289,13 @@ private:
         expectSemi();
         return e;
       }
+    } else if (accept(K_RETURN)) {
+      skip(); // Skip "return"
+      auto retValue = expression();
+      expectSemi();
+      auto retNode = Node<ReturnNode>::make();
+      retNode->setValue(retValue);
+      return retNode;
     } else {
       auto e = expression();
       expectSemi();

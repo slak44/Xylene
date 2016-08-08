@@ -29,6 +29,11 @@ private:
       auto block = Node<BlockNode>::make();
       parseChildren(node, block);
       return block;
+    } else if (name == "return") {
+      auto retNode = Node<ReturnNode>::make();
+      auto val = node->first_node("expr");
+      if (val != 0) retNode->setValue(Node<ExpressionNode>::dynPtrCast(parseXMLNode(val)));
+      return retNode;
     } else if (name == "expr") {
       TokenType tokenType = getTokenTypeByName(node->first_attribute("type")->value());
       std::string data = node->first_attribute("value")->value();
