@@ -17,8 +17,8 @@ protected:
   }
 };
 
-TEST_F(LLVMCompilerTest, TrivialExpression) {
-  xpx.parse(xmlFile("tests/data/llvm/trivial_expr.xml"));
+TEST_F(LLVMCompilerTest, ExitCode) {
+  xpx.parse(xmlFile("tests/data/llvm/exit_code.xml"));
   CompileVisitor::Link visitor = CompileVisitor::create(globalContext, "Test Module", xpx.getTree());
   visitor->visit();
   visitor->getModule()->dump();

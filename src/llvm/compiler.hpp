@@ -53,7 +53,6 @@ public:
   
   void visit() {
     ast.getRootAsLink()->visit(shared_from_this());
-    builder.CreateRet(llvm::ConstantInt::getSigned(integerType, 32));
   }
   
   llvm::Module* getModule() const {
@@ -117,8 +116,7 @@ private:
   }
   
   void visitReturn(ReturnNode* node) {
-    UNUSED(node);
-    throw ni;
+    builder.CreateRet(compileExpression(node->getValue()));
   }
   
 };
