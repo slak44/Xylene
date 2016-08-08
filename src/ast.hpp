@@ -47,7 +47,7 @@ public:
     if (pos < 0) {
       pos = children.size() + pos; // Negative indices count from the end of the vector
     }
-    if (abs(pos) > children.size() || pos < 0) {
+    if (static_cast<std::size_t>(abs(pos)) > children.size() || pos < 0) {
       throw InternalError("Index out of array bounds", {METADATA_PAIRS, {"index", std::to_string(pos)}});
     }
     return children[pos];
