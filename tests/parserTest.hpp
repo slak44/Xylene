@@ -97,7 +97,7 @@ TEST_F(ParserTest, XMLParse) {
     Token(OPERATOR, 31, 1), Token(L_INTEGER, "3", 1), Token(C_PAREN_RIGHT, ")", 1),
     Token(OPERATOR, 29, 1), Token(L_FLOAT, "1.5", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)
   });
-  xpx.parse(xmlFile("tests/data/simple_expr.xml"));
+  xpx.parse(xmlFile("tests/data/parser/simple_expr.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
@@ -109,7 +109,7 @@ TEST_F(ParserTest, IfStatement) {
       100 - 101;
     end
   )").getTokens());
-  xpx.parse(xmlFile("tests/data/if_statement.xml"));
+  xpx.parse(xmlFile("tests/data/parser/if_statement.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
@@ -119,7 +119,7 @@ TEST_F(ParserTest, Declarations) {
     Integer i = 2;
     Float, Integer nr = 3.3;
   )").getTokens());
-  xpx.parse(xmlFile("tests/data/declarations.xml"));
+  xpx.parse(xmlFile("tests/data/parser/declarations.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
@@ -129,7 +129,7 @@ TEST_F(ParserTest, ForLoop) {
       1+1;
     end
   )").getTokens());
-  xpx.parse(xmlFile("tests/data/for_loop.xml"));
+  xpx.parse(xmlFile("tests/data/parser/for_loop.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
@@ -137,7 +137,7 @@ TEST_F(ParserTest, ReturnStatement) {
   px.parse(Lexer().tokenize(R"(
     return 1 + 1;
   )").getTokens());
-  xpx.parse(xmlFile("tests/data/simple_return.xml"));
+  xpx.parse(xmlFile("tests/data/parser/simple_return.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
