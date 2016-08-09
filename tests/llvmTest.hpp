@@ -27,6 +27,7 @@ protected:
 TEST_F(LLVMCompilerTest, ExitCodes) {
   noThrowOnCompile("tests/data/llvm/exit_code.xml");
   noThrowOnCompile("tests/data/llvm/stupid_return.xml");
+  noThrowOnCompile("tests/data/llvm/stored_return.xml");
 }
 
 TEST_F(LLVMCompilerTest, Declarations) {
