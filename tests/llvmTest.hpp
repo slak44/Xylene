@@ -15,22 +15,22 @@ protected:
   inline rapidxml::file<> xmlFile(std::string path) {
     return rapidxml::file<>(path.c_str());
   }
+  
+  inline void noThrowOnCompile(std::string xmlFilePath) {
+    xpx.parse(xmlFile(xmlFilePath));
+    CompileVisitor::Link visitor = CompileVisitor::create(globalContext, "Test Module", xpx.getTree());
+    EXPECT_NO_THROW(visitor->visit());
+    visitor->getModule()->dump();
+  }
 };
 
-TEST_F(LLVMCompilerTest, ExitCode) {
-  xpx.parse(xmlFile("tests/data/llvm/exit_code.xml"));
-  CompileVisitor::Link visitor = CompileVisitor::create(globalContext, "Test Module", xpx.getTree());
-  visitor->visit();
-  visitor->getModule()->dump();
-  EXPECT_EQ(1, 1);
+TEST_F(LLVMCompilerTest, ExitCodes) {
+  noThrowOnCompile("tests/data/llvm/exit_code.xml");
+  noThrowOnCompile("tests/data/llvm/stupid_return.xml");
 }
 
-TEST_F(LLVMCompilerTest, ReturnFloat) {
-  xpx.parse(xmlFile("tests/data/llvm/simple_return.xml"));
-  CompileVisitor::Link visitor = CompileVisitor::create(globalContext, "Test Module", xpx.getTree());
-  visitor->visit();
-  visitor->getModule()->dump();
-  EXPECT_EQ(1, 1);
+TEST_F(LLVMCompilerTest, Declarations) {
+  noThrowOnCompile("tests/data/llvm/primitive.xml");
 }
 
 #endif

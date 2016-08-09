@@ -1,0 +1,21 @@
+<!--
+Integer int;
+Float flt = 3.14;
+Boolean bool = false;
+Integer int2 = 1 + 2;
+-->
+<block>
+  <decl ident="int" types="Integer"/>
+  <decl ident="flt" types="Float">
+    <expr type="Float" value="3.14"/>
+  </decl>
+  <decl ident="bool" types="Boolean">
+    <expr type="Boolean" value="true"/>
+  </decl>
+  <decl ident="int2" types="Integer">
+    <expr type="Operator" value="Add">
+      <expr type="Integer" value="1"/>
+      <expr type="Integer" value="2"/>
+    </expr>
+  </decl>
+</block>
