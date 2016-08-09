@@ -25,4 +25,12 @@ TEST_F(LLVMCompilerTest, ExitCode) {
   EXPECT_EQ(1, 1);
 }
 
+TEST_F(LLVMCompilerTest, ReturnFloat) {
+  xpx.parse(xmlFile("tests/data/llvm/simple_return.xml"));
+  CompileVisitor::Link visitor = CompileVisitor::create(globalContext, "Test Module", xpx.getTree());
+  visitor->visit();
+  visitor->getModule()->dump();
+  EXPECT_EQ(1, 1);
+}
+
 #endif

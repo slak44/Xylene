@@ -16,12 +16,11 @@
 #include <vector>
 
 #include "utils/util.hpp"
+#include "utils/error.hpp"
 #include "ast.hpp"
-
-llvm::LLVMContext& globalContext(llvm::getGlobalContext());
-
-static const uint BITS_PER_INT = 64;
-static llvm::IntegerType* integerType = llvm::IntegerType::get(globalContext, BITS_PER_INT);
+#include "operator.hpp"
+#include "globalTypes.hpp"
+#include "operatorCodegen.hpp"
 
 /*
   Each CompileVisitor creates a LLVM Module from an AST.
@@ -58,7 +57,7 @@ public:
   llvm::Module* getModule() const {
     return module;
   }
-private:
+  
   void visitBlock(BlockNode* node) {
     llvm::BasicBlock* block = llvm::BasicBlock::Create(contextRef, "block", currentFunction);
     builder.SetInsertPoint(block);
@@ -76,7 +75,7 @@ private:
     if (tok.isTerminal()) {
       switch (tok.type) {
         case L_INTEGER: return llvm::ConstantInt::getSigned(integerType, std::stoll(tok.data));
-        case L_FLOAT: throw ni;
+        case L_FLOAT: return llvm::ConstantFP::get(floatType, tok.data);
         case L_STRING: throw ni;
         case L_BOOLEAN: throw ni;
         case IDENTIFIER: throw ni;
@@ -87,11 +86,47 @@ private:
       };
     } else if (tok.isOperator()) {
       std::vector<llvm::Value*> operands {};
+      // Recursively compute all the operands
       for (auto& child : node->getChildren()) {
         operands.push_back(compileExpression(Node<ExpressionNode>::dynPtrCast(child)));
       }
-      // TODO use proper operator
-      return builder.CreateAdd(operands[0], operands[1], "tmpadd");
+      // Make sure we have the correct amount of operands
+      if (static_cast<int>(operands.size()) != tok.getOperator().getArity()) {
+        throw InternalError("Operand count does not match operator arity", {
+          METADATA_PAIRS,
+          {"operator token", tok.toString()},
+          {"operand count", std::to_string(operands.size())}
+        });
+      }
+      TypeMap map;
+      // Try to find the operator in the map
+      try {
+        map = codegenMap.at(operatorNameFrom(tok.operatorIndex));
+      } catch (std::out_of_range& oor) {
+        throw InternalError("No such operator", {
+          METADATA_PAIRS,
+          {"token", tok.toString()}
+        });
+      }
+      std::vector<TokenType> operandTypes;
+      operandTypes.resize(operands.size(), UNPROCESSED);
+      // Map an operand to a TokenType representing it
+      std::transform(ALL(operands), operandTypes.begin(), [=](llvm::Value* val) -> TokenType {
+        llvm::Type* opType = val->getType();
+        if (opType == integerType) return L_INTEGER;
+        else if (opType == floatType) return L_FLOAT;
+        else throw ni;
+        // TODO the rest of the types
+      });
+      CodegenFunction func;
+      // Try to find the function in the TypeMap using the operand types
+      try {
+        func = map.at(operandTypes);
+      } catch (std::out_of_range& oor) {
+        throw Error("TypeError", "No operation available for given operands", tok.line);
+      }
+      // Call the code generating function, and return its result
+      return func(builder, operands);
     } else {
       throw InternalError("Malformed expression node", {
         METADATA_PAIRS,
