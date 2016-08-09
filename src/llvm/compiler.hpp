@@ -69,6 +69,15 @@ public:
     compileExpression(Node<ExpressionNode>::make(*node));
   }
   
+  llvm::Value* loadLocal(const std::string& name, uint line) {
+    llvm::Value* localThing = builder.GetInsertBlock()->getValueSymbolTable()->lookup(name);
+    if (localThing != nullptr) {
+      return builder.CreateLoad(localThing, name);
+    } else {
+      throw Error("ReferenceError", "Could not find variable " + name, line);
+    }
+  }
+  
   InternalError ni = InternalError("Not Implemented", {METADATA_PAIRS});
   
   llvm::Value* compileExpression(Node<ExpressionNode>::Link node) {
@@ -79,7 +88,7 @@ public:
         case L_FLOAT: return llvm::ConstantFP::get(floatType, tok.data);
         case L_STRING: throw ni;
         case L_BOOLEAN: return (tok.data == "true" ? llvm::ConstantInt::getTrue(booleanType) : llvm::ConstantInt::getFalse(booleanType));
-        case IDENTIFIER: throw ni;
+        case IDENTIFIER: return loadLocal(tok.data, tok.line); // TODO check globals and types, not only locals
         default: throw InternalError("Unhandled terminal symbol in switch case", {
           METADATA_PAIRS,
           {"token", tok.toString()}
