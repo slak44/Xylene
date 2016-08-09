@@ -77,7 +77,7 @@ public:
         case L_INTEGER: return llvm::ConstantInt::getSigned(integerType, std::stoll(tok.data));
         case L_FLOAT: return llvm::ConstantFP::get(floatType, tok.data);
         case L_STRING: throw ni;
-        case L_BOOLEAN: throw ni;
+        case L_BOOLEAN: return (tok.data == "true" ? llvm::ConstantInt::getTrue(booleanType) : llvm::ConstantInt::getFalse(booleanType));
         case IDENTIFIER: throw ni;
         default: throw InternalError("Unhandled terminal symbol in switch case", {
           METADATA_PAIRS,
@@ -115,6 +115,7 @@ public:
         llvm::Type* opType = val->getType();
         if (opType == integerType) return L_INTEGER;
         else if (opType == floatType) return L_FLOAT;
+        else if (opType == booleanType) return L_BOOLEAN;
         else throw ni;
         // TODO the rest of the types
       });
