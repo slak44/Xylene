@@ -8,6 +8,7 @@
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/ValueSymbolTable.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Type.h>
@@ -137,8 +138,30 @@ public:
   }
   
   void visitDeclaration(DeclarationNode* node) {
-    UNUSED(node);
-    throw ni;
+    // TODO make sure dynamic vars and user types are boxed
+    TypeList declTypes = node->getTypeInfo().getEvalTypeList();
+    // If this variable allows only one type, allocate it immediately
+    if (declTypes.size() == 1) {
+      std::string typeName = *declTypes.begin();
+      llvm::Type* toAllocate;
+      if (typeName == "Boolean") toAllocate = booleanType;
+      else if (typeName == "Integer") toAllocate = integerType;
+      else if (typeName == "Float") toAllocate = floatType;
+      else throw ni; // TODO user-defined types are handled here
+      builder.CreateAlloca(toAllocate, nullptr, node->getIdentifier());
+    // If this variable has 1+ or dynamic type, allocate a pointer + type data
+    // The actual data will be allocated on initialization
+    } else {
+      // TODO
+      throw ni;
+    }
+    // Handle initialization
+    if (node->hasInit()) {
+      llvm::Value* initValue = compileExpression(node->getInit());
+      llvm::Value* allocated = builder.GetInsertBlock()->getValueSymbolTable()->lookup(node->getIdentifier());
+      // if (allocated->getType() == /* type of boxed stuff */) {/* update type metadata in box and do a store on the actual data */}
+      builder.CreateStore(initValue, allocated); // TODO only for primitives, move to else block of above comment
+    }
   }
   
   void visitBranch(BranchNode* node) {
