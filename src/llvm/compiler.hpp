@@ -13,6 +13,7 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Verifier.h>
+#include <llvm/Support/raw_ostream.h>
 #include <string>
 #include <vector>
 
@@ -53,6 +54,15 @@ public:
   
   void visit() {
     ast.getRootAsLink()->visit(shared_from_this());
+    std::string str;
+    llvm::raw_string_ostream rso(str);
+    if (llvm::verifyModule(*module, &rso)) {
+      throw InternalError("Module failed validation", {
+        METADATA_PAIRS,
+        {"module name", module->getName()},
+        {"error", rso.str()}
+      });
+    }
   }
   
   llvm::Module* getModule() const {

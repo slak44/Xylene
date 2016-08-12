@@ -19,7 +19,12 @@ protected:
   inline void noThrowOnCompile(std::string xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
     CompileVisitor::Link visitor = CompileVisitor::create(globalContext, xmlFilePath, xpx.getTree());
-    EXPECT_NO_THROW(visitor->visit());
+    try {
+      visitor->visit();
+    } catch (InternalError& err) {
+      EXPECT_NO_THROW(throw InternalError(err));
+      println(err.what());
+    }
     visitor->getModule()->dump();
   }
 };
