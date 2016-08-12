@@ -1,0 +1,19 @@
+<!--
+if true do
+  return 1;
+end
+return 0;
+-->
+<block>
+  <branch>
+    <expr type="Boolean" value="true"/>
+    <block>
+      <return>
+        <expr type="Integer" value="1"/>
+      </return>
+    </block>
+  </branch>
+  <return>
+    <expr type="Integer" value="0"/>
+  </return>
+</block>

@@ -18,7 +18,7 @@ protected:
   
   inline void noThrowOnCompile(std::string xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
-    CompileVisitor::Link visitor = CompileVisitor::create(globalContext, "Test Module", xpx.getTree());
+    CompileVisitor::Link visitor = CompileVisitor::create(globalContext, xmlFilePath, xpx.getTree());
     EXPECT_NO_THROW(visitor->visit());
     visitor->getModule()->dump();
   }
@@ -32,6 +32,12 @@ TEST_F(LLVMCompilerTest, ExitCodes) {
 
 TEST_F(LLVMCompilerTest, Declarations) {
   noThrowOnCompile("tests/data/llvm/primitive.xml");
+}
+
+TEST_F(LLVMCompilerTest, Branches) {
+  noThrowOnCompile("tests/data/llvm/if.xml");
+  noThrowOnCompile("tests/data/llvm/if-else.xml");
+  noThrowOnCompile("tests/data/llvm/else-if.xml");
 }
 
 #endif

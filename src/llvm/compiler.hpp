@@ -60,9 +60,17 @@ public:
   }
   
   void visitBlock(BlockNode* node) {
-    llvm::BasicBlock* block = llvm::BasicBlock::Create(contextRef, "block", currentFunction);
-    builder.SetInsertPoint(block);
+    compileBlock(Node<BlockNode>::make(*node), "block");
+  }
+  
+  llvm::BasicBlock* compileBlock(Node<BlockNode>::Link node, const std::string& name) {
+    llvm::BasicBlock* prevBlock = builder.GetInsertBlock();
+    llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(contextRef, name, currentFunction);
+    builder.SetInsertPoint(newBlock);
     for (auto& child : node->getChildren()) child->visit(shared_from_this());
+    // Go back to previous insertion point
+    if (prevBlock) builder.SetInsertPoint(prevBlock);
+    return newBlock;
   }
   
   void visitExpression(ExpressionNode* node) {
@@ -174,8 +182,50 @@ public:
   }
   
   void visitBranch(BranchNode* node) {
-    UNUSED(node);
-    throw ni;
+    compileBranch(Node<BranchNode>::make(*node));
+  }
+  
+  // The BasicBlock surrounding is the block where control returns after dealing with branches, only specify for recursive case
+  void compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding = nullptr) {
+    static const auto handleBranchExit = [this](llvm::BasicBlock* continueCurrent) -> void {
+      builder.SetInsertPoint(continueCurrent);
+      return;
+    };
+    llvm::BasicBlock* current = builder.GetInsertBlock();
+    llvm::Value* cond = compileExpression(node->getCondition());
+    llvm::BasicBlock* success = compileBlock(node->getSuccessBlock(), "branchSuccess");
+    // continueCurrent gets all the current block's instructions after the branch
+    // Unless the branch jumps or returns somewhere, continueCurrent is always executed
+    llvm::BasicBlock* continueCurrent = surrounding != nullptr ? surrounding : llvm::BasicBlock::Create(contextRef, "branchAfter", currentFunction);
+    // Jump back to continueCurrent after the branch is done, to execute the rest of the block
+    builder.SetInsertPoint(success);
+    builder.CreateBr(continueCurrent);
+    if (node->getFailiureBlock() == nullptr) {
+      // Does not have else clauses
+      builder.SetInsertPoint(current);
+      builder.CreateCondBr(cond, success, continueCurrent);
+      return handleBranchExit(continueCurrent);
+    }
+    auto blockFailNode = Node<BlockNode>::dynPtrCast(node->getFailiureBlock());
+    if (blockFailNode) {
+      // Has an else block as failiure
+      llvm::BasicBlock* failiure = compileBlock(blockFailNode, "branchFailiure");
+      // Jump back to continueCurrent after the branch is done, to execute the rest of the block
+      builder.SetInsertPoint(failiure);
+      builder.CreateBr(continueCurrent);
+      // Add the branch
+      builder.SetInsertPoint(current);
+      builder.CreateCondBr(cond, success, failiure);
+      return handleBranchExit(continueCurrent);
+    } else {
+      // Has else-if as failiure
+      llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(contextRef, "branchNext", currentFunction);
+      builder.SetInsertPoint(nextBranch);
+      compileBranch(Node<BranchNode>::dynPtrCast(node->getFailiureBlock()), continueCurrent);
+      builder.SetInsertPoint(current);
+      builder.CreateCondBr(cond, success, nextBranch);
+      return handleBranchExit(continueCurrent);
+    }
   }
   
   void visitLoop(LoopNode* node) {

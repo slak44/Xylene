@@ -1,0 +1,32 @@
+<!--
+if false do
+  return 1;
+else if true do
+  return 2;
+else 
+  return 3;
+end
+-->
+<block>
+  <branch>
+    <expr type="Boolean" value="false"/>
+    <block>
+      <return>
+        <expr type="Integer" value="1"/>
+      </return>
+    </block>
+    <branch>
+      <expr type="Boolean" value="true"/>
+      <block>
+        <return>
+          <expr type="Integer" value="2"/>
+        </return>
+      </block>
+      <block>
+        <return>
+          <expr type="Integer" value="3"/>
+        </return>
+      </block>
+    </branch>
+  </branch>
+</block>
