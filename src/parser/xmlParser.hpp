@@ -123,9 +123,13 @@ private:
       auto success = cond->next_sibling();
       if (success == 0) throw XMLParseError("Missing success node in branch", {METADATA_PAIRS});
       branch->setSuccessBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(success)));
-      auto failiure = success->next_sibling();
-      if (failiure != 0) {
-        branch->setFailiureBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(failiure)));
+      auto blockFailiure = success->next_sibling("block");
+      if (blockFailiure != 0) {
+        branch->setFailiureBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(blockFailiure)));
+      }
+      auto branchFailiure = success->next_sibling("branch");
+      if (branchFailiure != 0) {
+        branch->setFailiureBlock(Node<BranchNode>::dynPtrCast(parseXMLNode(branchFailiure)));
       }
       return branch;
     } else if (name == "loop") {
