@@ -10,6 +10,6 @@ target_link_libraries(tests ${REQ_LLVM_LIBRARIES} pthread gtest)
 # Copy the folder with test data to the executable
 add_custom_command(TARGET tests POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${TEST_DATA} $<TARGET_FILE_DIR:tests>/data)
 
-add_dependencies(tests googletest rapidxml)
+add_dependencies(tests googletest ${COMMON_DEPS})
 
 make_exe_symlink(tests)

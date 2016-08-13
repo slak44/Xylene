@@ -34,6 +34,21 @@ ExternalProject_Add(
 )
 include_directories(SYSTEM ${RAPIDXML_PREFIX}/src/rapidxml)
 
+set(TERMCOLOR_PREFIX ${PROJECT_SOURCE_DIR}/libs/termcolor)
+ExternalProject_Add(
+  termcolor
+  GIT_REPOSITORY https://github.com/ikalnitsky/termcolor.git
+  GIT_TAG 252e16600f6ed8a83d6b0e92d03c292bb416e900
+  PREFIX ${TERMCOLOR_PREFIX}
+  CONFIGURE_COMMAND ""
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
+  BUILD_COMMAND ""
+  # TODO apply patch
+)
+include_directories(SYSTEM ${TERMCOLOR_PREFIX}/src/termcolor/include)
+
+set(COMMON_DEPS rapidxml termcolor)
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
@@ -48,7 +63,6 @@ llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/libs)
 include_directories(SYSTEM ${TCLAP_PATH}/include)
-include_directories(SYSTEM ${TERMCOLOR_PATH}/include)
 
 function(make_exe_symlink target_name)
   # Symlink the exe to the project root
