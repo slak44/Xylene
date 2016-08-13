@@ -21,6 +21,19 @@ ExternalProject_Add(
 include_directories(SYSTEM ${GTEST_PREFIX}/src/googletest/include)
 link_directories(${GTEST_PREFIX}/src/googletest-build)
 
+set(RAPIDXML_PREFIX ${PROJECT_SOURCE_DIR}/libs/rapidxml)
+ExternalProject_Add(
+  rapidxml
+  URL http://downloads.sourceforge.net/project/rapidxml/rapidxml/rapidxml%201.13/rapidxml-1.13.zip
+  URL_MD5 7b4b42c9331c90aded23bb55dc725d6a
+  PREFIX ${RAPIDXML_PREFIX}
+  CONFIGURE_COMMAND ""
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
+  BUILD_COMMAND ""
+)
+include_directories(SYSTEM ${RAPIDXML_PREFIX}/src/rapidxml)
+
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
@@ -35,7 +48,6 @@ llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/libs)
 include_directories(SYSTEM ${TCLAP_PATH}/include)
-include_directories(SYSTEM ${RAPIDXML_PATH})
 include_directories(SYSTEM ${TERMCOLOR_PATH}/include)
 
 function(make_exe_symlink target_name)
