@@ -13,6 +13,7 @@ protected:
   XMLParser xpx = XMLParser();
   
   inline rapidxml::file<> xmlFile(std::string path) {
+    path = DATA_PARENT_DIR + ("/" + path);
     return rapidxml::file<>(path.c_str());
   }
   
@@ -30,19 +31,19 @@ protected:
 };
 
 TEST_F(LLVMCompilerTest, ExitCodes) {
-  noThrowOnCompile("tests/data/llvm/exit_code.xml");
-  noThrowOnCompile("tests/data/llvm/stupid_return.xml");
-  noThrowOnCompile("tests/data/llvm/stored_return.xml");
+  noThrowOnCompile("data/llvm/exit_code.xml");
+  noThrowOnCompile("data/llvm/stupid_return.xml");
+  noThrowOnCompile("data/llvm/stored_return.xml");
 }
 
 TEST_F(LLVMCompilerTest, Declarations) {
-  noThrowOnCompile("tests/data/llvm/primitive.xml");
+  noThrowOnCompile("data/llvm/primitive.xml");
 }
 
 TEST_F(LLVMCompilerTest, Branches) {
-  noThrowOnCompile("tests/data/llvm/if.xml");
-  noThrowOnCompile("tests/data/llvm/if-else.xml");
-  noThrowOnCompile("tests/data/llvm/else-if.xml");
+  noThrowOnCompile("data/llvm/if.xml");
+  noThrowOnCompile("data/llvm/if-else.xml");
+  noThrowOnCompile("data/llvm/else-if.xml");
 }
 
 #endif
