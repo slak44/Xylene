@@ -48,6 +48,19 @@ ExternalProject_Add(
 )
 include_directories(SYSTEM ${TERMCOLOR_PREFIX}/src/termcolor/include)
 
+set(TCLAP_PREFIX ${PROJECT_SOURCE_DIR}/libs/tclap)
+ExternalProject_Add(
+  tclap
+  GIT_REPOSITORY http://git.code.sf.net/p/tclap/code
+  GIT_TAG tclap-1-2-1-release-final
+  PREFIX ${TCLAP_PREFIX}
+  CONFIGURE_COMMAND ""
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
+  BUILD_COMMAND ""
+)
+include_directories(SYSTEM ${TCLAP_PREFIX}/src/tclap)
+
 set(COMMON_DEPS rapidxml termcolor)
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
@@ -62,7 +75,6 @@ llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/libs)
-include_directories(SYSTEM ${TCLAP_PATH}/include)
 
 function(make_exe_symlink target_name)
   # Symlink the exe to the project root
