@@ -6,6 +6,8 @@
 #include <sstream>
 #include <map>
 
+#include <termcolor/termcolor.hpp>
+
 #include "util.hpp"
 
 #define GET_ERR_METADATA __FILE__, __PRETTY_FUNCTION__, __LINE__
@@ -23,20 +25,20 @@ typedef std::map<std::string, std::string> ErrorData;
 
 class InternalError: public std::runtime_error {
 private:
-  static std::string buildErrorMessage(std::string errorName, std::string msg, ErrorData data) {
+  static std::string buildErrorMessage(std::string errorName, std::string msg, const ErrorData& data) {
+    using namespace termcolor;
     std::stringstream ss;
-    ss << "\n" << errorName << ": " << msg << "\n";
+    ss << red << errorName << reset << ": " << msg << "\n";
     for (auto& extra : data) {
-      ss << "\t" << extra.first << ": " << extra.second << "\n";
+      ss << "\t" << blue << extra.first << reset << ": " << extra.second << "\n";
     }
     return ss.str();
   }
 protected:
-  InternalError(std::string errorName, std::string msg, ErrorData data):
+  InternalError(std::string errorName, std::string msg, const ErrorData& data):
     runtime_error(buildErrorMessage(errorName, msg, data)) {}
 public:
-  InternalError(std::string msg, ErrorData data):
-    runtime_error(buildErrorMessage("InternalError", msg, data)) {}
+  InternalError(std::string msg, const ErrorData& data): InternalError("InternalError", msg, data) {}
 };
 
 #endif
