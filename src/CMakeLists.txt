@@ -1,11 +1,11 @@
-add_executable(lg main.cpp)
+add_executable(release main.cpp)
 
-target_compile_options(lg PRIVATE -D NDEBUG -O3 -g0)
-target_link_libraries(lg ${REQ_LLVM_LIBRARIES})
+target_compile_options(release PRIVATE -D NDEBUG -O3 -g0)
+target_link_libraries(release ${REQ_LLVM_LIBRARIES})
 
-add_dependencies(lg ${COMMON_DEPS} tclap)
+add_dependencies(release ${COMMON_DEPS} tclap)
 
-make_exe_symlink(lg)
+make_exe_symlink(release)
 
 add_executable(debug main.cpp)
 
