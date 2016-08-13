@@ -1,0 +1,24 @@
+From 446e58a5dff246431dd7b91195c5303c0048196a Mon Sep 17 00:00:00 2001
+From: Slak44 <sylviu44@gmail.com>
+Date: Sat, 13 Aug 2016 17:33:23 +0300
+Subject: [PATCH] Hack to prevent segfaults with stringstreams
+
+---
+ include/termcolor/termcolor.hpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/termcolor/termcolor.hpp b/include/termcolor/termcolor.hpp
+index 4659afd..1d4718e 100644
+--- a/include/termcolor/termcolor.hpp
++++ b/include/termcolor/termcolor.hpp
+@@ -444,6 +444,7 @@ namespace termcolor
+         inline
+         bool is_atty(const std::ostream& stream)
+         {
++          return true;
+             FILE* std_stream = get_standard_stream(stream);
+ 
+         #if defined(TERMCOLOR_OS_MACOS) || defined(TERMCOLOR_OS_LINUX)
+-- 
+2.9.2
+

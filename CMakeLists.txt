@@ -40,7 +40,7 @@ ExternalProject_Add(
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
   BUILD_COMMAND ""
-  # TODO apply patch
+  PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/stringstream_segfault_hack.patch
 )
 include_directories(SYSTEM ${TERMCOLOR_PREFIX}/src/termcolor/include)
 
