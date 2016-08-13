@@ -55,7 +55,7 @@ ExternalProject_Add(
   INSTALL_COMMAND ""
   BUILD_COMMAND ""
 )
-include_directories(SYSTEM ${TCLAP_PREFIX}/src/tclap)
+include_directories(SYSTEM ${TCLAP_PREFIX}/src/tclap/include)
 
 set(COMMON_DEPS rapidxml termcolor)
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
