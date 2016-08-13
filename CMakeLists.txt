@@ -72,6 +72,13 @@ llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/libs)
 
+add_custom_target(clean-all)
+
+foreach(folder ${PROJECT_SOURCE_DIR}/bin ${PROJECT_SOURCE_DIR}/build ${PROJECT_SOURCE_DIR}/libs ${PROJECT_SOURCE_DIR}/lg)
+  add_custom_command(TARGET clean-all PRE_BUILD COMMAND ${CMAKE_COMMAND} -E remove_directory ${folder})
+endforeach(folder)
+add_custom_command(TARGET clean-all PRE_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/build)
+
 function(make_exe_symlink target_name)
   set(SYMLINK_LOCATION ${PROJECT_SOURCE_DIR}/lg)
   # Remove old link
