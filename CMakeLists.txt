@@ -73,6 +73,10 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/libs)
 
 function(make_exe_symlink target_name)
+  set(SYMLINK_LOCATION ${PROJECT_SOURCE_DIR}/lg)
+  # Remove old link
+  file(REMOVE ${SYMLINK_LOCATION})
   # Symlink the exe to the project root
-  add_custom_command(TARGET ${target_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/bin/${target_name} ${PROJECT_SOURCE_DIR}/lg)
+  add_custom_target(symlink_${target_name} ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/bin/${target_name} ${SYMLINK_LOCATION})
+  add_dependencies(${target_name} symlink_${target_name})
 endfunction(make_exe_symlink)
