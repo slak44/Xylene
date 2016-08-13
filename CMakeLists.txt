@@ -8,6 +8,20 @@ set(GTEST_PATH ${PROJECT_SOURCE_DIR}/libs/googletest-release-1.7.0)
 set(RAPIDXML_PATH ${PROJECT_SOURCE_DIR}/libs/rapidxml-1.13)
 set(TERMCOLOR_PATH ${PROJECT_SOURCE_DIR}/libs/termcolor)
 
+include(ExternalProject)
+
+set(GTEST_PREFIX ${PROJECT_SOURCE_DIR}/libs/googletest)
+ExternalProject_Add(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.7.0
+  PREFIX ${GTEST_PREFIX}
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
+)
+include_directories(SYSTEM ${GTEST_PREFIX}/src/googletest/include)
+link_directories(${GTEST_PREFIX}/src/googletest-build)
+
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
@@ -22,11 +36,8 @@ llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/libs)
 include_directories(SYSTEM ${TCLAP_PATH}/include)
-include_directories(SYSTEM ${GTEST_PATH}/include)
 include_directories(SYSTEM ${RAPIDXML_PATH})
 include_directories(SYSTEM ${TERMCOLOR_PATH}/include)
-
-link_directories(${GTEST_PATH})
 
 function(make_exe_symlink target_name)
   # Symlink the exe to the project root
