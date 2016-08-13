@@ -3,10 +3,6 @@ project(test-lang)
 
 subdirs(src tests)
 
-set(TCLAP_PATH ${PROJECT_SOURCE_DIR}/libs/tclap-1.2.1)
-set(RAPIDXML_PATH ${PROJECT_SOURCE_DIR}/libs/rapidxml-1.13)
-set(TERMCOLOR_PATH ${PROJECT_SOURCE_DIR}/libs/termcolor)
-
 include(ExternalProject)
 
 set(GTEST_PREFIX ${PROJECT_SOURCE_DIR}/libs/googletest)
