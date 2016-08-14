@@ -70,7 +70,7 @@ link_directories(${LLVM_LIBRARY_DIRS})
 llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/libs)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_custom_target(clean-all)
 
