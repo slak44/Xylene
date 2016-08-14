@@ -3,8 +3,10 @@
 
 #include <string>
 
-#include "tokenType.hpp"
+#include "utils/util.hpp"
+#include "utils/error.hpp"
 #include "operator.hpp"
+#include "tokenType.hpp"
 
 struct Token {
 private:
@@ -39,6 +41,20 @@ public:
   std::string toString() const;
 };
 
-inline std::ostream& operator<<(std::ostream& os, const Token& tok);
+inline bool Token::isTerminal() const {
+  return type == IDENTIFIER ||
+    type == L_INTEGER ||
+    type == L_FLOAT ||
+    type == L_STRING ||
+    type == L_BOOLEAN;
+}
+
+inline bool Token::isOperator() const {
+  return operatorIndex >= 0;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Token& tok) {
+  return os << tok.toString();
+}
 
 #endif

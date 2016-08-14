@@ -6,9 +6,8 @@
 #include <vector>
 
 #include "utils/util.hpp"
-#include "token.hpp"
 #include "lexer.hpp"
-#include "utils/error.hpp"
+#include "token.hpp"
 
 class LexerTest: public ::testing::Test {
 protected:

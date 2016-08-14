@@ -4,7 +4,6 @@
 #include <gtest/gtest.h>
 #include <rapidxml_utils.hpp>
 
-#include "utils/util.hpp"
 #include "llvm/compiler.hpp"
 #include "parser/xmlParser.hpp"
 
