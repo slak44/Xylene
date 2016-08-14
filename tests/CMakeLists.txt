@@ -1,4 +1,4 @@
-add_executable(tests main.cpp)
+add_executable(tests ${COMMON_SOURCES} main.cpp)
 
 set(TEST_DATA ${PROJECT_SOURCE_DIR}/tests/data)
 

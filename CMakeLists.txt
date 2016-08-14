@@ -58,6 +58,8 @@ ExternalProject_Add(
 include_directories(SYSTEM ${TCLAP_PREFIX}/src/tclap/include)
 
 set(COMMON_DEPS rapidxml termcolor)
+set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+set(COMMON_SOURCES ${SRC_DIR}/utils/util.cpp)
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
