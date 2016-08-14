@@ -12,12 +12,13 @@
 class LexerTest: public ::testing::Test {
 protected:
   Lexer lx = Lexer();
-  std::vector<Token> getTokens(std::string code) {
+  const std::vector<Token>& getTokens(std::string code) {
     return lx.tokenize(code).getTokens();
   }
 };
 
 TEST_F(LexerTest, CommentsSingleLine) {
+  ASSERT_EQ(getTokens("// test\n"), std::vector<Token> {Token(FILE_END, "", 0)});
   ASSERT_EQ(getTokens("// asd 123 . ////**//"), std::vector<Token> {Token(FILE_END, "", 0)});
   ASSERT_EQ(lx.getLineCount(), 1);
 }
