@@ -17,9 +17,9 @@
 #define UNUSED(expr) (void)(expr)
 #define ALL(container) std::begin(container), std::end(container)
 
-typedef long long int64;
-typedef unsigned long long uint64;
-typedef unsigned int uint;
+using uint = unsigned int;
+using int64 = long long;
+using uint64 = unsigned long long;
 
 using TypeList = std::set<std::string>;
 
