@@ -5,7 +5,6 @@
 #include <string>
 #include <sstream>
 #include <map>
-
 #include <termcolor/termcolor.hpp>
 
 #include "util.hpp"
@@ -17,28 +16,18 @@
 
 class Error: public std::runtime_error {
 public:
-  Error(std::string errType, std::string msg, uint64 line):
-    runtime_error(errType + ": " + msg + ", at line " + std::to_string(line)) {}
+  Error(std::string errType, std::string msg, uint64 line);
 };
 
-typedef std::map<std::string, std::string> ErrorData;
+using ErrorData = std::map<std::string, std::string>;
 
 class InternalError: public std::runtime_error {
 private:
-  static std::string buildErrorMessage(std::string errorName, std::string msg, const ErrorData& data) {
-    using namespace termcolor;
-    std::stringstream ss;
-    ss << red << errorName << reset << ": " << msg << "\n";
-    for (auto& extra : data) {
-      ss << "\t" << blue << extra.first << reset << ": " << extra.second << "\n";
-    }
-    return ss.str();
-  }
+  static std::string buildErrorMessage(std::string errorName, std::string msg, const ErrorData& data);
 protected:
-  InternalError(std::string errorName, std::string msg, const ErrorData& data):
-    runtime_error(buildErrorMessage(errorName, msg, data)) {}
+  InternalError(std::string errorName, std::string msg, const ErrorData& data);
 public:
-  InternalError(std::string msg, const ErrorData& data): InternalError("InternalError", msg, data) {}
+  InternalError(std::string msg, const ErrorData& data);
 };
 
 #endif
