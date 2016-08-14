@@ -67,6 +67,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/tokenType.cpp
   ${SRC_DIR}/token.cpp
   ${SRC_DIR}/lexer.cpp
+  ${SRC_DIR}/ast.cpp
 )
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
