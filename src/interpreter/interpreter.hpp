@@ -85,7 +85,7 @@ private:
       for (uint i = 0; i < expr->getChildren().size(); i++) {
         operands.push_back(interpretExpression(currentScope, expr->at(i)));
       }
-      return executeOperator(operatorNameFrom(tok.operatorIndex), operands);
+      return executeOperator(operatorNameFrom(tok.idx), operands);
     }
     throw InternalError("Malformed expression node", {
       METADATA_PAIRS,

@@ -129,7 +129,7 @@ public:
       TypeMap map;
       // Try to find the operator in the map
       try {
-        map = codegenMap.at(operatorNameFrom(tok.operatorIndex));
+        map = codegenMap.at(operatorNameFrom(tok.idx));
       } catch (std::out_of_range& oor) {
         throw InternalError("No such operator", {
           METADATA_PAIRS,

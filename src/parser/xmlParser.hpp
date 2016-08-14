@@ -91,7 +91,7 @@ private:
       std::string data = node->first_attribute("value")->value();
       PtrUtil<Token>::U content;
       if (tokenType == OPERATOR) {
-        content = PtrUtil<Token>::unique(tokenType, operatorNameMap[data], 0);
+        content = PtrUtil<Token>::unique(tokenType, operatorIndexFrom(data), 0);
       } else {
         content = PtrUtil<Token>::unique(tokenType, data, 0);
       }

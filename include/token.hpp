@@ -16,11 +16,11 @@ private:
 public:
   TokenType type;
   std::string data = "";
-  int operatorIndex = -1; // Index in the operator list
+  OperatorIndex idx = -1; // Index in the operator list
   uint64 line = 0;
   
   Token(TokenType type, std::string data, uint64 line);
-  Token(TokenType type, size_t operatorIndex, uint64 line);
+  Token(TokenType type, OperatorIndex idx, uint64 line);
   Token(TokenType type, uint64 line);
   
   inline bool isTerminal() const;
@@ -31,7 +31,7 @@ public:
   bool hasArity(Arity arity) const;
   bool hasFixity(Fixity fixity) const;
   bool hasAssociativity(Associativity asoc) const;
-  bool hasOperatorName(std::string name) const;
+  bool hasOperatorName(OperatorSymbol name) const;
   
   int getPrecedence() const;
   
@@ -50,7 +50,7 @@ inline bool Token::isTerminal() const {
 }
 
 inline bool Token::isOperator() const {
-  return operatorIndex >= 0;
+  return idx >= 0;
 }
 
 inline std::ostream& operator<<(std::ostream& os, const Token& tok) {

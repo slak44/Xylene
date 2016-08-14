@@ -1,12 +1,12 @@
 #include "token.hpp"
 
 Token::Token(TokenType type, std::string data, uint64 line): type(type), data(data), line(line) {}
-Token::Token(TokenType type, size_t operatorIndex, uint64 line): type(type), operatorIndex(operatorIndex), line(line) {}
+Token::Token(TokenType type, OperatorIndex idx, uint64 line): type(type), idx(idx), line(line) {}
 Token::Token(TokenType type, uint64 line): type(type), line(line) {}
 
 const Operator& Token::getOperator() const {
   operatorCheck(GET_ERR_METADATA);
-  return operatorList[operatorIndex];
+  return operatorList[idx];
 }
 
 bool Token::hasArity(Arity arity) const {
@@ -24,7 +24,7 @@ bool Token::hasAssociativity(Associativity asoc) const {
   return asoc == getOperator().getAssociativity();
 }
 
-bool Token::hasOperatorName(std::string name) const {
+bool Token::hasOperatorName(OperatorSymbol name) const {
   operatorCheck(GET_ERR_METADATA);
   return name == getOperator().getName();
 }
@@ -35,7 +35,7 @@ int Token::getPrecedence() const {
 }
 
 bool Token::operator==(const Token& tok) const {
-  return type == tok.type && data == tok.data && operatorIndex == tok.operatorIndex;
+  return type == tok.type && data == tok.data && idx == tok.idx;
 }
 
 bool Token::operator!=(const Token& tok) const {
@@ -44,7 +44,7 @@ bool Token::operator!=(const Token& tok) const {
 
 std::string Token::toString() const {
   std::string data = !this->isOperator() ?
-    (", data \"" + this->data + "\"") :
-    (", operator " + this->getOperator().getName() + " (precedence " + std::to_string(this->getPrecedence()) + ")");
-  return "Token " + this->type + data + ", at line " + std::to_string(this->line);
+    ("data \"" + this->data + "\"") :
+    ("operator " + this->getOperator().getName() + " (precedence " + std::to_string(this->getPrecedence()) + ")");
+  return "Token " + this->type + ", " + data + ", at line " + std::to_string(this->line);
 }

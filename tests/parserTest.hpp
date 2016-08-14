@@ -78,13 +78,13 @@ TEST_F(ParserTest, SimpleASTEquality) {
 TEST_F(ParserTest, NoBinaryOperators) {
   // -1;
   px.parse({
-    Token(OPERATOR, operatorNameMap["Unary -"], 1),
+    Token(OPERATOR, operatorIndexFrom("Unary -"), 1),
     Token(L_INTEGER, "1", 1),
     Token(C_SEMI, ";", 1),
     Token(FILE_END, "", 1)
   });
   AST tree = AST();
-  auto op = Node<ExpressionNode>::make(Token(OPERATOR, operatorNameMap["Unary -"], 1));
+  auto op = Node<ExpressionNode>::make(Token(OPERATOR, operatorIndexFrom("Unary -"), 1));
   op->addChild(Node<ExpressionNode>::make(Token(L_INTEGER, "1", 1)));
   auto rootBlock = Node<BlockNode>::make();
   rootBlock->addChild(op);
