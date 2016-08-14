@@ -38,7 +38,6 @@ protected:
     pos--;
   }
   inline bool hasFinishedString() const {
-    println(pos, code.length());
     return pos == code.length();
   }
   // Special chars
