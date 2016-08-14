@@ -9,11 +9,9 @@
 #include <memory>
 #include <typeinfo>
 #include <functional>
-#include <cxxabi.h>
 
 #include "suppressWarnings.hpp"
 
-#define abs(x) (x < 0 ? -x : x)
 #define UNUSED(expr) (void)(expr)
 #define ALL(container) std::begin(container), std::end(container)
 
@@ -68,14 +66,6 @@ std::vector<std::string> split(const std::string& str, char delim) {
 }
 
 template<typename T>
-std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
-  for (auto obj : vec) {
-    os << obj << " ";
-  }
-  return os;
-}
-
-template<typename T>
 struct PtrUtil {
   using U = std::unique_ptr<T>;
   using Link = std::shared_ptr<T>;
@@ -125,11 +115,6 @@ std::string getAddressStringFrom(const void* ptr) {
   std::stringstream ss;
   ss << "0x" << std::hex << reinterpret_cast<std::uintptr_t>(ptr);
   return ss.str();
-}
-
-std::string demangle(std::string name) {
-  int status;
-  return abi::__cxa_demangle(name.c_str(), 0, 0, &status);
 }
 
 #define COLLATE_TYPE const typename Container::value_type&
