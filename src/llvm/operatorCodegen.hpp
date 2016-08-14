@@ -13,7 +13,7 @@
 #include "globalTypes.hpp"
 #include "utils/util.hpp"
 #include "operator.hpp"
-#include "token.hpp"
+#include "tokenType.hpp"
 
 using CodegenFunction = std::function<llvm::Value*(llvm::IRBuilder<>, std::vector<llvm::Value*>)>;
 #define CODEGEN_SIG (llvm::IRBuilder<> builder, std::vector<llvm::Value*> operands) -> llvm::Value*
