@@ -20,47 +20,28 @@ protected:
   }
 public:
   // Definite list of types (if list is empty, equivalent to the no-arg constructor)
-  TypeInfo(TypeList evalValue): evalValue(evalValue) {}
-  // Void type
-  TypeInfo(std::nullptr_t voidType): isVoidType(true) {
-    UNUSED(voidType);
-  }
+  TypeInfo(TypeList evalValue);
+  // Is void type
+  TypeInfo(std::nullptr_t voidType);
   // Dynamic list of types
-  TypeInfo(): evalValue({}) {}
+  TypeInfo();
   
-  virtual ~TypeInfo() {}
+  virtual ~TypeInfo();
   
-  TypeList getEvalTypeList() const {
-    throwIfVoid();
-    return evalValue;
-  }
+  // Get list of held types
+  TypeList getEvalTypeList() const;
   
-  bool isDynamic() const {
-    throwIfVoid();
-    return evalValue.size() == 0;
-  }
+  bool isDynamic() const;
+  bool isVoid() const;
   
-  bool isVoid() const {
-    return isVoidType;
-  }
+  // Get a string representation of the held types
+  std::string getTypeNameString() const;
   
-  std::string getTypeNameString() const {
-    if (isVoidType) return "[void]";
-    return isDynamic() ? "[dynamic]" : collateTypeList(evalValue);
-  }
+  // Stringify this object
+  virtual std::string toString() const;
   
-  virtual std::string toString() const {
-    return "TypeInfo: " + getTypeNameString();
-  };
-  
-  bool operator==(const TypeInfo& rhs) const {
-    if (isVoidType != rhs.isVoidType) return false;
-    return evalValue == rhs.evalValue;
-  }
-  
-  bool operator!=(const TypeInfo& rhs) const {
-    return !operator==(rhs);
-  }
+  bool operator==(const TypeInfo& rhs) const;
+  bool operator!=(const TypeInfo& rhs) const;
 };
 
 /*
@@ -68,12 +49,10 @@ public:
 */
 class StaticTypeInfo: public TypeInfo {
 public:
-  StaticTypeInfo(std::string type): TypeInfo({type}) {}
-  StaticTypeInfo(const char* type): StaticTypeInfo(std::string(type)) {}
+  StaticTypeInfo(std::string type);
+  StaticTypeInfo(const char* type);
   
-  std::string toString() const {
-    return "StaticTypeInfo: " + *std::begin(evalValue);
-  };
+  std::string toString() const;
 };
 
 /*
@@ -84,9 +63,7 @@ public:
   using TypeInfo::TypeInfo;
   DefiniteTypeInfo(std::nullptr_t voidType) = delete;
   
-  std::string toString() const {
-    return "DefiniteTypeInfo: " + getTypeNameString();
-  };
+  std::string toString() const;
 };
 
 class FunctionTypeInfo {
@@ -94,15 +71,9 @@ private:
   TypeInfo returnType;
   std::vector<TypeInfo> argumentTypes;
 public:
-  FunctionTypeInfo(TypeInfo returnType, std::vector<TypeInfo> argumentTypes): returnType(returnType), argumentTypes(argumentTypes) {}
+  FunctionTypeInfo(TypeInfo returnType, std::vector<TypeInfo> argumentTypes);
   
-  std::string toString() const {
-    std::string str = "FunctionInfo (";
-    str += "return: " + returnType.getTypeNameString();
-    str += ", arguments: " + collate<decltype(argumentTypes)>(argumentTypes, [](TypeInfo ti) {return "(arg " + ti.getTypeNameString() + ")";});
-    str += ")";
-    return str;
-  };
+  std::string toString() const;
 };
 
 #endif
