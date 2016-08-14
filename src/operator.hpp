@@ -116,7 +116,7 @@ const std::vector<Operator> operatorList {
   Operator(",", 0) // 38
 };
 
-typedef std::string OperatorName;
+using OperatorName = std::string;
 
 std::map<OperatorName, int> operatorNameMap {
   {"Equality", 0},

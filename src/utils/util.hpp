@@ -21,7 +21,7 @@ typedef long long int64;
 typedef unsigned long long uint64;
 typedef unsigned int uint;
 
-typedef std::set<std::string> TypeList;
+using TypeList = std::set<std::string>;
 
 template<typename T>
 void println(T thing) {
@@ -77,9 +77,9 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
 
 template<typename T>
 struct PtrUtil {
-  typedef std::unique_ptr<T> U;
-  typedef std::shared_ptr<T> Link;
-  typedef std::weak_ptr<T> WeakLink;
+  using U = std::unique_ptr<T>;
+  using Link = std::shared_ptr<T>;
+  using WeakLink = std::weak_ptr<T>;
   
   template<typename... Args>
   static U unique(Args... args) {

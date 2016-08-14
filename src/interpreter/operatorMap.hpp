@@ -10,9 +10,9 @@
 #include "object.hpp"
 #include "operator.hpp"
 
-typedef std::vector<std::string> OperandTypeList; // The types of the operands
-typedef std::vector<Object::Link> OperandList; // The list of actual operands
-typedef std::function<Object::Link(OperandList)> OperatorFunction; // The code that runs for a specific operand list
+using OperandTypeList = std::vector<std::string>; // The types of the operands
+using OperandList = std::vector<Object::Link>; // The list of actual operands
+using OperatorFunction = std::function<Object::Link(OperandList)>; // The code that runs for a specific operand list
 
 /*
   Maps specific operand types to their respective code.

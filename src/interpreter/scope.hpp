@@ -18,8 +18,8 @@ private:
   PtrUtil<Scope>::WeakLink parent;
   std::unordered_map<std::string, Reference::Link> map {};
 public:
-  typedef PtrUtil<Scope>::Link Link;
-  typedef PtrUtil<Scope>::WeakLink WeakLink;
+  using Link = PtrUtil<Scope>::Link;
+  using WeakLink = PtrUtil<Scope>::WeakLink;
   
   Reference::WeakLink get(std::string ident) const {
     WeakLink lastParent = parent;

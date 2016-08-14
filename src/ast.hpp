@@ -19,9 +19,9 @@ using ASTVisitorLink = PtrUtil<ASTVisitor>::Link;
 
 class ASTNode: public std::enable_shared_from_this<ASTNode> {
 public:
-  typedef std::shared_ptr<ASTNode> Link;
-  typedef std::weak_ptr<ASTNode> WeakLink;
-  typedef std::vector<Link> Children;
+  using Link = std::shared_ptr<ASTNode>;
+  using WeakLink = std::weak_ptr<ASTNode>;
+  using Children = std::vector<Link>;
 protected:
   WeakLink parent = WeakLink();
   Children children {};

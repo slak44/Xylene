@@ -9,8 +9,8 @@
 
 class Object {
 public:
-  typedef PtrUtil<Object>::Link Link;
-  typedef PtrUtil<Object>::WeakLink WeakLink;
+  using Link = PtrUtil<Object>::Link;
+  using WeakLink = PtrUtil<Object>::WeakLink;
   virtual ~Object() {}
   
   virtual bool isTruthy() const = 0;
@@ -28,8 +28,8 @@ private:
     if (!ref) throw InternalError("Null reference access", {METADATA_PAIRS});
   }
 public:
-  typedef PtrUtil<Reference>::Link Link;
-  typedef PtrUtil<Reference>::WeakLink WeakLink;
+  using Link = PtrUtil<Reference>::Link;
+  using WeakLink = PtrUtil<Reference>::WeakLink;
   
   Reference(Object::Link obj): ref(obj), isDynamic(true), allowed({}) {}
   Reference(Object::Link obj, TypeList list): ref(obj), isDynamic(false), allowed(list) {}
