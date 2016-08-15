@@ -1,6 +1,3 @@
-#ifndef PARSER_TEST_HPP
-#define PARSER_TEST_HPP
-
 #include <gtest/gtest.h>
 #include <rapidxml_utils.hpp>
 
@@ -141,5 +138,3 @@ TEST_F(ParserTest, ReturnStatement) {
   xpx.parse(xmlFile("data/parser/simple_return.xml"));
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
-
-#endif

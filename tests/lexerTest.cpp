@@ -1,8 +1,4 @@
-#ifndef LEXER_TEST_HPP
-#define LEXER_TEST_HPP
-
 #include <gtest/gtest.h>
-
 #include <vector>
 
 #include "utils/util.hpp"
@@ -103,5 +99,3 @@ TEST_F(LexerTest, Expression) {
   EXPECT_EQ(lx[8], Token(L_FLOAT, "1.5", 1));
   EXPECT_EQ(lx[10], Token(L_INTEGER, "1", 1));
 }
-
-#endif

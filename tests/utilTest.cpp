@@ -1,6 +1,3 @@
-#ifndef UTIL_TEST_HPP
-#define UTIL_TEST_HPP
-
 #include <vector>
 #include <string>
 #include <gtest/gtest.h>
@@ -51,5 +48,3 @@ TEST(UtilTest, Split) {
   auto splitted = split("Lorem ipsum dolor sit amet", ' ');
   ASSERT_EQ(splitted, std::vector<std::string>({"Lorem", "ipsum", "dolor", "sit", "amet"}));
 }
-
-#endif

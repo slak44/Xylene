@@ -1,6 +1,3 @@
-#ifndef LLVM_TEST_HPP
-#define LLVM_TEST_HPP
-
 #include <gtest/gtest.h>
 #include <rapidxml_utils.hpp>
 
@@ -44,5 +41,3 @@ TEST_F(LLVMCompilerTest, Branches) {
   noThrowOnCompile("data/llvm/if-else.xml");
   noThrowOnCompile("data/llvm/else-if.xml");
 }
-
-#endif
