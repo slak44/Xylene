@@ -2,6 +2,7 @@
 #define XML_PARSER_HPP
 
 #include <string>
+#include <rapidxml.hpp>
 #include <rapidxml_utils.hpp>
 
 #include "utils/util.hpp"
@@ -45,7 +46,7 @@ public:
   XMLParser();
   
   void parse(char* str);
-  void parse(rapidxml::file<> xmlFile);
+  void parse(rapidxml::file<char> xmlFile);
   
 private:
   void parseChildren(rapidxml::xml_node<>* node, ASTNode::Link target);

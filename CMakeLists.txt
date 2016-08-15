@@ -68,6 +68,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/lexer.cpp
   ${SRC_DIR}/ast.cpp
   ${SRC_DIR}/parser/tokenParser.cpp
+  ${SRC_DIR}/parser/xmlParser.cpp
 )
 set(COMMON_DEPS rapidxml termcolor)
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")

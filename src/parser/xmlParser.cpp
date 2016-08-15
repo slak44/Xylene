@@ -21,7 +21,7 @@ void XMLParser::parse(char* str) {
   tree.setRoot(*rootNode);
 }
 
-void parse(rapidxml::file<> xmlFile) {
+void XMLParser::parse(rapidxml::file<char> xmlFile) {
   parse(xmlFile.data());
 }
 
