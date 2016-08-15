@@ -61,7 +61,6 @@ class ExpressionNode: public ASTNode {
 private:
   Token tok = Token(UNPROCESSED, 0);
 public:
-  ExpressionNode();
   ExpressionNode(Token token);
   
   std::shared_ptr<ExpressionNode> at(int64 pos) const;

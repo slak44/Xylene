@@ -54,7 +54,6 @@ void NoMoreChildrenNode::addChild(Link child) {
   throw InternalError("Cannot add children to NoMoreChildrenNode", {METADATA_PAIRS});
 }
 
-ExpressionNode::ExpressionNode() {}
 ExpressionNode::ExpressionNode(Token token): tok(token) {
   switch (tok.type) {
     case IDENTIFIER:
