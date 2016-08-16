@@ -13,7 +13,7 @@ end
         <expr type="Integer" value="1"/>
       </return>
     </block>
-    <block type="if">
+    <block>
       <return>
         <expr type="Integer" value="2"/>
       </return>

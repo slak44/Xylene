@@ -17,7 +17,7 @@ end
         <expr type="Integer" value="2"/>
       </expr>
     </block>
-    <block type="if">
+    <block>
       <expr type="Operator" value="Substract">
         <expr type="Integer" value="100"/>
         <expr type="Integer" value="101"/>

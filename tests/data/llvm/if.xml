@@ -7,7 +7,7 @@ return 0;
 <block type="root">
   <branch>
     <expr type="Boolean" value="true"/>
-    <block type="if">
+    <block>
       <return>
         <expr type="Integer" value="1"/>
       </return>
