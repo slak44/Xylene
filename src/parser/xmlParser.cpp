@@ -18,7 +18,7 @@ void XMLParser::parse(char* str) {
     METADATA_PAIRS,
     {"tag name", doc.first_node()->name()}
   });
-  tree.setRoot(*rootNode);
+  tree = PtrUtil<AST>::unique(AST(rootNode));
 }
 
 void XMLParser::parse(rapidxml::file<char> xmlFile) {
@@ -36,7 +36,12 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   if (node == nullptr) throw XMLParseError("Null node", {METADATA_PAIRS});
   std::string name = node->name();
   if (name == "block") {
-    auto block = Node<BlockNode>::make();
+    auto typeAttr = node->first_attribute("type");
+    std::string type = typeAttr == 0 ? "code" : typeAttr->value();
+    BlockType bt =
+      type == "root" ? ROOT_BLOCK :
+      type == "if" ? IF_BLOCK : CODE_BLOCK;
+    auto block = Node<BlockNode>::make(bt);
     parseChildren(node, block);
     return block;
   } else if (name == "return") {

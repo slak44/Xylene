@@ -54,6 +54,12 @@ void NoMoreChildrenNode::addChild(Link child) {
   throw InternalError("Cannot add children to NoMoreChildrenNode", {METADATA_PAIRS});
 }
 
+BlockNode::BlockNode(BlockType type): type(type) {}
+
+BlockType BlockNode::getType() const {
+  return type;
+}
+
 ExpressionNode::ExpressionNode(Token token): tok(token) {
   switch (tok.type) {
     case IDENTIFIER:
@@ -231,20 +237,14 @@ VISITOR_VISIT_IMPL_FOR(Return);
 
 // AST class
 
+AST::AST(Node<BlockNode>::Link lk): root(lk) {}
+
 void AST::print() const {
-  root.printTree(0);
+  root->printTree(0);
 }
 
-void AST::setRoot(BlockNode rootNode) {
-  root = rootNode;
-}
-
-BlockNode AST::getRoot() const {
+Node<BlockNode>::Link AST::getRoot() const {
   return root;
-}
-
-Node<BlockNode>::Link AST::getRootAsLink() const {
-  return Node<BlockNode>::make(root);
 }
 
 bool AST::operator==(const AST& rhs) const {

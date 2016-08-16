@@ -248,7 +248,7 @@ Node<BlockNode>::Link BlockParser::block(BlockType type) {
     expect(K_DO, "Expected code block");
     skip();
   }
-  Node<BlockNode>::Link block = Node<BlockNode>::make();
+  Node<BlockNode>::Link block = Node<BlockNode>::make(type);
   block->setLineNumber(current().line);
   while (!accept(K_END)) {
     if (type == IF_BLOCK && accept(K_ELSE)) break;

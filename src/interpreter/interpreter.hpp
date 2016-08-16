@@ -14,8 +14,6 @@
 
 class Interpreter {
 private:
-  AST input;
-  
   void interpretBlock(Scope::Link parentScope, Node<BlockNode>::Link block) {
     Scope::Link thisBlockScope = PtrUtil<Scope>::make();
     thisBlockScope->setParent(parentScope);
@@ -95,8 +93,7 @@ private:
 public:
   void interpret(AST tree) {
     Scope::Link global = PtrUtil<Scope>::make();
-    this->input = tree;
-    auto rootBlock = Node<BlockNode>::dynPtrCast(input.getRootAsLink());
+    auto rootBlock = Node<BlockNode>::dynPtrCast(tree.getRoot());
     if (rootBlock == nullptr) throw InternalError("Root node is not a BlockNode", {METADATA_PAIRS});
     interpretBlock(global, rootBlock);
   }

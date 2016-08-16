@@ -33,9 +33,8 @@ TEST_F(ParserTest, ExpressionParsing) {
   AST lexerLexer = px.getTree();
   
   // No lexing or parsing; AST created directly
-  AST noLexer = AST();
   using ExprNode = Node<ExpressionNode>;
-  auto rootBlock = Node<BlockNode>::make();
+  auto rootBlock = Node<BlockNode>::make(ROOT_BLOCK);
   auto shift = ExprNode::make(Token(OPERATOR, 13, 1));
   auto division = ExprNode::make(Token(OPERATOR, 29, 1));
   auto addition = ExprNode::make(Token(OPERATOR, 31, 1));
@@ -50,7 +49,7 @@ TEST_F(ParserTest, ExpressionParsing) {
   shift->addChild(division);
   shift->addChild(ExprNode::make(Token(L_INTEGER, "1", 1)));
   rootBlock->addChild(shift);
-  noLexer.setRoot(*rootBlock);
+  AST noLexer = AST(rootBlock);
   
   EXPECT_EQ(manualLexer, lexerLexer);
   EXPECT_EQ(manualLexer, noLexer);
@@ -60,15 +59,14 @@ TEST_F(ParserTest, ExpressionParsing) {
 TEST_F(ParserTest, SimpleASTEquality) {
   // 1 + 1;
   px.parse({Token(L_INTEGER, "1", 1), Token(OPERATOR, 31, 1), Token(L_INTEGER, "1", 1), Token(C_SEMI, ";", 1), Token(FILE_END, "", 1)});
-  AST tree = AST();
   auto operand1 = Node<ExpressionNode>::make(Token(L_INTEGER, "1", 1));
   auto operand2 = Node<ExpressionNode>::make(Token(L_INTEGER, "1", 1));
   auto op = Node<ExpressionNode>::make(Token(OPERATOR, 31, 1));
   op->addChild(operand1);
   op->addChild(operand2);
-  auto rootBlock = Node<BlockNode>::make();
+  auto rootBlock = Node<BlockNode>::make(ROOT_BLOCK);
   rootBlock->addChild(op);
-  tree.setRoot(*rootBlock);
+  AST tree = AST(rootBlock);
   ASSERT_EQ(px.getTree(), tree);
 }
 
@@ -80,12 +78,11 @@ TEST_F(ParserTest, NoBinaryOperators) {
     Token(C_SEMI, ";", 1),
     Token(FILE_END, "", 1)
   });
-  AST tree = AST();
   auto op = Node<ExpressionNode>::make(Token(OPERATOR, operatorIndexFrom("Unary -"), 1));
   op->addChild(Node<ExpressionNode>::make(Token(L_INTEGER, "1", 1)));
-  auto rootBlock = Node<BlockNode>::make();
+  auto rootBlock = Node<BlockNode>::make(ROOT_BLOCK);
   rootBlock->addChild(op);
-  tree.setRoot(*rootBlock);
+  AST tree = AST(rootBlock);
   ASSERT_EQ(tree, px.getTree());
 }
 TEST_F(ParserTest, XMLParse) {

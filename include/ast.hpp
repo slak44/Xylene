@@ -50,8 +50,18 @@ public:
   virtual void visit(ASTVisitorLink visitor) = 0;
 };
 
+enum BlockType {
+  ROOT_BLOCK, CODE_BLOCK, IF_BLOCK
+};
+
 class BlockNode: public ASTNode {
+private:
+  BlockType type;
 public:
+  BlockNode(BlockType type);
+  
+  BlockType getType() const;
+  
   void printTree(uint level) const;
   
   void visit(ASTVisitorLink visitor);
@@ -90,12 +100,11 @@ struct Node: public PtrUtil<T> {
 
 class AST {
 private:
-  BlockNode root = BlockNode();
+  Node<BlockNode>::Link root;
 public:
+  AST(Node<BlockNode>::Link lk);
   void print() const;
-  void setRoot(BlockNode rootNode);
-  BlockNode getRoot() const;
-  Node<BlockNode>::Link getRootAsLink() const;
+  Node<BlockNode>::Link getRoot() const;
   
   bool operator==(const AST& rhs) const;
   bool operator!=(const AST& rhs) const;

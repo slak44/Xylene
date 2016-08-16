@@ -18,7 +18,8 @@ public:
 /*
   XML files should contain a single root tag. The root tag must represent a block node.
   List of tags:
-  - block: no attributes, maps to a BlockNode
+  - block: maps to a BlockNode
+    - attribute type: "root", "if", "code", defaults to "code" if not specified
   - return: no attributes, has 0 or 1 expr tags as his children, maps to a ReturnNode
   - expr: maps to an ExpressionNode
     - attribute type: is a string name for a TokenType

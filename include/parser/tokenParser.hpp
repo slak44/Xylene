@@ -47,10 +47,6 @@
   ident = ? any valid identifier ? ;
 */
 
-enum BlockType {
-  ROOT_BLOCK, CODE_BLOCK, IF_BLOCK
-};
-
 class TokenBaseParser: public BaseParser {
 protected:
   std::vector<Token> input;
@@ -165,8 +161,7 @@ public:
   void parse(std::vector<Token> input) {
     this->input = input;
     this->pos = 0;
-    tree = AST();
-    tree.setRoot(*block(ROOT_BLOCK));
+    tree = PtrUtil<AST>::unique(AST(block(ROOT_BLOCK)));
   }
 };
 

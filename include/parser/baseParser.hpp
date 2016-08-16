@@ -5,15 +5,21 @@
 
 class BaseParser {
 protected:
-  AST tree;
+  PtrUtil<AST>::U tree;
 public:
+  BaseParser();
+  BaseParser(const BaseParser&);
+  BaseParser(BaseParser&&);
   virtual ~BaseParser() = 0;
   
   AST getTree() const {
-    return tree;
+    return *tree;
   }
 };
 
+inline BaseParser::BaseParser() {}
+inline BaseParser::BaseParser(const BaseParser&) {}
+inline BaseParser::BaseParser(BaseParser&&) {}
 inline BaseParser::~BaseParser() {}
 
 #endif

@@ -11,7 +11,7 @@ CompileVisitor::CompileVisitor(llvm::LLVMContext& context, std::string moduleNam
 }
   
 void CompileVisitor::visit() {
-  ast.getRootAsLink()->visit(shared_from_this());
+  ast.getRoot()->visit(shared_from_this());
   std::string str;
   llvm::raw_string_ostream rso(str);
   if (llvm::verifyModule(*module, &rso)) {
