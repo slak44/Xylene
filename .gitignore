@@ -2,4 +2,5 @@ bin/
 build/
 libs/
 .gcc-flags.json
+.gcc-lint.json
 lg
