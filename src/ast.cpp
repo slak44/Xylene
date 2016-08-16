@@ -151,7 +151,7 @@ void ASTNode::printTree(uint level) const {
 
 void BlockNode::printTree(uint level) const {
   printIndent(level);
-  println("Block Node");
+  println("Block Node:", type);
   for (auto& child : children) child->printTree(level + 1);
 }
 
@@ -257,7 +257,7 @@ Node<BlockNode>::Link AST::getRoot() const {
 }
 
 bool AST::operator==(const AST& rhs) const {
-  if (this->root != rhs.root) return false;
+  if (*this->root.get() != *rhs.root.get()) return false;
   return true;
 }
 bool AST::operator!=(const AST& rhs) const {
