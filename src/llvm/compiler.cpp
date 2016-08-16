@@ -12,6 +12,10 @@ CompileVisitor::CompileVisitor(llvm::LLVMContext& context, std::string moduleNam
   
 void CompileVisitor::visit() {
   ast.getRoot()->visit(shared_from_this());
+  // If the current block, which is the one that exits from main, has no terminator, add one
+  if (!builder.GetInsertBlock()->getTerminator()) {
+    builder.CreateRet(llvm::ConstantInt::get(integerType, 0));
+  }
   std::string str;
   llvm::raw_string_ostream rso(str);
   if (llvm::verifyModule(*module, &rso)) {
@@ -32,12 +36,33 @@ void CompileVisitor::visitBlock(BlockNode* node) {
 }
 
 llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const std::string& name) {
-  llvm::BasicBlock* prevBlock = builder.GetInsertBlock();
+  llvm::BasicBlock* oldBlock = builder.GetInsertBlock();
   llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(contextRef, name, currentFunction);
   builder.SetInsertPoint(newBlock);
   for (auto& child : node->getChildren()) child->visit(shared_from_this());
-  // Go back to previous insertion point
-  if (prevBlock) builder.SetInsertPoint(prevBlock);
+  // If the block lacks a terminator instruction, add one
+  if (!newBlock->getTerminator()) {
+    switch (node->getType()) {
+      case ROOT_BLOCK:
+        builder.CreateRet(llvm::ConstantInt::get(integerType, 0));
+        break;
+      case IF_BLOCK:
+        // Technically should never happen because visitBranch *should* be properly implemented
+        throw InternalError("visitBranch not implemented properly", {METADATA_PAIRS});
+      case CODE_BLOCK:
+        // Attempt to merge into predecessor
+        bool hasMerged = llvm::MergeBlockIntoPredecessor(newBlock);
+        if (hasMerged) {
+          // We can insert in the old block if it was merged
+          builder.SetInsertPoint(oldBlock);
+        } else {
+          // TODO: what do we do with a block that has no terminator, but can't be merged?
+          throw ni;
+        }
+        break;
+      // TODO: add FUNCTION_BLOCK to this enum, and create a ret instruction for it
+    }
+  }
   return newBlock;
 }
 
@@ -153,36 +178,54 @@ void CompileVisitor::visitBranch(BranchNode* node) {
 
 // The BasicBlock surrounding is the block where control returns after dealing with branches, only specify for recursive case
 void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding) {
-  static const auto handleBranchExit = [this](llvm::BasicBlock* continueCurrent) -> void {
-    builder.SetInsertPoint(continueCurrent);
+  static const auto handleBranchExit = [this](llvm::BasicBlock* continueCurrent, llvm::BasicBlock* success, bool usesBranchAfter) -> void {
+    // Jump back to continueCurrent after the branch is done, to execute the rest of the block
+    // Unless the block already goes somewhere else
+    if (!success->getTerminator()) {
+      builder.SetInsertPoint(success);
+      builder.CreateBr(continueCurrent);
+      usesBranchAfter = true;
+    }
+    // If the branchAfter block is not jumped to by anyone, get rid of it
+    // Otherwise, the rest of the block's instructions should be added to it
+    if (
+      !usesBranchAfter &&
+      llvm::pred_begin(continueCurrent) == llvm::pred_end(continueCurrent) &&
+      continueCurrent->getParent() != nullptr
+    ) {
+      continueCurrent->eraseFromParent();
+    } else {
+      builder.SetInsertPoint(continueCurrent);
+    }
     return;
   };
+  bool usesBranchAfter = false;
   llvm::BasicBlock* current = builder.GetInsertBlock();
   llvm::Value* cond = compileExpression(node->getCondition());
   llvm::BasicBlock* success = compileBlock(node->getSuccessBlock(), "branchSuccess");
   // continueCurrent gets all the current block's instructions after the branch
   // Unless the branch jumps or returns somewhere, continueCurrent is always executed
   llvm::BasicBlock* continueCurrent = surrounding != nullptr ? surrounding : llvm::BasicBlock::Create(contextRef, "branchAfter", currentFunction);
-  // Jump back to continueCurrent after the branch is done, to execute the rest of the block
-  builder.SetInsertPoint(success);
-  builder.CreateBr(continueCurrent);
   if (node->getFailiureBlock() == nullptr) {
     // Does not have else clauses
     builder.SetInsertPoint(current);
     builder.CreateCondBr(cond, success, continueCurrent);
-    return handleBranchExit(continueCurrent);
+    return handleBranchExit(continueCurrent, success, usesBranchAfter);
   }
   auto blockFailNode = Node<BlockNode>::dynPtrCast(node->getFailiureBlock());
   if (blockFailNode) {
     // Has an else block as failiure
     llvm::BasicBlock* failiure = compileBlock(blockFailNode, "branchFailiure");
-    // Jump back to continueCurrent after the branch is done, to execute the rest of the block
-    builder.SetInsertPoint(failiure);
-    builder.CreateBr(continueCurrent);
+    // Jump back to continueCurrent after the branch is done, to execute the rest of the block, unless there already is a terminator
+    if (!failiure->getTerminator()) {
+      builder.SetInsertPoint(failiure);
+      builder.CreateBr(continueCurrent);
+      usesBranchAfter = true;
+    }
     // Add the branch
     builder.SetInsertPoint(current);
     builder.CreateCondBr(cond, success, failiure);
-    return handleBranchExit(continueCurrent);
+    return handleBranchExit(continueCurrent, success, usesBranchAfter);
   } else {
     // Has else-if as failiure
     llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(contextRef, "branchNext", currentFunction);
@@ -190,7 +233,7 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     compileBranch(Node<BranchNode>::dynPtrCast(node->getFailiureBlock()), continueCurrent);
     builder.SetInsertPoint(current);
     builder.CreateCondBr(cond, success, nextBranch);
-    return handleBranchExit(continueCurrent);
+    return handleBranchExit(continueCurrent, success, usesBranchAfter);
   }
 }
 

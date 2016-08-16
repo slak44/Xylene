@@ -4,6 +4,7 @@
 #include <llvm/ADT/APFloat.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/IR/BasicBlock.h>
+#include <llvm/Transforms/Utils/BasicBlockUtils.h>
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
@@ -13,6 +14,7 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Verifier.h>
+#include <llvm/IR/CFG.h>
 #include <llvm/Support/raw_ostream.h>
 #include <string>
 #include <vector>
