@@ -60,6 +60,15 @@ BlockType BlockNode::getType() const {
   return type;
 }
 
+bool BlockNode::operator==(const ASTNode& rhs) const {
+  if (!ASTNode::operator==(rhs)) return false;
+  if (this->type != dynamic_cast<const BlockNode&>(rhs).type) return false;
+  return true;
+}
+bool BlockNode::operator!=(const ASTNode& rhs) const {
+  return !operator==(rhs);
+}
+
 ExpressionNode::ExpressionNode(Token token): tok(token) {
   switch (tok.type) {
     case IDENTIFIER:

@@ -64,6 +64,9 @@ public:
   
   void printTree(uint level) const;
   
+  bool operator==(const ASTNode& rhs) const;
+  bool operator!=(const ASTNode& rhs) const;
+  
   void visit(ASTVisitorLink visitor);
 };
 
