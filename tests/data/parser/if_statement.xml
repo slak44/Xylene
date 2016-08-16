@@ -5,19 +5,19 @@ else do
   100 - 101;
 end
 -->
-<block>
+<block type="root">
   <branch>
     <expr type="Operator" value="Equality">
       <expr type="Boolean" value="true"/>
       <expr type="Boolean" value="false"/>
     </expr>
-    <block>
+    <block type="if">
       <expr type="Operator" value="Add">
         <expr type="Integer" value="1"/>
         <expr type="Integer" value="2"/>
       </expr>
     </block>
-    <block>
+    <block type="if">
       <expr type="Operator" value="Substract">
         <expr type="Integer" value="100"/>
         <expr type="Integer" value="101"/>

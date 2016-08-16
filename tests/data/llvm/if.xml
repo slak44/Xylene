@@ -4,10 +4,10 @@ if true do
 end
 return 0;
 -->
-<block>
+<block type="root">
   <branch>
     <expr type="Boolean" value="true"/>
-    <block>
+    <block type="if">
       <return>
         <expr type="Integer" value="1"/>
       </return>

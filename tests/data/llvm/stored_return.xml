@@ -2,7 +2,7 @@
 Integer retVal = 42;
 return retVal;
 -->
-<block>
+<block type="root">
   <decl ident="retVal" types="Integer">
     <expr type="Integer" value="42"/>
   </decl>

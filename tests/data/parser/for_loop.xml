@@ -3,7 +3,7 @@ for define x = 1; x < 3; ++x do
   1+1;
 end
 -->
-<block>
+<block type="root">
   <loop>
     <loop_init>
       <decl ident="x" dynamic="true">
@@ -21,7 +21,7 @@ end
         <expr type="Identifier" value="x"/>
       </expr>
     </loop_update>
-    <block>
+    <block type="code">
       <expr type="Operator" value="Add">
         <expr type="Integer" value="1"/>
         <expr type="Integer" value="1"/>

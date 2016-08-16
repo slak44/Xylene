@@ -5,15 +5,15 @@ else
   return 2;
 end
 -->
-<block>
+<block type="root">
   <branch>
     <expr type="Boolean" value="true"/>
-    <block>
+    <block type="if">
       <return>
         <expr type="Integer" value="1"/>
       </return>
     </block>
-    <block>
+    <block type="if">
       <return>
         <expr type="Integer" value="2"/>
       </return>

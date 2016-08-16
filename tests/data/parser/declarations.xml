@@ -3,7 +3,7 @@ define a = 1;
 Integer i = 2;
 Float, Integer nr = 3.3;
 -->
-<block>
+<block type="root">
   <decl ident="a" dynamic="true">
     <expr type="Integer" value="1"/>
   </decl>
