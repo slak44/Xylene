@@ -9,11 +9,7 @@ protected:
   XMLParser xpx = XMLParser();
   
   inline rapidxml::file<> xmlFile(std::string path) {
-    #define Q(x) #x
-    #define QUOTE(x) Q(x)
-    path = QUOTE(DATA_PARENT_DIR) + ("/" + path);
-    #undef QUOTE
-    #undef Q
+    path = DATA_PARENT_DIR + ("/" + path);
     return rapidxml::file<>(path.c_str());
   }
   
