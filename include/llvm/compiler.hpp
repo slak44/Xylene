@@ -16,6 +16,7 @@
 #include <llvm/IR/Verifier.h>
 #include <llvm/IR/CFG.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/raw_os_ostream.h>
 #include <string>
 #include <vector>
 

@@ -4,6 +4,7 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Instructions.h>
+#include <llvm/IR/ValueSymbolTable.h>
 #include <llvm/IR/Type.h>
 #include <unordered_map>
 #include <vector>
@@ -27,6 +28,11 @@ static inline llvm::Value* SItoFP(llvm::IRBuilder<> builder, llvm::Value* intege
   return builder.CreateSIToFP(integer, floatType, "SItoFPconv");
 }
 
+static inline llvm::Value* createLoad(llvm::IRBuilder<> builder, llvm::Value* from) {
+  return builder.CreateLoad(from, "loadIdentifier");
+}
+
+extern std::unordered_map<OperatorName, CodegenFunction> specialCodegenMap;
 extern std::unordered_map<OperatorName, TypeMap> codegenMap;
 
 #endif

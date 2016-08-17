@@ -1,0 +1,18 @@
+<!--
+Integer int = 72;
+int = 67;
+return int = 0;
+-->
+<block type="root">
+  <decl ident="int" types="Integer"/>
+  <expr type="Operator" value="Assignment">
+    <expr type="Identifier" value="int"/>
+    <expr type="Integer" value="67"/>
+  </expr>
+  <return>
+    <expr type="Operator" value="Assignment">
+      <expr type="Identifier" value="int"/>
+      <expr type="Integer" value="0"/>
+    </expr>
+  </return>
+</block>

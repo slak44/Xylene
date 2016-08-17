@@ -35,6 +35,10 @@ TEST_F(LLVMCompilerTest, Declarations) {
   noThrowOnCompile("data/llvm/primitive.xml");
 }
 
+TEST_F(LLVMCompilerTest, Assignment) {
+  noThrowOnCompile("data/llvm/return_assign.xml");
+}
+
 TEST_F(LLVMCompilerTest, Branches) {
   noThrowOnCompile("data/llvm/if.xml");
   noThrowOnCompile("data/llvm/if-else.xml");

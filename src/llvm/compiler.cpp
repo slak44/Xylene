@@ -70,24 +70,72 @@ void CompileVisitor::visitExpression(ExpressionNode* node) {
   compileExpression(Node<ExpressionNode>::make(*node));
 }
 
-llvm::Value* CompileVisitor::loadLocal(const std::string& name, uint line) {
-  llvm::Value* localThing = builder.GetInsertBlock()->getValueSymbolTable()->lookup(name);
-  if (localThing != nullptr) {
-    return builder.CreateLoad(localThing, name);
-  } else {
-    throw Error("ReferenceError", "Could not find variable " + name, line);
+TokenType getFromValueType(llvm::Type* ty) {
+  if (ty == integerType) return L_INTEGER;
+  if (ty == floatType) return L_FLOAT;
+  if (ty == booleanType) return L_BOOLEAN;
+  // TODO the rest of the types
+  throw ni;
+}
+
+CodegenFunction identifyCodegenFunction(Token tok, llvm::IRBuilder<>& builder, std::vector<llvm::Value*>& operands) {
+  // Name to look for
+  const OperatorName& toFind = operatorNameFrom(tok.idx);
+  // Function to return
+  CodegenFunction func;
+  // Check if it's a special case
+  auto it = specialCodegenMap.find(toFind);
+  if (it != specialCodegenMap.end()) return it->second;
+  // Look in the normal map
+  auto opMapIt = codegenMap.find(toFind);
+  if (opMapIt == codegenMap.end()) {
+    throw InternalError("No such operator", {
+      METADATA_PAIRS,
+      {"token", tok.toString()}
+    });
   }
+  // Get a list of types
+  std::vector<TokenType> operandTypes;
+  operandTypes.resize(operands.size(), UNPROCESSED);
+  // Map an operand to a TokenType representing it
+  std::size_t idx = -1;
+  std::transform(ALL(operands), operandTypes.begin(), [=, &idx, &builder, &operands](llvm::Value* val) -> TokenType {
+    idx++;
+    llvm::Type* opType = val->getType();
+    if (llvm::dyn_cast_or_null<llvm::PointerType>(opType)) {
+      auto load = builder.CreateLoad(operands[idx], "loadIdentifier");
+      operands[idx] = load;
+      opType = operands[idx]->getType();
+    }
+    return getFromValueType(opType);
+  });
+  // Try to find the function in the TypeMap using the operand types
+  auto funIt = opMapIt->second.find(operandTypes);
+  if (funIt == opMapIt->second.end()) {
+    throw Error("TypeError", "No operation available for given operands", tok.line);
+  }
+  func = funIt->second;
+  return func;
 }
 
 llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node) {
   Token tok = node->getToken();
   if (tok.isTerminal()) {
     switch (tok.type) {
+      static bool hasRecursed = false;
       case L_INTEGER: return llvm::ConstantInt::getSigned(integerType, std::stoll(tok.data));
       case L_FLOAT: return llvm::ConstantFP::get(floatType, tok.data);
       case L_STRING: throw ni;
       case L_BOOLEAN: return (tok.data == "true" ? llvm::ConstantInt::getTrue(booleanType) : llvm::ConstantInt::getFalse(booleanType));
-      case IDENTIFIER: return loadLocal(tok.data, tok.line); // TODO check globals and types, not only locals
+      case IDENTIFIER: {
+        llvm::Value* ptr = builder.GetInsertBlock()->getValueSymbolTable()->lookup(tok.data); // TODO check globals and types, not only locals
+        if (hasRecursed) {
+          return ptr;
+        } else {
+          hasRecursed = true;
+          return builder.CreateLoad(ptr, "identifierExpressionLoad");
+        }
+      }
       default: throw InternalError("Unhandled terminal symbol in switch case", {
         METADATA_PAIRS,
         {"token", tok.toString()}
@@ -107,34 +155,7 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node) 
         {"operand count", std::to_string(operands.size())}
       });
     }
-    TypeMap map;
-    // Try to find the operator in the map
-    try {
-      map = codegenMap.at(operatorNameFrom(tok.idx));
-    } catch (std::out_of_range& oor) {
-      throw InternalError("No such operator", {
-        METADATA_PAIRS,
-        {"token", tok.toString()}
-      });
-    }
-    std::vector<TokenType> operandTypes;
-    operandTypes.resize(operands.size(), UNPROCESSED);
-    // Map an operand to a TokenType representing it
-    std::transform(ALL(operands), operandTypes.begin(), [=](llvm::Value* val) -> TokenType {
-      llvm::Type* opType = val->getType();
-      if (opType == integerType) return L_INTEGER;
-      else if (opType == floatType) return L_FLOAT;
-      else if (opType == booleanType) return L_BOOLEAN;
-      else throw ni;
-      // TODO the rest of the types
-    });
-    CodegenFunction func;
-    // Try to find the function in the TypeMap using the operand types
-    try {
-      func = map.at(operandTypes);
-    } catch (std::out_of_range& oor) {
-      throw Error("TypeError", "No operation available for given operands", tok.line);
-    }
+    auto func = identifyCodegenFunction(tok, builder, operands);
     // Call the code generating function, and return its result
     return func(builder, operands);
   } else {
@@ -243,5 +264,17 @@ void CompileVisitor::visitLoop(LoopNode* node) {
 }
 
 void CompileVisitor::visitReturn(ReturnNode* node) {
-  builder.CreateRet(compileExpression(node->getValue()));
+  auto result = compileExpression(node->getValue());
+  if (currentFunction->getReturnType() != result->getType()) {
+    // TODO: this is a very indiscriminate check
+    // only simple primitives like ints should pass
+    // make sure that more complex types throw
+    llvm::StoreInst* store = llvm::dyn_cast_or_null<llvm::StoreInst>(result);
+    if (store) {
+      result = builder.CreateLoad(store->getPointerOperand(), "forceLoadForReturn");
+    } else {
+      throw Error("TypeError", "Function return type does not match return value", node->getLineNumber());
+    }
+  }
+  builder.CreateRet(result);
 }
