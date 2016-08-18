@@ -6,7 +6,7 @@ CompileVisitor::CompileVisitor(llvm::LLVMContext& context, std::string moduleNam
   module(new llvm::Module(moduleName, context)),
   ast(ast) {
   llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
-  currentFunction = entryPoint = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module.get());
+  currentFunction = entryPoint = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module);
 }
   
 void CompileVisitor::visit() {
@@ -26,8 +26,8 @@ void CompileVisitor::visit() {
   }
 }
 
-PtrUtil<llvm::Module>::U CompileVisitor::getModule() const {
-  return std::unique_ptr<llvm::Module>(module.get());
+llvm::Module* CompileVisitor::getModule() const {
+  return module;
 }
 
 llvm::Function* CompileVisitor::getEntryPoint() const {

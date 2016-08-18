@@ -35,7 +35,7 @@ class CompileVisitor: public ASTVisitor, public std::enable_shared_from_this<Com
 private:
   llvm::LLVMContext& contextRef;
   llvm::IRBuilder<> builder;
-  PtrUtil<llvm::Module>::Link module;
+  llvm::Module* module;
   llvm::Function* entryPoint;
   llvm::Function* currentFunction;
   AST ast;
@@ -43,14 +43,14 @@ private:
   CompileVisitor(llvm::LLVMContext& context, std::string moduleName, AST ast);
 public:
   using Link = PtrUtil<CompileVisitor>::Link;
-  
+ 
   static Link create(llvm::LLVMContext& context, std::string moduleName, AST ast) {
     return PtrUtil<CompileVisitor>::make(CompileVisitor(context, moduleName, ast));
   }
   
   void visit();
   
-  PtrUtil<llvm::Module>::U getModule() const;
+  llvm::Module* getModule() const;
   llvm::Function* getEntryPoint() const;
   
 private:
@@ -60,8 +60,6 @@ private:
   void visitLoop(LoopNode* node);  
   void visitReturn(ReturnNode* node);
   void visitBlock(BlockNode* node);
-  
-  llvm::Value* loadLocal(const std::string& name, uint line);
   
   llvm::Value* compileExpression(Node<ExpressionNode>::Link node);
   // The BasicBlock surrounding is the block where control returns after dealing with branches, only specify for recursive case
