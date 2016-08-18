@@ -14,6 +14,12 @@ void TokenBaseParser::expectSemi() {
   skip();
 }
 
+void TokenParser::parse(std::vector<Token> input) {
+  this->input = input;
+  this->pos = 0;
+  tree = std::make_unique<AST>(AST(block(ROOT_BLOCK)));
+}
+
 BlockParser::BlockParser(StatementParser* stp): stp(stp) {}
 IfStatementParser::IfStatementParser(StatementParser* stp): BlockParser(stp) {}
 StatementParser::StatementParser(): BlockParser(this), IfStatementParser(this) {}

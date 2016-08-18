@@ -15,7 +15,7 @@
 class TreeWalkInterpreter {
 private:
   void interpretBlock(Scope::Link parentScope, Node<BlockNode>::Link block) {
-    Scope::Link thisBlockScope = PtrUtil<Scope>::make();
+    Scope::Link thisBlockScope = std::make_shared<Scope>();
     thisBlockScope->setParent(parentScope);
     for (auto& child : block->getChildren()) {
       interpretStatement(thisBlockScope, child);
@@ -55,8 +55,8 @@ private:
   void interpretDeclaration(Scope::Link currentScope, Node<DeclarationNode>::Link decl) {
     Object::Link init = decl->hasInit() ? interpretExpression(currentScope, decl->getInit()) : Object::Link();
     Reference::Link ref;
-    if (decl->isDynamic()) ref = PtrUtil<Reference>::make(init);
-    else ref = PtrUtil<Reference>::make(init, decl->getTypeInfo().getEvalTypeList());
+    if (decl->isDynamic()) ref = std::make_shared<Reference>(init);
+    else ref = std::make_shared<Reference>(init, decl->getTypeInfo().getEvalTypeList());
     currentScope->insert(decl->getIdentifier(), ref);
   }
   
@@ -64,10 +64,10 @@ private:
     Token tok = expr->getToken();
     if (tok.isTerminal()) {
       switch (tok.type) {
-        case L_INTEGER: return PtrUtil<Integer>::make(tok.data, 10);
-        case L_FLOAT: return PtrUtil<Float>::make(tok.data);
-        case L_STRING: return PtrUtil<String>::make(tok.data);
-        case L_BOOLEAN: return PtrUtil<Boolean>::make(tok.data);
+        case L_INTEGER: return std::make_shared<Integer>(tok.data, 10);
+        case L_FLOAT: return std::make_shared<Float>(tok.data);
+        case L_STRING: return std::make_shared<String>(tok.data);
+        case L_BOOLEAN: return std::make_shared<Boolean>(tok.data);
         case IDENTIFIER: return currentScope->get(tok.data).lock();
         default: throw InternalError("Unimplemented types in interpreter", {METADATA_PAIRS});
       };
@@ -92,7 +92,7 @@ private:
   }
 public:
   void interpret(AST tree) {
-    Scope::Link global = PtrUtil<Scope>::make();
+    Scope::Link global = std::make_shared<Scope>();
     auto rootBlock = Node<BlockNode>::dynPtrCast(tree.getRoot());
     if (rootBlock == nullptr) throw InternalError("Root node is not a BlockNode", {METADATA_PAIRS});
     interpretBlock(global, rootBlock);

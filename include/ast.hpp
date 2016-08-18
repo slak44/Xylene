@@ -92,6 +92,11 @@ struct Node: public PtrUtil<T> {
   typedef typename PtrUtil<T>::Link Link;
   typedef typename PtrUtil<T>::WeakLink WeakLink;
   
+  template<typename... Args>
+  static Link make(Args... args) {
+    return std::make_shared<T>(args...);
+  }
+  
   static inline bool isSameType(ASTNode::Link node) {
     return typeid(T) == typeid(*node);
   }

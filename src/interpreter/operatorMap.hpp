@@ -44,7 +44,7 @@ void dereferenceAll(OperandList& list) {
 #define BINARY_ARITHMETIC_OP(type1, type2, resultType, op) \
 {{#type1, #type2}, OPERATION {\
   dereferenceAll(operands);\
-  return PtrUtil<resultType>::make(CAST(operands[0], type1)->getValue() op CAST(operands[1], type2)->getValue());\
+  return std::make_shared<resultType>(CAST(operands[0], type1)->getValue() op CAST(operands[1], type2)->getValue());\
 }}
 
 #define BINARY_ARITHMETIC_SET(op) \

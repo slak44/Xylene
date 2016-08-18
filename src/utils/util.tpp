@@ -54,19 +54,8 @@ struct VectorHash {
 
 template<typename T>
 struct PtrUtil {
-  using U = std::unique_ptr<T>;
   using Link = std::shared_ptr<T>;
   using WeakLink = std::weak_ptr<T>;
-  
-  template<typename... Args>
-  static U unique(Args... args) {
-    return std::make_unique<T>(args...);
-  }
-  
-  template<typename... Args>
-  static Link make(Args... args) {
-    return std::make_shared<T>(args...);
-  }
   
   template<typename U>
   static inline bool isSameType(std::shared_ptr<U> link) {

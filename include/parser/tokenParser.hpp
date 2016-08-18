@@ -158,11 +158,7 @@ public:
   // See BlockParser's ctor
   TokenParser();
   
-  void parse(std::vector<Token> input) {
-    this->input = input;
-    this->pos = 0;
-    tree = PtrUtil<AST>::unique(AST(block(ROOT_BLOCK)));
-  }
+  void parse(std::vector<Token> input);
 };
 
 #endif

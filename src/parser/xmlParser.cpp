@@ -18,7 +18,7 @@ void XMLParser::parse(char* str) {
     METADATA_PAIRS,
     {"tag name", doc.first_node()->name()}
   });
-  tree = PtrUtil<AST>::unique(AST(rootNode));
+  tree = std::make_unique<AST>(AST(rootNode));
 }
 
 void XMLParser::parse(rapidxml::file<char> xmlFile) {
@@ -52,11 +52,11 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   } else if (name == "expr") {
     TokenType tokenType = getTokenTypeByName(node->first_attribute("type")->value());
     std::string data = node->first_attribute("value")->value();
-    PtrUtil<Token>::U content;
+    std::unique_ptr<Token> content;
     if (tokenType == OPERATOR) {
-      content = PtrUtil<Token>::unique(tokenType, operatorIndexFrom(data), 0);
+      content = std::make_unique<Token>(tokenType, operatorIndexFrom(data), 0);
     } else {
-      content = PtrUtil<Token>::unique(tokenType, data, 0);
+      content = std::make_unique<Token>(tokenType, data, 0);
     }
     auto expr = Node<ExpressionNode>::make(*content);
     parseChildren(node, expr);

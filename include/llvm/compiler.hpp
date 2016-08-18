@@ -45,7 +45,7 @@ public:
   using Link = PtrUtil<CompileVisitor>::Link;
  
   static Link create(llvm::LLVMContext& context, std::string moduleName, AST ast) {
-    return PtrUtil<CompileVisitor>::make(CompileVisitor(context, moduleName, ast));
+    return std::make_shared<CompileVisitor>(CompileVisitor(context, moduleName, ast));
   }
   
   void visit();

@@ -5,7 +5,7 @@
 
 class BaseParser {
 protected:
-  PtrUtil<AST>::U tree;
+  std::unique_ptr<AST> tree;
 public:
   BaseParser();
   BaseParser(const BaseParser&);
