@@ -21,8 +21,8 @@ protected:
     } catch (InternalError& err) {
       EXPECT_NO_THROW(throw InternalError(err));
       println(err.what());
+      visitor->getModule()->dump();
     }
-    visitor->getModule()->dump();
   }
 };
 
