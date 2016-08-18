@@ -34,8 +34,8 @@ llvm::Function* CompileVisitor::getEntryPoint() const {
   return entryPoint;
 }
 
-void CompileVisitor::visitBlock(BlockNode* node) {
-  compileBlock(Node<BlockNode>::make(*node), "block");
+void CompileVisitor::visitBlock(Node<BlockNode>::Link node) {
+  compileBlock(node, "block");
 }
 
 llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const std::string& name) {
@@ -69,8 +69,8 @@ llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const
   return newBlock;
 }
 
-void CompileVisitor::visitExpression(ExpressionNode* node) {
-  compileExpression(Node<ExpressionNode>::make(*node));
+void CompileVisitor::visitExpression(Node<ExpressionNode>::Link node) {
+  compileExpression(node);
 }
 
 TokenType getFromValueType(llvm::Type* ty) {
@@ -169,7 +169,7 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node) 
   }
 }
 
-void CompileVisitor::visitDeclaration(DeclarationNode* node) {
+void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
   // TODO make sure dynamic vars and user types are boxed
   TypeList declTypes = node->getTypeInfo().getEvalTypeList();
   // If this variable allows only one type, allocate it immediately
@@ -196,8 +196,8 @@ void CompileVisitor::visitDeclaration(DeclarationNode* node) {
   }
 }
 
-void CompileVisitor::visitBranch(BranchNode* node) {
-  compileBranch(Node<BranchNode>::make(*node));
+void CompileVisitor::visitBranch(Node<BranchNode>::Link node) {
+  compileBranch(node);
 }
 
 // The BasicBlock surrounding is the block where control returns after dealing with branches, only specify for recursive case
@@ -261,12 +261,12 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
   }
 }
 
-void CompileVisitor::visitLoop(LoopNode* node) {
+void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   UNUSED(node);
   throw ni;
 }
 
-void CompileVisitor::visitReturn(ReturnNode* node) {
+void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
   auto result = compileExpression(node->getValue());
   if (currentFunction->getReturnType() != result->getType()) {
     // TODO: this is a very indiscriminate check

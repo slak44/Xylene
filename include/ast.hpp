@@ -124,8 +124,6 @@ public:
 GET_SIG(linkType, nameOf) \
 SET_SIG(linkType, nameOf)
 
-;
-
 class NoMoreChildrenNode: public ASTNode {
 public:
   NoMoreChildrenNode(int childrenCount);
@@ -204,7 +202,7 @@ public:
 #undef SET_SIG
 #undef GET_SET_SIGS
 
-#define PURE_VIRTUAL_VISIT(nodeName) virtual void visit##nodeName(nodeName##Node* node) = 0;
+#define PURE_VIRTUAL_VISIT(nodeName) virtual void visit##nodeName(Node<nodeName##Node>::Link node) = 0;
 
 class ASTVisitor {
 public:

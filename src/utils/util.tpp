@@ -58,13 +58,18 @@ struct PtrUtil {
   using WeakLink = std::weak_ptr<T>;
   
   template<typename U>
-  static inline bool isSameType(std::shared_ptr<U> link) {
+  static inline bool isSameType(const std::shared_ptr<U>& link) {
     return typeid(T) == typeid(*link);
   }
   
   template<typename U>
-  static inline Link dynPtrCast(std::shared_ptr<U> link) {
+  static inline Link dynPtrCast(const std::shared_ptr<U>& link) {
     return std::dynamic_pointer_cast<T>(link);
+  }
+  
+  template<typename U>
+  static inline Link staticPtrCast(const std::shared_ptr<U>& link) {
+    return std::static_pointer_cast<T>(link);
   }
 };
 

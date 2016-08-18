@@ -54,12 +54,12 @@ public:
   llvm::Function* getEntryPoint() const;
   
 private:
-  void visitExpression(ExpressionNode* node);
-  void visitDeclaration(DeclarationNode* node);
-  void visitBranch(BranchNode* node);
-  void visitLoop(LoopNode* node);  
-  void visitReturn(ReturnNode* node);
-  void visitBlock(BlockNode* node);
+  void visitExpression(Node<ExpressionNode>::Link node);
+  void visitDeclaration(Node<DeclarationNode>::Link node);
+  void visitBranch(Node<BranchNode>::Link node);
+  void visitLoop(Node<LoopNode>::Link node);  
+  void visitReturn(Node<ReturnNode>::Link node);
+  void visitBlock(Node<BlockNode>::Link node);
   
   llvm::Value* compileExpression(Node<ExpressionNode>::Link node);
   // The BasicBlock surrounding is the block where control returns after dealing with branches, only specify for recursive case

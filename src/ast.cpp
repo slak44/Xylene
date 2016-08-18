@@ -232,7 +232,8 @@ GET_SET_FOR(ReturnNode, 0, Value, ExpressionNode)
 // nodeName: name of node class, without 'Node' at the end, eg Loop, not LoopNode
 #define VISITOR_VISIT_IMPL_FOR(nodeName) \
 void nodeName##Node::visit(ASTVisitorLink visitor) {\
-  visitor->visit##nodeName(this);\
+  auto shared = this->shared_from_this();\
+  visitor->visit##nodeName(Node<nodeName##Node>::staticPtrCast(shared));\
 }
 
 VISITOR_VISIT_IMPL_FOR(Block);
