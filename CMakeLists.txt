@@ -83,7 +83,7 @@ if(NOT LLVM_FOUND)
 endif()
 include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
-llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core TransformUtils ExecutionEngine Interpreter)
+llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core TransformUtils ExecutionEngine Interpreter X86Info X86AsmParser X86AsmPrinter X86Utils X86CodeGen)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)

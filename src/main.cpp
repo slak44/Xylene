@@ -3,6 +3,7 @@
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/Interpreter.h>
+#include <llvm/Support/TargetSelect.h>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
@@ -17,7 +18,7 @@ int main(int argc, const char* argv[]) {
     TCLAP::CmdLine cmd("test-lang", ' ', "pre-release");
     
     TCLAP::SwitchArg printTokens("", "tokens", "Print token list", cmd);
-    TCLAP::SwitchArg printAST("", "ast", "Print AST", cmd);
+    TCLAP::SwitchArg printAST("", "ast", "Print AST (if applicable)", cmd);
     TCLAP::SwitchArg printIR("", "ir", "Print LLVM IR (if applicable)", cmd);
     
     TCLAP::SwitchArg doNotParse("", "no-parse", "Don't parse the token list", cmd);
@@ -52,6 +53,10 @@ int main(int argc, const char* argv[]) {
     if (printIR.getValue()) v->getModule()->dump();
     
     if (runner.getValue() == "llvm-lli") {
+      llvm::InitializeNativeTarget();
+      llvm::InitializeNativeTargetAsmPrinter();
+      llvm::InitializeNativeTargetAsmParser();
+
       std::string onError = "";
       auto eb = new llvm::EngineBuilder(v->getModule());
       llvm::ExecutionEngine* ee = eb
