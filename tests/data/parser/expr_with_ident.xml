@@ -1,0 +1,7 @@
+<!-- a + 1; -->
+<block type="root">
+  <expr type="Operator" value="Add">
+    <expr type="Identifier" value="a"/>
+    <expr type="Integer" value="1"/>
+  </expr>
+</block>

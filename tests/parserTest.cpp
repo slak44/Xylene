@@ -96,6 +96,12 @@ TEST_F(ParserTest, XMLParse) {
   ASSERT_EQ(px.getTree(), xpx.getTree());
 }
 
+TEST_F(ParserTest, ExpressionStartingWithIdent) {
+  px.parse(Lexer().tokenize("a + 1;").getTokens());
+  xpx.parse(xmlFile("data/parser/expr_with_ident.xml"));
+  ASSERT_EQ(px.getTree(), xpx.getTree());
+}
+
 TEST_F(ParserTest, IfStatement) {
   px.parse(Lexer().tokenize(R"(
     if true == false do

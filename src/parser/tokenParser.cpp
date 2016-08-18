@@ -231,6 +231,7 @@ ASTNode::Link StatementParser::statement() {
       expectSemi();
       return decl;
     } else {
+      skip(-1); // Get the entire expression
       auto e = expression();
       expectSemi();
       return e;
