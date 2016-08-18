@@ -1,7 +1,7 @@
 #include "operator.hpp"
 
-Operator::Operator(OperatorName name, int precedence, Associativity associativity, Arity arity, Fixity fixity):
-  name(name), precedence(precedence), associativity(associativity), arity(arity), fixity(fixity) {
+Operator::Operator(OperatorName name, int precedence, Associativity associativity, Arity arity, Fixity fixity, RequireReferenceList refList):
+  name(name), precedence(precedence), associativity(associativity), arity(arity), fixity(fixity), refList(refList) {
   if (arity == UNARY && fixity == INFIX) {
     throw InternalError("There are no unary infix operators", {METADATA_PAIRS});
   }
@@ -12,13 +12,15 @@ int Operator::getPrecedence() const {return precedence;}
 Associativity Operator::getAssociativity() const {return associativity;}
 Arity Operator::getArity() const {return arity;}
 Fixity Operator::getFixity() const {return fixity;}
+RequireReferenceList Operator::getRefList() const {return refList;}
 
 bool Operator::operator==(const Operator& rhs) const {
   return name == rhs.name &&
     precedence == rhs.precedence &&
     associativity == rhs.associativity &&
     arity == rhs.arity &&
-    fixity == rhs.fixity;
+    fixity == rhs.fixity &&
+    refList == rhs.refList;
 }
 bool Operator::operator!=(const Operator& rhs) const {
   return !operator==(rhs);

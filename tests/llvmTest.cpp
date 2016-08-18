@@ -13,6 +13,12 @@ protected:
     return rapidxml::file<>(path.c_str());
   }
   
+  inline void compile(std::string xmlFilePath) {
+    xpx.parse(xmlFile(xmlFilePath));
+    CompileVisitor::Link visitor = CompileVisitor::create(globalContext, xmlFilePath, xpx.getTree());
+    visitor->visit();
+  }
+  
   inline void noThrowOnCompile(std::string xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
     CompileVisitor::Link visitor = CompileVisitor::create(globalContext, xmlFilePath, xpx.getTree());
@@ -37,6 +43,7 @@ TEST_F(LLVMCompilerTest, Declarations) {
 
 TEST_F(LLVMCompilerTest, Assignment) {
   noThrowOnCompile("data/llvm/return_assign.xml");
+  EXPECT_THROW(compile("data/llvm/assign_to_literal.xml"), Error);
 }
 
 TEST_F(LLVMCompilerTest, Branches) {

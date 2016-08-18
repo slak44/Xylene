@@ -1,0 +1,7 @@
+<!-- 1 = 2; -->
+<block type="root">
+  <expr type="Operator" value="Assignment">
+    <expr type="Integer" value="1"/>
+    <expr type="Integer" value="2"/>
+  </expr>
+</block>

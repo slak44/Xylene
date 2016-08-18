@@ -121,23 +121,20 @@ CodegenFunction identifyCodegenFunction(Token tok, llvm::IRBuilder<>& builder, s
   return func;
 }
 
-llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node) {
+llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, bool requirePointer) {
   Token tok = node->getToken();
+  if (requirePointer && tok.type != IDENTIFIER && tok.type != OPERATOR) 
+    throw Error("ReferenceError", "Operator requires a mutable type", tok.line);
   if (tok.isTerminal()) {
     switch (tok.type) {
-      static bool hasRecursed = false;
       case L_INTEGER: return llvm::ConstantInt::getSigned(integerType, std::stoll(tok.data));
       case L_FLOAT: return llvm::ConstantFP::get(floatType, tok.data);
       case L_STRING: throw ni;
       case L_BOOLEAN: return (tok.data == "true" ? llvm::ConstantInt::getTrue(booleanType) : llvm::ConstantInt::getFalse(booleanType));
       case IDENTIFIER: {
         llvm::Value* ptr = builder.GetInsertBlock()->getValueSymbolTable()->lookup(tok.data); // TODO check globals and types, not only locals
-        if (hasRecursed) {
-          return ptr;
-        } else {
-          hasRecursed = true;
-          return builder.CreateLoad(ptr, "identifierExpressionLoad");
-        }
+        if (requirePointer) return ptr;
+        else return builder.CreateLoad(ptr, "identifierExpressionLoad");
       }
       default: throw InternalError("Unhandled terminal symbol in switch case", {
         METADATA_PAIRS,
@@ -147,8 +144,11 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node) 
   } else if (tok.isOperator()) {
     std::vector<llvm::Value*> operands {};
     // Recursively compute all the operands
+    std::size_t idx = 0;
     for (auto& child : node->getChildren()) {
-      operands.push_back(compileExpression(Node<ExpressionNode>::dynPtrCast(child)));
+      bool requirePointer = tok.getOperator().getRefList()[idx];
+      operands.push_back(compileExpression(Node<ExpressionNode>::dynPtrCast(child), requirePointer));
+      idx++;
     }
     // Make sure we have the correct amount of operands
     if (static_cast<int>(operands.size()) != tok.getOperator().getArity()) {

@@ -61,7 +61,7 @@ private:
   void visitReturn(Node<ReturnNode>::Link node);
   void visitBlock(Node<BlockNode>::Link node);
   
-  llvm::Value* compileExpression(Node<ExpressionNode>::Link node);
+  llvm::Value* compileExpression(Node<ExpressionNode>::Link node, bool requirePointer = false);
   // The BasicBlock surrounding is the block where control returns after dealing with branches, only specify for recursive case
   void compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding = nullptr);
   llvm::BasicBlock* compileBlock(Node<BlockNode>::Link node, const std::string& name);

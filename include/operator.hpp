@@ -14,6 +14,8 @@ using OperatorSymbol = std::string;
 using OperatorName = std::string;
 // Where in the operatorMap below it is
 using OperatorIndex = int64;
+// For the value true, require that the operand at that index can be mutated
+using RequireReferenceList = std::vector<bool>;
 
 enum Associativity: int {
   ASSOCIATE_FROM_LEFT,
@@ -38,35 +40,47 @@ private:
   Associativity associativity;
   Arity arity;
   Fixity fixity;
+  RequireReferenceList refList;
 public:
-  Operator(OperatorSymbol name, int precedence, Associativity associativity = ASSOCIATE_FROM_LEFT, Arity arity = BINARY, Fixity fixity = INFIX);
+  Operator(
+    OperatorSymbol name,
+    int precedence,
+    Associativity associativity = ASSOCIATE_FROM_LEFT,
+    Arity arity = BINARY,
+    Fixity fixity = INFIX,
+    RequireReferenceList refList = {false, false, false}
+  );
     
   OperatorSymbol getName() const;
   int getPrecedence() const;
   Associativity getAssociativity() const;
   Arity getArity() const;
   Fixity getFixity() const;
+  RequireReferenceList getRefList() const;
   
   bool operator==(const Operator& rhs) const;
   bool operator!=(const Operator& rhs) const;
 };
+
+static const RequireReferenceList assignmentList {true, false};
+static const RequireReferenceList unaryOps {true};
 
 const std::vector<Operator> operatorList {
   Operator("==", 7),
   Operator("!=", 7),
   
   // TODO: Ternary "?:"
-  Operator("=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("+=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("-=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("*=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("/=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("%=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("<<=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator(">>=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("&=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("^=", 1, ASSOCIATE_FROM_RIGHT),
-  Operator("|=", 1, ASSOCIATE_FROM_RIGHT),
+  Operator("=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("+=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("-=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("*=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("/=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("%=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("<<=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator(">>=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("&=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("^=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("|=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
   
   Operator(">>", 9),
   Operator("<<", 9),
@@ -76,14 +90,14 @@ const std::vector<Operator> operatorList {
   Operator(">=", 8),
   Operator(">", 8),
   
-  Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY, POSTFIX),
-  Operator("++", 13, ASSOCIATE_FROM_LEFT, UNARY, POSTFIX),
+  Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
+  Operator("++", 13, ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
   //  Operator("[]", 13), // TODO: find subscript better
   
-  Operator(".", 13),
+  Operator(".", 13, ASSOCIATE_FROM_LEFT, BINARY, INFIX, {true, false}),
   
-  Operator("--", 12, ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
-  Operator("++", 12, ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  Operator("--", 12, ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
+  Operator("++", 12, ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
   Operator("-", 12, ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
   Operator("+", 12, ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
   Operator("~", 12, ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
