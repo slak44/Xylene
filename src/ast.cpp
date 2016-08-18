@@ -206,23 +206,23 @@ Node<linkType>::Link srcNode::get##nameOf() const {\
 void srcNode::set##nameOf(std::shared_ptr<linkType> newNode) {children[childIndex] = newNode;}
 
 #define GET_SET_FOR(srcNode, childIndex, nameOf, linkType) \
-GET_FOR(srcNode, childIndex, nameOf, linkType); \
-SET_FOR(srcNode, childIndex, nameOf, linkType);
+GET_FOR(srcNode, childIndex, nameOf, linkType) \
+SET_FOR(srcNode, childIndex, nameOf, linkType)
 
-GET_SET_FOR(DeclarationNode, 0, Init, ExpressionNode);
+GET_SET_FOR(DeclarationNode, 0, Init, ExpressionNode)
 
-GET_SET_FOR(BranchNode, 0, Condition, ExpressionNode);
-GET_SET_FOR(BranchNode, 1, SuccessBlock, BlockNode);
-GET_FOR(BranchNode, 2, FailiureBlock, ASTNode);
-SET_FOR(BranchNode, 2, FailiureBlock, BlockNode);
-SET_FOR(BranchNode, 2, FailiureBlock, BranchNode);
+GET_SET_FOR(BranchNode, 0, Condition, ExpressionNode)
+GET_SET_FOR(BranchNode, 1, SuccessBlock, BlockNode)
+GET_FOR(BranchNode, 2, FailiureBlock, ASTNode)
+SET_FOR(BranchNode, 2, FailiureBlock, BlockNode)
+SET_FOR(BranchNode, 2, FailiureBlock, BranchNode)
 
-GET_SET_FOR(LoopNode, 0, Init, DeclarationNode);
-GET_SET_FOR(LoopNode, 1, Condition, ExpressionNode);
-GET_SET_FOR(LoopNode, 2, Update, ExpressionNode);
-GET_SET_FOR(LoopNode, 3, Code, BlockNode);
+GET_SET_FOR(LoopNode, 0, Init, DeclarationNode)
+GET_SET_FOR(LoopNode, 1, Condition, ExpressionNode)
+GET_SET_FOR(LoopNode, 2, Update, ExpressionNode)
+GET_SET_FOR(LoopNode, 3, Code, BlockNode)
 
-GET_SET_FOR(ReturnNode, 0, Value, ExpressionNode);
+GET_SET_FOR(ReturnNode, 0, Value, ExpressionNode)
 
 #undef GET_FOR
 #undef SET_FOR
