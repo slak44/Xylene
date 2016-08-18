@@ -63,8 +63,12 @@ int main(int argc, const char* argv[]) {
     }
     
     CompileVisitor::Link v = CompileVisitor::create(globalContext, "Command Line Module", px.getTree());
-    v->visit();
-    if (printIR.getValue()) v->getModule()->dump();
+    try {
+      v->visit();
+    } catch (const InternalError& err) {
+      if (printIR.getValue()) v->getModule()->dump();
+      throw err;
+    }
     
     if (runner.getValue() == "llvm-lli") {
       llvm::InitializeNativeTarget();
