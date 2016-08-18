@@ -13,6 +13,14 @@
 #include "llvm/compiler.hpp"
 #include "interpreter/interpreter.hpp"
 
+enum ExitCodes: int {
+  NORMAL_EXIT = 0, // Everything is OK
+  TCLAP_ERROR = 11, // TCLAP did something bad, should not happen
+  CLI_ERROR = 1, // The user is retar-- uh I mean the user used a wrong option
+  USER_PROGRAM_ERROR = 2, // The thing we had to lex/parse/run has an issue
+  INTERNAL_ERROR = 3 // Unrecoverable error in this program, almost always a bug
+};
+
 int main(int argc, const char* argv[]) {
   try {
     TCLAP::CmdLine cmd("test-lang", ' ', "pre-release");
@@ -28,24 +36,30 @@ int main(int argc, const char* argv[]) {
     TCLAP::ValuesConstraint<std::string> runnerConstraint(runnerValues);
     TCLAP::ValueArg<std::string> runner("r", "runner", "How to run this code", false, "llvm-lli", &runnerConstraint, cmd);
     
-    TCLAP::ValueArg<std::string> code("e", "eval", "Code to evaluate", true, std::string(), "string", cmd);
+    TCLAP::ValueArg<std::string> code("e", "eval", "Code to evaluate", false, std::string(), "string", cmd);
+    TCLAP::ValueArg<std::string> filePath("f", "file", "Load code from this file", false, std::string(), "path", cmd);
     cmd.parse(argc, argv);
+    
+    if (code.getValue().empty() && filePath.getValue().empty()) {
+      TCLAP::ArgException arg("Must specify either option -e or -f");
+      cmd.getOutput()->failure(cmd, arg);
+    }
     
     auto lx = Lexer();
     lx.tokenize(code.getValue());
     if (printTokens.getValue()) for (auto tok : lx.getTokens()) println(tok);
     
-    if (doNotParse.getValue()) return 0;
+    if (doNotParse.getValue()) return NORMAL_EXIT;
     auto px = TokenParser();
     px.parse(lx.getTokens());
     if (printAST.getValue()) px.getTree().print();
     
-    if (doNotRun.getValue()) return 0;
+    if (doNotRun.getValue()) return NORMAL_EXIT;
     
     if (runner.getValue() == "tree-walk") {
       auto in = TreeWalkInterpreter();
       in.interpret(px.getTree());
-      return 0;
+      return NORMAL_EXIT;
     }
     
     CompileVisitor::Link v = CompileVisitor::create(globalContext, "Command Line Module", px.getTree());
@@ -73,8 +87,17 @@ int main(int argc, const char* argv[]) {
       println("Not yet implemented!");
       // TODO
     }
-  } catch (TCLAP::ArgException& arg) {
-    std::cerr << "TCLAP error " << arg.error() << " for " << arg.argId() << std::endl;
+  } catch (const TCLAP::ExitException& arg) {
+    return CLI_ERROR;
+  } catch (const TCLAP::ArgException& arg) {
+    println("TCLAP error", arg.error(), "for", arg.argId());
+    return TCLAP_ERROR;
+  } catch (const Error& err) {
+    println(err.what());
+    return USER_PROGRAM_ERROR;
+  } catch (const InternalError& err) {
+    println(err.what());
+    return INTERNAL_ERROR;
   }
   return 0;
 }
