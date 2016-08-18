@@ -95,9 +95,13 @@ int main(int argc, const char* argv[]) {
   } catch (const Error& err) {
     println(err.what());
     return USER_PROGRAM_ERROR;
-  } catch (const InternalError& err) {
+  }
+  // If we're debugging, crash the program on InternalError
+  #ifndef CRASH_ON_INTERNAL_ERROR
+  catch (const InternalError& err) {
     println(err.what());
     return INTERNAL_ERROR;
   }
+  #endif
   return 0;
 }

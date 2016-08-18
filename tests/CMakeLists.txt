@@ -11,7 +11,7 @@ set(TEST_DATA ${PROJECT_SOURCE_DIR}/tests/data)
 
 include_directories(${PROJECT_SOURCE_DIR}/tests)
 
-target_compile_options(tests PRIVATE -DDATA_PARENT_DIR=\"$<TARGET_FILE_DIR:tests>\" -O0 -g3)
+target_compile_options(tests PRIVATE -D CRASH_ON_INTERNAL_ERROR -DDATA_PARENT_DIR=\"$<TARGET_FILE_DIR:tests>\" -O0 -g3)
 target_link_libraries(tests ${REQ_LLVM_LIBRARIES} pthread gtest)
 
 # Copy the folder with test data to the executable
