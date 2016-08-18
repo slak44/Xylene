@@ -182,7 +182,7 @@ inline Fixity Lexer::determineFixity(Fixity afterBinaryOrPrefix, Fixity afterIde
 }
 
 inline int Lexer::getNumberRadix() {
-  if (current() == '0' && !isdigit(peekAhead(1))) {
+  if (current() == '0' && isalpha(peekAhead(1))) {
     auto radixIdent = peekAhead(1);
     skip(2); // Skip the "0x", etc
     switch (radixIdent) {
@@ -197,7 +197,7 @@ inline int Lexer::getNumberRadix() {
 }
 
 inline Token Lexer::getNumberToken(int radix) {
-  if (current() == '0') throw Error("SyntaxError", "Numbers cannot begin with '0'", getCurrentLine());
+  if (current() == '0' && isdigit(peekAhead(1))) throw Error("SyntaxError", "Numbers cannot begin with '0'", getCurrentLine());
   std::string number = "";
   bool isFloat = false;
   while (!isEOF()) {

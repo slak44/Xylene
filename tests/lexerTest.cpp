@@ -35,6 +35,7 @@ TEST_F(LexerTest, Radix) {
   EXPECT_THROW(getTokens("0j123")[0], Error);
   EXPECT_THROW(getTokens("0123")[0], Error);
   EXPECT_THROW(getTokens("0x0123")[0], Error);
+  EXPECT_EQ(getTokens("0")[0], Token(L_INTEGER, "0", 1));
 }
 
 TEST_F(LexerTest, FloatLiterals) {
