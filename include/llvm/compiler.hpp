@@ -35,7 +35,8 @@ class CompileVisitor: public ASTVisitor, public std::enable_shared_from_this<Com
 private:
   llvm::LLVMContext& contextRef;
   llvm::IRBuilder<> builder;
-  llvm::Module* module;
+  PtrUtil<llvm::Module>::Link module;
+  llvm::Function* entryPoint;
   llvm::Function* currentFunction;
   AST ast;
 
@@ -49,7 +50,8 @@ public:
   
   void visit();
   
-  llvm::Module* getModule() const;
+  PtrUtil<llvm::Module>::U getModule() const;
+  llvm::Function* getEntryPoint() const;
   
 private:
   void visitExpression(ExpressionNode* node);

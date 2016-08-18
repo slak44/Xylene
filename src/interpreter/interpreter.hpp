@@ -12,7 +12,7 @@
 #include "operatorMap.hpp"
 #include "scope.hpp"
 
-class Interpreter {
+class TreeWalkInterpreter {
 private:
   void interpretBlock(Scope::Link parentScope, Node<BlockNode>::Link block) {
     Scope::Link thisBlockScope = PtrUtil<Scope>::make();
