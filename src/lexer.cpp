@@ -95,6 +95,7 @@ void Lexer::processInput() {
     // Get a string until the char can't be part of an identifier
     std::string str = "";
     while (isIdentifierChar()) {
+      if (current() == '\\') throw Error("SyntaxError", "Extraneous escape character", getCurrentLine());
       str += current();
       skip(1);
     }

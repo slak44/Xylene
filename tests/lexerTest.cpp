@@ -56,6 +56,7 @@ TEST_F(LexerTest, StringLiterals) {
 }
 
 TEST_F(LexerTest, EscapeSequences) {
+  EXPECT_THROW(getTokens("\"cool string here\"  \\n "), Error);
   EXPECT_EQ(getTokens("\" \\n \"")[0], Token(L_STRING, " \n ", 1));
   // FIXME
   // EXPECT_EQ(getTokens("\" \\x0A \"")[0], Token(L_STRING, " \n ", 1));
