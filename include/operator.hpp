@@ -8,42 +8,64 @@
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 
-// The symbol used for the operator, eg '+', '=', '&&'
-using OperatorSymbol = std::string;
-// Convenience names from the operatorNameMap below
-using OperatorName = std::string;
-// Where in the operatorMap below it is
-using OperatorIndex = int64;
-// For the value true, require that the operand at that index can be mutated
-using RequireReferenceList = std::vector<bool>;
-
+/**
+  \brief Represents how does an operator associate.
+*/
 enum Associativity: int {
+  /// The default. Operators associate from left to right.
   ASSOCIATE_FROM_LEFT,
+  /// Operators associate from right to left.
   ASSOCIATE_FROM_RIGHT
 };
 
+/**
+  \brief Represents the amount of operands this operator has.
+*/
 enum Arity: int {
   NULLARY = 0,
   UNARY = 1,
-  BINARY = 2,
+  BINARY = 2, ///< The default
   TERNARY = 3
 };
 
+/**
+  \brief Represents where this operator should be placed in respect to his operands.
+*/
 enum Fixity: int {
-  INFIX = 0, PREFIX = -1, POSTFIX = 1
+  /// The default
+  INFIX = 0,
+  PREFIX = -1,
+  POSTFIX = 1
 };
 
+/**
+  \brief Class that represents an operator.
+  \sa Associativity, Arity, Fixity, operatorList
+*/
 class Operator {
+public:
+  /// The symbol used for the operator, eg '+', '=', '&&'
+  using Symbol = std::string;
+  /// Convenience names from the operatorNameMap below
+  using Name = std::string;
+  /// Where in the operatorList below it is
+  using Index = int64;
+  /// Require that the operand at that index can be mutated if true
+  using RequireReferenceList = std::vector<bool>;
 private:
-  OperatorSymbol name;
+  Symbol name;
   int precedence;
   Associativity associativity;
   Arity arity;
   Fixity fixity;
   RequireReferenceList refList;
 public:
+  /**
+    \brief Creates an operator. Only the Symbol and the precedence are mandatory.
+    \todo this should not be public
+  */
   Operator(
-    OperatorSymbol name,
+    Symbol name,
     int precedence,
     Associativity associativity = ASSOCIATE_FROM_LEFT,
     Arity arity = BINARY,
@@ -51,7 +73,7 @@ public:
     RequireReferenceList refList = {false, false, false}
   );
     
-  OperatorSymbol getName() const;
+  Symbol getName() const;
   int getPrecedence() const;
   Associativity getAssociativity() const;
   Arity getArity() const;
@@ -62,11 +84,15 @@ public:
   bool operator!=(const Operator& rhs) const;
 };
 
-// Assignment requires that the first operand is mutable
-static const RequireReferenceList assignmentList {true, false};
-// Some unary operators (eg ++) mutate their operand
-static const RequireReferenceList unaryOps {true};
+/// Assignment requires that the first operand is mutable
+static const Operator::RequireReferenceList assignmentList {true, false};
+/// Some unary operators (eg ++) mutate their operand
+static const Operator::RequireReferenceList unaryOps {true};
 
+/**
+  \brief The main operator list.
+  This list contains the operators used by the lexer. Some of them, like ?: and [] can't be here due to their syntax.
+*/
 const std::vector<Operator> operatorList {
   Operator("==", 7),
   Operator("!=", 7),
@@ -122,7 +148,11 @@ const std::vector<Operator> operatorList {
   Operator(",", 0)
 };
 
-static const std::unordered_map<OperatorName, OperatorIndex> operatorNameMap {
+/**
+  \brief Maps simple descriptions of operators to their index in the operatorList.
+  Also used in XML files.
+*/
+static const std::unordered_map<Operator::Name, Operator::Index> operatorNameMap {
   {"Equality", 0},
   {"Inequality", 1},
   {"Assignment", 2},
@@ -164,14 +194,27 @@ static const std::unordered_map<OperatorName, OperatorIndex> operatorNameMap {
   {"Comma", 38},
 };
 
+/**
+  \brief Gets a vector of all chars used in Operator symbols.
+  \sa Operator::Symbol
+*/
 std::vector<char> getOperatorCharacters();
+/**
+  \brief Gets a vector of all chars used in constructs. This is effectively a constant.
+*/
 std::vector<char> getConstructCharacters();
 
-// OperatorName -> Operator
-const Operator& operatorFrom(const OperatorName& name);
-// OperatorIndex -> OperatorName
-OperatorName operatorNameFrom(OperatorIndex index);
-// OperatorName -> OperatorIndex
-OperatorIndex operatorIndexFrom(const OperatorName& name);
+/**
+  \brief Gets an Operator using its Operator::Name
+*/
+const Operator& operatorFrom(const Operator::Name& name);
+/**
+  \brief Gets an Operator::Name using its Operator::Index
+*/
+Operator::Name operatorNameFrom(Operator::Index index);
+/**
+  \brief Gets an Operator::Index using its Operator::Name
+*/
+Operator::Index operatorIndexFrom(const Operator::Name& name);
 
 #endif

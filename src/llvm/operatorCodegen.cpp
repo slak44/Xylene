@@ -1,12 +1,12 @@
 #include "llvm/operatorCodegen.hpp"
 
-std::unordered_map<OperatorName, CodegenFunction> specialCodegenMap {
+std::unordered_map<Operator::Name, CodegenFunction> specialCodegenMap {
   {"Assignment", [] CODEGEN_SIG {
     return builder.CreateStore(operands[1], operands[0]);
   }}
 };
 
-std::unordered_map<OperatorName, TypeMap> codegenMap {
+std::unordered_map<Operator::Name, TypeMap> codegenMap {
   {"Add", {
     {{L_INTEGER, L_INTEGER}, [] CODEGEN_SIG {
       return builder.CreateAdd(operands[0], operands[1], "intadd");

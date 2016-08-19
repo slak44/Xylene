@@ -3,6 +3,9 @@
 
 #include "ast.hpp"
 
+/**
+  \brief Base of all parsers. Consistent API for getting the AST from a parser.
+*/
 class BaseParser {
 protected:
   std::unique_ptr<AST> tree;

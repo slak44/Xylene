@@ -92,7 +92,7 @@ OperandTypeList typeListFrom(OperandList list) {
   return t;
 }
 
-inline OperatorFunction tryFindingDefault(OperatorName opName, OperandTypeList tl, Operations ops) {
+inline OperatorFunction tryFindingDefault(Operator::Name opName, OperandTypeList tl, Operations ops) {
   try {
     return ops.at({});
   } catch (std::out_of_range& oor) {
@@ -105,7 +105,7 @@ inline OperatorFunction tryFindingDefault(OperatorName opName, OperandTypeList t
   }
 }
 
-Object::Link executeOperator(OperatorName opName, OperandList list) {
+Object::Link executeOperator(Operator::Name opName, OperandList list) {
   OperandTypeList tl = typeListFrom(list);
   Operations ops;
   OperatorFunction func;

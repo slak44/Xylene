@@ -1,18 +1,18 @@
 #include "operator.hpp"
 
-Operator::Operator(OperatorName name, int precedence, Associativity associativity, Arity arity, Fixity fixity, RequireReferenceList refList):
+Operator::Operator(Operator::Name name, int precedence, Associativity associativity, Arity arity, Fixity fixity, RequireReferenceList refList):
   name(name), precedence(precedence), associativity(associativity), arity(arity), fixity(fixity), refList(refList) {
   if (arity == UNARY && fixity == INFIX) {
     throw InternalError("There are no unary infix operators", {METADATA_PAIRS});
   }
 }
   
-OperatorName Operator::getName() const {return name;}
+Operator::Name Operator::getName() const {return name;}
 int Operator::getPrecedence() const {return precedence;}
 Associativity Operator::getAssociativity() const {return associativity;}
 Arity Operator::getArity() const {return arity;}
 Fixity Operator::getFixity() const {return fixity;}
-RequireReferenceList Operator::getRefList() const {return refList;}
+Operator::RequireReferenceList Operator::getRefList() const {return refList;}
 
 bool Operator::operator==(const Operator& rhs) const {
   return name == rhs.name &&
@@ -45,11 +45,11 @@ std::vector<char> getConstructCharacters() {
   return chars;
 }
 
-const Operator& operatorFrom(const OperatorName& name) {
+const Operator& operatorFrom(const Operator::Name& name) {
   return operatorList[operatorNameMap.at(name)];
 }
 
-OperatorName operatorNameFrom(OperatorIndex index) {
+Operator::Name operatorNameFrom(Operator::Index index) {
   auto it = std::find_if(ALL(operatorNameMap), [=](auto mapPair) {
     return mapPair.second == index;
   });
@@ -57,6 +57,6 @@ OperatorName operatorNameFrom(OperatorIndex index) {
   return it->first;
 }
 
-OperatorIndex operatorIndexFrom(const OperatorName& name) {
+Operator::Index operatorIndexFrom(const Operator::Name& name) {
   return operatorNameMap.at(name);
 }

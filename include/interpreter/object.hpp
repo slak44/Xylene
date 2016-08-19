@@ -7,6 +7,10 @@
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 
+/**
+  \brief Abstract object for TreeWalkInterpreter.
+  \deprecated
+*/
 class Object {
 public:
   using Link = PtrUtil<Object>::Link;
@@ -18,6 +22,10 @@ public:
   virtual std::string toString() const = 0;
 };
 
+/**
+  \brief Reference to object for TreeWalkInterpreter.
+  \deprecated
+*/
 class Reference: public Object {
 private:
   Object::Link ref;
@@ -70,6 +78,10 @@ public:
   }
 };
 
+/**
+  \brief Integer object for TreeWalkInterpreter.
+  \deprecated
+*/
 class Integer: public Object {
 private:
   int64 internal = 0;
@@ -95,6 +107,10 @@ public:
   }
 };
 
+/**
+  \brief Float object for TreeWalkInterpreter.
+  \deprecated
+*/
 class Float: public Object {
 private:
   long double internal = 0;
@@ -120,6 +136,10 @@ public:
   }
 };
 
+/**
+  \brief String object for TreeWalkInterpreter.
+  \deprecated
+*/
 class String: public Object {
 private:
   std::string internal = "";
@@ -144,6 +164,10 @@ public:
   }
 };
 
+/**
+  \brief Boolean object for TreeWalkInterpreter.
+  \deprecated
+*/
 class Boolean: public Object {
 private:
   bool internal = false;

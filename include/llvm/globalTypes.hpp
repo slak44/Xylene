@@ -7,10 +7,14 @@
 
 static const uint BITS_PER_INT = 64;
 
+/// A reference to the global LLVM context
 extern llvm::LLVMContext& globalContext;
 
+/// Integral type
 extern llvm::IntegerType* integerType;
+/// Floating-point type
 extern llvm::Type* floatType;
+/// Boolean type
 extern llvm::IntegerType* booleanType;
 
 #endif

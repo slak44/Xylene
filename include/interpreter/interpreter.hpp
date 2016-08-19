@@ -12,6 +12,10 @@
 #include "operatorMap.hpp"
 #include "scope.hpp"
 
+/**
+  \brief Interpret an AST by walking the tree.
+  \deprecated Superseded by the LLVM compiler+interpreter
+*/
 class TreeWalkInterpreter {
 private:
   void interpretBlock(Scope::Link parentScope, Node<BlockNode>::Link block) {
