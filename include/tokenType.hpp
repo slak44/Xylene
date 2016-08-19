@@ -8,9 +8,11 @@
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 
-/*
-  L: literal
-  K: keyword (2+ chars)
+/**
+  \brief Possible types for Token.
+  
+  L: literal\n
+  K: keyword (2+ chars)\n
   C: construct (1 char)
 */
 enum TokenType: int {
@@ -34,13 +36,24 @@ enum TokenType: int {
   UNPROCESSED = 0
 };
 
+/// Overload for string concatenation
 std::string operator+(const char* a, const TokenType& tt);
+/// \copydoc operator+(const char*,const TokenType&)
 std::string operator+(const TokenType& tt, const char* a);
+/// \copydoc operator+(const char*,const TokenType&)
 std::string operator+(std::string& a, const TokenType& tt);
+/// \copydoc operator+(const char*,const TokenType&)
 std::string operator+(const TokenType& tt, std::string& a);
+/**
+  \brief Allow TokenType to be printed using its pretty name.
+  
+  \sa getTokenTypeName
+*/
 std::ostream& operator<<(std::ostream& os, const TokenType& tt);
 
-// Construct char -> TokenType
+/**
+  \brief Maps a construct's character to its respective TokenType.
+*/
 const std::unordered_map<char, TokenType> constructMap {
   {';', C_SEMI},
   {':', C_2POINT},
@@ -51,7 +64,9 @@ const std::unordered_map<char, TokenType> constructMap {
   {'?', C_QUESTION},
 };
 
-// Keyword text -> TokenType
+/**
+  \brief Maps a keyword's text to its respective TokenType.
+*/
 const std::unordered_map<std::string, TokenType> keywordsMap {
   {"define", K_DEFINE},
   {"function", K_FUNCTION},
@@ -75,6 +90,9 @@ const std::unordered_map<std::string, TokenType> keywordsMap {
   {"void", K_VOID}
 };
 
+/**
+  \brief Maps the second character in an escape sequence (eg the 'n' in \\n) to the actual escaped code.
+*/
 const std::unordered_map<char, char> singleCharEscapeSeqences {
   {'a', '\a'},
   {'b', '\b'},
@@ -89,7 +107,9 @@ const std::unordered_map<char, char> singleCharEscapeSeqences {
   {'?', '\?'},
 };
 
-// Pretty names for the rest of the TokenTypes
+/**
+  \brief Pretty names for the TokenTypes that don't already have some.
+*/
 const static std::unordered_map<TokenType, std::string> tokenTypeMap {
   {L_INTEGER, "Integer"},
   {L_FLOAT, "Float"},
@@ -108,9 +128,24 @@ const static std::unordered_map<TokenType, std::string> tokenTypeMap {
   {UNPROCESSED, "Unprocessed?"}
 };
 
-// string -> TokenType
-TokenType getTokenTypeByName(std::string name);
-// TokenType -> string
-std::string getTokenTypeName(const TokenType& tt);
+/**
+  \brief Attempt to get a TokenType from its pretty name.
+
+  Example results:\n
+    Boolean -> L_BOOLEAN\n
+    if -> K_IF\n
+    ; -> C_SEMI\n
+    
+  Reverse operation of getTokenTypeName.
+  \sa getTokenTypeName
+*/
+TokenType getTokenTypeByName(const std::string& name);
+/**
+  \brief Attempt to get a pretty name from a TokenType.
+  
+  Reverse operation of getTokenTypeByName.
+  \sa getTokenTypeByName
+*/
+std::string getTokenTypeName(TokenType tt);
 
 #endif

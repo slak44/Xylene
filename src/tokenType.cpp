@@ -16,7 +16,7 @@ std::ostream& operator<<(std::ostream& os, const TokenType& tt) {
   return os << operator+("", tt);
 }
 
-TokenType getTokenTypeByName(std::string name) {
+TokenType getTokenTypeByName(const std::string& name) {
   try {
     return keywordsMap.at(name);
   } catch (std::out_of_range& oor) {}
@@ -30,7 +30,7 @@ TokenType getTokenTypeByName(std::string name) {
   else throw InternalError("Cannot determine token type", {METADATA_PAIRS, {"name", name}});
 }
 
-std::string getTokenTypeName(const TokenType& tt) {
+std::string getTokenTypeName(TokenType tt) {
   try {
     // Try to use the map above
     return tokenTypeMap.at(tt);

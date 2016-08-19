@@ -7,56 +7,68 @@
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 
+/**
+  \brief Stores info about the type of something.
+*/
 class TypeInfo {
 protected:
-  /*
-    This is what gets returned when the object is evaluated.
-  */
+  /// Types stored by this object. Can be empty.
   TypeList evalValue;
+  /// If this type is actually the void type
   bool isVoidType = false;
   
   inline void throwIfVoid() const {
     if (isVoidType) throw InternalError("Void types have undefined type lists", {METADATA_PAIRS});
   }
 public:
-  // Definite list of types (if list is empty, equivalent to the no-arg constructor)
+  /**
+    \brief Store a list of types. If list is empty, the type is dynamic.
+  */
   TypeInfo(TypeList evalValue);
-  // Is void type
+  /**
+    \brief Construct TypeInfo for a void type.
+  */
   TypeInfo(std::nullptr_t voidType);
-  // Dynamic list of types
+  /**
+    \brief Construct a dynamic TypeInfo (can have any type).
+  */
   TypeInfo();
   
   virtual ~TypeInfo();
   
-  // Get list of held types
   TypeList getEvalTypeList() const;
   
   bool isDynamic() const;
   bool isVoid() const;
   
-  // Get a string representation of the held types
+  /// Get a string representation of the held types
   std::string getTypeNameString() const;
   
-  // Stringify this object
   virtual std::string toString() const;
   
   bool operator==(const TypeInfo& rhs) const;
   bool operator!=(const TypeInfo& rhs) const;
 };
 
-/*
-  TypeInfo with a singular non-void, non-dynamic type.
+/**
+  \brief TypeInfo with a singular non-void, non-dynamic type.
 */
 class StaticTypeInfo: public TypeInfo {
 public:
+  /**
+    \param type name of type to store
+  */
   StaticTypeInfo(std::string type);
+  /// \copydoc StaticTypeInfo(std::string)
   StaticTypeInfo(const char* type);
   
   std::string toString() const;
 };
 
-/*
-  TypeInfo that can't be void.
+/**
+  \brief TypeInfo that can't be void.
+  
+  Has the same constructors as TypeInfo, except for the void one.
 */
 class DefiniteTypeInfo: public TypeInfo {
 public:
@@ -66,12 +78,15 @@ public:
   std::string toString() const;
 };
 
-class FunctionTypeInfo {
+/**
+  \brief Signature for a function. Stores return type and argument types.
+*/
+class FunctionSignature {
 private:
   TypeInfo returnType;
   std::vector<TypeInfo> argumentTypes;
 public:
-  FunctionTypeInfo(TypeInfo returnType, std::vector<TypeInfo> argumentTypes);
+  FunctionSignature(TypeInfo returnType, std::vector<TypeInfo> argumentTypes);
   
   std::string toString() const;
 };

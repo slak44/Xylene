@@ -47,117 +47,178 @@
   ident = ? any valid identifier ? ;
 */
 
+/**
+  \brief Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it.
+*/
 class TokenBaseParser: public BaseParser {
 protected:
   std::vector<Token> input;
   uint64 pos = 0;
   
   TokenBaseParser() {}
+  virtual ~TokenBaseParser() = 0;
   
-  // Current token
+  /// Get token at current position
   inline Token current() {
     return input[pos];
   }
-  // Skip a number of tokens, usually just advances to the next one
+  /// Skip a number of tokens, usually just advances to the next one
   inline void skip(int by = 1) {
     pos += by;
   }
-  // Accept Tokens with certain properties
+  /// Accept a TokenType
   inline bool accept(TokenType tok) {
     return tok == current().type;
   }
-  inline bool accept(OperatorSymbol operatorSymbol) {
+  /// Accept a Operator::Symbol
+  inline bool accept(Operator::Symbol operatorSymbol) {
     if (!current().isOperator()) return false;
-    if (current().hasOperatorName(operatorSymbol)) return true;
+    if (current().hasOperatorSymbol(operatorSymbol)) return true;
     return false;
   }
+  /// Accept a Fixity
   inline bool accept(Fixity fixity) {
     return current().isOperator() && current().hasFixity(fixity);
   }
+  /// Accept only terminals
   inline bool acceptTerminal() {
     return current().isTerminal();
   }
+  /// Accept anything that ends an expression
   inline bool acceptEndOfExpression() {
     return accept(C_SEMI) || accept(C_PAREN_RIGHT) || accept(FILE_END) || accept(K_DO);
   }
-  // Expect certain tokens to appear (throw otherwise)
+  /// Expect certain tokens to appear (throw otherwise)
   bool expect(TokenType tok, std::string errorMessage = "Unexpected symbol");
+  /// Expect a semicolon \see expect
   void expectSemi();
 };
 
-// Contains methods for parsing expressions in a parser
+/**
+  \brief Provides the \link expression \endlink method for parsing an expression.
+*/
 class ExpressionParser: virtual public TokenBaseParser {
 protected:
   ExpressionParser() {}
 private:
-  // Creates an ExpressionNode from the current Token
+  /// Creates an ExpressionNode from the current Token
   Node<ExpressionNode>::Link exprFromCurrent();
-  // Parse a primary in the expression
-  // Returns an ExpressionNode, or nullptr if the expression is empty (terminates immediately)
-  // For example, ';' is an empty expression
+  /**
+    \brief Parse a primary in the expression
+    
+    ';' is an empty expression for example
+    \returns an ExpressionNode, or nullptr if the expression is empty (terminates immediately)
+  */
   Node<ExpressionNode>::Link parseExpressionPrimary();
-  // Implementation detail of expression
-  // This method exists to allow recursion
+  /**
+    \brief Implementation detail of expression
+    
+    This method exists to allow recursion.
+  */
   Node<ExpressionNode>::Link expressionImpl(Node<ExpressionNode>::Link lhs, int minPrecedence);
 public:
-  // Parse an expression starting at the current token
-  // throwIfEmpty: throws an error on empty expressions; if set to false, empty expressions return nullptr
+  /**
+    \brief Parse an expression starting at the current token
+    \param throwIfEmpty throws an error on empty expressions; if set to false, empty expressions return nullptr
+  */
   Node<ExpressionNode>::Link expression(bool throwIfEmpty = true);
 };
 
-// Contains methods for parsing declarations in a parser
+/**
+  \brief Provides the \link declaration \endlink method for parsing a declaration.
+  
+  Depends on ExpressionParser for expression parsing.
+*/
 class DeclarationParser: virtual public ExpressionParser {
 protected:
   DeclarationParser() {}
 private:
-  // Creates a DeclarationNode from a list of types, handles initialization if available
+  /// Creates a DeclarationNode from a list of types, handles initialization if available
   Node<DeclarationNode>::Link declarationFromTypes(TypeList typeList);
 public:
-  // Parse a declaration starting at the current token
-  // throwIfEmpty: throws an error on empty declarations; if set to false, empty declarations return nullptr
+  /**
+    \brief Parse a declaration starting at the current token
+    \param throwIfEmpty throws an error on empty declarations; if set to false, empty declarations return nullptr
+  */
   Node<DeclarationNode>::Link declaration(bool throwIfEmpty = true);
 };
 
 class StatementParser;
 
+/**
+  \brief Provides the \link block \endlink method for parsing a block.
+  
+  Depends on StatementParser for parsing individual statements.
+*/
 class BlockParser: virtual public TokenBaseParser {
 protected:
-  // This avoids circular inheritance between BlockParser and StatementParser
+  /// Storing this pointer avoids circular inheritance between BlockParser and StatementParser
   StatementParser* stp;
+  /// \copydoc stp
   BlockParser(StatementParser* stp);
 public:
-  // Parse a block, depending on its type
-  // Normal code blocks are enclosed in K_DO/K_END
-  // Root blocks aren't expected to be enclosed, and instead they end at the file end
-  // If blocks can also be ended with K_ELSE besides K_END
+  /**
+    \brief Parse a block, depending on its type
+    
+    Normal code blocks are enclosed in K_DO/K_END.
+    Root blocks aren't expected to be enclosed, and instead they end at the file end.
+    If blocks can also be ended with K_ELSE besides K_END.
+  */
   Node<BlockNode>::Link block(BlockType type);
 };
 
+/**
+  \brief Provides the \link ifStatement \endlink method for parsing an if statement.
+  
+  Depends on ExpressionParser for parsing expressions.
+  Depends on BlockParser for parsing blocks.
+*/
 class IfStatementParser: virtual public ExpressionParser, virtual public BlockParser {
 protected:
-  // See BlockParser's ctor
+  /// \copydoc BlockNode(StatementParser*)
   IfStatementParser(StatementParser* stp);
 public:
-  // Parse an if statement starting at the current token
-  // This function assumes K_IF has been skipped, however
+  /**
+    \brief Parse an if statement starting at the current token
+    
+    This function assumes K_IF has been skipped.
+  */
   Node<BranchNode>::Link ifStatement();
 };
 
+
+/**
+  \brief Provides the \link statement \endlink method for parsing an a statement.
+  
+  Depends on ExpressionParser for parsing expressions.
+  Depends on IfStatementParser for parsing if statements.
+  Depends on BlockParser for parsing blocks.
+  Depends on DeclarationParser for parsing declarations.
+*/
 class StatementParser: virtual public IfStatementParser, virtual public DeclarationParser {
 protected:
-  // See BlockParser's ctor
+  /// \see BlockNode(StatementParser*)
   StatementParser();
 public:
-  // Parse a statement
-  // Returns whatever node was parsed
+  /**
+    \brief Parse a statement
+    
+    \returns whatever node was parsed
+  */
   ASTNode::Link statement();
 };
 
+/**
+  \brief Parses a list of tokens, and produces an AST.
+*/
 class TokenParser: public StatementParser {
 public:
-  // See BlockParser's ctor
   TokenParser();
   
+  /**
+    \brief Call this method to actually do the parsing before using getTree
+    \param input list of tokens from lexer
+  */
   void parse(std::vector<Token> input);
 };
 

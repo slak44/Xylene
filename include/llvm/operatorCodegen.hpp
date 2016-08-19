@@ -32,7 +32,7 @@ static inline llvm::Value* createLoad(llvm::IRBuilder<> builder, llvm::Value* fr
   return builder.CreateLoad(from, "loadIdentifier");
 }
 
-extern std::unordered_map<OperatorName, CodegenFunction> specialCodegenMap;
-extern std::unordered_map<OperatorName, TypeMap> codegenMap;
+extern std::unordered_map<Operator::Name, CodegenFunction> specialCodegenMap;
+extern std::unordered_map<Operator::Name, TypeMap> codegenMap;
 
 #endif

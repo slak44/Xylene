@@ -1,7 +1,7 @@
 #include "token.hpp"
 
 Token::Token(TokenType type, std::string data, uint64 line): type(type), data(data), line(line) {}
-Token::Token(TokenType type, OperatorIndex idx, uint64 line): type(type), idx(idx), line(line) {}
+Token::Token(TokenType type, Operator::Index idx, uint64 line): type(type), idx(idx), line(line) {}
 Token::Token(TokenType type, uint64 line): type(type), line(line) {}
 
 const Operator& Token::getOperator() const {
@@ -24,7 +24,7 @@ bool Token::hasAssociativity(Associativity asoc) const {
   return asoc == getOperator().getAssociativity();
 }
 
-bool Token::hasOperatorName(OperatorSymbol name) const {
+bool Token::hasOperatorSymbol(Operator::Symbol name) const {
   operatorCheck(GET_ERR_METADATA);
   return name == getOperator().getName();
 }

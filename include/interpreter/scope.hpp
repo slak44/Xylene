@@ -7,12 +7,20 @@
 #include "object.hpp"
 #include "utils/error.hpp"
 
+/**
+  \brief Thrown in TreeWalkInterpreter when something can't be found in a scope.
+  \deprecated
+*/
 class NotFoundError: public InternalError {
 public:
   NotFoundError(ErrorData data):
     InternalError("NotFoundError", "Cannot find required identifier in this scope", data) {}
 };
 
+/**
+  \brief Manages scope for TreeWalkInterpreter.
+  \deprecated
+*/
 class Scope {
 private:
   PtrUtil<Scope>::WeakLink parent;

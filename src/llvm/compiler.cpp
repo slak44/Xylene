@@ -83,7 +83,7 @@ TokenType getFromValueType(llvm::Type* ty) {
 
 CodegenFunction identifyCodegenFunction(Token tok, llvm::IRBuilder<>& builder, std::vector<llvm::Value*>& operands) {
   // Name to look for
-  const OperatorName& toFind = operatorNameFrom(tok.idx);
+  const Operator::Name& toFind = operatorNameFrom(tok.idx);
   // Function to return
   CodegenFunction func;
   // Check if it's a special case

@@ -9,6 +9,9 @@
 #include "operator.hpp"
 #include "token.hpp"
 
+/**
+  \brief Base of Lexer. Maintains all of its state, and provides convenience methods for manipulating it
+*/
 class LexerBase {
 private:
   std::string code;
@@ -16,72 +19,101 @@ private:
   std::vector<Token> tokens {};
   uint64 currentLine = 1;
 protected:
-  // Data access
+  /// Get character at current position
   inline char current() const {
     return code[pos];
   }
+  /**
+    \brief Get multiple characters starting at the current position
+    \param charCount how many should be retrieved
+  */
   inline std::string current(uint charCount) const {
     return code.substr(pos, charCount);
   }
+  /// Get a character this many indices ahead
   inline char peekAhead(uint ahead) const {
     return code[pos + ahead];
   }
+  /// Get the last inserted Token
   inline const Token& peekBehind() const {
     return tokens.back();
   }
-  // Position
+  /// Skip a number of chars, usually just advances to the next one
   inline void skip(uint64 skipped) {
     pos += skipped;
     if (pos >= code.length()) pos = code.length();
   }
+  /// Decrement current position so the loop doesn't do so automatically
   inline void noIncrement() {
     pos--;
   }
+  /// Is the input finished
   inline bool hasFinishedString() const {
     return pos == code.length();
   }
-  // Special chars
+  /// Is end of line
   inline bool isEOL() const {
     return current() == '\n';
   }
+  /// Is end of file
   inline bool isEOF() const {
     return current() == '\0';
   }
-  // Tokens
+  /// Add a new Token to the output
   inline void addToken(Token tok) {
     tokens.push_back(tok);
   }
+  /// Get count of tokens
   inline std::size_t getTokenCount() const {
     return tokens.size();
   }
-  // Line number
+  /// Advance to the next line
   inline void nextLine() {
     currentLine++;
   }
+  /// Get the current line number
   inline uint64 getCurrentLine() const {
     return currentLine;
   }
-  // Loop over the string here in subclasses
+  /**
+    \brief Subclasses should use this to loop over the input and create Tokens from it
+  */
   virtual void processInput() = 0;
 public:
+  /// Get input code
   const std::string& getCode() const;
+  /// Get output tokens
   const std::vector<Token>& getTokens() const;
+  /// Access an output token at a particular position
   const Token& operator[](std::size_t p) const;
+  /// Get total line count
   uint64 getLineCount() const;
   
-  virtual LexerBase& tokenize(std::string code);
+  /// Call to create output token list
+  LexerBase& tokenize(std::string code);
 };
 
+/**
+  \brief Tokenizes input.
+*/
 class Lexer: public LexerBase {
 private:
+  /// Utility function
   inline TokenType findConstruct() const;
+  /// \copydoc findConstruct
   inline bool isOctalDigit(char c) const;
+  /// \copydoc findConstruct
   inline bool isIdentifierChar() const;
+  /// \copydoc findConstruct
   inline Fixity determineFixity(Fixity afterBinaryOrPrefix, Fixity afterIdentOrParen, Fixity otherCases) const;
   
+  /// \copydoc findConstruct
   inline void handleMultiLineComments();
+  /// \copydoc findConstruct
   inline int getNumberRadix();
+  /// \copydoc findConstruct
   inline Token getNumberToken(int radix);
+  /// \copydoc findConstruct
   inline std::string getQuotedString();
 protected:
   void processInput();

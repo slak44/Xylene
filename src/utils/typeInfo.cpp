@@ -48,10 +48,10 @@ std::string DefiniteTypeInfo::toString() const {
   return "DefiniteTypeInfo: " + getTypeNameString();
 };
 
-FunctionTypeInfo::FunctionTypeInfo(TypeInfo returnType, std::vector<TypeInfo> argumentTypes): returnType(returnType), argumentTypes(argumentTypes) {}
+FunctionSignature::FunctionSignature(TypeInfo returnType, std::vector<TypeInfo> argumentTypes): returnType(returnType), argumentTypes(argumentTypes) {}
 
-std::string FunctionTypeInfo::toString() const {
-  std::string str = "FunctionInfo (";
+std::string FunctionSignature::toString() const {
+  std::string str = "FunctionSignature (";
   str += "return: " + returnType.getTypeNameString();
   str += ", arguments: " + collate<decltype(argumentTypes)>(argumentTypes, [](TypeInfo ti) {return "(arg " + ti.getTypeNameString() + ")";});
   str += ")";
