@@ -62,7 +62,9 @@ public:
   bool operator!=(const Operator& rhs) const;
 };
 
+// Assignment requires that the first operand is mutable
 static const RequireReferenceList assignmentList {true, false};
+// Some unary operators (eg ++) mutate their operand
 static const RequireReferenceList unaryOps {true};
 
 const std::vector<Operator> operatorList {
