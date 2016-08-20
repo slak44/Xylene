@@ -41,12 +41,21 @@ Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary() {
     skip();
     return expr;
   } else if (acceptTerminal()) {
-    expr = exprFromCurrent();
+    auto terminal = Node<ExpressionNode>::make(current());
     skip();
     // Check if there are any postfix operators around
     if (accept(POSTFIX)) {
-      expr->addChild(exprFromCurrent());
+      auto lastNode = expr = exprFromCurrent();
       skip();
+      while (accept(POSTFIX)) {
+        auto newPostfix = exprFromCurrent();
+        lastNode->addChild(newPostfix);
+        lastNode = newPostfix;
+        skip();
+      }
+      lastNode->addChild(terminal);
+    } else {
+      expr = terminal;
     }
     return expr;
   // Prefix operators

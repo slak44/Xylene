@@ -2,7 +2,7 @@
 
 XMLParser::XMLParser() {}
 
-void XMLParser::parse(char* str) {
+XMLParser& XMLParser::parse(char* str) {
   rapidxml::xml_document<char> doc;
   try {
     doc.parse<0>(str);
@@ -19,10 +19,12 @@ void XMLParser::parse(char* str) {
     {"tag name", doc.first_node()->name()}
   });
   tree = std::make_unique<AST>(AST(rootNode));
+  return *this;
 }
 
-void XMLParser::parse(rapidxml::file<char> xmlFile) {
+XMLParser& XMLParser::parse(rapidxml::file<char> xmlFile) {
   parse(xmlFile.data());
+  return *this;
 }
 
 void XMLParser::parseChildren(rapidxml::xml_node<>* node, ASTNode::Link target) {

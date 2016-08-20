@@ -51,9 +51,9 @@ public:
   XMLParser();
   
   /// Parse an XML string
-  void parse(char* str);
+  XMLParser& parse(char* str);
   /// Parse an XML file
-  void parse(rapidxml::file<char> xmlFile);
+  XMLParser& parse(rapidxml::file<char> xmlFile);
   
 private:
   /// Implementation detail. Parses all the children of an XML node
