@@ -17,13 +17,13 @@
 #include "tokenType.hpp"
 
 // Generates IR using provided arguments
-using CodegenFunction = std::function<llvm::Value*(llvm::IRBuilder<>, std::vector<llvm::Value*>)>;
+using CodegenFunction = std::function<llvm::Value*(llvm::IRBuilder<>, std::vector<llvm::Value*>, uint)>;
 // Signature for a lambda representing a CodegenFunction
-#define CODEGEN_SIG (llvm::IRBuilder<> builder, std::vector<llvm::Value*> operands) -> llvm::Value*
+#define CODEGEN_SIG (llvm::IRBuilder<> builder, std::vector<llvm::Value*> operands, __attribute__((unused)) uint line) -> llvm::Value*
 // Maps operand types to a func that generates code from them
 using TypeMap = std::unordered_map<std::vector<TokenType>, CodegenFunction, VectorHash<TokenType>>;
 
-// Convenience method
+// Convenience methods
 static inline llvm::Value* SItoFP(llvm::IRBuilder<> builder, llvm::Value* integer) {
   return builder.CreateSIToFP(integer, floatType, "SItoFPconv");
 }

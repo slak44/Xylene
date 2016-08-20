@@ -17,4 +17,7 @@ extern llvm::Type* floatType;
 /// Boolean type
 extern llvm::IntegerType* booleanType;
 
+/// Used for throwing consistent type mismatch errors
+const std::string typeMismatchErrorString = "No operation available for given operands";
+
 #endif
