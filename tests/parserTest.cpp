@@ -17,6 +17,11 @@ protected:
   }
 };
 
+TEST_F(ParserTest, Primaries) {
+  px.parse(Lexer().tokenize("+ -- a ++ --;").getTokens());
+  ASSERT_EQ(px.getTree(), xpx.parse(xmlFile("data/parser/unary.xml")).getTree());
+}
+
 TEST_F(ParserTest, ExpressionParsing) {
   // (-12 + -3) / 1.5 >> 1
   

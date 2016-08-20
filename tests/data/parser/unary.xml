@@ -1,0 +1,12 @@
+<!-- No comment, the unary decrements trip the xml parser -->
+<block type="root">
+  <expr type="Operator" value="Unary +">
+    <expr type="Operator" value="Prefix --">
+      <expr type="Operator" value="Postfix ++">
+        <expr type="Operator" value="Postfix --">
+          <expr type="Identifier" value="a"/>
+        </expr>
+      </expr>
+    </expr>
+  </expr>
+</block>
