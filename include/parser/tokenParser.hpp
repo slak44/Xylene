@@ -21,7 +21,7 @@
   
   program = block ;
   block = [ statement, ";", { statement, ";" } ] ;
-  statement = declaration | ( "define", function ) | for_loop | while_loop | block | if_statement | try_catch | throw_statement | expression ;
+  statement = declaration | ( "define", function ) | for_loop | while_loop | block | if_statement | try_catch | throw_statement | expression | "break" | "continue" ;
   declaration = "define" | type_list, ident, [ "=", expression ] ;
   for_loop = "for", expression, ";", expression, ";", expression, "do", block, "end" ;
   while_loop = "while", expression, "do", block, "end" ;

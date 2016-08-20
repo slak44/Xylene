@@ -245,6 +245,11 @@ ASTNode::Link StatementParser::statement() {
       expectSemi();
       return e;
     }
+  } else if (accept(K_BREAK)) {
+    skip();
+    return Node<BreakLoopNode>::make();
+  } else if (accept(K_CONTINUE)) {
+    throw InternalError("Unimplemented", {METADATA_PAIRS, {"token", "loop continue"}});
   } else if (accept(K_RETURN)) {
     skip(); // Skip "return"
     auto retValue = expression();

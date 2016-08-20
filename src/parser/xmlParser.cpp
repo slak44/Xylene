@@ -53,7 +53,9 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     return retNode;
   } else if (name == "expr") {
     TokenType tokenType = getTokenTypeByName(node->first_attribute("type")->value());
-    std::string data = node->first_attribute("value")->value();
+    auto val = node->first_attribute("value");
+    if (val == 0) throw XMLParseError("Can't find expression value attribute", {METADATA_PAIRS});
+    std::string data = val->value();
     std::unique_ptr<Token> content;
     if (tokenType == OPERATOR) {
       content = std::make_unique<Token>(tokenType, operatorIndexFrom(data), 0);
@@ -118,6 +120,8 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     return loop;
   } else if (name == "loop_init" || name == "loop_condition" || name == "loop_update") {
     return parseXMLNode(node->first_node());
+  } else if (name == "break") {
+    return Node<BreakLoopNode>::make();
   }
   throw XMLParseError("Unknown type of node", {METADATA_PAIRS, {"node name", name}});
 }

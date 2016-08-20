@@ -48,6 +48,13 @@ TEST_F(LLVMCompilerTest, Assignment) {
 
 TEST_F(LLVMCompilerTest, Branches) {
   noThrowOnCompile("data/llvm/if.xml");
-  noThrowOnCompile("data/llvm/if-else.xml");
-  noThrowOnCompile("data/llvm/else-if.xml");
+  noThrowOnCompile("data/llvm/if_else.xml");
+  noThrowOnCompile("data/llvm/else_if.xml");
+}
+
+TEST_F(LLVMCompilerTest, Loops) {
+  noThrowOnCompile("data/llvm/loops/complete.xml");
+  noThrowOnCompile("data/llvm/loops/no_init.xml");
+  noThrowOnCompile("data/llvm/loops/no_condition.xml");
+  noThrowOnCompile("data/llvm/loops/no_update.xml");
 }

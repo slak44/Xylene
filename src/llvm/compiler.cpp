@@ -237,7 +237,7 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   }
   auto blockFailNode = Node<BlockNode>::dynPtrCast(node->getFailiureBlock());
-  if (blockFailNode) {
+  if (blockFailNode != nullptr) {
     // Has an else block as failiure
     llvm::BasicBlock* failiure = compileBlock(blockFailNode, "branchFailiure");
     // Jump back to continueCurrent after the branch is done, to execute the rest of the block, unless there already is a terminator
@@ -266,6 +266,8 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   if (init != nullptr) this->visitDeclaration(init);
   // Make the block where we go after we're done with the loopBlock
   auto loopAfter = llvm::BasicBlock::Create(contextRef, "loopAfter", currentFunction);
+  // Make sure break statements know where to go
+  node->setExitBlock(loopAfter);
   // Make the block that will be looped
   auto loopBlock = llvm::BasicBlock::Create(contextRef, "loopBlock", currentFunction);
   // Make the block that checks the loop condition
@@ -293,6 +295,17 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   builder.CreateBr(loopCondition);
   // Keep inserting instructions after the loop
   builder.SetInsertPoint(loopAfter);
+}
+
+void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
+  auto lastParent = node->getParent();
+  for (; ; lastParent = lastParent.lock()->getParent()) {
+    if (lastParent.lock() == nullptr) throw Error("SyntaxError", "Found break statement outside loop", node->getLineNumber());
+    // Make sure that at least somewhere up the tree, we have a loop, otherwise the above error is thrown
+    if (Node<LoopNode>::dynPtrCast(lastParent.lock()) != nullptr) break;
+  }
+  llvm::BasicBlock* exitBlock = Node<LoopNode>::dynPtrCast(lastParent.lock())->getExitBlock();
+  builder.CreateBr(exitBlock);
 }
 
 void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
