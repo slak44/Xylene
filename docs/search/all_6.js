@@ -15,6 +15,7 @@ var searchData=
   ['getcurrentline',['getCurrentLine',['../class_lexer_base.html#af766bfe9158539441b5e87b484476b7c',1,'LexerBase']]],
   ['getentrypoint',['getEntryPoint',['../class_compile_visitor.html#aec52fddacea40848b1de305b7e7a200d',1,'CompileVisitor']]],
   ['getevaltypelist',['getEvalTypeList',['../class_type_info.html#aac76b15dd837daa15fcf4083f7c36e9d',1,'TypeInfo']]],
+  ['getexitblock',['getExitBlock',['../class_loop_node.html#a9df5ddd2d9dac89fb9317890c2ff33a9',1,'LoopNode']]],
   ['getfixity',['getFixity',['../class_operator.html#a120cdbd24c1d8e82196effbc4ea25e45',1,'Operator']]],
   ['getfromvaluetype',['getFromValueType',['../compiler_8cpp.html#ac1162c9d973ef89f591e07abe22865b2',1,'compiler.cpp']]],
   ['getidentifier',['getIdentifier',['../class_declaration_node.html#af7f5a1845c0f255fce5967f7de232b24',1,'DeclarationNode']]],
