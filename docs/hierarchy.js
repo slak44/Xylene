@@ -28,6 +28,7 @@ var hierarchy =
         [ "ExpressionNode", "class_expression_node.html", null ],
         [ "NoMoreChildrenNode", "class_no_more_children_node.html", [
           [ "BranchNode", "class_branch_node.html", null ],
+          [ "BreakLoopNode", "class_break_loop_node.html", null ],
           [ "DeclarationNode", "class_declaration_node.html", null ],
           [ "LoopNode", "class_loop_node.html", null ],
           [ "ReturnNode", "class_return_node.html", null ]

@@ -130,10 +130,11 @@ Inheritance diagram for ASTNode:</div>
 <area href="class_block_node.html" title="Represents a block of statements. Children are those statements. " alt="BlockNode" shape="rect" coords="0,112,254,136"/>
 <area href="class_expression_node.html" title="Represents a piece of an expression. " alt="ExpressionNode" shape="rect" coords="264,112,518,136"/>
 <area href="class_no_more_children_node.html" title="ASTNode with fixed children count. " alt="NoMoreChildrenNode" shape="rect" coords="528,112,782,136"/>
-<area href="class_branch_node.html" title="If statement in AST form. " alt="BranchNode" shape="rect" coords="132,168,386,192"/>
-<area href="class_declaration_node.html" title="Stores metadata about a declaration. " alt="DeclarationNode" shape="rect" coords="396,168,650,192"/>
-<area href="class_loop_node.html" title="Represents a loop. " alt="LoopNode" shape="rect" coords="660,168,914,192"/>
-<area href="class_return_node.html" title="Return statement. " alt="ReturnNode" shape="rect" coords="924,168,1178,192"/>
+<area href="class_branch_node.html" title="If statement in AST form. " alt="BranchNode" shape="rect" coords="0,168,254,192"/>
+<area href="class_break_loop_node.html" title="Break statement for exiting a loop. " alt="BreakLoopNode" shape="rect" coords="264,168,518,192"/>
+<area href="class_declaration_node.html" title="Stores metadata about a declaration. " alt="DeclarationNode" shape="rect" coords="528,168,782,192"/>
+<area href="class_loop_node.html" title="Represents a loop. " alt="LoopNode" shape="rect" coords="792,168,1046,192"/>
+<area href="class_return_node.html" title="Return statement. " alt="ReturnNode" shape="rect" coords="1056,168,1310,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -476,7 +477,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Pretty printing for this node and all his children. </p>
 
-<p>Reimplemented in <a class="el" href="class_return_node.html#a59f2d2a19380f48c06399411b8915f49">ReturnNode</a>, <a class="el" href="class_loop_node.html#a3f0198b0cb5603272848d08bad637fa9">LoopNode</a>, <a class="el" href="class_branch_node.html#a58978b7ae7216f96c0bf0572caefc487">BranchNode</a>, <a class="el" href="class_declaration_node.html#a22dc3a01f0bb2062395ae1977ad80b3b">DeclarationNode</a>, <a class="el" href="class_expression_node.html#a901d6d163105ddf06eab384c5750f98c">ExpressionNode</a>, and <a class="el" href="class_block_node.html#a8ddb95140f0da0fa652a08e801da9758">BlockNode</a>.</p>
+<p>Reimplemented in <a class="el" href="class_break_loop_node.html#a14585668900988394a65565e852b0c1c">BreakLoopNode</a>, <a class="el" href="class_return_node.html#a59f2d2a19380f48c06399411b8915f49">ReturnNode</a>, <a class="el" href="class_loop_node.html#a3f0198b0cb5603272848d08bad637fa9">LoopNode</a>, <a class="el" href="class_branch_node.html#a58978b7ae7216f96c0bf0572caefc487">BranchNode</a>, <a class="el" href="class_declaration_node.html#a22dc3a01f0bb2062395ae1977ad80b3b">DeclarationNode</a>, <a class="el" href="class_expression_node.html#a901d6d163105ddf06eab384c5750f98c">ExpressionNode</a>, and <a class="el" href="class_block_node.html#a8ddb95140f0da0fa652a08e801da9758">BlockNode</a>.</p>
 
 </div>
 </div>
@@ -534,7 +535,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_return_node.html#adc73cb304c482f27d8a05d440965f45f">ReturnNode</a>, <a class="el" href="class_loop_node.html#aea2567155b99062e197b603275739e7a">LoopNode</a>, <a class="el" href="class_branch_node.html#adcfd5e09038f01810bee01ff24e9c667">BranchNode</a>, <a class="el" href="class_declaration_node.html#a47f0089caee0633301593ed9e82e1843">DeclarationNode</a>, <a class="el" href="class_expression_node.html#a555f3497ab2c932340d832e106a1a543">ExpressionNode</a>, and <a class="el" href="class_block_node.html#a32c5a762e619e917bd3d45b72b42efc4">BlockNode</a>.</p>
+<p>Implemented in <a class="el" href="class_break_loop_node.html#a74cbd8b2f55df0176c03e1de20c1de6f">BreakLoopNode</a>, <a class="el" href="class_return_node.html#adc73cb304c482f27d8a05d440965f45f">ReturnNode</a>, <a class="el" href="class_loop_node.html#aea2567155b99062e197b603275739e7a">LoopNode</a>, <a class="el" href="class_branch_node.html#adcfd5e09038f01810bee01ff24e9c667">BranchNode</a>, <a class="el" href="class_declaration_node.html#a47f0089caee0633301593ed9e82e1843">DeclarationNode</a>, <a class="el" href="class_expression_node.html#a555f3497ab2c932340d832e106a1a543">ExpressionNode</a>, and <a class="el" href="class_block_node.html#a32c5a762e619e917bd3d45b72b42efc4">BlockNode</a>.</p>
 
 </div>
 </div>
@@ -606,8 +607,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/<a class="el" href="ast_8hpp_source.html">ast.hpp</a></li>
-<li>src/<a class="el" href="ast_8cpp.html">ast.cpp</a></li>
+<li>/home/slak/Things/open/lg/include/<a class="el" href="ast_8hpp_source.html">ast.hpp</a></li>
+<li>/home/slak/Things/open/lg/src/<a class="el" href="ast_8cpp.html">ast.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
