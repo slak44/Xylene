@@ -115,7 +115,7 @@ CodegenFunction identifyCodegenFunction(Token tok, llvm::IRBuilder<>& builder, s
   // Try to find the function in the TypeMap using the operand types
   auto funIt = opMapIt->second.find(operandTypes);
   if (funIt == opMapIt->second.end()) {
-    throw Error("TypeError", "No operation available for given operands", tok.line);
+    throw Error("TypeError", typeMismatchErrorString, tok.line);
   }
   func = funIt->second;
   return func;
@@ -160,7 +160,7 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, 
     }
     auto func = identifyCodegenFunction(tok, builder, operands);
     // Call the code generating function, and return its result
-    return func(builder, operands);
+    return func(builder, operands, tok.line);
   } else {
     throw InternalError("Malformed expression node", {
       METADATA_PAIRS,
@@ -262,8 +262,37 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
 }
 
 void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
-  UNUSED(node);
-  throw ni;
+  auto init = node->getInit();
+  if (init != nullptr) this->visitDeclaration(init);
+  // Make the block where we go after we're done with the loopBlock
+  auto loopAfter = llvm::BasicBlock::Create(contextRef, "loopAfter", currentFunction);
+  // Make the block that will be looped
+  auto loopBlock = llvm::BasicBlock::Create(contextRef, "loopBlock", currentFunction);
+  // Make the block that checks the loop condition
+  auto loopCondition = llvm::BasicBlock::Create(contextRef, "loopCondition", currentFunction);
+  // Go to the condtion
+  builder.CreateBr(loopCondition);
+  builder.SetInsertPoint(loopCondition);
+  auto cond = node->getCondition();
+  if (cond != nullptr) {
+    auto condValue = compileExpression(cond);
+    // Go to the loop if true, end the loop otherwise
+    builder.CreateCondBr(condValue, loopBlock, loopAfter);
+  } else {
+    // There is no condition; unconditionally jump
+    builder.CreateBr(loopBlock);
+  }
+  // Add the code to the loopBlock
+  builder.SetInsertPoint(loopBlock);
+  auto code = node->getCode();
+  for (auto& child : code->getChildren()) child->visit(shared_from_this());
+  // Also add the update expr at the end of the loopBlock
+  auto update = node->getUpdate();
+  if (update != nullptr) compileExpression(update);
+  // Jump back to the condition to see what we do next
+  builder.CreateBr(loopCondition);
+  // Keep inserting instructions after the loop
+  builder.SetInsertPoint(loopAfter);
 }
 
 void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
