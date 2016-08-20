@@ -14,6 +14,8 @@ var token_type_8hpp =
       [ "K_ELSE", "token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba35333cdb926b407fe1c04ead375b9f53", null ],
       [ "K_WHILE", "token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba3ff757fd5294303b609b4c1881fe7862", null ],
       [ "K_FOR", "token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba417c40bd4a7e58d9f1505bd6bd9acec3", null ],
+      [ "K_BREAK", "token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1baf8ec2dde5f8838d0dbebefc0fecae530", null ],
+      [ "K_CONTINUE", "token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1baea4a0623b99c2a6e2226e634a6a90839", null ],
       [ "K_FAT_ARROW", "token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1bab4c6ea74a3e3b91c9f8f2fc9f560eb49", null ],
       [ "K_VOID", "token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba6fda48a48efb0eff9969f692fa164b14", null ],
       [ "K_TYPE", "token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba976608df344d2db9cd9dff83d54ed6fe", null ],

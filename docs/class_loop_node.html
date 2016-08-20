@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -133,6 +134,10 @@ Inheritance diagram for LoopNode:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa4acfd7f28076437bde9b28a94539043"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#aa4acfd7f28076437bde9b28a94539043">LoopNode</a> ()</td></tr>
 <tr class="separator:aa4acfd7f28076437bde9b28a94539043"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9df5ddd2d9dac89fb9317890c2ff33a9"><td class="memItemLeft" align="right" valign="top">llvm::BasicBlock *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#a9df5ddd2d9dac89fb9317890c2ff33a9">getExitBlock</a> () const </td></tr>
+<tr class="separator:a9df5ddd2d9dac89fb9317890c2ff33a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7df3425a064b85d73d23f13dfcbec969"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#a7df3425a064b85d73d23f13dfcbec969">setExitBlock</a> (llvm::BasicBlock *bb)</td></tr>
+<tr class="separator:a7df3425a064b85d73d23f13dfcbec969"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f0198b0cb5603272848d08bad637fa9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#a3f0198b0cb5603272848d08bad637fa9">printTree</a> (<a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a> level) const override</td></tr>
 <tr class="memdesc:a3f0198b0cb5603272848d08bad637fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pretty printing for this node and all his children.  <a href="#a3f0198b0cb5603272848d08bad637fa9">More...</a><br /></td></tr>
 <tr class="separator:a3f0198b0cb5603272848d08bad637fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +223,21 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a9df5ddd2d9dac89fb9317890c2ff33a9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">llvm::BasicBlock * LoopNode::getExitBlock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a3f0198b0cb5603272848d08bad637fa9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -243,6 +263,22 @@ Additional Inherited Members</h2></td></tr>
 <p>Pretty printing for this node and all his children. </p>
 
 <p>Reimplemented from <a class="el" href="class_a_s_t_node.html#a0674e55f7973dc34a53b2a6443b86235">ASTNode</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7df3425a064b85d73d23f13dfcbec969"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoopNode::setExitBlock </td>
+          <td>(</td>
+          <td class="paramtype">llvm::BasicBlock *&#160;</td>
+          <td class="paramname"><em>bb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

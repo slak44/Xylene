@@ -5,6 +5,7 @@ var searchData=
   ['set',['set',['../class_scope.html#ab10409b0a46bf83b94ac232387bd7000',1,'Scope']]],
   ['set_5ffor',['SET_FOR',['../ast_8cpp.html#a9f2db2cf3bd1860db9cf4f8e8974e1db',1,'ast.cpp']]],
   ['set_5fsig',['SET_SIG',['../ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639',1,'ast.hpp']]],
+  ['setexitblock',['setExitBlock',['../class_loop_node.html#a7df3425a064b85d73d23f13dfcbec969',1,'LoopNode']]],
   ['setlinenumber',['setLineNumber',['../class_a_s_t_node.html#aa81a5d27ba7e674cab80bdd06d8e525e',1,'ASTNode']]],
   ['setparent',['setParent',['../class_a_s_t_node.html#a7e7102508b2aa3f914531681bd450816',1,'ASTNode::setParent()'],['../class_scope.html#a97734f0a54a4340d4897e2a23a8337e3',1,'Scope::setParent()']]],
   ['setvalue',['setValue',['../class_reference.html#a09369a0fabb8c97882f7011cd0b163d3',1,'Reference']]],
