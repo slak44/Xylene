@@ -221,7 +221,7 @@ public:
     \brief Call this method to actually do the parsing before using getTree
     \param input list of tokens from lexer
   */
-  void parse(std::vector<Token> input);
+  TokenParser& parse(std::vector<Token> input);
 };
 
 #endif

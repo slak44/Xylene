@@ -15,13 +15,13 @@ protected:
   
   inline void compile(std::string xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
-    CompileVisitor::Link visitor = CompileVisitor::create(globalContext, xmlFilePath, xpx.getTree());
+    CompileVisitor::Link visitor = CompileVisitor::create(xmlFilePath, xpx.getTree());
     visitor->visit();
   }
   
   inline void noThrowOnCompile(std::string xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
-    CompileVisitor::Link visitor = CompileVisitor::create(globalContext, xmlFilePath, xpx.getTree());
+    CompileVisitor::Link visitor = CompileVisitor::create(xmlFilePath, xpx.getTree());
     try {
       visitor->visit();
     } catch (InternalError& err) {

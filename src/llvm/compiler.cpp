@@ -1,9 +1,8 @@
 #include "llvm/compiler.hpp"
 
-CompileVisitor::CompileVisitor(llvm::LLVMContext& context, std::string moduleName, AST ast):
-  contextRef(context),
-  builder(context),
-  module(new llvm::Module(moduleName, context)),
+CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
+  builder(globalContext),
+  module(new llvm::Module(moduleName, globalContext)),
   ast(ast) {
   llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
   currentFunction = entryPoint = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module);
@@ -40,7 +39,7 @@ void CompileVisitor::visitBlock(Node<BlockNode>::Link node) {
 
 llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const std::string& name) {
   llvm::BasicBlock* oldBlock = builder.GetInsertBlock();
-  llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(contextRef, name, currentFunction);
+  llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(globalContext, name, currentFunction);
   builder.SetInsertPoint(newBlock);
   for (auto& child : node->getChildren()) child->visit(shared_from_this());
   // If the block lacks a terminator instruction, add one
@@ -203,8 +202,8 @@ void CompileVisitor::visitBranch(Node<BranchNode>::Link node) {
 // The BasicBlock surrounding is the block where control returns after dealing with branches, only specify for recursive case
 void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding) {
   static const auto handleBranchExit = [this](llvm::BasicBlock* continueCurrent, llvm::BasicBlock* success, bool usesBranchAfter) -> void {
-    // Jump back to continueCurrent after the branch is done, to execute the rest of the block
     // Unless the block already goes somewhere else
+    // Jump back to continueCurrent after the branch is done, to execute the rest of the block
     if (!success->getTerminator()) {
       builder.SetInsertPoint(success);
       builder.CreateBr(continueCurrent);
@@ -229,7 +228,7 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
   llvm::BasicBlock* success = compileBlock(node->getSuccessBlock(), "branchSuccess");
   // continueCurrent gets all the current block's instructions after the branch
   // Unless the branch jumps or returns somewhere, continueCurrent is always executed
-  llvm::BasicBlock* continueCurrent = surrounding != nullptr ? surrounding : llvm::BasicBlock::Create(contextRef, "branchAfter", currentFunction);
+  llvm::BasicBlock* continueCurrent = surrounding != nullptr ? surrounding : llvm::BasicBlock::Create(globalContext, "branchAfter", currentFunction);
   if (node->getFailiureBlock() == nullptr) {
     // Does not have else clauses
     builder.SetInsertPoint(current);
@@ -252,7 +251,7 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   } else {
     // Has else-if as failiure
-    llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(contextRef, "branchNext", currentFunction);
+    llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(globalContext, "branchNext", currentFunction);
     builder.SetInsertPoint(nextBranch);
     compileBranch(Node<BranchNode>::dynPtrCast(node->getFailiureBlock()), continueCurrent);
     builder.SetInsertPoint(current);
@@ -265,13 +264,13 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   auto init = node->getInit();
   if (init != nullptr) this->visitDeclaration(init);
   // Make the block where we go after we're done with the loopBlock
-  auto loopAfter = llvm::BasicBlock::Create(contextRef, "loopAfter", currentFunction);
+  auto loopAfter = llvm::BasicBlock::Create(globalContext, "loopAfter", currentFunction);
   // Make sure break statements know where to go
   node->setExitBlock(loopAfter);
   // Make the block that will be looped
-  auto loopBlock = llvm::BasicBlock::Create(contextRef, "loopBlock", currentFunction);
+  auto loopBlock = llvm::BasicBlock::Create(globalContext, "loopBlock", currentFunction);
   // Make the block that checks the loop condition
-  auto loopCondition = llvm::BasicBlock::Create(contextRef, "loopCondition", currentFunction);
+  auto loopCondition = llvm::BasicBlock::Create(globalContext, "loopCondition", currentFunction);
   // Go to the condtion
   builder.CreateBr(loopCondition);
   builder.SetInsertPoint(loopCondition);
@@ -287,7 +286,10 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   // Add the code to the loopBlock
   builder.SetInsertPoint(loopBlock);
   auto code = node->getCode();
-  for (auto& child : code->getChildren()) child->visit(shared_from_this());
+  for (auto& child : code->getChildren()) {
+    child->visit(shared_from_this());
+    println(builder.GetInsertBlock()->getName().str());
+  }
   // Also add the update expr at the end of the loopBlock
   auto update = node->getUpdate();
   if (update != nullptr) compileExpression(update);
@@ -298,6 +300,7 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
 }
 
 void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
+  // TODO get rid of this garbage iteration, make sure this node has a reference to its loop node from the parser, don't search for it like an ape
   auto lastParent = node->getParent();
   for (; ; lastParent = lastParent.lock()->getParent()) {
     if (lastParent.lock() == nullptr) throw Error("SyntaxError", "Found break statement outside loop", node->getLineNumber());
