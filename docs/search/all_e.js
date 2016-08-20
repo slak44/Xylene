@@ -1,7 +1,7 @@
 var searchData=
 [
   ['parent',['parent',['../class_a_s_t_node.html#af38fa36ff556efde8be4d62d2b14520a',1,'ASTNode']]],
-  ['parse',['parse',['../class_token_parser.html#ae5365acf186ca894aadb9fbe010ec142',1,'TokenParser::parse()'],['../class_x_m_l_parser.html#ae58f2f913e0b98edc1c031a7e076e521',1,'XMLParser::parse(char *str)'],['../class_x_m_l_parser.html#a42aa30c7a6ef43f0f4932d91cf2a2dc6',1,'XMLParser::parse(rapidxml::file&lt; char &gt; xmlFile)']]],
+  ['parse',['parse',['../class_token_parser.html#a0e901b68c915c97743de149768aedd51',1,'TokenParser::parse()'],['../class_x_m_l_parser.html#ae58f2f913e0b98edc1c031a7e076e521',1,'XMLParser::parse(char *str)'],['../class_x_m_l_parser.html#a42aa30c7a6ef43f0f4932d91cf2a2dc6',1,'XMLParser::parse(rapidxml::file&lt; char &gt; xmlFile)']]],
   ['peekahead',['peekAhead',['../class_lexer_base.html#a4c35ffcdfccf368d7db878abc5ee1dd1',1,'LexerBase']]],
   ['peekbehind',['peekBehind',['../class_lexer_base.html#adb4055afbef0dca8d8316ca0daddbdef',1,'LexerBase']]],
   ['pos',['pos',['../class_token_base_parser.html#aa2dc7039e4d053fe2aa76439696ed421',1,'TokenBaseParser']]],
