@@ -8,6 +8,7 @@ var annotated_dup =
     [ "BlockParser", "class_block_parser.html", "class_block_parser" ],
     [ "Boolean", "class_boolean.html", "class_boolean" ],
     [ "BranchNode", "class_branch_node.html", "class_branch_node" ],
+    [ "BreakLoopNode", "class_break_loop_node.html", "class_break_loop_node" ],
     [ "CompileVisitor", "class_compile_visitor.html", "class_compile_visitor" ],
     [ "DeclarationNode", "class_declaration_node.html", "class_declaration_node" ],
     [ "DeclarationParser", "class_declaration_parser.html", "class_declaration_parser" ],

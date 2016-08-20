@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Test Lang: include/llvm/operatorCodegen.hpp File Reference</title>
+<title>Test Lang: /home/slak/Things/open/lg/include/llvm/operatorCodegen.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -131,14 +131,14 @@ $(document).ready(function(){initNavTree('operator_codegen_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a8f95660ba0eb370118cd04a29e65c161"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#a8f95660ba0eb370118cd04a29e65c161">CODEGEN_SIG</a>&#160;&#160;&#160;(llvm::IRBuilder&lt;&gt; builder, std::vector&lt;llvm::Value*&gt; operands) -&gt; llvm::Value*</td></tr>
+<tr class="memitem:a8f95660ba0eb370118cd04a29e65c161"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#a8f95660ba0eb370118cd04a29e65c161">CODEGEN_SIG</a>&#160;&#160;&#160;(llvm::IRBuilder&lt;&gt; builder, std::vector&lt;llvm::Value*&gt; operands, __attribute__((unused)) <a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a> line) -&gt; llvm::Value*</td></tr>
 <tr class="separator:a8f95660ba0eb370118cd04a29e65c161"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aecb04ff3404657b8161a5318f0900b8d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#aecb04ff3404657b8161a5318f0900b8d">CodegenFunction</a> = std::function&lt; llvm::Value *(llvm::IRBuilder&lt;&gt;, std::vector&lt; llvm::Value * &gt;)&gt;</td></tr>
-<tr class="separator:aecb04ff3404657b8161a5318f0900b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad06ced9001edfd59e653637a5fa2b12b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#ad06ced9001edfd59e653637a5fa2b12b">TypeMap</a> = std::unordered_map&lt; std::vector&lt; <a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a> &gt;, <a class="el" href="operator_codegen_8hpp.html#aecb04ff3404657b8161a5318f0900b8d">CodegenFunction</a>, <a class="el" href="struct_vector_hash.html">VectorHash</a>&lt; <a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a> &gt;&gt;</td></tr>
+<tr class="memitem:a6c82bb6ee1f2a577a53732dafd1875d7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#a6c82bb6ee1f2a577a53732dafd1875d7">CodegenFunction</a> = std::function&lt; llvm::Value *(llvm::IRBuilder&lt;&gt;, std::vector&lt; llvm::Value * &gt;, <a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a>)&gt;</td></tr>
+<tr class="separator:a6c82bb6ee1f2a577a53732dafd1875d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad06ced9001edfd59e653637a5fa2b12b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#ad06ced9001edfd59e653637a5fa2b12b">TypeMap</a> = std::unordered_map&lt; std::vector&lt; <a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a> &gt;, <a class="el" href="operator_codegen_8hpp.html#a6c82bb6ee1f2a577a53732dafd1875d7">CodegenFunction</a>, <a class="el" href="struct_vector_hash.html">VectorHash</a>&lt; <a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a> &gt;&gt;</td></tr>
 <tr class="separator:ad06ced9001edfd59e653637a5fa2b12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -150,7 +150,7 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a21ad1bd0ab73b0a32675bcaa5a97aae0"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>, <a class="el" href="operator_codegen_8hpp.html#aecb04ff3404657b8161a5318f0900b8d">CodegenFunction</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#a21ad1bd0ab73b0a32675bcaa5a97aae0">specialCodegenMap</a></td></tr>
+<tr class="memitem:a21ad1bd0ab73b0a32675bcaa5a97aae0"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>, <a class="el" href="operator_codegen_8hpp.html#a6c82bb6ee1f2a577a53732dafd1875d7">CodegenFunction</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#a21ad1bd0ab73b0a32675bcaa5a97aae0">specialCodegenMap</a></td></tr>
 <tr class="separator:a21ad1bd0ab73b0a32675bcaa5a97aae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb7577fb7755ff68144f068f32b896a"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>, <a class="el" href="operator_codegen_8hpp.html#ad06ced9001edfd59e653637a5fa2b12b">TypeMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_codegen_8hpp.html#a8eb7577fb7755ff68144f068f32b896a">codegenMap</a></td></tr>
 <tr class="separator:a8eb7577fb7755ff68144f068f32b896a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,7 +161,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CODEGEN_SIG&#160;&#160;&#160;(llvm::IRBuilder&lt;&gt; builder, std::vector&lt;llvm::Value*&gt; operands) -&gt; llvm::Value*</td>
+          <td class="memname">#define CODEGEN_SIG&#160;&#160;&#160;(llvm::IRBuilder&lt;&gt; builder, std::vector&lt;llvm::Value*&gt; operands, __attribute__((unused)) <a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a> line) -&gt; llvm::Value*</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -169,12 +169,12 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="aecb04ff3404657b8161a5318f0900b8d"></a>
+<a class="anchor" id="a6c82bb6ee1f2a577a53732dafd1875d7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="operator_codegen_8hpp.html#aecb04ff3404657b8161a5318f0900b8d">CodegenFunction</a> =  std::function&lt;llvm::Value*(llvm::IRBuilder&lt;&gt;, std::vector&lt;llvm::Value*&gt;)&gt;</td>
+          <td class="memname">using <a class="el" href="operator_codegen_8hpp.html#a6c82bb6ee1f2a577a53732dafd1875d7">CodegenFunction</a> =  std::function&lt;llvm::Value*(llvm::IRBuilder&lt;&gt;, std::vector&lt;llvm::Value*&gt;, <a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a>)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -186,7 +186,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="operator_codegen_8hpp.html#ad06ced9001edfd59e653637a5fa2b12b">TypeMap</a> =  std::unordered_map&lt;std::vector&lt;<a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a>&gt;, <a class="el" href="operator_codegen_8hpp.html#aecb04ff3404657b8161a5318f0900b8d">CodegenFunction</a>, <a class="el" href="struct_vector_hash.html">VectorHash</a>&lt;<a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a>&gt;&gt;</td>
+          <td class="memname">using <a class="el" href="operator_codegen_8hpp.html#ad06ced9001edfd59e653637a5fa2b12b">TypeMap</a> =  std::unordered_map&lt;std::vector&lt;<a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a>&gt;, <a class="el" href="operator_codegen_8hpp.html#a6c82bb6ee1f2a577a53732dafd1875d7">CodegenFunction</a>, <a class="el" href="struct_vector_hash.html">VectorHash</a>&lt;<a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a>&gt;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -280,7 +280,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::unordered_map&lt;<a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>, <a class="el" href="operator_codegen_8hpp.html#aecb04ff3404657b8161a5318f0900b8d">CodegenFunction</a>&gt; specialCodegenMap</td>
+          <td class="memname">std::unordered_map&lt;<a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>, <a class="el" href="operator_codegen_8hpp.html#a6c82bb6ee1f2a577a53732dafd1875d7">CodegenFunction</a>&gt; specialCodegenMap</td>
         </tr>
       </table>
 </div><div class="memdoc">

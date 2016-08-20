@@ -1,0 +1,30 @@
+<!--
+for Integer i = 0; ; i++ do
+  if i < 1 do break; end
+end
+-->
+<block type="root">
+  <loop>
+    <loop_init>
+      <decl types="Integer" ident="i">
+        <expr type="Integer" value="0"/>
+      </decl>
+    </loop_init>
+    <loop_update>
+      <expr type="Operator" value="Postfix ++">
+        <expr type="Identifier" value="i"/>
+      </expr>
+    </loop_update>
+    <block>
+      <branch>
+        <expr type="Operator" value="Less">
+          <expr type="Identifier" value="i"/>
+          <expr type="Integer" value="1"/>
+        </expr>
+        <block>
+          <break/>
+        </block>
+      </branch>
+    </block>
+  </loop>
+</block>

@@ -11,6 +11,10 @@
 #include "utils/typeInfo.hpp"
 #include "token.hpp"
 
+namespace llvm {
+  class BasicBlock;
+}
+
 class ASTVisitor;
 using ASTVisitorLink = PtrUtil<ASTVisitor>::Link;
 
@@ -259,6 +263,9 @@ public:
   for (Init, Condition, Update) Code
 */
 class LoopNode: public NoMoreChildrenNode {
+private:
+  /// Used by the break statement
+  llvm::BasicBlock* exitBlock;
 public:
   LoopNode();
   
@@ -266,6 +273,9 @@ public:
   GET_SET_SIGS(ExpressionNode, Condition)
   GET_SET_SIGS(ExpressionNode, Update)
   GET_SET_SIGS(BlockNode, Code)
+  
+  llvm::BasicBlock* getExitBlock() const;
+  void setExitBlock(llvm::BasicBlock* bb);
   
   void printTree(uint level) const override;
   
@@ -288,10 +298,27 @@ public:
   void visit(ASTVisitorLink visitor) override;
 };
 
+/**
+  \brief Break statement for exiting a loop.
+  
+  \todo maybe add loop labels so this can break a specific loop
+*/
+class BreakLoopNode: public NoMoreChildrenNode {
+public:
+  BreakLoopNode();
+  
+  void printTree(uint level) const override;
+  
+  void visit(ASTVisitorLink visitor) override;
+};
+
 #undef GET_SIG
 #undef SET_SIG
 #undef GET_SET_SIGS
 
+/**
+  \see VISITOR_VISIT_IMPL_FOR
+*/
 #define PURE_VIRTUAL_VISIT(nodeName) virtual void visit##nodeName(Node<nodeName##Node>::Link node) = 0;
 
 /**
@@ -305,6 +332,7 @@ public:
   PURE_VIRTUAL_VISIT(Branch)
   PURE_VIRTUAL_VISIT(Loop)
   PURE_VIRTUAL_VISIT(Return)
+  PURE_VIRTUAL_VISIT(BreakLoop)
 };
 
 #undef PURE_VIRTUAL_VISIT

@@ -1,0 +1,25 @@
+<!--
+for Integer i = 0; i < 13; do
+  i++;
+end
+-->
+<block type="root">
+  <loop>
+    <loop_init>
+      <decl types="Integer" ident="i">
+        <expr type="Integer" value="0"/>
+      </decl>
+    </loop_init>
+    <loop_condition>
+      <expr type="Operator" value="Less">
+        <expr type="Identifier" value="i"/>
+        <expr type="Integer" value="13"/>
+      </expr>
+    </loop_condition>
+    <block>
+      <expr type="Operator" value="Postfix ++">
+        <expr type="Identifier" value="i"/>
+      </expr>
+    </block>
+  </loop>
+</block>

@@ -72,6 +72,7 @@ private:
   void visitLoop(Node<LoopNode>::Link node);  
   void visitReturn(Node<ReturnNode>::Link node);
   void visitBlock(Node<BlockNode>::Link node);
+  void visitBreakLoop(Node<BreakLoopNode>::Link node);
   
   /// Implementation detail
   llvm::Value* compileExpression(Node<ExpressionNode>::Link node, bool requirePointer = false);

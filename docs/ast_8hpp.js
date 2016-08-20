@@ -10,6 +10,7 @@ var ast_8hpp =
     [ "BranchNode", "class_branch_node.html", "class_branch_node" ],
     [ "LoopNode", "class_loop_node.html", "class_loop_node" ],
     [ "ReturnNode", "class_return_node.html", "class_return_node" ],
+    [ "BreakLoopNode", "class_break_loop_node.html", "class_break_loop_node" ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", null ],
     [ "GET_SET_SIGS", "ast_8hpp.html#ad6003bd0cb5d23a158c81606911c0724", null ],
     [ "GET_SIG", "ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2", null ],

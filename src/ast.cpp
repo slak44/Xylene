@@ -133,7 +133,16 @@ BranchNode::BranchNode(): NoMoreChildrenNode(3) {}
 
 LoopNode::LoopNode(): NoMoreChildrenNode(4) {}
 
+llvm::BasicBlock* LoopNode::getExitBlock() const {
+  return exitBlock;
+}
+void LoopNode::setExitBlock(llvm::BasicBlock* bb) {
+  this->exitBlock = bb;
+}
+
 ReturnNode::ReturnNode(): NoMoreChildrenNode(1) {}
+
+BreakLoopNode::BreakLoopNode(): NoMoreChildrenNode(0) {}
 
 // Macro for easy printing of NoMoreChildrenNode children
 #define PRETTY_PRINT_FOR(childIndex, nameOf) \
@@ -190,21 +199,34 @@ void ReturnNode::printTree(uint level) const {
   if (notNull(0)) PRETTY_PRINT_FOR(0, Value)
 }
 
+void BreakLoopNode::printTree(uint level) const {
+  printIndent(level);
+  println("Break Loop");
+  for (auto& child : children) child->printTree(level + 1);
+}
+
 #undef PRETTY_PRINT_FOR
 
-// Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses
-// Omologues exist in header to provide signatures for these implementations
-// srcNode: name of subclass
-// childIndex: index for the child (because number of children is fixed on NoMoreChildrenNodes)
-// nameOf: name for getter/setter (get##nameOf and set##nameOf)
-// linkType: type of child
+/**
+  \brief Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses
+  
+  Omologues exist in header to provide signatures for these implementations
+  \param srcNode name of subclass
+  \param childIndex index for the child (because number of children is fixed on NoMoreChildrenNodes)
+  \param nameOf name for getter/setter (get##nameOf and set##nameOf)
+  \param linkType type of child
+*/
 #define GET_FOR(srcNode, childIndex, nameOf, linkType) \
 Node<linkType>::Link srcNode::get##nameOf() const {\
   return Node<linkType>::dynPtrCast(children[childIndex]);\
 }
+/// \copydoc GET_FOR
 #define SET_FOR(srcNode, childIndex, nameOf, linkType) \
-void srcNode::set##nameOf(std::shared_ptr<linkType> newNode) {children[childIndex] = newNode;}
-
+void srcNode::set##nameOf(std::shared_ptr<linkType> newNode) {\
+  newNode->setParent(shared_from_this());\
+  children[childIndex] = newNode;\
+}
+/// \copydoc GET_FOR
 #define GET_SET_FOR(srcNode, childIndex, nameOf, linkType) \
 GET_FOR(srcNode, childIndex, nameOf, linkType) \
 SET_FOR(srcNode, childIndex, nameOf, linkType)
@@ -228,8 +250,10 @@ GET_SET_FOR(ReturnNode, 0, Value, ExpressionNode)
 #undef SET_FOR
 #undef GET_SET_FOR
 
-// Macro to help implement the 'visit' functions in each node
-// nodeName: name of node class, without 'Node' at the end, eg Loop, not LoopNode
+/**
+  \brief Macro to help implement the 'visit' functions in each node
+  \param nodeName name of node class, without 'Node' at the end, eg Loop, not LoopNode
+*/
 #define VISITOR_VISIT_IMPL_FOR(nodeName) \
 void nodeName##Node::visit(ASTVisitorLink visitor) {\
   auto shared = this->shared_from_this();\
@@ -242,6 +266,7 @@ VISITOR_VISIT_IMPL_FOR(Declaration);
 VISITOR_VISIT_IMPL_FOR(Branch);
 VISITOR_VISIT_IMPL_FOR(Loop);
 VISITOR_VISIT_IMPL_FOR(Return);
+VISITOR_VISIT_IMPL_FOR(BreakLoop);
 
 #undef VISITOR_VISIT_IMPL_FOR
 

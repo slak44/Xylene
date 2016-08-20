@@ -45,6 +45,7 @@ public:
     - children: one expr node
   - \c loop_update: only inside a loop tag
     - children: one expr node
+  - \c break: maps to a BreakLoopNode (no attributes, no children)
 */
 class XMLParser: public BaseParser {
 public:
