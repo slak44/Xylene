@@ -14,10 +14,11 @@ void TokenBaseParser::expectSemi() {
   skip();
 }
 
-void TokenParser::parse(std::vector<Token> input) {
+TokenParser& TokenParser::parse(std::vector<Token> input) {
   this->input = input;
   this->pos = 0;
   tree = std::make_unique<AST>(AST(block(ROOT_BLOCK)));
+  return *this;
 }
 
 BlockParser::BlockParser(StatementParser* stp): stp(stp) {}

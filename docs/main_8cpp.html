@@ -118,10 +118,13 @@ $(document).ready(function(){initNavTree('main_8cpp.html','');});
 <code>#include &lt;llvm/ExecutionEngine/ExecutionEngine.h&gt;</code><br />
 <code>#include &lt;llvm/ExecutionEngine/Interpreter.h&gt;</code><br />
 <code>#include &lt;llvm/Support/TargetSelect.h&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
 <code>#include &quot;<a class="el" href="util_8hpp_source.html">utils/util.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="error_8hpp_source.html">utils/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="token_parser_8hpp_source.html">parser/tokenParser.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="xml_parser_8hpp_source.html">parser/xmlParser.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="global_types_8hpp_source.html">llvm/globalTypes.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="compiler_8hpp_source.html">llvm/compiler.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="interpreter_8hpp_source.html">interpreter/interpreter.hpp</a>&quot;</code><br />
@@ -156,14 +159,19 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a398f3b94d2c5301cda699ea1f4611bb3a818c410bbe87e2485ff7cb62512fb00d"></a>NORMAL_EXIT&#160;</td><td class="fielddoc">
+<p>Everything is OK. </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a398f3b94d2c5301cda699ea1f4611bb3ac6dab3cc470e4f868e155a99cf426270"></a>TCLAP_ERROR&#160;</td><td class="fielddoc">
+<p>TCLAP did something bad, should not happen. </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a398f3b94d2c5301cda699ea1f4611bb3a5065034024d4b6fd93047b6cb8eec6c9"></a>CLI_ERROR&#160;</td><td class="fielddoc">
+<p>The user is retar&ndash; uh I mean the user used a wrong option. </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a398f3b94d2c5301cda699ea1f4611bb3a9013d902b554831f9bba5e9d0ca76a43"></a>USER_PROGRAM_ERROR&#160;</td><td class="fielddoc">
+<p>The thing we had to lex/parse/run has an issue. </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a398f3b94d2c5301cda699ea1f4611bb3aa6160da3d147c897d800efe3a69c941e"></a>INTERNAL_ERROR&#160;</td><td class="fielddoc">
+<p>Unrecoverable error in this program, almost always a bug. </p>
 </td></tr>
 </table>
 

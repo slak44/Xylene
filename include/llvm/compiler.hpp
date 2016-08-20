@@ -34,7 +34,6 @@ static const InternalError ni = InternalError("Not Implemented", {METADATA_PAIRS
 */
 class CompileVisitor: public ASTVisitor, public std::enable_shared_from_this<CompileVisitor> {
 private:
-  llvm::LLVMContext& contextRef; ///< Reference to current llvm context
   llvm::IRBuilder<> builder; ///< Used to construct llvm instructions
   llvm::Module* module; ///< The module the is being created
   llvm::Function* entryPoint; ///< Entry point for module
@@ -42,7 +41,7 @@ private:
   AST ast; ///< Source AST
 
   /// Use the static factory \link create \endlink
-  CompileVisitor(llvm::LLVMContext& context, std::string moduleName, AST ast);
+  CompileVisitor(std::string moduleName, AST ast);
 public:
   using Link = PtrUtil<CompileVisitor>::Link;
   
@@ -53,8 +52,8 @@ public:
     requires a shared ptr to already exist before being used.
     This method guarantees that at least one such pointer exists.
   */
-  static Link create(llvm::LLVMContext& context, std::string moduleName, AST ast) {
-    return std::make_shared<CompileVisitor>(CompileVisitor(context, moduleName, ast));
+  static Link create(std::string moduleName, AST ast) {
+    return std::make_shared<CompileVisitor>(CompileVisitor(moduleName, ast));
   }
   
   /**

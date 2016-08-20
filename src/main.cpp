@@ -4,26 +4,31 @@
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/Interpreter.h>
 #include <llvm/Support/TargetSelect.h>
+#include <fstream>
+#include <sstream>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 #include "lexer.hpp"
 #include "parser/tokenParser.hpp"
+#include "parser/xmlParser.hpp"
 #include "llvm/globalTypes.hpp"
 #include "llvm/compiler.hpp"
 #include "interpreter/interpreter.hpp"
 
 enum ExitCodes: int {
-  NORMAL_EXIT = 0, // Everything is OK
-  TCLAP_ERROR = 11, // TCLAP did something bad, should not happen
-  CLI_ERROR = 1, // The user is retar-- uh I mean the user used a wrong option
-  USER_PROGRAM_ERROR = 2, // The thing we had to lex/parse/run has an issue
-  INTERNAL_ERROR = 3 // Unrecoverable error in this program, almost always a bug
+  NORMAL_EXIT = 0, ///< Everything is OK
+  TCLAP_ERROR = 11, ///< TCLAP did something bad, should not happen
+  CLI_ERROR = 1, ///< The user is retar-- uh I mean the user used a wrong option
+  USER_PROGRAM_ERROR = 2, ///< The thing we had to lex/parse/run has an issue
+  INTERNAL_ERROR = 3 ///< Unrecoverable error in this program, almost always a bug
 };
 
 int main(int argc, const char* argv[]) {
   try {
     TCLAP::CmdLine cmd("test-lang", ' ', "pre-release");
+    
+    TCLAP::SwitchArg asXML("", "xml", "Read file using the XML parser", cmd);
     
     TCLAP::SwitchArg printTokens("", "tokens", "Print token list", cmd);
     TCLAP::SwitchArg printAST("", "ast", "Print AST (if applicable)", cmd);
@@ -45,24 +50,44 @@ int main(int argc, const char* argv[]) {
       cmd.getOutput()->failure(cmd, arg);
     }
     
-    auto lx = Lexer();
-    lx.tokenize(code.getValue());
-    if (printTokens.getValue()) for (auto tok : lx.getTokens()) println(tok);
+    std::unique_ptr<AST> ast;
     
-    if (doNotParse.getValue()) return NORMAL_EXIT;
-    auto px = TokenParser();
-    px.parse(lx.getTokens());
-    if (printAST.getValue()) px.getTree().print();
+    if (asXML.getValue()) {
+      if (doNotParse.getValue()) return NORMAL_EXIT;
+      if (filePath.getValue().empty()) {
+        TCLAP::ArgException arg("XML option only works with files");
+        cmd.getOutput()->failure(cmd, arg);
+      }
+      ast = std::make_unique<AST>(XMLParser().parse(rapidxml::file<>(filePath.getValue().c_str())).getTree());
+    } else {
+      std::string input;
+      if (!filePath.getValue().empty()) {
+        std::ifstream file(filePath.getValue());
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        input = buffer.str();
+      } else {
+        input = code.getValue();
+      }
+      
+      auto lx = Lexer();
+      lx.tokenize(input);
+      if (printTokens.getValue()) for (auto tok : lx.getTokens()) println(tok);
+      
+      if (doNotParse.getValue()) return NORMAL_EXIT;
+      ast = std::make_unique<AST>(TokenParser().parse(lx.getTokens()).getTree());
+    }
     
+    if (printAST.getValue()) ast->print();
     if (doNotRun.getValue()) return NORMAL_EXIT;
     
     if (runner.getValue() == "tree-walk") {
       auto in = TreeWalkInterpreter();
-      in.interpret(px.getTree());
+      in.interpret(*ast);
       return NORMAL_EXIT;
     }
     
-    CompileVisitor::Link v = CompileVisitor::create(globalContext, "Command Line Module", px.getTree());
+    CompileVisitor::Link v = CompileVisitor::create("Command Line Module", *ast);
     try {
       v->visit();
       if (printIR.getValue()) v->getModule()->dump();
