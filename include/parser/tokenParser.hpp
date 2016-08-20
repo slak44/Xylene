@@ -94,6 +94,8 @@ protected:
   void expectSemi();
 };
 
+inline TokenBaseParser::~TokenBaseParser() {}
+
 /**
   \brief Provides the \link expression \endlink method for parsing an expression.
 */
