@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['line',['line',['../class_token.html#a168dafb81cc6c835f2265bd41b2ace14',1,'Token']]],
-  ['linenumber',['lineNumber',['../class_a_s_t_node.html#a04be1779c19e4e73191074c6ec42e525',1,'ASTNode']]]
+  ['singlecharescapeseqences',['singleCharEscapeSeqences',['../token_type_8hpp.html#a0c08db39fccca975eee2eef97dd2d37f',1,'tokenType.hpp']]],
+  ['stp',['stp',['../class_block_parser.html#a568dd412ad89b6756e566d142c4c520a',1,'BlockParser']]]
 ];

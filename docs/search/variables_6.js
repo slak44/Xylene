@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['globalcontext',['globalContext',['../global_types_8hpp.html#ac442b073b22d09a57c413315236b391b',1,'globalTypes.hpp']]]
+  ['line',['line',['../class_token.html#a168dafb81cc6c835f2265bd41b2ace14',1,'Token']]],
+  ['linenumber',['lineNumber',['../class_a_s_t_node.html#a04be1779c19e4e73191074c6ec42e525',1,'ASTNode']]]
 ];

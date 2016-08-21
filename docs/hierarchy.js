@@ -55,6 +55,7 @@ var hierarchy =
     [ "PtrUtil< BlockNode >", "struct_ptr_util.html", [
       [ "Node< BlockNode >", "struct_node.html", null ]
     ] ],
+    [ "PtrUtil< CompileVisitor >", "struct_ptr_util.html", null ],
     [ "PtrUtil< Object >", "struct_ptr_util.html", null ],
     [ "PtrUtil< Scope >", "struct_ptr_util.html", null ],
     [ "runtime_error", null, [

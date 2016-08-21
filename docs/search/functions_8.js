@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['identifycodegenfunction',['identifyCodegenFunction',['../compiler_8cpp.html#ad387dde6437bb31e4ac1d1f6afefecc5',1,'compiler.cpp']]],
   ['ifstatement',['ifStatement',['../class_if_statement_parser.html#aeed9bbeeacbe305f5c987308f46d5106',1,'IfStatementParser']]],
   ['ifstatementparser',['IfStatementParser',['../class_if_statement_parser.html#adf41a9f88f2d912dbe801c3144b003fb',1,'IfStatementParser']]],
   ['insert',['insert',['../class_scope.html#add92ab7fa6e07779ae3cb5c99c439afb',1,'Scope']]],

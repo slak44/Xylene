@@ -106,63 +106,39 @@ $(document).ready(function(){initNavTree('compiler_8cpp.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
 <div class="title">compiler.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="compiler_8hpp_source.html">llvm/compiler.hpp</a>&quot;</code><br />
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ac1162c9d973ef89f591e07abe22865b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8cpp.html#ac1162c9d973ef89f591e07abe22865b2">getFromValueType</a> (llvm::Type *ty)</td></tr>
-<tr class="separator:ac1162c9d973ef89f591e07abe22865b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad387dde6437bb31e4ac1d1f6afefecc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="operator_codegen_8hpp.html#a6c82bb6ee1f2a577a53732dafd1875d7">CodegenFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8cpp.html#ad387dde6437bb31e4ac1d1f6afefecc5">identifyCodegenFunction</a> (<a class="el" href="class_token.html">Token</a> tok, llvm::IRBuilder&lt;&gt; &amp;builder, std::vector&lt; llvm::Value * &gt; &amp;operands)</td></tr>
-<tr class="separator:ad387dde6437bb31e4ac1d1f6afefecc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ac8107e81fa0d66e3c3b5903745ef92b2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8cpp.html#ac8107e81fa0d66e3c3b5903745ef92b2">CmpPred</a> = llvm::CmpInst::Predicate</td></tr>
+<tr class="separator:ac8107e81fa0d66e3c3b5903745ef92b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40bf9b99aadda6cb65cb0b23a1e203f9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8cpp.html#a40bf9b99aadda6cb65cb0b23a1e203f9">CV</a> = <a class="el" href="class_compile_visitor.html">CompileVisitor</a></td></tr>
+<tr class="separator:a40bf9b99aadda6cb65cb0b23a1e203f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ac1162c9d973ef89f591e07abe22865b2"></a>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="ac8107e81fa0d66e3c3b5903745ef92b2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1b">TokenType</a> getFromValueType </td>
-          <td>(</td>
-          <td class="paramtype">llvm::Type *&#160;</td>
-          <td class="paramname"><em>ty</em></td><td>)</td>
-          <td></td>
+          <td class="memname">using <a class="el" href="compiler_8cpp.html#ac8107e81fa0d66e3c3b5903745ef92b2">CmpPred</a> =  llvm::CmpInst::Predicate</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="ad387dde6437bb31e4ac1d1f6afefecc5"></a>
+<a class="anchor" id="a40bf9b99aadda6cb65cb0b23a1e203f9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="operator_codegen_8hpp.html#a6c82bb6ee1f2a577a53732dafd1875d7">CodegenFunction</a> identifyCodegenFunction </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_token.html">Token</a>&#160;</td>
-          <td class="paramname"><em>tok</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">llvm::IRBuilder&lt;&gt; &amp;&#160;</td>
-          <td class="paramname"><em>builder</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; llvm::Value * &gt; &amp;&#160;</td>
-          <td class="paramname"><em>operands</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">using <a class="el" href="compiler_8cpp.html#a40bf9b99aadda6cb65cb0b23a1e203f9">CV</a> =  <a class="el" href="class_compile_visitor.html">CompileVisitor</a></td>
         </tr>
       </table>
 </div><div class="memdoc">

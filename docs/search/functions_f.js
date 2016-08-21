@@ -5,7 +5,6 @@ var searchData=
   ['setlinenumber',['setLineNumber',['../class_a_s_t_node.html#aa81a5d27ba7e674cab80bdd06d8e525e',1,'ASTNode']]],
   ['setparent',['setParent',['../class_a_s_t_node.html#a7e7102508b2aa3f914531681bd450816',1,'ASTNode::setParent()'],['../class_scope.html#a97734f0a54a4340d4897e2a23a8337e3',1,'Scope::setParent()']]],
   ['setvalue',['setValue',['../class_reference.html#a09369a0fabb8c97882f7011cd0b163d3',1,'Reference']]],
-  ['sitofp',['SItoFP',['../operator_codegen_8hpp.html#aa33fe62dbbdcca803db5718fc0a7cc67',1,'operatorCodegen.hpp']]],
   ['skip',['skip',['../class_lexer_base.html#a391ba6230f653e8a30042039314a2ea8',1,'LexerBase::skip()'],['../class_token_base_parser.html#a1e889f215a6342979d452dc6c5729f4b',1,'TokenBaseParser::skip()']]],
   ['split',['split',['../util_8cpp.html#a5ec5407b8d7f28fd0aa7699dbe16c448',1,'split(const std::string &amp;str, char delim):&#160;util.cpp'],['../util_8hpp.html#a5ec5407b8d7f28fd0aa7699dbe16c448',1,'split(const std::string &amp;str, char delim):&#160;util.cpp']]],
   ['statement',['statement',['../class_statement_parser.html#a8bb38a6427359d665a8a367a5ba6159e',1,'StatementParser']]],
