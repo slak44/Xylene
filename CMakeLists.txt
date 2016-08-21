@@ -69,8 +69,6 @@ set(COMMON_SOURCES
   ${SRC_DIR}/ast.cpp
   ${SRC_DIR}/parser/tokenParser.cpp
   ${SRC_DIR}/parser/xmlParser.cpp
-  ${SRC_DIR}/llvm/globalTypes.cpp
-  ${SRC_DIR}/llvm/operatorCodegen.cpp
   ${SRC_DIR}/llvm/compiler.cpp
 )
 set(COMMON_DEPS rapidxml termcolor)

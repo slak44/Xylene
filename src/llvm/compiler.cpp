@@ -1,18 +1,24 @@
 #include "llvm/compiler.hpp"
 
 CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
-  builder(globalContext),
-  module(new llvm::Module(moduleName, globalContext)),
+  context(new llvm::LLVMContext()),
+  integerType(llvm::IntegerType::get(*context, bitsPerInt)),
+  floatType(llvm::Type::getDoubleTy(*context)),
+  booleanType(llvm::Type::getInt1Ty(*context)),
+  builder(std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context))),
+  module(new llvm::Module(moduleName, *context)),
   ast(ast) {
   llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
   currentFunction = entryPoint = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module);
 }
+
+const std::string CompileVisitor::typeMismatchErrorString = "No operation available for given operands";
   
 void CompileVisitor::visit() {
   ast.getRoot()->visit(shared_from_this());
   // If the current block, which is the one that exits from main, has no terminator, add one
-  if (!builder.GetInsertBlock()->getTerminator()) {
-    builder.CreateRet(llvm::ConstantInt::get(integerType, 0));
+  if (!builder->GetInsertBlock()->getTerminator()) {
+    builder->CreateRet(llvm::ConstantInt::get(integerType, 0));
   }
   std::string str;
   llvm::raw_string_ostream rso(str);
@@ -38,15 +44,15 @@ void CompileVisitor::visitBlock(Node<BlockNode>::Link node) {
 }
 
 llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const std::string& name) {
-  llvm::BasicBlock* oldBlock = builder.GetInsertBlock();
-  llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(globalContext, name, currentFunction);
-  builder.SetInsertPoint(newBlock);
+  llvm::BasicBlock* oldBlock = builder->GetInsertBlock();
+  llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(*context, name, currentFunction);
+  builder->SetInsertPoint(newBlock);
   for (auto& child : node->getChildren()) child->visit(shared_from_this());
   // If the block lacks a terminator instruction, add one
   if (!newBlock->getTerminator()) {
     switch (node->getType()) {
       case ROOT_BLOCK:
-        builder.CreateRet(llvm::ConstantInt::get(integerType, 0));
+        builder->CreateRet(llvm::ConstantInt::get(integerType, 0));
         break;
       case IF_BLOCK:
         // Technically should never happen because visitBranch *should* be properly implemented
@@ -56,10 +62,10 @@ llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const
         bool hasMerged = llvm::MergeBlockIntoPredecessor(newBlock);
         if (hasMerged) {
           // We can insert in the old block if it was merged
-          builder.SetInsertPoint(oldBlock);
+          builder->SetInsertPoint(oldBlock);
         } else {
           // TODO: what do we do with a block that has no terminator, but can't be merged?
-          throw ni;
+          throw InternalError("Not Implemented", {METADATA_PAIRS});
         }
         break;
       // TODO: add FUNCTION_BLOCK to this enum, and create a ret instruction for it
@@ -72,52 +78,12 @@ void CompileVisitor::visitExpression(Node<ExpressionNode>::Link node) {
   compileExpression(node);
 }
 
-TokenType getFromValueType(llvm::Type* ty) {
+TokenType CompileVisitor::getFromValueType(llvm::Type* ty) {
   if (ty == integerType) return L_INTEGER;
   if (ty == floatType) return L_FLOAT;
   if (ty == booleanType) return L_BOOLEAN;
   // TODO the rest of the types
-  throw ni;
-}
-
-CodegenFunction identifyCodegenFunction(Token tok, llvm::IRBuilder<>& builder, std::vector<llvm::Value*>& operands) {
-  // Name to look for
-  const Operator::Name& toFind = operatorNameFrom(tok.idx);
-  // Function to return
-  CodegenFunction func;
-  // Check if it's a special case
-  auto it = specialCodegenMap.find(toFind);
-  if (it != specialCodegenMap.end()) return it->second;
-  // Look in the normal map
-  auto opMapIt = codegenMap.find(toFind);
-  if (opMapIt == codegenMap.end()) {
-    throw InternalError("No such operator", {
-      METADATA_PAIRS,
-      {"token", tok.toString()}
-    });
-  }
-  // Get a list of types
-  std::vector<TokenType> operandTypes;
-  operandTypes.resize(operands.size(), UNPROCESSED);
-  // Map an operand to a TokenType representing it
-  std::size_t idx = -1;
-  std::transform(ALL(operands), operandTypes.begin(), [=, &idx, &builder, &operands](llvm::Value* val) -> TokenType {
-    idx++;
-    llvm::Type* opType = val->getType();
-    if (llvm::dyn_cast_or_null<llvm::PointerType>(opType)) {
-      auto load = builder.CreateLoad(operands[idx], "loadIdentifier");
-      operands[idx] = load;
-      opType = operands[idx]->getType();
-    }
-    return getFromValueType(opType);
-  });
-  // Try to find the function in the TypeMap using the operand types
-  auto funIt = opMapIt->second.find(operandTypes);
-  if (funIt == opMapIt->second.end()) {
-    throw Error("TypeError", typeMismatchErrorString, tok.line);
-  }
-  func = funIt->second;
-  return func;
+  throw InternalError("Not Implemented", {METADATA_PAIRS});
 }
 
 llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, bool requirePointer) {
@@ -128,12 +94,12 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, 
     switch (tok.type) {
       case L_INTEGER: return llvm::ConstantInt::getSigned(integerType, std::stoll(tok.data));
       case L_FLOAT: return llvm::ConstantFP::get(floatType, tok.data);
-      case L_STRING: throw ni;
+      case L_STRING: throw InternalError("Not Implemented", {METADATA_PAIRS});
       case L_BOOLEAN: return (tok.data == "true" ? llvm::ConstantInt::getTrue(booleanType) : llvm::ConstantInt::getFalse(booleanType));
       case IDENTIFIER: {
-        llvm::Value* ptr = builder.GetInsertBlock()->getValueSymbolTable()->lookup(tok.data); // TODO check globals and types, not only locals
+        llvm::Value* ptr = builder->GetInsertBlock()->getValueSymbolTable()->lookup(tok.data); // TODO check globals and types, not only locals
         if (requirePointer) return ptr;
-        else return builder.CreateLoad(ptr, "identifierExpressionLoad");
+        else return builder->CreateLoad(ptr, "identifierExpressionLoad");
       }
       default: throw InternalError("Unhandled terminal symbol in switch case", {
         METADATA_PAIRS,
@@ -157,9 +123,9 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, 
         {"operand count", std::to_string(operands.size())}
       });
     }
-    auto func = identifyCodegenFunction(tok, builder, operands);
+    auto func = codegen->findAndGetFun(tok, operands);
     // Call the code generating function, and return its result
-    return func(builder, operands, tok.line);
+    return func(operands, tok.line);
   } else {
     throw InternalError("Malformed expression node", {
       METADATA_PAIRS,
@@ -178,20 +144,20 @@ void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
     if (typeName == "Boolean") toAllocate = booleanType;
     else if (typeName == "Integer") toAllocate = integerType;
     else if (typeName == "Float") toAllocate = floatType;
-    else throw ni; // TODO user-defined types are handled here
-    builder.CreateAlloca(toAllocate, nullptr, node->getIdentifier());
+    else throw InternalError("Not Implemented", {METADATA_PAIRS}); // TODO user-defined types are handled here
+    builder->CreateAlloca(toAllocate, nullptr, node->getIdentifier());
   // If this variable has 1+ or dynamic type, allocate a pointer + type data
   // The actual data will be allocated on initialization
   } else {
     // TODO
-    throw ni;
+    throw InternalError("Not Implemented", {METADATA_PAIRS});
   }
   // Handle initialization
   if (node->hasInit()) {
     llvm::Value* initValue = compileExpression(node->getInit());
-    llvm::Value* allocated = builder.GetInsertBlock()->getValueSymbolTable()->lookup(node->getIdentifier());
+    llvm::Value* allocated = builder->GetInsertBlock()->getValueSymbolTable()->lookup(node->getIdentifier());
     // if (allocated->getType() == /* type of boxed stuff */) {/* update type metadata in box and do a store on the actual data */}
-    builder.CreateStore(initValue, allocated); // TODO only for primitives, move to else block of above comment
+    builder->CreateStore(initValue, allocated); // TODO only for primitives, move to else block of above comment
   }
 }
 
@@ -205,8 +171,8 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     // Unless the block already goes somewhere else
     // Jump back to continueCurrent after the branch is done, to execute the rest of the block
     if (!success->getTerminator()) {
-      builder.SetInsertPoint(success);
-      builder.CreateBr(continueCurrent);
+      builder->SetInsertPoint(success);
+      builder->CreateBr(continueCurrent);
       usesBranchAfter = true;
     }
     // If the branchAfter block is not jumped to by anyone, get rid of it
@@ -218,21 +184,21 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     ) {
       continueCurrent->eraseFromParent();
     } else {
-      builder.SetInsertPoint(continueCurrent);
+      builder->SetInsertPoint(continueCurrent);
     }
     return;
   };
   bool usesBranchAfter = false;
-  llvm::BasicBlock* current = builder.GetInsertBlock();
+  llvm::BasicBlock* current = builder->GetInsertBlock();
   llvm::Value* cond = compileExpression(node->getCondition());
   llvm::BasicBlock* success = compileBlock(node->getSuccessBlock(), "branchSuccess");
   // continueCurrent gets all the current block's instructions after the branch
   // Unless the branch jumps or returns somewhere, continueCurrent is always executed
-  llvm::BasicBlock* continueCurrent = surrounding != nullptr ? surrounding : llvm::BasicBlock::Create(globalContext, "branchAfter", currentFunction);
+  llvm::BasicBlock* continueCurrent = surrounding != nullptr ? surrounding : llvm::BasicBlock::Create(*context, "branchAfter", currentFunction);
   if (node->getFailiureBlock() == nullptr) {
     // Does not have else clauses
-    builder.SetInsertPoint(current);
-    builder.CreateCondBr(cond, success, continueCurrent);
+    builder->SetInsertPoint(current);
+    builder->CreateCondBr(cond, success, continueCurrent);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   }
   auto blockFailNode = Node<BlockNode>::dynPtrCast(node->getFailiureBlock());
@@ -241,21 +207,21 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     llvm::BasicBlock* failiure = compileBlock(blockFailNode, "branchFailiure");
     // Jump back to continueCurrent after the branch is done, to execute the rest of the block, unless there already is a terminator
     if (!failiure->getTerminator()) {
-      builder.SetInsertPoint(failiure);
-      builder.CreateBr(continueCurrent);
+      builder->SetInsertPoint(failiure);
+      builder->CreateBr(continueCurrent);
       usesBranchAfter = true;
     }
     // Add the branch
-    builder.SetInsertPoint(current);
-    builder.CreateCondBr(cond, success, failiure);
+    builder->SetInsertPoint(current);
+    builder->CreateCondBr(cond, success, failiure);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   } else {
     // Has else-if as failiure
-    llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(globalContext, "branchNext", currentFunction);
-    builder.SetInsertPoint(nextBranch);
+    llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(*context, "branchNext", currentFunction);
+    builder->SetInsertPoint(nextBranch);
     compileBranch(Node<BranchNode>::dynPtrCast(node->getFailiureBlock()), continueCurrent);
-    builder.SetInsertPoint(current);
-    builder.CreateCondBr(cond, success, nextBranch);
+    builder->SetInsertPoint(current);
+    builder->CreateCondBr(cond, success, nextBranch);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   }
 }
@@ -264,39 +230,38 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   auto init = node->getInit();
   if (init != nullptr) this->visitDeclaration(init);
   // Make the block where we go after we're done with the loopBlock
-  auto loopAfter = llvm::BasicBlock::Create(globalContext, "loopAfter", currentFunction);
+  auto loopAfter = llvm::BasicBlock::Create(*context, "loopAfter", currentFunction);
   // Make sure break statements know where to go
   node->setExitBlock(loopAfter);
   // Make the block that will be looped
-  auto loopBlock = llvm::BasicBlock::Create(globalContext, "loopBlock", currentFunction);
+  auto loopBlock = llvm::BasicBlock::Create(*context, "loopBlock", currentFunction);
   // Make the block that checks the loop condition
-  auto loopCondition = llvm::BasicBlock::Create(globalContext, "loopCondition", currentFunction);
+  auto loopCondition = llvm::BasicBlock::Create(*context, "loopCondition", currentFunction);
   // Go to the condtion
-  builder.CreateBr(loopCondition);
-  builder.SetInsertPoint(loopCondition);
+  builder->CreateBr(loopCondition);
+  builder->SetInsertPoint(loopCondition);
   auto cond = node->getCondition();
   if (cond != nullptr) {
     auto condValue = compileExpression(cond);
     // Go to the loop if true, end the loop otherwise
-    builder.CreateCondBr(condValue, loopBlock, loopAfter);
+    builder->CreateCondBr(condValue, loopBlock, loopAfter);
   } else {
     // There is no condition; unconditionally jump
-    builder.CreateBr(loopBlock);
+    builder->CreateBr(loopBlock);
   }
   // Add the code to the loopBlock
-  builder.SetInsertPoint(loopBlock);
+  builder->SetInsertPoint(loopBlock);
   auto code = node->getCode();
   for (auto& child : code->getChildren()) {
     child->visit(shared_from_this());
-    println(builder.GetInsertBlock()->getName().str());
   }
   // Also add the update expr at the end of the loopBlock
   auto update = node->getUpdate();
   if (update != nullptr) compileExpression(update);
   // Jump back to the condition to see what we do next
-  builder.CreateBr(loopCondition);
+  builder->CreateBr(loopCondition);
   // Keep inserting instructions after the loop
-  builder.SetInsertPoint(loopAfter);
+  builder->SetInsertPoint(loopAfter);
 }
 
 void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
@@ -308,7 +273,7 @@ void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
     if (Node<LoopNode>::dynPtrCast(lastParent.lock()) != nullptr) break;
   }
   llvm::BasicBlock* exitBlock = Node<LoopNode>::dynPtrCast(lastParent.lock())->getExitBlock();
-  builder.CreateBr(exitBlock);
+  builder->CreateBr(exitBlock);
 }
 
 void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
@@ -319,10 +284,108 @@ void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
     // make sure that more complex types throw
     llvm::StoreInst* store = llvm::dyn_cast_or_null<llvm::StoreInst>(result);
     if (store) {
-      result = builder.CreateLoad(store->getPointerOperand(), "forceLoadForReturn");
+      result = builder->CreateLoad(store->getPointerOperand(), "forceLoadForReturn");
     } else {
       throw Error("TypeError", "Function return type does not match return value", node->getLineNumber());
     }
   }
-  builder.CreateRet(result);
+  builder->CreateRet(result);
 }
+
+using CmpPred = llvm::CmpInst::Predicate;
+using CV = CompileVisitor;
+
+CV::OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
+  cv(cv),
+  codegenMap({
+    {"Add", {
+      {{L_INTEGER, L_INTEGER}, [=] CODEGEN_SIG {
+        return cv->builder->CreateAdd(operands[0], operands[1], "intadd");
+      }},
+      {{L_INTEGER, L_FLOAT}, [=] CODEGEN_SIG {
+        return cv->builder->CreateFAdd(SItoFP(operands[0]), operands[1], "intfltadd");
+      }},
+      {{L_FLOAT, L_INTEGER}, [=] CODEGEN_SIG {
+        return cv->builder->CreateFAdd(operands[0], SItoFP(operands[1]), "fltintadd");
+      }},
+      {{L_FLOAT, L_FLOAT}, [=] CODEGEN_SIG {
+        return cv->builder->CreateFAdd(operands[0], operands[1], "fltadd");
+      }},
+    }},
+    {"Less", {
+      {{L_INTEGER, L_INTEGER}, [=] CODEGEN_SIG {
+        return cv->builder->CreateICmp(CmpPred::ICMP_SLT, operands[0], operands[1], "intcmpless");
+      }},
+      {{L_INTEGER, L_FLOAT}, [=] CODEGEN_SIG {
+        return cv->builder->CreateFCmp(CmpPred::FCMP_OLT, SItoFP(operands[0]), operands[1], "intfltcmpless");
+      }},
+      {{L_FLOAT, L_INTEGER}, [=] CODEGEN_SIG {
+        return cv->builder->CreateFCmp(CmpPred::FCMP_OLT, operands[0], SItoFP(operands[1]), "fltintcmpless");
+      }},
+      {{L_FLOAT, L_FLOAT}, [=] CODEGEN_SIG {
+        return cv->builder->CreateFCmp(CmpPred::FCMP_OLT, operands[0], operands[1], "fltcmpless");
+      }},
+    }}
+  }),
+  specialCodegenMap({
+    {"Assignment", [=] CODEGEN_SIG {
+      return cv->builder->CreateStore(operands[1], operands[0]);
+    }},
+    {"Postfix ++", [=] CODEGEN_SIG {
+      auto initial = cv->builder->CreateLoad(operands[0], "postfixincload");
+      if (initial->getType() != cv->integerType) throw Error("TypeError", cv->typeMismatchErrorString, line); 
+      auto plusOne = cv->builder->CreateAdd(initial, llvm::ConstantInt::getSigned(cv->integerType, 1), "intinc");
+      cv->builder->CreateStore(plusOne, operands[0]);
+      return initial;
+    }}
+  }) {}
+
+CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::findAndGetFun(Token tok, std::vector<llvm::Value*>& operands) {
+  // Function to return
+  CodegenFunction func;
+  // Check if it's a special case
+  func = getSpecialFun(tok);
+  if (func != nullptr) return func;
+  // Otherwise look in the normal map
+  // Get a list of types
+  std::vector<TokenType> operandTypes;
+  operandTypes.resize(operands.size(), UNPROCESSED);
+  // Map an operand to a TokenType representing it
+  std::size_t idx = -1;
+  std::transform(ALL(operands), operandTypes.begin(), [=, &idx, &operands](llvm::Value* val) -> TokenType {
+    idx++;
+    llvm::Type* opType = val->getType();
+    if (llvm::dyn_cast_or_null<llvm::PointerType>(opType)) {
+      auto load = cv->builder->CreateLoad(operands[idx], "loadIdentifier");
+      operands[idx] = load;
+      opType = operands[idx]->getType();
+    }
+    return cv->getFromValueType(opType);
+  });
+  return getNormalFun(tok, operandTypes);
+}
+
+CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getSpecialFun(Token tok) noexcept {
+  const Operator::Name& toFind = operatorNameFrom(tok.idx);
+  auto it = specialCodegenMap.find(toFind);
+  if (it != specialCodegenMap.end()) return it->second;
+  else return nullptr;
+}
+
+CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getNormalFun(Token tok, const std::vector<TokenType>& types) {
+  const Operator::Name& toFind = operatorNameFrom(tok.idx);
+  auto opMapIt = codegenMap.find(toFind);
+  if (opMapIt == codegenMap.end()) {
+    throw InternalError("No such operator", {
+      METADATA_PAIRS,
+      {"token", tok.toString()}
+    });
+  }
+  // Try to find the function in the TypeMap using the operand types
+  auto funIt = opMapIt->second.find(types);
+  if (funIt == opMapIt->second.end()) {
+    throw Error("TypeError", cv->typeMismatchErrorString, tok.line);
+  }
+  return funIt->second;
+}
+
