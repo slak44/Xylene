@@ -32,9 +32,22 @@ protected:
   }
 };
 
+TEST_F(LLVMCompilerTest, Loops) {
+  noThrowOnCompile("data/llvm/loops/complete.xml");
+  noThrowOnCompile("data/llvm/loops/no_init.xml");
+  noThrowOnCompile("data/llvm/loops/no_condition.xml");
+  noThrowOnCompile("data/llvm/loops/no_update.xml");
+}
+
 TEST_F(LLVMCompilerTest, ExitCodes) {
   noThrowOnCompile("data/llvm/exit_code.xml");
   noThrowOnCompile("data/llvm/stored_return.xml");
+}
+
+TEST_F(LLVMCompilerTest, Branches) {
+  noThrowOnCompile("data/llvm/if.xml");
+  noThrowOnCompile("data/llvm/if_else.xml");
+  noThrowOnCompile("data/llvm/else_if.xml");
 }
 
 TEST_F(LLVMCompilerTest, Declarations) {
@@ -44,17 +57,4 @@ TEST_F(LLVMCompilerTest, Declarations) {
 TEST_F(LLVMCompilerTest, Assignment) {
   noThrowOnCompile("data/llvm/return_assign.xml");
   EXPECT_THROW(compile("data/llvm/assign_to_literal.xml"), Error);
-}
-
-TEST_F(LLVMCompilerTest, Branches) {
-  noThrowOnCompile("data/llvm/if.xml");
-  noThrowOnCompile("data/llvm/if_else.xml");
-  noThrowOnCompile("data/llvm/else_if.xml");
-}
-
-TEST_F(LLVMCompilerTest, Loops) {
-  noThrowOnCompile("data/llvm/loops/complete.xml");
-  noThrowOnCompile("data/llvm/loops/no_init.xml");
-  noThrowOnCompile("data/llvm/loops/no_condition.xml");
-  noThrowOnCompile("data/llvm/loops/no_update.xml");
 }

@@ -12,7 +12,6 @@
 #include "lexer.hpp"
 #include "parser/tokenParser.hpp"
 #include "parser/xmlParser.hpp"
-#include "llvm/globalTypes.hpp"
 #include "llvm/compiler.hpp"
 #include "interpreter/interpreter.hpp"
 
