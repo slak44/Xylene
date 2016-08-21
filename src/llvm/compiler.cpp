@@ -167,7 +167,7 @@ void CompileVisitor::visitBranch(Node<BranchNode>::Link node) {
 
 // The BasicBlock surrounding is the block where control returns after dealing with branches, only specify for recursive case
 void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding) {
-  static const auto handleBranchExit = [this](llvm::BasicBlock* continueCurrent, llvm::BasicBlock* success, bool usesBranchAfter) -> void {
+  const auto handleBranchExit = [this](llvm::BasicBlock* continueCurrent, llvm::BasicBlock* success, bool usesBranchAfter) -> void {
     // Unless the block already goes somewhere else
     // Jump back to continueCurrent after the branch is done, to execute the rest of the block
     if (!success->getTerminator()) {
