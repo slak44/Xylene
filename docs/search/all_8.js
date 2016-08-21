@@ -1,7 +1,6 @@
 var searchData=
 [
   ['identifier',['IDENTIFIER',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba84f8ae2490f9e4bd2321fd21f4b0e807',1,'tokenType.hpp']]],
-  ['identifycodegenfunction',['identifyCodegenFunction',['../compiler_8cpp.html#ad387dde6437bb31e4ac1d1f6afefecc5',1,'compiler.cpp']]],
   ['identity',['Identity',['../struct_identity.html',1,'']]],
   ['idx',['idx',['../class_token.html#ac34bb1683e74707f37a97f91ba0bdcc8',1,'Token']]],
   ['if_5fblock',['IF_BLOCK',['../ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3a2561f109637b9beed63483d885c1e04e',1,'ast.hpp']]],
@@ -13,7 +12,6 @@ var searchData=
   ['insert',['insert',['../class_scope.html#add92ab7fa6e07779ae3cb5c99c439afb',1,'Scope']]],
   ['int64',['int64',['../util_8hpp.html#ab0e5976e1a4967e9b13e68b5f271bb44',1,'util.hpp']]],
   ['integer',['Integer',['../class_integer.html',1,'Integer'],['../class_integer.html#a7fcab0564d7270017ebcca55bae1a17a',1,'Integer::Integer()'],['../class_integer.html#a10e46c2773eeca4655f204deb6adf9f3',1,'Integer::Integer(int64 i)'],['../class_integer.html#a9af1a5dec4a2e5835362948ba64ba3fd',1,'Integer::Integer(std::string str, int base)']]],
-  ['integertype',['integerType',['../global_types_8cpp.html#ad097a43f5af04f7eb6698e3941bf87e9',1,'integerType():&#160;globalTypes.cpp'],['../global_types_8hpp.html#ad097a43f5af04f7eb6698e3941bf87e9',1,'integerType():&#160;globalTypes.cpp']]],
   ['internal_5ferror',['INTERNAL_ERROR',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3aa6160da3d147c897d800efe3a69c941e',1,'main.cpp']]],
   ['internalerror',['InternalError',['../class_internal_error.html',1,'InternalError'],['../class_internal_error.html#accf8495bf6917b7685a69c390c69a91c',1,'InternalError::InternalError(std::string errorName, std::string msg, const ErrorData &amp;data)'],['../class_internal_error.html#a18662d967c3c5b3b18b9c11f1a75e28f',1,'InternalError::InternalError(std::string msg, const ErrorData &amp;data)']]],
   ['interpret',['interpret',['../class_tree_walk_interpreter.html#a1aef2d7e8b97c142d3bf53819cff2cab',1,'TreeWalkInterpreter']]],

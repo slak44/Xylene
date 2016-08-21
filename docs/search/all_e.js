@@ -15,6 +15,7 @@ var searchData=
   ['processinput',['processInput',['../class_lexer_base.html#ad122d7cd36b6d91533e58d06da6bb6a0',1,'LexerBase::processInput()'],['../class_lexer.html#a25b0700993785144b8c6fdc3af0a0c2c',1,'Lexer::processInput()']]],
   ['ptrutil',['PtrUtil',['../struct_ptr_util.html',1,'']]],
   ['ptrutil_3c_20blocknode_20_3e',['PtrUtil&lt; BlockNode &gt;',['../struct_ptr_util.html',1,'']]],
+  ['ptrutil_3c_20compilevisitor_20_3e',['PtrUtil&lt; CompileVisitor &gt;',['../struct_ptr_util.html',1,'']]],
   ['ptrutil_3c_20object_20_3e',['PtrUtil&lt; Object &gt;',['../struct_ptr_util.html',1,'']]],
   ['ptrutil_3c_20scope_20_3e',['PtrUtil&lt; Scope &gt;',['../struct_ptr_util.html',1,'']]],
   ['pure_5fvirtual_5fvisit',['PURE_VIRTUAL_VISIT',['../ast_8hpp.html#a888c3d926d3f7297490480900556e769',1,'ast.hpp']]]

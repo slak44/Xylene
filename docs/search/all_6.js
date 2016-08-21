@@ -17,7 +17,6 @@ var searchData=
   ['getevaltypelist',['getEvalTypeList',['../class_type_info.html#aac76b15dd837daa15fcf4083f7c36e9d',1,'TypeInfo']]],
   ['getexitblock',['getExitBlock',['../class_loop_node.html#a9df5ddd2d9dac89fb9317890c2ff33a9',1,'LoopNode']]],
   ['getfixity',['getFixity',['../class_operator.html#a120cdbd24c1d8e82196effbc4ea25e45',1,'Operator']]],
-  ['getfromvaluetype',['getFromValueType',['../compiler_8cpp.html#ac1162c9d973ef89f591e07abe22865b2',1,'compiler.cpp']]],
   ['getidentifier',['getIdentifier',['../class_declaration_node.html#af7f5a1845c0f255fce5967f7de232b24',1,'DeclarationNode']]],
   ['getlinecount',['getLineCount',['../class_lexer_base.html#ad02271ff926c4debe0494330845db870',1,'LexerBase']]],
   ['getlinenumber',['getLineNumber',['../class_a_s_t_node.html#a368378b1eb647e2931755f95a29e66c2',1,'ASTNode']]],
@@ -39,8 +38,5 @@ var searchData=
   ['gettypeinfo',['getTypeInfo',['../class_declaration_node.html#a2ec2bfae44601d5b0678cd2589c036fc',1,'DeclarationNode']]],
   ['gettypename',['getTypeName',['../class_object.html#a8c0e06723d36e89cf5f6f9b117782cba',1,'Object::getTypeName()'],['../class_reference.html#a9e39314d0f7656b19aa758291244b19a',1,'Reference::getTypeName()'],['../class_integer.html#a0e14c950f4255917cddf92f3494c2e4c',1,'Integer::getTypeName()'],['../class_float.html#adc7013711609517c2c32b2b477b4c5fc',1,'Float::getTypeName()'],['../class_string.html#a97515a4e2dea090d4e22dcb1b64df0b6',1,'String::getTypeName()'],['../class_boolean.html#a2c2f9498cac242d21efe52e7245b0f57',1,'Boolean::getTypeName()']]],
   ['gettypenamestring',['getTypeNameString',['../class_type_info.html#ac98563a826535893d03ca1812a69de7b',1,'TypeInfo']]],
-  ['getvalue',['getValue',['../class_reference.html#a817d805559db76285fe355227d4ccff7',1,'Reference::getValue()'],['../class_integer.html#a8c068f664f1c2af88620053b4869199d',1,'Integer::getValue()'],['../class_float.html#a753e2a43bff2a9c6dc1f03bea37efe9a',1,'Float::getValue()'],['../class_string.html#a3592a1b1b2533f5fb5eb483cb4a789c6',1,'String::getValue()'],['../class_boolean.html#a682a2db12aaec82e4f4c42998158222b',1,'Boolean::getValue()']]],
-  ['globalcontext',['globalContext',['../global_types_8hpp.html#ac442b073b22d09a57c413315236b391b',1,'globalContext():&#160;globalTypes.hpp'],['../global_types_8cpp.html#a8177d3ef15dcf4aa2c3c8a8e99490999',1,'globalContext(llvm::getGlobalContext()):&#160;globalTypes.cpp']]],
-  ['globaltypes_2ecpp',['globalTypes.cpp',['../global_types_8cpp.html',1,'']]],
-  ['globaltypes_2ehpp',['globalTypes.hpp',['../global_types_8hpp.html',1,'']]]
+  ['getvalue',['getValue',['../class_reference.html#a817d805559db76285fe355227d4ccff7',1,'Reference::getValue()'],['../class_integer.html#a8c068f664f1c2af88620053b4869199d',1,'Integer::getValue()'],['../class_float.html#a753e2a43bff2a9c6dc1f03bea37efe9a',1,'Float::getValue()'],['../class_string.html#a3592a1b1b2533f5fb5eb483cb4a789c6',1,'String::getValue()'],['../class_boolean.html#a682a2db12aaec82e4f4c42998158222b',1,'Boolean::getValue()']]]
 ];

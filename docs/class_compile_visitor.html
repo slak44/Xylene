@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('class_compile_visitor.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
@@ -201,7 +202,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Create a <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a>. </p>
-<p>This is a static factory because std::enable_shared_from_this&lt;CompileVisitor&gt; requires a shared ptr to already exist before being used. This method guarantees that at least one such pointer exists. </p>
+<p>This is a static factory because std::enable_shared_from_this&lt;CompileVisitor&gt; requires a shared_ptr to already exist before being used. This method guarantees that at least one such pointer exists. It also handles creation of the OperatorCodegen, since that also requires a shared_ptr of this. </p>
 
 </div>
 </div>

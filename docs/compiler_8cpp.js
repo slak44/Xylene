@@ -1,5 +1,5 @@
 var compiler_8cpp =
 [
-    [ "getFromValueType", "compiler_8cpp.html#ac1162c9d973ef89f591e07abe22865b2", null ],
-    [ "identifyCodegenFunction", "compiler_8cpp.html#ad387dde6437bb31e4ac1d1f6afefecc5", null ]
+    [ "CmpPred", "compiler_8cpp.html#ac8107e81fa0d66e3c3b5903745ef92b2", null ],
+    [ "CV", "compiler_8cpp.html#a40bf9b99aadda6cb65cb0b23a1e203f9", null ]
 ];

@@ -25,7 +25,5 @@ var searchData=
   ['typeinfo_2ecpp',['typeInfo.cpp',['../type_info_8cpp.html',1,'']]],
   ['typeinfo_2ehpp',['typeInfo.hpp',['../type_info_8hpp.html',1,'']]],
   ['typelist',['TypeList',['../util_8hpp.html#ab5d06be6c670b1b15d59910ef706886c',1,'util.hpp']]],
-  ['typelistfrom',['typeListFrom',['../operator_map_8hpp.html#ac111d4163f2212cc5ad2a89daa0d1597',1,'operatorMap.hpp']]],
-  ['typemap',['TypeMap',['../operator_codegen_8hpp.html#ad06ced9001edfd59e653637a5fa2b12b',1,'operatorCodegen.hpp']]],
-  ['typemismatcherrorstring',['typeMismatchErrorString',['../global_types_8hpp.html#a3b445899b9f782bd5cd20524876dbe8b',1,'globalTypes.hpp']]]
+  ['typelistfrom',['typeListFrom',['../operator_map_8hpp.html#ac111d4163f2212cc5ad2a89daa0d1597',1,'operatorMap.hpp']]]
 ];
