@@ -1,0 +1,9 @@
+<!--
+function add [Integer, Float a, b: Integer, Float] => Integer, Float do
+end
+-->
+<block type="root">
+  <function ident="add" return="Integer Float" args="a:Integer Float,b:Integer Float">
+    <block type="function"></block>
+  </function>
+</block>

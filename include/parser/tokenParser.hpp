@@ -21,22 +21,22 @@
   
   program = block ;
   block = [ statement, ";", { statement, ";" } ] ;
-  statement = declaration | ( "define", function ) | for_loop | while_loop | block | if_statement | try_catch | throw_statement | expression | "break" | "continue" ;
+  statement = declaration | function | for_loop | while_loop | block | if_statement | try_catch | throw_statement | expression | "break" | "continue" ;
   declaration = "define" | type_list, ident, [ "=", expression ] ;
   for_loop = "for", expression, ";", expression, ";", expression, "do", block, "end" ;
   while_loop = "while", expression, "do", block, "end" ;
   if_statement = "if", expression, "do", block, [ "else", block | if_statement ] | "end" ;
   type_definition = "define", "type", ident, [ "inherits", type_list ], "do", [ contructor_definition ], [ { method_definition | member_definition } ], "end" ;
   constructor_definition = "define", "constructor", [ argument, {",", argument } ], "do", block, "end" ;
-  method_definition = "define", [ visibility_specifier ], [ "static" ], function ;
-  member_definition = "define", [ visibility_specifier ], [ "static" ], ident, [ "=", expression ] ;
+  method_definition = [ visibility_specifier ], [ "static" ], function ;
+  member_definition = [ visibility_specifier ], [ "static" ], declaration ;
   try_catch = "try", block, "catch", type_list, ident, "do", block, "end" ;
   throw_statement = "throw", expression ;
   
-  function = "function", ident, [ argument, {",", argument } ], [ "=>", type_list ], "do", block, "end" ;
+  function = "function", [ ident ], [ "[", argument, { ",", argument }, "]"], [ "=>", type_list ], "do", block, "end" ;
   visibility_specifier = "public" | "private" | "protected" ;
   type_list = ident, {",", ident} ;
-  argument = ( "[", type_list, ident, "]" ) | ( "[", ident, ":", type_list, "]" ) ;
+  argument = ( type_list, ident ) | ( ident, ":", type_list ) ;
   expression = primary, { binary_op, primary } ;
   primary = { prefix_op }, terminal, { postfix_op } ;
   binary_op = ? binary operator ? ;
@@ -170,6 +170,26 @@ public:
 };
 
 /**
+  \brief Provides the \link function \endlink method for parsing a function definition.
+  
+  Depends on BlockParser for block parsing.
+*/
+class FunctionParser: virtual public BlockParser {
+protected:
+  /// \copydoc BlockNode::BlockNode(StatementParser*)
+  FunctionParser(StatementParser* stp);
+private:
+  /// Get a type list from current pos
+  TypeList getTypeList();
+public:
+  /**
+    \brief Parse a declaration starting at the current token
+    \param throwIfEmpty throws an error on empty declarations; if set to false, empty declarations return nullptr
+  */
+  Node<FunctionNode>::Link function();
+};
+
+/**
   \brief Provides the \link ifStatement \endlink method for parsing an if statement.
   
   Depends on ExpressionParser for parsing expressions.
@@ -177,7 +197,7 @@ public:
 */
 class IfStatementParser: virtual public ExpressionParser, virtual public BlockParser {
 protected:
-  /// \copydoc BlockNode(StatementParser*)
+  /// \copydoc BlockNode::BlockNode(StatementParser*)
   IfStatementParser(StatementParser* stp);
 public:
   /**
@@ -196,10 +216,11 @@ public:
   Depends on IfStatementParser for parsing if statements.
   Depends on BlockParser for parsing blocks.
   Depends on DeclarationParser for parsing declarations.
+  Depends on FunctionParser for parsing function definitions.
 */
-class StatementParser: virtual public IfStatementParser, virtual public DeclarationParser {
+class StatementParser: virtual public IfStatementParser, virtual public DeclarationParser, virtual public FunctionParser {
 protected:
-  /// \see BlockNode(StatementParser*)
+  /// \see BlockNode::BlockNode(StatementParser*)
   StatementParser();
 public:
   /**

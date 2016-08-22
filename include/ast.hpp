@@ -74,6 +74,7 @@ public:
 enum BlockType {
   ROOT_BLOCK, ///< Only the root of the AST is this.
   CODE_BLOCK, ///< Default. Normal block do...end
+  FUNCTION_BLOCK, ///< Same as CODE_BLOCK, except it is only used for functions
   IF_BLOCK ///< Used for else clauses. Can be do...else
 };
 
@@ -312,6 +313,29 @@ public:
   void visit(ASTVisitorLink visitor) override;
 };
 
+/**
+  \brief Function definition.
+*/
+class FunctionNode: public NoMoreChildrenNode {
+private:
+  std::string ident;
+  FunctionSignature sig;
+public:
+  FunctionNode(FunctionSignature sig);
+  /// \param ident if empty, behaves just like FunctionNode(FunctionSignature)
+  FunctionNode(std::string ident, FunctionSignature sig);
+  
+  GET_SET_SIGS(BlockNode, Code)
+  
+  std::string getIdentifier() const;
+  const FunctionSignature& getSignature() const;
+  bool isAnon() const;
+  
+  void printTree(uint level) const override;
+  
+  void visit(ASTVisitorLink visitor) override;
+};
+
 #undef GET_SIG
 #undef SET_SIG
 #undef GET_SET_SIGS
@@ -333,6 +357,7 @@ public:
   PURE_VIRTUAL_VISIT(Loop)
   PURE_VIRTUAL_VISIT(Return)
   PURE_VIRTUAL_VISIT(BreakLoop)
+  PURE_VIRTUAL_VISIT(Function)
 };
 
 #undef PURE_VIRTUAL_VISIT

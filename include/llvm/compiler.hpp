@@ -117,6 +117,7 @@ private:
   void visitReturn(Node<ReturnNode>::Link node);
   void visitBlock(Node<BlockNode>::Link node);
   void visitBreakLoop(Node<BreakLoopNode>::Link node);
+  void visitFunction(Node<FunctionNode>::Link node);
   
   /// Implementation detail
   TokenType getFromValueType(llvm::Type* ty);

@@ -1,0 +1,9 @@
+<!--
+function add do
+end
+-->
+<block type="root">
+  <function ident="add">
+    <block type="function"></block>
+  </function>
+</block>

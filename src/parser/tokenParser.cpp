@@ -23,8 +23,9 @@ TokenParser& TokenParser::parse(std::vector<Token> input) {
 
 BlockParser::BlockParser(StatementParser* stp): stp(stp) {}
 IfStatementParser::IfStatementParser(StatementParser* stp): BlockParser(stp) {}
-StatementParser::StatementParser(): BlockParser(this), IfStatementParser(this) {}
-TokenParser::TokenParser(): BlockParser(this), IfStatementParser(this) {}
+FunctionParser::FunctionParser(StatementParser* stp): BlockParser(stp) {}
+StatementParser::StatementParser(): BlockParser(this), IfStatementParser(this), FunctionParser(this) {}
+TokenParser::TokenParser(): BlockParser(this), IfStatementParser(this), FunctionParser(this) {}
 
 Node<ExpressionNode>::Link ExpressionParser::exprFromCurrent() {
   auto e = Node<ExpressionNode>::make(current());
@@ -205,6 +206,68 @@ Node<BranchNode>::Link IfStatementParser::ifStatement() {
   return branch;
 }
 
+TypeList FunctionParser::getTypeList() {
+  TypeList types = {};
+  skip(-1); // Counter the comma skip below for the first iteration
+  do {
+    skip(1); // Skips the comma
+    expect(IDENTIFIER, "Expected identifier in type list");
+    types.insert(current().data);
+    skip();
+  } while (accept(","));
+  return types;
+}
+
+Node<FunctionNode>::Link FunctionParser::function() {
+  uint line = current().line;
+  skip(); // Skip "function"
+  std::string ident = "";
+  FunctionSignature::Arguments args {};
+  std::unique_ptr<TypeInfo> returnType;
+  // Is not anon func
+  if (accept(IDENTIFIER)) {
+    ident = current().data;
+    skip();
+  }
+  // Has arguments
+  if (accept(C_SQPAREN_LEFT)) {
+    skip();
+    while (true) {
+      expect(IDENTIFIER, "Expected identifier in function arguments");
+      Token ident = current();
+      skip();
+      // argName: typeList
+      if (accept(C_2POINT)) {
+        skip();
+        args.insert(std::make_pair(ident.data, getTypeList()));
+      // typeList argName
+      } else {
+        skip(-1); // Don't eat the first identifier
+        TypeList tl = getTypeList();
+        args.insert(std::make_pair(current().data, tl));
+        skip(); // Skip the argument name
+      }
+      if (accept(C_SQPAREN_RIGHT)) {
+        skip();
+        break;
+      }
+      if (!accept(",")) {
+        throw Error("SyntaxError", "Expected comma after function argument", current().line);
+      }
+      skip(); // The comma
+    }
+  }
+  // Has return type
+  if (accept(K_FAT_ARROW)) {
+    skip();
+    returnType = std::make_unique<TypeInfo>(TypeInfo(getTypeList()));
+  }
+  auto func = Node<FunctionNode>::make(ident, FunctionSignature(returnType == nullptr ? nullptr : *returnType, args));
+  func->setLineNumber(line);
+  func->setCode(block(FUNCTION_BLOCK));
+  return func;
+}
+
 ASTNode::Link StatementParser::statement() {
   if (accept(K_IF)) {
     skip();
@@ -258,6 +321,8 @@ ASTNode::Link StatementParser::statement() {
     auto retNode = Node<ReturnNode>::make();
     retNode->setValue(retValue);
     return retNode;
+  } else if (accept(K_FUNCTION)) {
+    return function();
   } else {
     auto e = expression();
     expectSemi();

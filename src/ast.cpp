@@ -144,6 +144,19 @@ ReturnNode::ReturnNode(): NoMoreChildrenNode(1) {}
 
 BreakLoopNode::BreakLoopNode(): NoMoreChildrenNode(0) {}
 
+FunctionNode::FunctionNode(std::string ident, FunctionSignature sig): NoMoreChildrenNode(1), ident(ident), sig(sig) {}
+FunctionNode::FunctionNode(FunctionSignature sig): FunctionNode("", sig) {}
+
+std::string FunctionNode::getIdentifier() const {
+  return ident;
+}
+const FunctionSignature& FunctionNode::getSignature() const {
+  return sig;
+}
+bool FunctionNode::isAnon() const {
+  return ident.empty();
+}
+
 // Macro for easy printing of NoMoreChildrenNode children
 #define PRETTY_PRINT_FOR(childIndex, nameOf) \
 {\
@@ -205,6 +218,13 @@ void BreakLoopNode::printTree(uint level) const {
   for (auto& child : children) child->printTree(level + 1);
 }
 
+void FunctionNode::printTree(uint level) const {
+  printIndent(level);
+  println("Function", isAnon() ? "<anonymous>" : ident);
+  println(this->sig.toString());
+  if (notNull(0)) getCode()->printTree(level + 1);
+}
+
 #undef PRETTY_PRINT_FOR
 
 /**
@@ -246,6 +266,8 @@ GET_SET_FOR(LoopNode, 3, Code, BlockNode)
 
 GET_SET_FOR(ReturnNode, 0, Value, ExpressionNode)
 
+GET_SET_FOR(FunctionNode, 0, Code, BlockNode)
+
 #undef GET_FOR
 #undef SET_FOR
 #undef GET_SET_FOR
@@ -267,6 +289,7 @@ VISITOR_VISIT_IMPL_FOR(Branch);
 VISITOR_VISIT_IMPL_FOR(Loop);
 VISITOR_VISIT_IMPL_FOR(Return);
 VISITOR_VISIT_IMPL_FOR(BreakLoop);
+VISITOR_VISIT_IMPL_FOR(Function);
 
 #undef VISITOR_VISIT_IMPL_FOR
 

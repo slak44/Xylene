@@ -7,6 +7,7 @@
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
+#include "utils/typeInfo.hpp"
 #include "baseParser.hpp"
 #include "ast.hpp"
 
@@ -24,7 +25,7 @@ public:
   XML data should contain a single root tag. The root tag must represent a block node.
   List of tags:
   - \c block: maps to a BlockNode
-    - attribute \b type: "root", "if", "code", defaults to "code" if not specified
+    - attribute \b type: "root", "if", "code", "function" defaults to "code" if not specified
   - \c return: no attributes, has 0 or 1 expr tags as his children, maps to a ReturnNode
   - \c expr: maps to an ExpressionNode
     - attribute \b type: is a string name for a TokenType
@@ -46,6 +47,11 @@ public:
   - \c loop_update: only inside a loop tag
     - children: one expr node
   - \c break: maps to a BreakLoopNode (no attributes, no children)
+  - \c function: maps to a FunctionNode
+    - attribute \b ident: name of function, optional
+    - attribute \b return: space separated list of return types, omit for void
+    - attribute \b args: comma separated list of arguments. An argument is a identifier, a colon, then a space separated list of types for it
+    - children: only one block node
 */
 class XMLParser: public BaseParser {
 public:

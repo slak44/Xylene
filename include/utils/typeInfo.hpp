@@ -72,7 +72,10 @@ public:
 */
 class DefiniteTypeInfo: public TypeInfo {
 public:
-  using TypeInfo::TypeInfo;
+  /// \copydoc TypeInfo::TypeInfo(TypeList)
+  DefiniteTypeInfo(TypeList evalValue);
+  /// \copydoc TypeInfo::TypeInfo()
+  DefiniteTypeInfo();
   DefiniteTypeInfo(std::nullptr_t voidType) = delete;
   
   std::string toString() const;
@@ -82,11 +85,13 @@ public:
   \brief Signature for a function. Stores return type and argument types.
 */
 class FunctionSignature {
+public:
+  using Arguments = std::map<std::string, DefiniteTypeInfo>;
 private:
   TypeInfo returnType;
-  std::vector<TypeInfo> argumentTypes;
+  Arguments arguments;
 public:
-  FunctionSignature(TypeInfo returnType, std::vector<TypeInfo> argumentTypes);
+  FunctionSignature(TypeInfo returnType, Arguments arguments);
   
   std::string toString() const;
 };
