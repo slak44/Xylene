@@ -17,6 +17,8 @@ var annotated_dup =
     [ "ExpressionNode", "class_expression_node.html", "class_expression_node" ],
     [ "ExpressionParser", "class_expression_parser.html", "class_expression_parser" ],
     [ "Float", "class_float.html", "class_float" ],
+    [ "FunctionNode", "class_function_node.html", "class_function_node" ],
+    [ "FunctionParser", "class_function_parser.html", "class_function_parser" ],
     [ "FunctionSignature", "class_function_signature.html", "class_function_signature" ],
     [ "Identity", "struct_identity.html", "struct_identity" ],
     [ "IfStatementParser", "class_if_statement_parser.html", "class_if_statement_parser" ],

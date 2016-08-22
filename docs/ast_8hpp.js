@@ -11,6 +11,7 @@ var ast_8hpp =
     [ "LoopNode", "class_loop_node.html", "class_loop_node" ],
     [ "ReturnNode", "class_return_node.html", "class_return_node" ],
     [ "BreakLoopNode", "class_break_loop_node.html", "class_break_loop_node" ],
+    [ "FunctionNode", "class_function_node.html", "class_function_node" ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", null ],
     [ "GET_SET_SIGS", "ast_8hpp.html#ad6003bd0cb5d23a158c81606911c0724", null ],
     [ "GET_SIG", "ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2", null ],
@@ -20,6 +21,7 @@ var ast_8hpp =
     [ "BlockType", "ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3", [
       [ "ROOT_BLOCK", "ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3aa3d088be57c279faf7fca688a4e2e602", null ],
       [ "CODE_BLOCK", "ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3ae7ed9864d82cff511ac9d229ec94a074", null ],
+      [ "FUNCTION_BLOCK", "ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3af9ce91631e740721d61e3f49ac4bcfd6", null ],
       [ "IF_BLOCK", "ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3a2561f109637b9beed63483d885c1e04e", null ]
     ] ]
 ];

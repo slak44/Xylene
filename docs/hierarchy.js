@@ -7,10 +7,13 @@ var hierarchy =
     [ "BaseParser", "class_base_parser.html", [
       [ "TokenBaseParser", "class_token_base_parser.html", [
         [ "BlockParser", "class_block_parser.html", [
-          [ "IfStatementParser", "class_if_statement_parser.html", [
+          [ "FunctionParser", "class_function_parser.html", [
             [ "StatementParser", "class_statement_parser.html", [
               [ "TokenParser", "class_token_parser.html", null ]
             ] ]
+          ] ],
+          [ "IfStatementParser", "class_if_statement_parser.html", [
+            [ "StatementParser", "class_statement_parser.html", null ]
           ] ]
         ] ],
         [ "ExpressionParser", "class_expression_parser.html", [
@@ -30,6 +33,7 @@ var hierarchy =
           [ "BranchNode", "class_branch_node.html", null ],
           [ "BreakLoopNode", "class_break_loop_node.html", null ],
           [ "DeclarationNode", "class_declaration_node.html", null ],
+          [ "FunctionNode", "class_function_node.html", null ],
           [ "LoopNode", "class_loop_node.html", null ],
           [ "ReturnNode", "class_return_node.html", null ]
         ] ]

@@ -161,7 +161,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Creates an <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a> from an XML file or string. </p>
 <p>XML data should contain a single root tag. The root tag must represent a block node. List of tags:</p><ul>
 <li><code>block:</code> maps to a <a class="el" href="class_block_node.html" title="Represents a block of statements. Children are those statements. ">BlockNode</a><ul>
-<li>attribute <b>type:</b> "root", "if", "code", defaults to "code" if not specified</li>
+<li>attribute <b>type:</b> "root", "if", "code", "function" defaults to "code" if not specified</li>
 </ul>
 </li>
 <li><code>return:</code> no attributes, has 0 or 1 expr tags as his children, maps to a <a class="el" href="class_return_node.html" title="Return statement. ">ReturnNode</a></li>
@@ -198,7 +198,14 @@ Additional Inherited Members</h2></td></tr>
 <li>children: one expr node</li>
 </ul>
 </li>
-<li><code>break:</code> maps to a <a class="el" href="class_break_loop_node.html" title="Break statement for exiting a loop. ">BreakLoopNode</a> (no attributes, no children) </li>
+<li><code>break:</code> maps to a <a class="el" href="class_break_loop_node.html" title="Break statement for exiting a loop. ">BreakLoopNode</a> (no attributes, no children)</li>
+<li><code>function:</code> maps to a <a class="el" href="class_function_node.html" title="Function definition. ">FunctionNode</a><ul>
+<li>attribute <b>ident:</b> name of function, optional</li>
+<li>attribute <b>return:</b> space separated list of return types, omit for void</li>
+<li>attribute <b>args:</b> comma separated list of arguments. An argument is a identifier, a colon, then a space separated list of types for it</li>
+<li>children: only one block node </li>
+</ul>
+</li>
 </ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a60004d4b50ef242bbd191a494fd750f1"></a>

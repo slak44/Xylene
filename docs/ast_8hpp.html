@@ -161,6 +161,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_break_loop_node.html">BreakLoopNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Break statement for exiting a loop.  <a href="class_break_loop_node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_node.html">FunctionNode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function definition.  <a href="class_function_node.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_visitor.html">ASTVisitor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract class for visiting nodes on an <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a>.  <a href="class_a_s_t_visitor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,6 +193,7 @@ Typedefs</h2></td></tr>
 Enumerations</h2></td></tr>
 <tr class="memitem:a54420623f26ab6bb61042b41cccf37a3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3">BlockType</a> { <a class="el" href="ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3aa3d088be57c279faf7fca688a4e2e602">ROOT_BLOCK</a>, 
 <a class="el" href="ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3ae7ed9864d82cff511ac9d229ec94a074">CODE_BLOCK</a>, 
+<a class="el" href="ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3af9ce91631e740721d61e3f49ac4bcfd6">FUNCTION_BLOCK</a>, 
 <a class="el" href="ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3a2561f109637b9beed63483d885c1e04e">IF_BLOCK</a>
  }<tr class="memdesc:a54420623f26ab6bb61042b41cccf37a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">All the types a <a class="el" href="class_block_node.html" title="Represents a block of statements. Children are those statements. ">BlockNode</a> can be.  <a href="ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3">More...</a><br /></td></tr>
 </td></tr>
@@ -219,8 +223,8 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a>(linkType, nameOf) <a class="code" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">\</a></div><div class="line"><a class="code" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a>(linkType, nameOf)</div><div class="ttc" id="ast_8hpp_html_af0d6541bd1c370ad92eaa279ef43a639"><div class="ttname"><a href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a></div><div class="ttdeci">#define SET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:169</div></div>
-<div class="ttc" id="ast_8hpp_html_a50e7b4077d96b981b6e5fd7792e0b3c2"><div class="ttname"><a href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a></div><div class="ttdeci">#define GET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:168</div></div>
+<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a>(linkType, nameOf) <a class="code" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">\</a></div><div class="line"><a class="code" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a>(linkType, nameOf)</div><div class="ttc" id="ast_8hpp_html_af0d6541bd1c370ad92eaa279ef43a639"><div class="ttname"><a href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a></div><div class="ttdeci">#define SET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:170</div></div>
+<div class="ttc" id="ast_8hpp_html_a50e7b4077d96b981b6e5fd7792e0b3c2"><div class="ttname"><a href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a></div><div class="ttdeci">#define GET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:169</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -263,7 +267,7 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#a005c823562df3e243f671a9d0409ba93">VISITOR_VISIT_IMPL_FOR</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#ab02a05c237493f61aa7e8d89e076d27a">VISITOR_VISIT_IMPL_FOR</a> </dd></dl>
 
 </div>
 </div>
@@ -324,6 +328,9 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a54420623f26ab6bb61042b41cccf37a3ae7ed9864d82cff511ac9d229ec94a074"></a>CODE_BLOCK&#160;</td><td class="fielddoc">
 <p>Default. Normal block do...end. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a54420623f26ab6bb61042b41cccf37a3af9ce91631e740721d61e3f49ac4bcfd6"></a>FUNCTION_BLOCK&#160;</td><td class="fielddoc">
+<p>Same as CODE_BLOCK, except it is only used for functions. </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a54420623f26ab6bb61042b41cccf37a3a2561f109637b9beed63483d885c1e04e"></a>IF_BLOCK&#160;</td><td class="fielddoc">
 <p>Used for else clauses. Can be do...else. </p>

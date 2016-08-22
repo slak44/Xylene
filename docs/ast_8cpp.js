@@ -11,5 +11,6 @@ var ast_8cpp =
     [ "VISITOR_VISIT_IMPL_FOR", "ast_8cpp.html#af03fe40cc444c0358543a63ce3fbf2f6", null ],
     [ "VISITOR_VISIT_IMPL_FOR", "ast_8cpp.html#a088267c44ddb10ea5958271b571541bc", null ],
     [ "VISITOR_VISIT_IMPL_FOR", "ast_8cpp.html#a7382137ee7d70daecc3408492ce65fe9", null ],
-    [ "VISITOR_VISIT_IMPL_FOR", "ast_8cpp.html#a005c823562df3e243f671a9d0409ba93", null ]
+    [ "VISITOR_VISIT_IMPL_FOR", "ast_8cpp.html#a005c823562df3e243f671a9d0409ba93", null ],
+    [ "VISITOR_VISIT_IMPL_FOR", "ast_8cpp.html#ab02a05c237493f61aa7e8d89e076d27a", null ]
 ];

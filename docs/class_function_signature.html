@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('class_function_signature.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_function_signature-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -120,17 +121,35 @@ $(document).ready(function(){initNavTree('class_function_signature.html','');});
 
 <p><code>#include &lt;<a class="el" href="type_info_8hpp_source.html">typeInfo.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a70dd84f70fd00eebbcad0083578e44d4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">Arguments</a> = std::map&lt; std::string, <a class="el" href="class_definite_type_info.html">DefiniteTypeInfo</a> &gt;</td></tr>
+<tr class="separator:a70dd84f70fd00eebbcad0083578e44d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a13136f62066fab567417284ca3313ff1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a13136f62066fab567417284ca3313ff1">FunctionSignature</a> (<a class="el" href="class_type_info.html">TypeInfo</a> returnType, std::vector&lt; <a class="el" href="class_type_info.html">TypeInfo</a> &gt; argumentTypes)</td></tr>
-<tr class="separator:a13136f62066fab567417284ca3313ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c847612c0fbe45d18a846b5d846d975"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a2c847612c0fbe45d18a846b5d846d975">FunctionSignature</a> (<a class="el" href="class_type_info.html">TypeInfo</a> returnType, <a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">Arguments</a> arguments)</td></tr>
+<tr class="separator:a2c847612c0fbe45d18a846b5d846d975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcfdbb6cd5f0c58362cad91c2f51740a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#afcfdbb6cd5f0c58362cad91c2f51740a">toString</a> () const </td></tr>
 <tr class="separator:afcfdbb6cd5f0c58362cad91c2f51740a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Signature for a function. Stores return type and argument types. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a13136f62066fab567417284ca3313ff1"></a>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a class="anchor" id="a70dd84f70fd00eebbcad0083578e44d4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">FunctionSignature::Arguments</a> =  std::map&lt;std::string, <a class="el" href="class_definite_type_info.html">DefiniteTypeInfo</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a2c847612c0fbe45d18a846b5d846d975"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -143,8 +162,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="class_type_info.html">TypeInfo</a> &gt;&#160;</td>
-          <td class="paramname"><em>argumentTypes</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">Arguments</a>&#160;</td>
+          <td class="paramname"><em>arguments</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

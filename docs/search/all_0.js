@@ -6,6 +6,7 @@ var searchData=
   ['addchild',['addChild',['../class_a_s_t_node.html#a1ccee2f28eacfef347a853a0e081ac94',1,'ASTNode::addChild()'],['../class_no_more_children_node.html#a987d2dedde5cdabab2ee220477ac66f6',1,'NoMoreChildrenNode::addChild()']]],
   ['addtoken',['addToken',['../class_lexer_base.html#aa4776a92d2d07ae428fe62fb0296c2e6',1,'LexerBase']]],
   ['all',['ALL',['../util_8hpp.html#a0fde0af84d5566911a450db1a8acb728',1,'util.hpp']]],
+  ['arguments',['Arguments',['../class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4',1,'FunctionSignature']]],
   ['arity',['Arity',['../operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8',1,'operator.hpp']]],
   ['assignmentlist',['assignmentList',['../operator_8hpp.html#adf720f491e114ae641399390ee9675ef',1,'operator.hpp']]],
   ['associate_5ffrom_5fleft',['ASSOCIATE_FROM_LEFT',['../operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2aa90f4bdd5dd80cb48623ffeb28e498b6',1,'operator.hpp']]],
