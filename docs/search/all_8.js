@@ -16,6 +16,7 @@ var searchData=
   ['internalerror',['InternalError',['../class_internal_error.html',1,'InternalError'],['../class_internal_error.html#accf8495bf6917b7685a69c390c69a91c',1,'InternalError::InternalError(std::string errorName, std::string msg, const ErrorData &amp;data)'],['../class_internal_error.html#a18662d967c3c5b3b18b9c11f1a75e28f',1,'InternalError::InternalError(std::string msg, const ErrorData &amp;data)']]],
   ['interpret',['interpret',['../class_tree_walk_interpreter.html#a1aef2d7e8b97c142d3bf53819cff2cab',1,'TreeWalkInterpreter']]],
   ['interpreter_2ehpp',['interpreter.hpp',['../interpreter_8hpp.html',1,'']]],
+  ['isanon',['isAnon',['../class_function_node.html#a84a28d16c286e09fa8131ae4eab0f936',1,'FunctionNode']]],
   ['isdynamic',['isDynamic',['../class_declaration_node.html#a954698d08b61811b2fb2de6dc8306013',1,'DeclarationNode::isDynamic()'],['../class_type_info.html#aabcf66613c0fbcf0b64b324e3e24649c',1,'TypeInfo::isDynamic()']]],
   ['iseof',['isEOF',['../class_lexer_base.html#af4660157ff5517c225544e22cf28c5bf',1,'LexerBase']]],
   ['iseol',['isEOL',['../class_lexer_base.html#ad5d8917fd22faa04cc9f00fb9daf4b38',1,'LexerBase']]],
