@@ -57,7 +57,7 @@ llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const
       case IF_BLOCK:
         // Technically should never happen because visitBranch *should* be properly implemented
         throw InternalError("visitBranch not implemented properly", {METADATA_PAIRS});
-      case CODE_BLOCK:
+      case CODE_BLOCK: {
         // Attempt to merge into predecessor
         bool hasMerged = llvm::MergeBlockIntoPredecessor(newBlock);
         if (hasMerged) {
@@ -68,7 +68,10 @@ llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const
           throw InternalError("Not Implemented", {METADATA_PAIRS});
         }
         break;
-      // TODO: add FUNCTION_BLOCK to this enum, and create a ret instruction for it
+      }
+      case FUNCTION_BLOCK:
+        // TODO: create a ret instruction if it doesn't exist, or warn or something
+        break;
     }
   }
   return newBlock;
@@ -290,6 +293,11 @@ void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
     }
   }
   builder->CreateRet(result);
+}
+
+void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
+  UNUSED(node);
+  throw InternalError("Not Implemented", {METADATA_PAIRS});
 }
 
 using CmpPred = llvm::CmpInst::Predicate;

@@ -1,0 +1,9 @@
+<!--
+function add => Integer do
+end
+-->
+<block type="root">
+  <function ident="add" return="Integer">
+    <block type="function"></block>
+  </function>
+</block>

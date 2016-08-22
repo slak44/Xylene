@@ -44,16 +44,21 @@ std::string StaticTypeInfo::toString() const {
   return "StaticTypeInfo: " + *std::begin(evalValue);
 };
 
+DefiniteTypeInfo::DefiniteTypeInfo(TypeList evalValue): TypeInfo(evalValue) {}
+DefiniteTypeInfo::DefiniteTypeInfo(): TypeInfo({}) {}
+
 std::string DefiniteTypeInfo::toString() const {
   return "DefiniteTypeInfo: " + getTypeNameString();
 };
 
-FunctionSignature::FunctionSignature(TypeInfo returnType, std::vector<TypeInfo> argumentTypes): returnType(returnType), argumentTypes(argumentTypes) {}
+FunctionSignature::FunctionSignature(TypeInfo returnType, Arguments arguments): returnType(returnType), arguments(arguments) {}
 
 std::string FunctionSignature::toString() const {
   std::string str = "FunctionSignature (";
   str += "return: " + returnType.getTypeNameString();
-  str += ", arguments: " + collate<decltype(argumentTypes)>(argumentTypes, [](TypeInfo ti) {return "(arg " + ti.getTypeNameString() + ")";});
+  str += ", arguments: " + collate<Arguments>(arguments, [](const std::pair<std::string, DefiniteTypeInfo>& arg) {
+    return "(arg " + arg.first + ": " + arg.second.getTypeNameString() + ")";
+  });
   str += ")";
   return str;
 };

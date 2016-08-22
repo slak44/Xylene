@@ -1,0 +1,9 @@
+<!--
+function [Integer e] => Integer do
+end
+-->
+<block type="root">
+  <function return="Integer" args="e:Integer">
+    <block type="function"></block>
+  </function>
+</block>

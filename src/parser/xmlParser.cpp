@@ -42,7 +42,8 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     std::string type = typeAttr == 0 ? "code" : typeAttr->value();
     BlockType bt =
       type == "root" ? ROOT_BLOCK :
-      type == "if" ? IF_BLOCK : CODE_BLOCK;
+      type == "if" ? IF_BLOCK :
+      type == "function" ? FUNCTION_BLOCK : CODE_BLOCK;
     auto block = Node<BlockNode>::make(bt);
     parseChildren(node, block);
     return block;
@@ -122,6 +123,29 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     return parseXMLNode(node->first_node());
   } else if (name == "break") {
     return Node<BreakLoopNode>::make();
+  } else if (name == "function") {
+    std::string ident;
+    auto identAttr = node->first_attribute("ident");
+    if (identAttr != 0) ident = identAttr->value();
+    else ident = "";
+    std::vector<std::string> returnTypes {};
+    auto returnAttr = node->first_attribute("return");
+    if (returnAttr != 0) returnTypes = split(returnAttr->value(), ' ');
+    FunctionSignature::Arguments args {};
+    auto argsAttr = node->first_attribute("args");
+    if (argsAttr != 0) {
+      std::vector<std::string> stringArgs = split(argsAttr->value(), ',');
+      for (auto& arg : stringArgs) {
+        std::vector<std::string> namePlusTypes = split(arg, ':');
+        std::vector<std::string> types = split(namePlusTypes[1], ' ');
+        args.insert(std::make_pair(namePlusTypes[0], TypeList(ALL(types))));
+      }
+    }
+    auto codeBlock = node->first_node("block");
+    if (codeBlock == 0) throw XMLParseError("Function missing code block", {METADATA_PAIRS});
+    auto n = Node<FunctionNode>::make(ident, FunctionSignature(returnAttr == 0 ? nullptr : TypeInfo(TypeList(ALL(returnTypes))), args));
+    n->setCode(Node<BlockNode>::staticPtrCast(parseXMLNode(codeBlock)));
+    return n;
   }
   throw XMLParseError("Unknown type of node", {METADATA_PAIRS, {"node name", name}});
 }
