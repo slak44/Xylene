@@ -130,6 +130,7 @@ $(document).ready(function(){initNavTree('compiler_8hpp.html','');});
 <code>#include &lt;llvm/Support/raw_os_ostream.h&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;stack&gt;</code><br />
 <code>#include &quot;<a class="el" href="util_8hpp_source.html">utils/util.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="error_8hpp_source.html">utils/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ast_8hpp_source.html">ast.hpp</a>&quot;</code><br />
@@ -145,7 +146,7 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a8f95660ba0eb370118cd04a29e65c161"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8hpp.html#a8f95660ba0eb370118cd04a29e65c161">CODEGEN_SIG</a>&#160;&#160;&#160;(std::vector&lt;llvm::Value*&gt; operands, __attribute__((unused)) <a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a> line) -&gt; llvm::Value*</td></tr>
+<tr class="memitem:a8f95660ba0eb370118cd04a29e65c161"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8hpp.html#a8f95660ba0eb370118cd04a29e65c161">CODEGEN_SIG</a>&#160;&#160;&#160;(std::vector&lt;llvm::Value*&gt; operands, __attribute__((unused)) <a class="el" href="class_trace.html">Trace</a> trace) -&gt; llvm::Value*</td></tr>
 <tr class="memdesc:a8f95660ba0eb370118cd04a29e65c161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signature for a lambda representing a CodegenFunction.  <a href="#a8f95660ba0eb370118cd04a29e65c161">More...</a><br /></td></tr>
 <tr class="separator:a8f95660ba0eb370118cd04a29e65c161"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -155,7 +156,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CODEGEN_SIG&#160;&#160;&#160;(std::vector&lt;llvm::Value*&gt; operands, __attribute__((unused)) <a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a> line) -&gt; llvm::Value*</td>
+          <td class="memname">#define CODEGEN_SIG&#160;&#160;&#160;(std::vector&lt;llvm::Value*&gt; operands, __attribute__((unused)) <a class="el" href="class_trace.html">Trace</a> trace) -&gt; llvm::Value*</td>
         </tr>
       </table>
 </div><div class="memdoc">

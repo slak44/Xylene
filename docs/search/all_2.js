@@ -14,6 +14,7 @@ var searchData=
   ['cmppred',['CmpPred',['../compiler_8cpp.html#ac8107e81fa0d66e3c3b5903745ef92b2',1,'compiler.cpp']]],
   ['code_5fblock',['CODE_BLOCK',['../ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3ae7ed9864d82cff511ac9d229ec94a074',1,'ast.hpp']]],
   ['codegen_5fsig',['CODEGEN_SIG',['../compiler_8hpp.html#a8f95660ba0eb370118cd04a29e65c161',1,'compiler.hpp']]],
+  ['col',['col',['../struct_position.html#abff90067890ce6b6329ce72e095b3c2e',1,'Position']]],
   ['collate',['collate',['../util_8hpp.html#ac2877ccf6822bd1eb2a957e7b7ba8550',1,'util.hpp']]],
   ['collate_5ftype',['COLLATE_TYPE',['../util_8hpp.html#aa777f2f354345a8b9d1a5632e807ef00',1,'util.hpp']]],
   ['collatetypelist',['collateTypeList',['../util_8cpp.html#a8bc720168318c10d118cf412e5b84503',1,'collateTypeList(TypeList typeList):&#160;util.cpp'],['../util_8hpp.html#a8bc720168318c10d118cf412e5b84503',1,'collateTypeList(TypeList typeList):&#160;util.cpp']]],

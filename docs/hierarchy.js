@@ -53,6 +53,7 @@ var hierarchy =
       [ "String", "class_string.html", null ]
     ] ],
     [ "Operator", "class_operator.html", null ],
+    [ "Position", "struct_position.html", null ],
     [ "PtrUtil< T >", "struct_ptr_util.html", [
       [ "Node< T, std::enable_if< std::is_base_of< ASTNode, T >::value >::type * >", "struct_node.html", null ]
     ] ],
@@ -62,6 +63,7 @@ var hierarchy =
     [ "PtrUtil< CompileVisitor >", "struct_ptr_util.html", null ],
     [ "PtrUtil< Object >", "struct_ptr_util.html", null ],
     [ "PtrUtil< Scope >", "struct_ptr_util.html", null ],
+    [ "Range", "class_range.html", null ],
     [ "runtime_error", null, [
       [ "Error", "class_error.html", null ],
       [ "InternalError", "class_internal_error.html", [
@@ -71,6 +73,7 @@ var hierarchy =
     ] ],
     [ "Scope", "class_scope.html", null ],
     [ "Token", "class_token.html", null ],
+    [ "Trace", "class_trace.html", null ],
     [ "TreeWalkInterpreter", "class_tree_walk_interpreter.html", null ],
     [ "TypeInfo", "class_type_info.html", [
       [ "DefiniteTypeInfo", "class_definite_type_info.html", null ],

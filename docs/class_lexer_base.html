@@ -189,6 +189,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:af766bfe9158539441b5e87b484476b7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="util_8hpp.html#aba41bf2b6f6da5945ee08fb99931aede">uint64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#af766bfe9158539441b5e87b484476b7c">getCurrentLine</a> () const </td></tr>
 <tr class="memdesc:af766bfe9158539441b5e87b484476b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current line number.  <a href="#af766bfe9158539441b5e87b484476b7c">More...</a><br /></td></tr>
 <tr class="separator:af766bfe9158539441b5e87b484476b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc4675bd53b3c01312a7fa87f1260aa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a0cc4675bd53b3c01312a7fa87f1260aa">getCurrentPosition</a> () const </td></tr>
+<tr class="memdesc:a0cc4675bd53b3c01312a7fa87f1260aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a <a class="el" href="struct_position.html" title="Tracks a position in a file. ">Position</a> object.  <a href="#a0cc4675bd53b3c01312a7fa87f1260aa">More...</a><br /></td></tr>
+<tr class="separator:a0cc4675bd53b3c01312a7fa87f1260aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20cca4468b26e5fd5373113f336fa13e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_range.html">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a20cca4468b26e5fd5373113f336fa13e">getRangeToHere</a> (const <a class="el" href="struct_position.html">Position</a> start) const </td></tr>
+<tr class="memdesc:a20cca4468b26e5fd5373113f336fa13e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a range from the argument to the current position.  <a href="#a20cca4468b26e5fd5373113f336fa13e">More...</a><br /></td></tr>
+<tr class="separator:a20cca4468b26e5fd5373113f336fa13e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad122d7cd36b6d91533e58d06da6bb6a0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#ad122d7cd36b6d91533e58d06da6bb6a0">processInput</a> ()=0</td></tr>
 <tr class="memdesc:ad122d7cd36b6d91533e58d06da6bb6a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subclasses should use this to loop over the input and create Tokens from it.  <a href="#ad122d7cd36b6d91533e58d06da6bb6a0">More...</a><br /></td></tr>
 <tr class="separator:ad122d7cd36b6d91533e58d06da6bb6a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -321,6 +327,31 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a0cc4675bd53b3c01312a7fa87f1260aa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="struct_position.html">Position</a> LexerBase::getCurrentPosition </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a <a class="el" href="struct_position.html" title="Tracks a position in a file. ">Position</a> object. </p>
+
+</div>
+</div>
 <a class="anchor" id="ad02271ff926c4debe0494330845db870"></a>
 <div class="memitem">
 <div class="memproto">
@@ -335,6 +366,32 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get total line count. </p>
+
+</div>
+</div>
+<a class="anchor" id="a20cca4468b26e5fd5373113f336fa13e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_range.html">Range</a> LexerBase::getRangeToHere </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_position.html">Position</a>&#160;</td>
+          <td class="paramname"><em>start</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Make a range from the argument to the current position. </p>
 
 </div>
 </div>

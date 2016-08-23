@@ -5,6 +5,7 @@ var searchData=
   ['declarationnode',['DeclarationNode',['../class_declaration_node.html',1,'DeclarationNode'],['../class_declaration_node.html#a4fefbdacb611532375580cb81281c8da',1,'DeclarationNode::DeclarationNode()']]],
   ['declarationparser',['DeclarationParser',['../class_declaration_parser.html',1,'DeclarationParser'],['../class_declaration_parser.html#a04f81f567b7a2643bcb46a26bee9c0dc',1,'DeclarationParser::DeclarationParser()']]],
   ['defaultcollatecombine',['defaultCollateCombine',['../util_8hpp.html#aa2630c504d4a53cf7fcfe4d3b73d3916',1,'util.hpp']]],
+  ['defaulttrace',['defaultTrace',['../trace_8hpp.html#acd22607a9f573fad8be6faf2400571aa',1,'trace.hpp']]],
   ['definitetypeinfo',['DefiniteTypeInfo',['../class_definite_type_info.html',1,'DefiniteTypeInfo'],['../class_definite_type_info.html#ac060a546dce5d346047e283ac4080322',1,'DefiniteTypeInfo::DefiniteTypeInfo(TypeList evalValue)'],['../class_definite_type_info.html#adc7f001bed08fae019135385526d0d43',1,'DefiniteTypeInfo::DefiniteTypeInfo()'],['../class_definite_type_info.html#aa9d059b74c668302a41d6f227efbbee0',1,'DefiniteTypeInfo::DefiniteTypeInfo(std::nullptr_t voidType)=delete']]],
   ['deprecated_20list',['Deprecated List',['../deprecated.html',1,'']]],
   ['dereferenceall',['dereferenceAll',['../operator_map_8hpp.html#acb425b6f019ce1eece183013105180a1',1,'operatorMap.hpp']]],
