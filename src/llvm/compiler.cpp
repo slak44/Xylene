@@ -92,7 +92,7 @@ TokenType CompileVisitor::getFromValueType(llvm::Type* ty) {
 llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, bool requirePointer) {
   Token tok = node->getToken();
   if (requirePointer && tok.type != IDENTIFIER && tok.type != OPERATOR) 
-    throw Error("ReferenceError", "Operator requires a mutable type", tok.line);
+    throw Error("ReferenceError", "Operator requires a mutable type", tok.trace);
   if (tok.isTerminal()) {
     switch (tok.type) {
       case L_INTEGER: return llvm::ConstantInt::getSigned(integerType, std::stoll(tok.data));
@@ -128,7 +128,7 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, 
     }
     auto func = codegen->findAndGetFun(tok, operands);
     // Call the code generating function, and return its result
-    return func(operands, tok.line);
+    return func(operands, tok.trace);
   } else {
     throw InternalError("Malformed expression node", {
       METADATA_PAIRS,
@@ -271,7 +271,7 @@ void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
   // TODO get rid of this garbage iteration, make sure this node has a reference to its loop node from the parser, don't search for it like an ape
   auto lastParent = node->getParent();
   for (; ; lastParent = lastParent.lock()->getParent()) {
-    if (lastParent.lock() == nullptr) throw Error("SyntaxError", "Found break statement outside loop", node->getLineNumber());
+    if (lastParent.lock() == nullptr) throw Error("SyntaxError", "Found break statement outside loop", node->getTrace());
     // Make sure that at least somewhere up the tree, we have a loop, otherwise the above error is thrown
     if (Node<LoopNode>::dynPtrCast(lastParent.lock()) != nullptr) break;
   }
@@ -289,7 +289,7 @@ void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
     if (store) {
       result = builder->CreateLoad(store->getPointerOperand(), "forceLoadForReturn");
     } else {
-      throw Error("TypeError", "Function return type does not match return value", node->getLineNumber());
+      throw Error("TypeError", "Function return type does not match return value", node->getTrace());
     }
   }
   builder->CreateRet(result);
@@ -341,7 +341,7 @@ CV::OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
     }},
     {"Postfix ++", [=] CODEGEN_SIG {
       auto initial = cv->builder->CreateLoad(operands[0], "postfixincload");
-      if (initial->getType() != cv->integerType) throw Error("TypeError", cv->typeMismatchErrorString, line); 
+      if (initial->getType() != cv->integerType) throw Error("TypeError", cv->typeMismatchErrorString, trace); 
       auto plusOne = cv->builder->CreateAdd(initial, llvm::ConstantInt::getSigned(cv->integerType, 1), "intinc");
       cv->builder->CreateStore(plusOne, operands[0]);
       return initial;
@@ -392,7 +392,7 @@ CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getNormalFun(Token tok
   // Try to find the function in the TypeMap using the operand types
   auto funIt = opMapIt->second.find(types);
   if (funIt == opMapIt->second.end()) {
-    throw Error("TypeError", cv->typeMismatchErrorString, tok.line);
+    throw Error("TypeError", cv->typeMismatchErrorString, tok.trace);
   }
   return funIt->second;
 }

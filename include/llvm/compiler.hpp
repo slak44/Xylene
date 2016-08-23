@@ -57,9 +57,9 @@ private:
   class OperatorCodegen {
   public:
     /// Generates IR using provided arguments
-    using CodegenFunction = std::function<llvm::Value*(std::vector<llvm::Value*>, uint)>;
+    using CodegenFunction = std::function<llvm::Value*(std::vector<llvm::Value*>, Trace)>;
     /// Signature for a lambda representing a CodegenFunction
-    #define CODEGEN_SIG (std::vector<llvm::Value*> operands, __attribute__((unused)) uint line) -> llvm::Value*
+    #define CODEGEN_SIG (std::vector<llvm::Value*> operands, __attribute__((unused)) Trace trace) -> llvm::Value*
     /// Maps operand types to a func that generates code from them
     using TypeMap = std::unordered_map<std::vector<TokenType>, CodegenFunction, VectorHash<TokenType>>;
   private:

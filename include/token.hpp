@@ -4,6 +4,7 @@
 #include <string>
 
 #include "utils/util.hpp"
+#include "utils/trace.hpp"
 #include "utils/error.hpp"
 #include "operator.hpp"
 #include "tokenType.hpp"
@@ -20,20 +21,20 @@ public:
   TokenType type; ///< \see TokenType
   std::string data = ""; ///< Stores the data that represents this token. May be processed
   Operator::Index idx = -1; ///< Only if the type is OPERATOR
-  uint64 line = 0; ///< At what line of the input was this Token encountered
+  Trace trace; ///< At what line of the input was this Token encountered
   
   /**
     \brief Create a non-operator Token.
   */
-  Token(TokenType type, std::string data, uint64 line);
+  Token(TokenType type, std::string data, Trace trace);
   /**
     \brief Create an operator Token.
   */
-  Token(TokenType type, Operator::Index idx, uint64 line);
+  Token(TokenType type, Operator::Index idx, Trace trace);
   /**
     \brief Create a Token without initializing any data.
   */
-  Token(TokenType type, uint64 line);
+  Token(TokenType type, Trace trace);
   
   /**
     \brief If this Token is terminal (can be processed by itself).

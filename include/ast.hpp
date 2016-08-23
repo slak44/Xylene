@@ -31,13 +31,13 @@ public:
 protected:
   WeakLink parent = WeakLink(); ///< Parent in the tree
   Children children {}; ///< Branches/Leaves in the tree
-  uint64 lineNumber = 0; ///< Where in the source was this found
+  Trace trace = defaultTrace; ///< Where in the source was this found
   
   static inline void printIndent(uint level) {
     for (uint i = 0; i < level; i++) print("  ");
   }
 public:
-  ASTNode(uint64 lineNumber = 0);
+  ASTNode();
   virtual ~ASTNode();
   
   /**
@@ -56,8 +56,8 @@ public:
   void setParent(WeakLink newParent);
   WeakLink getParent() const;
   
-  void setLineNumber(uint64 newLineNumber);
-  uint64 getLineNumber() const;
+  void setTrace(Trace trace);
+  Trace getTrace() const;
   
   /// Pretty printing for this node and all his children
   virtual void printTree(uint level) const;
@@ -106,7 +106,7 @@ public:
 */
 class ExpressionNode: public ASTNode {
 private:
-  Token tok = Token(UNPROCESSED, 0);
+  Token tok = Token(UNPROCESSED, defaultTrace);
 public:
   ExpressionNode(Token token);
   

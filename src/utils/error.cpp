@@ -1,7 +1,7 @@
 #include "utils/error.hpp"
 
-Error::Error(std::string errType, std::string msg, uint64 line):
-  runtime_error(errType + ": " + msg + ", at line " + std::to_string(line)) {}
+Error::Error(std::string errType, std::string msg, Trace trace):
+  runtime_error(errType + ": " + msg + "\n\t" + trace.toString()) {}
 
 std::string InternalError::buildErrorMessage(std::string errorName, std::string msg, const ErrorData& data) {
   using namespace termcolor;

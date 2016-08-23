@@ -5,21 +5,40 @@
 
 #include "utils/util.hpp"
 
-class Range {
-private:
-  uint lineStart;
-  uint lineEnd;
-  uint colStart;
-  uint colEnd;
-public:
-  Range(uint lineStart, uint lineEnd, uint colStart, uint colEnd);
+/**
+  \brief Tracks a position in a file.
+*/
+struct Position {
+  uint64 line;
+  uint64 col;
   
-  uint getLineStart() const noexcept;
-  uint getLineEnd() const noexcept;
-  uint getColStart() const noexcept;
-  uint getColEnd() const noexcept;
+  inline Position(uint64 line, uint64 col): line(line), col(col) {}
+  
+  inline std::string toString() const noexcept {
+    return std::to_string(line) + ":" + std::to_string(col);
+  }
 };
 
+/**
+  \brief Tracks a range from a position to another in a file.
+*/
+class Range {
+private:
+  Position start;
+  Position end;
+public:
+  Range(Position start, Position end);
+  Range(Position where, uint charCount);
+  
+  const Position getStart() const noexcept;
+  const Position getEnd() const noexcept;
+  
+  std::string toString() const noexcept;
+};
+
+/**
+  \brief Stores debug information.
+*/
 class Trace {
 private:
   Range location;
@@ -27,7 +46,12 @@ private:
 public:
   Trace(Range location);
   
-  const Range& getRange() const noexcept;
+  const Range getRange() const noexcept;
+  
+  std::string toString() const noexcept;
 };
+
+/// Default trace object that has an empty range
+const Trace defaultTrace = Trace(Range(Position(0, 0), Position(0, 0)));
 
 #endif

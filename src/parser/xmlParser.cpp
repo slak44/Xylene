@@ -59,9 +59,9 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     std::string data = val->value();
     std::unique_ptr<Token> content;
     if (tokenType == OPERATOR) {
-      content = std::make_unique<Token>(tokenType, operatorIndexFrom(data), 0);
+      content = std::make_unique<Token>(tokenType, operatorIndexFrom(data), defaultTrace);
     } else {
-      content = std::make_unique<Token>(tokenType, data, 0);
+      content = std::make_unique<Token>(tokenType, data, defaultTrace);
     }
     auto expr = Node<ExpressionNode>::make(*content);
     parseChildren(node, expr);
