@@ -19,6 +19,7 @@
 #include <llvm/Support/raw_os_ostream.h>
 #include <string>
 #include <vector>
+#include <stack>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
@@ -44,9 +45,9 @@ private:
   llvm::IntegerType* booleanType;
 
   std::unique_ptr<llvm::IRBuilder<>> builder; ///< Used to construct llvm instructions
-  llvm::Module* module; ///< The module the is being created
+  llvm::Module* module; ///< The module that is being created
   llvm::Function* entryPoint; ///< Entry point for module
-  llvm::Function* currentFunction; ///< Current function to insert into
+  std::stack<llvm::Function*> functionStack; ///< Current function stack
   AST ast; ///< Source AST
   
   /// Used for throwing consistent type mismatch errors

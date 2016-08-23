@@ -9,7 +9,7 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
   module(new llvm::Module(moduleName, *context)),
   ast(ast) {
   llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
-  currentFunction = entryPoint = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module);
+  functionStack.push(entryPoint = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module));
 }
 
 const std::string CompileVisitor::typeMismatchErrorString = "No operation available for given operands";
@@ -45,7 +45,7 @@ void CompileVisitor::visitBlock(Node<BlockNode>::Link node) {
 
 llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const std::string& name) {
   llvm::BasicBlock* oldBlock = builder->GetInsertBlock();
-  llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(*context, name, currentFunction);
+  llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(*context, name, functionStack.top());
   builder->SetInsertPoint(newBlock);
   for (auto& child : node->getChildren()) child->visit(shared_from_this());
   // If the block lacks a terminator instruction, add one
@@ -197,7 +197,7 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
   llvm::BasicBlock* success = compileBlock(node->getSuccessBlock(), "branchSuccess");
   // continueCurrent gets all the current block's instructions after the branch
   // Unless the branch jumps or returns somewhere, continueCurrent is always executed
-  llvm::BasicBlock* continueCurrent = surrounding != nullptr ? surrounding : llvm::BasicBlock::Create(*context, "branchAfter", currentFunction);
+  llvm::BasicBlock* continueCurrent = surrounding != nullptr ? surrounding : llvm::BasicBlock::Create(*context, "branchAfter", functionStack.top());
   if (node->getFailiureBlock() == nullptr) {
     // Does not have else clauses
     builder->SetInsertPoint(current);
@@ -220,7 +220,7 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   } else {
     // Has else-if as failiure
-    llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(*context, "branchNext", currentFunction);
+    llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(*context, "branchNext", functionStack.top());
     builder->SetInsertPoint(nextBranch);
     compileBranch(Node<BranchNode>::dynPtrCast(node->getFailiureBlock()), continueCurrent);
     builder->SetInsertPoint(current);
@@ -233,13 +233,13 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   auto init = node->getInit();
   if (init != nullptr) this->visitDeclaration(init);
   // Make the block where we go after we're done with the loopBlock
-  auto loopAfter = llvm::BasicBlock::Create(*context, "loopAfter", currentFunction);
+  auto loopAfter = llvm::BasicBlock::Create(*context, "loopAfter", functionStack.top());
   // Make sure break statements know where to go
   node->setExitBlock(loopAfter);
   // Make the block that will be looped
-  auto loopBlock = llvm::BasicBlock::Create(*context, "loopBlock", currentFunction);
+  auto loopBlock = llvm::BasicBlock::Create(*context, "loopBlock", functionStack.top());
   // Make the block that checks the loop condition
-  auto loopCondition = llvm::BasicBlock::Create(*context, "loopCondition", currentFunction);
+  auto loopCondition = llvm::BasicBlock::Create(*context, "loopCondition", functionStack.top());
   // Go to the condtion
   builder->CreateBr(loopCondition);
   builder->SetInsertPoint(loopCondition);
@@ -281,7 +281,7 @@ void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
 
 void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
   auto result = compileExpression(node->getValue());
-  if (currentFunction->getReturnType() != result->getType()) {
+  if (functionStack.top()->getReturnType() != result->getType()) {
     // TODO: this is a very indiscriminate check
     // only simple primitives like ints should pass
     // make sure that more complex types throw
@@ -396,4 +396,3 @@ CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getNormalFun(Token tok
   }
   return funIt->second;
 }
-
