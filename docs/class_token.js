@@ -1,8 +1,8 @@
 var class_token =
 [
-    [ "Token", "class_token.html#a6a66391b0c8e312e6d44a4ded74e6ab3", null ],
-    [ "Token", "class_token.html#ab869c026f4e9e1d49ef88bae5a514886", null ],
-    [ "Token", "class_token.html#ac12b6a1a1216c02e3e18b84d9c790372", null ],
+    [ "Token", "class_token.html#ab012e46d9985c9b636715d74c0d35f7b", null ],
+    [ "Token", "class_token.html#aad2fec2bf78203f581eb86e00cb54bfd", null ],
+    [ "Token", "class_token.html#a3c5fec977a46a214d0f91e897d3e8044", null ],
     [ "getOperator", "class_token.html#adb05cf930d671f1b0b7598e247dd1b03", null ],
     [ "getPrecedence", "class_token.html#aa7b64ab09c8acb82cac8ec67c99f4794", null ],
     [ "hasArity", "class_token.html#af60291e3a59de068f1da83b431a29056", null ],
@@ -16,6 +16,6 @@ var class_token =
     [ "toString", "class_token.html#a773d56523f5d9f8c510cf8a6ed3543a0", null ],
     [ "data", "class_token.html#ad536a520dac03ae812f429b220e9808a", null ],
     [ "idx", "class_token.html#ac34bb1683e74707f37a97f91ba0bdcc8", null ],
-    [ "line", "class_token.html#a168dafb81cc6c835f2265bd41b2ace14", null ],
+    [ "trace", "class_token.html#a74883fe52d2eb1226d988567def96633", null ],
     [ "type", "class_token.html#a67919af9f3a80dc0b28a0ab1e6d5bf8a", null ]
 ];

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['err_5fmetadata_5ftypes',['ERR_METADATA_TYPES',['../error_8hpp.html#a573a9582bf14167c9a5b0449e5fd9d5d',1,'error.hpp']]],
-  ['error',['Error',['../class_error.html',1,'Error'],['../class_error.html#af3e9eecbd862f079b6de532394061d9e',1,'Error::Error()']]],
+  ['error',['Error',['../class_error.html',1,'Error'],['../class_error.html#a762829c9bf2e342df22feeed00bae081',1,'Error::Error()']]],
   ['error_2ecpp',['error.cpp',['../error_8cpp.html',1,'']]],
   ['error_2ehpp',['error.hpp',['../error_8hpp.html',1,'']]],
   ['errordata',['ErrorData',['../error_8hpp.html#a18ad73221b586aadca1c9ba59417f99d',1,'error.hpp']]],

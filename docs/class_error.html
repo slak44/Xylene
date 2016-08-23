@@ -130,14 +130,14 @@ Inheritance diagram for Error:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af3e9eecbd862f079b6de532394061d9e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error.html#af3e9eecbd862f079b6de532394061d9e">Error</a> (std::string errType, std::string msg, <a class="el" href="util_8hpp.html#aba41bf2b6f6da5945ee08fb99931aede">uint64</a> line)</td></tr>
-<tr class="memdesc:af3e9eecbd862f079b6de532394061d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an error.  <a href="#af3e9eecbd862f079b6de532394061d9e">More...</a><br /></td></tr>
-<tr class="separator:af3e9eecbd862f079b6de532394061d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a762829c9bf2e342df22feeed00bae081"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_error.html#a762829c9bf2e342df22feeed00bae081">Error</a> (std::string errType, std::string msg, <a class="el" href="class_trace.html">Trace</a> trace)</td></tr>
+<tr class="memdesc:a762829c9bf2e342df22feeed00bae081"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an error.  <a href="#a762829c9bf2e342df22feeed00bae081">More...</a><br /></td></tr>
+<tr class="separator:a762829c9bf2e342df22feeed00bae081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Thrown when there is an issue in the user's code. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="af3e9eecbd862f079b6de532394061d9e"></a>
+<a class="anchor" id="a762829c9bf2e342df22feeed00bae081"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -156,8 +156,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="util_8hpp.html#aba41bf2b6f6da5945ee08fb99931aede">uint64</a>&#160;</td>
-          <td class="paramname"><em>line</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_trace.html">Trace</a>&#160;</td>
+          <td class="paramname"><em>trace</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -172,7 +172,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">errType</td><td>appears in front of the message </td></tr>
     <tr><td class="paramname">msg</td><td>error message </td></tr>
-    <tr><td class="paramname">line</td><td>where in the user's code this happened </td></tr>
+    <tr><td class="paramname">trace</td><td>where in the user's code this happened </td></tr>
   </table>
   </dd>
 </dl>

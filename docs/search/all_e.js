@@ -5,6 +5,7 @@ var searchData=
   ['peekahead',['peekAhead',['../class_lexer_base.html#a4c35ffcdfccf368d7db878abc5ee1dd1',1,'LexerBase']]],
   ['peekbehind',['peekBehind',['../class_lexer_base.html#adb4055afbef0dca8d8316ca0daddbdef',1,'LexerBase']]],
   ['pos',['pos',['../class_token_base_parser.html#aa2dc7039e4d053fe2aa76439696ed421',1,'TokenBaseParser']]],
+  ['position',['Position',['../struct_position.html',1,'Position'],['../struct_position.html#a84a1f2f14203ee8283398811562e5350',1,'Position::Position()']]],
   ['postfix',['POSTFIX',['../operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8423fa5c736337e2bb8e0838515c05f1',1,'operator.hpp']]],
   ['prefix',['PREFIX',['../operator_8hpp.html#af19b770f6e2116426144b702159f3bb0ab0960c67f412468bf9857089c2d27809',1,'operator.hpp']]],
   ['pretty_5fprint_5ffor',['PRETTY_PRINT_FOR',['../ast_8cpp.html#a5dc400e46425539258901c624871c4e1',1,'ast.cpp']]],
