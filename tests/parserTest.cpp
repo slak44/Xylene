@@ -20,15 +20,14 @@ protected:
 class ParserCompareTest: public ParserTest {
 protected:
   inline void test(std::string code, std::string xmlCodePath) {
-    px.parse(Lexer().tokenize(code).getTokens());
+    px.parse(Lexer().tokenize(code, "<parser-test>").getTokens());
     xpx.parse(xmlFile(xmlCodePath));
     ASSERT_EQ(px.getTree(), xpx.getTree());
   }
 };
 
-TEST_F(ParserTest, Primaries) {
-  px.parse(Lexer().tokenize("+ -- a ++ --;").getTokens());
-  ASSERT_EQ(px.getTree(), xpx.parse(xmlFile("data/parser/unary.xml")).getTree());
+TEST_F(ParserCompareTest, Primaries) {
+  test("+ -- a ++ --;", "data/parser/unary.xml");
 }
 
 TEST_F(ParserCompareTest, ExpressionStartingWithIdent) {

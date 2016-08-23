@@ -70,7 +70,7 @@ int main(int argc, const char* argv[]) {
       }
       
       auto lx = Lexer();
-      lx.tokenize(input);
+      lx.tokenize(input, filePath.getValue().empty() ? "<cli-eval>" : filePath.getValue());
       if (printTokens.getValue()) for (auto tok : lx.getTokens()) println(tok);
       
       if (doNotParse.getValue()) return NORMAL_EXIT;

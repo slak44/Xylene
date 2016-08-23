@@ -14,12 +14,16 @@ std::string Range::toString() const noexcept {
   return "from " + start.toString() + " to " + end.toString();
 }
 
-Trace::Trace(Range location): location(location) {}
+Trace::Trace(std::string file, Range location): file(file), location(location) {}
 
 const Range Trace::getRange() const noexcept {
   return location;
 }
 
+const std::string& Trace::getFileName() const noexcept {
+  return file;
+}
+
 std::string Trace::toString() const noexcept {
-  return "found " + location.toString();
+  return "found " + location.toString() + " in " + file;
 }

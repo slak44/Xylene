@@ -6,6 +6,7 @@ var class_lexer_base =
     [ "getCode", "class_lexer_base.html#aaad4a53bb8d2d565d9df8dc41f1e96df", null ],
     [ "getCurrentLine", "class_lexer_base.html#af766bfe9158539441b5e87b484476b7c", null ],
     [ "getCurrentPosition", "class_lexer_base.html#a0cc4675bd53b3c01312a7fa87f1260aa", null ],
+    [ "getFileName", "class_lexer_base.html#a214c47546dfeea3178a6ae8d329538c0", null ],
     [ "getLineCount", "class_lexer_base.html#ad02271ff926c4debe0494330845db870", null ],
     [ "getRangeToHere", "class_lexer_base.html#a20cca4468b26e5fd5373113f336fa13e", null ],
     [ "getTokenCount", "class_lexer_base.html#a3310b157e6d6b7d32579c68dbd9241ba", null ],
@@ -20,5 +21,5 @@ var class_lexer_base =
     [ "peekBehind", "class_lexer_base.html#adb4055afbef0dca8d8316ca0daddbdef", null ],
     [ "processInput", "class_lexer_base.html#ad122d7cd36b6d91533e58d06da6bb6a0", null ],
     [ "skip", "class_lexer_base.html#a391ba6230f653e8a30042039314a2ea8", null ],
-    [ "tokenize", "class_lexer_base.html#a1e6f794d75c438becf3b307ef9655305", null ]
+    [ "tokenize", "class_lexer_base.html#a21c194f845c6ab535ad38ac26b47d8c7", null ]
 ];

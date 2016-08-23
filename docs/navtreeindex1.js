@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_scope.html#ab10409b0a46bf83b94ac232387bd7000":[3,0,37,5],
 "class_scope.html#ac33d583569e46b75921d51ab3a1a1fd4":[3,0,37,0],
 "class_scope.html#add92ab7fa6e07779ae3cb5c99c439afb":[3,0,37,4],
 "class_statement_parser.html":[3,0,38],
@@ -53,9 +54,10 @@ var NAVTREEINDEX1 =
 "class_token_parser.html#a0e901b68c915c97743de149768aedd51":[3,0,43,1],
 "class_token_parser.html#a9a86a30db107b9e033fdbef60963f7f7":[3,0,43,0],
 "class_trace.html":[3,0,44],
-"class_trace.html#a537eef6db72f99b9ce362f2a6b4a9df0":[3,0,44,1],
-"class_trace.html#a6b805949ef6d9410fc70cd31531a8204":[3,0,44,0],
-"class_trace.html#ac36c7d3d9c505dd8a96641654479beee":[3,0,44,2],
+"class_trace.html#a31f204292be7270223f1590312b96adb":[3,0,44,1],
+"class_trace.html#a537eef6db72f99b9ce362f2a6b4a9df0":[3,0,44,2],
+"class_trace.html#aa93f0325777bb0a7d357a87732a4b942":[3,0,44,0],
+"class_trace.html#ac36c7d3d9c505dd8a96641654479beee":[3,0,44,3],
 "class_tree_walk_interpreter.html":[3,0,45],
 "class_tree_walk_interpreter.html#a1aef2d7e8b97c142d3bf53819cff2cab":[3,0,45,0],
 "class_type_info.html":[3,0,46],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52":[3,0,33,3],
 "struct_ptr_util.html#ac4d0a5ec217bf2771f420e8c8e3bfc74":[3,0,33,2],
 "struct_ptr_util.html#aed85841d8be9171dde6a0eb2383dd117":[3,0,33,4],
-"struct_vector_hash.html":[3,0,47],
-"struct_vector_hash.html#a3dd9558d2c7e80828ecb8e2880c6befe":[3,0,47,0],
-"suppress_warnings_8hpp.html":[4,0,0,3,1]
+"struct_vector_hash.html":[3,0,47]
 };

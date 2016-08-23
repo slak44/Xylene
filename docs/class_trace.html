@@ -122,26 +122,38 @@ $(document).ready(function(){initNavTree('class_trace.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6b805949ef6d9410fc70cd31531a8204"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_trace.html#a6b805949ef6d9410fc70cd31531a8204">Trace</a> (<a class="el" href="class_range.html">Range</a> location)</td></tr>
-<tr class="separator:a6b805949ef6d9410fc70cd31531a8204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa93f0325777bb0a7d357a87732a4b942"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_trace.html#aa93f0325777bb0a7d357a87732a4b942">Trace</a> (std::string file, <a class="el" href="class_range.html">Range</a> location)</td></tr>
+<tr class="separator:aa93f0325777bb0a7d357a87732a4b942"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a537eef6db72f99b9ce362f2a6b4a9df0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_range.html">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_trace.html#a537eef6db72f99b9ce362f2a6b4a9df0">getRange</a> () const noexcept</td></tr>
 <tr class="separator:a537eef6db72f99b9ce362f2a6b4a9df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31f204292be7270223f1590312b96adb"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_trace.html#a31f204292be7270223f1590312b96adb">getFileName</a> () const noexcept</td></tr>
+<tr class="separator:a31f204292be7270223f1590312b96adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac36c7d3d9c505dd8a96641654479beee"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_trace.html#ac36c7d3d9c505dd8a96641654479beee">toString</a> () const noexcept</td></tr>
 <tr class="separator:ac36c7d3d9c505dd8a96641654479beee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Stores debug information. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6b805949ef6d9410fc70cd31531a8204"></a>
+<a class="anchor" id="aa93f0325777bb0a7d357a87732a4b942"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">Trace::Trace </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_range.html">Range</a>&#160;</td>
-          <td class="paramname"><em>location</em></td><td>)</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="class_range.html">Range</a>&#160;</td>
+          <td class="paramname"><em>location</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -149,6 +161,29 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a31f204292be7270223f1590312b96adb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; Trace::getFileName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a537eef6db72f99b9ce362f2a6b4a9df0"></a>
 <div class="memitem">
 <div class="memproto">

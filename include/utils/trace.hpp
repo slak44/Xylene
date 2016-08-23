@@ -41,17 +41,19 @@ public:
 */
 class Trace {
 private:
+  std::string file;
   Range location;
   // std::stack<?FunctionData?> stack; TODO
 public:
-  Trace(Range location);
+  Trace(std::string file, Range location);
   
   const Range getRange() const noexcept;
+  const std::string& getFileName() const noexcept;
   
   std::string toString() const noexcept;
 };
 
 /// Default trace object that has an empty range
-const Trace defaultTrace = Trace(Range(Position(0, 0), Position(0, 0)));
+const Trace defaultTrace = Trace("<none>", Range(Position(0, 0), Position(0, 0)));
 
 #endif
