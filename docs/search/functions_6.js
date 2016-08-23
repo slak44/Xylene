@@ -13,6 +13,7 @@ var searchData=
   ['getentrypoint',['getEntryPoint',['../class_compile_visitor.html#aec52fddacea40848b1de305b7e7a200d',1,'CompileVisitor']]],
   ['getevaltypelist',['getEvalTypeList',['../class_type_info.html#aac76b15dd837daa15fcf4083f7c36e9d',1,'TypeInfo']]],
   ['getexitblock',['getExitBlock',['../class_loop_node.html#a9df5ddd2d9dac89fb9317890c2ff33a9',1,'LoopNode']]],
+  ['getfilename',['getFileName',['../class_lexer_base.html#a214c47546dfeea3178a6ae8d329538c0',1,'LexerBase::getFileName()'],['../class_trace.html#a31f204292be7270223f1590312b96adb',1,'Trace::getFileName()']]],
   ['getfixity',['getFixity',['../class_operator.html#a120cdbd24c1d8e82196effbc4ea25e45',1,'Operator']]],
   ['getidentifier',['getIdentifier',['../class_declaration_node.html#af7f5a1845c0f255fce5967f7de232b24',1,'DeclarationNode::getIdentifier()'],['../class_function_node.html#afe69eb712359b7e2a3dcb76c99458ff9',1,'FunctionNode::getIdentifier()']]],
   ['getlinecount',['getLineCount',['../class_lexer_base.html#ad02271ff926c4debe0494330845db870',1,'LexerBase']]],
