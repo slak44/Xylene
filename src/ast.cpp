@@ -1,6 +1,6 @@
 #include "ast.hpp"
 
-ASTNode::ASTNode(uint64 lineNumber): lineNumber(lineNumber) {}
+ASTNode::ASTNode() {}
 ASTNode::~ASTNode() {};
 
 void ASTNode::addChild(Link child) {
@@ -25,11 +25,11 @@ ASTNode::Link ASTNode::at(int64 pos) const {
 void ASTNode::setParent(WeakLink newParent) {parent = newParent;}
 ASTNode::WeakLink ASTNode::getParent() const {return parent;}
 
-void ASTNode::setLineNumber(uint64 newLineNumber) {
-  lineNumber = newLineNumber;
+void ASTNode::setTrace(Trace trace) {
+  this->trace = trace;
 }
-uint64 ASTNode::getLineNumber() const {
-  return lineNumber;
+Trace ASTNode::getTrace() const {
+  return trace;
 }
 
 bool ASTNode::operator==(const ASTNode& rhs) const {

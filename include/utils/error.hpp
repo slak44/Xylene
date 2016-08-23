@@ -8,6 +8,7 @@
 #include <termcolor/termcolor.hpp>
 
 #include "util.hpp"
+#include "trace.hpp"
 
 #define GET_ERR_METADATA __FILE__, __PRETTY_FUNCTION__, __LINE__
 #define ERR_METADATA_TYPES(arg1, arg2, arg3) std::string arg1, std::string arg2, int arg3
@@ -23,9 +24,9 @@ public:
     \brief Create an error.
     \param errType appears in front of the message
     \param msg error message
-    \param line where in the user's code this happened
+    \param trace where in the user's code this happened
   */
-  Error(std::string errType, std::string msg, uint64 line);
+  Error(std::string errType, std::string msg, Trace trace);
 };
 
 /**

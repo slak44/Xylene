@@ -1,8 +1,8 @@
 #include "token.hpp"
 
-Token::Token(TokenType type, std::string data, uint64 line): type(type), data(data), line(line) {}
-Token::Token(TokenType type, Operator::Index idx, uint64 line): type(type), idx(idx), line(line) {}
-Token::Token(TokenType type, uint64 line): type(type), line(line) {}
+Token::Token(TokenType type, std::string data, Trace trace): type(type), data(data), trace(trace) {}
+Token::Token(TokenType type, Operator::Index idx, Trace trace): type(type), idx(idx), trace(trace) {}
+Token::Token(TokenType type, Trace trace): type(type), trace(trace) {}
 
 const Operator& Token::getOperator() const {
   operatorCheck(GET_ERR_METADATA);
@@ -46,5 +46,5 @@ std::string Token::toString() const {
   std::string data = !this->isOperator() ?
     ("data \"" + this->data + "\"") :
     ("operator " + this->getOperator().getName() + " (precedence " + std::to_string(this->getPrecedence()) + ")");
-  return "Token " + this->type + ", " + data + ", at line " + std::to_string(this->line);
+  return "Token " + this->type + ", " + data + ", " + trace.toString();
 }

@@ -5,7 +5,7 @@ bool TokenBaseParser::expect(TokenType tok, std::string errorMessage) {
     return true;
   } else {
     auto currentData = current().isOperator() ? current().getOperator().getName() : current().data;
-    throw Error("SyntaxError", errorMessage + " (found: " + currentData + ")", current().line);
+    throw Error("SyntaxError", errorMessage + " (found: " + currentData + ")", current().trace);
   }
 }
 
@@ -29,7 +29,7 @@ TokenParser::TokenParser(): BlockParser(this), IfStatementParser(this), Function
 
 Node<ExpressionNode>::Link ExpressionParser::exprFromCurrent() {
   auto e = Node<ExpressionNode>::make(current());
-  e->setLineNumber(current().line);
+  e->setTrace(current().trace);
   return e;
 }
 
@@ -88,7 +88,7 @@ Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>
   if (acceptEndOfExpression()) return lhs;
   while (tok.hasArity(BINARY) && tok.getPrecedence() >= minPrecedence) {
     auto tokExpr = Node<ExpressionNode>::make(tok);
-    tokExpr->setLineNumber(tok.line);
+    tokExpr->setTrace(tok.trace);
     tokExpr->addChild(lhs);
     skip();
     auto rhs = parseExpressionPrimary();
@@ -134,7 +134,7 @@ Node<DeclarationNode>::Link DeclarationParser::declarationFromTypes(TypeList typ
   Token identToken = current();
   skip();
   auto decl = Node<DeclarationNode>::make(identToken.data, typeList);
-  decl->setLineNumber(identToken.line);
+  decl->setTrace(identToken.trace);
   // Do initialization only if it exists
   if (accept("=")) {
     skip();
@@ -159,7 +159,7 @@ Node<DeclarationNode>::Link DeclarationParser::declaration(bool throwIfEmpty) {
       // TODO
       throw InternalError("Unimplemented", {METADATA_PAIRS, {"token", "function def"}});
     } else {
-      throw Error("SyntaxError", "Unexpected token after define keyword", current().line);
+      throw Error("SyntaxError", "Unexpected token after define keyword", current().trace);
     }
   } else if (accept(IDENTIFIER)) {
     auto ident = current().data;
@@ -186,7 +186,7 @@ Node<DeclarationNode>::Link DeclarationParser::declaration(bool throwIfEmpty) {
 
 Node<BranchNode>::Link IfStatementParser::ifStatement() {
   auto branch = Node<BranchNode>::make();
-  branch->setLineNumber(current().line);
+  branch->setTrace(current().trace);
   branch->setCondition(expression());
   branch->setSuccessBlock(block(IF_BLOCK));
   skip(-1); // Go back to the block termination token
@@ -200,7 +200,7 @@ Node<BranchNode>::Link IfStatementParser::ifStatement() {
     } else if (accept(K_DO)) {
       branch->setFailiureBlock(block(CODE_BLOCK));
     } else {
-      throw Error("SyntaxError", "Else must be followed by a block or an if statement", current().line);
+      throw Error("SyntaxError", "Else must be followed by a block or an if statement", current().trace);
     }
   }
   return branch;
@@ -219,7 +219,7 @@ TypeList FunctionParser::getTypeList() {
 }
 
 Node<FunctionNode>::Link FunctionParser::function() {
-  uint line = current().line;
+  Trace trace = current().trace;
   skip(); // Skip "function"
   std::string ident = "";
   FunctionSignature::Arguments args {};
@@ -252,7 +252,7 @@ Node<FunctionNode>::Link FunctionParser::function() {
         break;
       }
       if (!accept(",")) {
-        throw Error("SyntaxError", "Expected comma after function argument", current().line);
+        throw Error("SyntaxError", "Expected comma after function argument", current().trace);
       }
       skip(); // The comma
     }
@@ -263,7 +263,7 @@ Node<FunctionNode>::Link FunctionParser::function() {
     returnType = std::make_unique<TypeInfo>(TypeInfo(getTypeList()));
   }
   auto func = Node<FunctionNode>::make(ident, FunctionSignature(returnType == nullptr ? nullptr : *returnType, args));
-  func->setLineNumber(line);
+  func->setTrace(trace);
   func->setCode(block(FUNCTION_BLOCK));
   return func;
 }
@@ -274,7 +274,7 @@ ASTNode::Link StatementParser::statement() {
     return ifStatement();
   } else if (accept(K_FOR)) {
     auto loop = Node<LoopNode>::make();
-    loop->setLineNumber(current().line);
+    loop->setTrace(current().trace);
     skip(); // Skip "for"
     loop->setInit(declaration(false));
     expectSemi();
@@ -286,7 +286,7 @@ ASTNode::Link StatementParser::statement() {
   } if (accept(K_WHILE)) {
     skip(); // Skip "while"
     auto loop = Node<LoopNode>::make();
-    loop->setLineNumber(current().line);
+    loop->setTrace(current().trace);
     loop->setCondition(expression());
     loop->setCode(block(CODE_BLOCK));
     return loop;
@@ -336,7 +336,7 @@ Node<BlockNode>::Link BlockParser::block(BlockType type) {
     skip();
   }
   Node<BlockNode>::Link block = Node<BlockNode>::make(type);
-  block->setLineNumber(current().line);
+  block->setTrace(current().trace);
   while (!accept(K_END)) {
     if (type == IF_BLOCK && accept(K_ELSE)) break;
     if (type == ROOT_BLOCK && accept(FILE_END)) break;

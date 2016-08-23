@@ -1,26 +1,25 @@
 #include "utils/trace.hpp"
 
-Range::Range(uint lineStart, uint lineEnd, uint colStart, uint colEnd):
-  lineStart(lineStart),
-  lineEnd(lineEnd),
-  colStart(colStart),
-  colEnd(colEnd) {}
-  
-uint Range::getLineStart() const noexcept {
-  return lineStart;
+Range::Range(Position start, Position end): start(start), end(end) {}
+Range::Range(Position where, uint charCount): start(where), end(Position(where.line, where.col + charCount)) {}
+
+const Position Range::getStart() const noexcept {
+  return start;
 }
-uint Range::getLineEnd() const noexcept {
-  return lineEnd;
+const Position Range::getEnd() const noexcept {
+  return end;
 }
-uint Range::getColStart() const noexcept {
-  return colStart;
-}
-uint Range::getColEnd() const noexcept {
-  return colEnd;
+
+std::string Range::toString() const noexcept {
+  return "from " + start.toString() + " to " + end.toString();
 }
 
 Trace::Trace(Range location): location(location) {}
 
-const Range& Trace::getRange() const noexcept {
+const Range Trace::getRange() const noexcept {
   return location;
+}
+
+std::string Trace::toString() const noexcept {
+  return "found " + location.toString();
 }

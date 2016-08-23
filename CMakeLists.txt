@@ -60,6 +60,7 @@ include_directories(SYSTEM ${TCLAP_PREFIX}/src/tclap/include)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 set(COMMON_SOURCES
   ${SRC_DIR}/utils/util.cpp
+  ${SRC_DIR}/utils/trace.cpp
   ${SRC_DIR}/utils/error.cpp
   ${SRC_DIR}/utils/typeInfo.cpp
   ${SRC_DIR}/operator.cpp

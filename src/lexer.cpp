@@ -46,19 +46,20 @@ void Lexer::processInput() {
     }
     // Check for string literals
     if (current() == '"') {
+      Position start = getCurrentPosition();
       skip(1); // Skip the quote
-      addToken(Token(L_STRING, getQuotedString(), getCurrentLine()));
+      addToken(Token(L_STRING, getQuotedString(), Trace(getRangeToHere(start))));
       continue;
     }
     // Check for constructs
     TokenType construct = findConstruct();
     if (construct != UNPROCESSED) {
-      addToken(Token(construct, current(1), getCurrentLine()));
+      addToken(Token(construct, current(1), Trace(Range(getCurrentPosition(), 1))));
       continue;
     }
     // Check for fat arrows
     if (current(2) == "=>") {
-      addToken(Token(K_FAT_ARROW, "=>", getCurrentLine()));
+      addToken(Token(K_FAT_ARROW, "=>", Trace(Range(getCurrentPosition(), 2))));
       skip(2);
       continue;
     }
@@ -87,15 +88,17 @@ void Lexer::processInput() {
       break;
     }
     if (operatorIt != operatorList.end()) {
+      Position operatorStart = getCurrentPosition();
       skip(operatorIt->getName().length());
-      addToken(Token(OPERATOR, operatorIt - operatorList.begin(), getCurrentLine()));
+      addToken(Token(OPERATOR, operatorIt - operatorList.begin(), Trace(getRangeToHere(operatorStart))));
       noIncrement();
       continue;
     }
     // Get a string until the char can't be part of an identifier
     std::string str = "";
+    Position identStart = getCurrentPosition();
     while (isIdentifierChar()) {
-      if (current() == '\\') throw Error("SyntaxError", "Extraneous escape character", getCurrentLine());
+      if (current() == '\\') throw Error("SyntaxError", "Extraneous escape character", Trace(Range(getCurrentPosition(), 1)));
       str += current();
       skip(1);
     }
@@ -104,19 +107,19 @@ void Lexer::processInput() {
     if (str.length() == 0) continue;
     // Check for boolean literals
     if (str == "true" || str == "false") {
-      addToken(Token(L_BOOLEAN, str, getCurrentLine()));
+      addToken(Token(L_BOOLEAN, str, Trace(getRangeToHere(identStart))));
       continue;
     }
     // Check for keywords
     try {
       TokenType type = keywordsMap.at(str);
-      addToken(Token(type, str, getCurrentLine()));
+      addToken(Token(type, str, Trace(getRangeToHere(identStart))));
       continue;
     } catch (std::out_of_range &oor) {
       // This means it's not a keyword, so it must be an identifier
-      addToken(Token(IDENTIFIER, str, getCurrentLine()));
+      addToken(Token(IDENTIFIER, str, Trace(getRangeToHere(identStart))));
       continue;
     }
   }
-  addToken(Token(FILE_END, "\0", getCurrentLine()));
+  addToken(Token(FILE_END, "\0", Trace(Range(getCurrentPosition(), 1))));
 }
