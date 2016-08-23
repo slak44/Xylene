@@ -9,7 +9,7 @@ class LexerTest: public ::testing::Test {
 protected:
   Lexer lx = Lexer();
   const std::vector<Token>& getTokens(std::string code) {
-    return lx.tokenize(code).getTokens();
+    return lx.tokenize(code, "<lexer-test>").getTokens();
   }
 };
 

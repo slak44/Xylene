@@ -15,6 +15,7 @@
 */
 class LexerBase {
 private:
+  std::string fileName;
   std::string code;
   uint64 pos = 0;
   std::vector<Token> tokens {};
@@ -87,6 +88,10 @@ protected:
   inline const Range getRangeToHere(const Position start) const {
     return Range(start, getCurrentPosition());
   }
+  /// Get the current file name
+  inline const std::string& getFileName() const {
+    return fileName;
+  }
   /**
     \brief Subclasses should use this to loop over the input and create Tokens from it
   */
@@ -102,7 +107,7 @@ public:
   uint64 getLineCount() const;
   
   /// Call to create output token list
-  LexerBase& tokenize(std::string code);
+  LexerBase& tokenize(std::string code, std::string fileName);
 };
 
 /**
@@ -139,7 +144,7 @@ inline void Lexer::handleMultiLineComments() {
   if (current(2) == "/*") {
     skip(2); // Skip "/*"
     while (current(2) != "*/") {
-      if (isEOF()) throw Error("SyntaxError", "Multi-line comment not closed", Trace(getRangeToHere(start)));
+      if (isEOF()) throw Error("SyntaxError", "Multi-line comment not closed", Trace(getFileName(), getRangeToHere(start)));
       else if (isEOL()) nextLine();
       skip(1); // Skip characters one by one until we hit the end of the comment
     }
@@ -164,7 +169,7 @@ inline std::string Lexer::getQuotedString() {
   std::string str = "";
   Position start = getCurrentPosition();
   while (current() != '"') {
-    if (isEOF()) throw Error("SyntaxError", "String literal has unmatched quote", Trace(getRangeToHere(start)));
+    if (isEOF()) throw Error("SyntaxError", "String literal has unmatched quote", Trace(getFileName(), getRangeToHere(start)));
     if (current() == '\\') {
       Position escCharPos = getCurrentPosition();
       char escapedChar = peekAhead(1);
@@ -174,7 +179,7 @@ inline std::string Lexer::getQuotedString() {
         str += escapedChar;
         continue;
       } catch (std::out_of_range& oor) {
-        auto badEscape = Error("SyntaxError", "Invalid escape code", Trace(getRangeToHere(escCharPos)));
+        auto badEscape = Error("SyntaxError", "Invalid escape code", Trace(getFileName(), getRangeToHere(escCharPos)));
         // \x00 hex escape code
         if (escapedChar == 'x') {
           std::string hexNumber = "";
@@ -237,7 +242,7 @@ inline int Lexer::getNumberRadix() {
       case 'x': return 16;
       case 'b': return 2;
       case 'o': return 8;
-      default: throw Error("SyntaxError", "Invalid radix", Trace(getRangeToHere(zeroPos)));
+      default: throw Error("SyntaxError", "Invalid radix", Trace(getFileName(), getRangeToHere(zeroPos)));
     }
   } else {
     return 10;
@@ -247,12 +252,12 @@ inline int Lexer::getNumberRadix() {
 inline Token Lexer::getNumberToken(int radix) {
   Position start = getCurrentPosition();
   if (current() == '0' && isdigit(peekAhead(1)))
-    throw Error("SyntaxError", "Numbers cannot begin with '0'", Trace(Range(start, 1)));
+    throw Error("SyntaxError", "Numbers cannot begin with '0'", Trace(getFileName(), Range(start, 1)));
   std::string number = "";
   bool isFloat = false;
   while (!isEOF()) {
     if (current() == '.') {
-      if (isFloat) throw Error("SyntaxError", "Malformed float, multiple decimal points", Trace(getRangeToHere(start)));
+      if (isFloat) throw Error("SyntaxError", "Malformed float, multiple decimal points", Trace(getFileName(), getRangeToHere(start)));
       isFloat = true;
       number += current();
       skip(1);
@@ -270,10 +275,10 @@ inline Token Lexer::getNumberToken(int radix) {
     }
   }
   noIncrement();
-  if (number.back() == '.') throw Error("SyntaxError", "Malformed float, missing digits after decimal point", Trace(getRangeToHere(start)));
-  if (radix != 10 && isFloat) throw Error("SyntaxError", "Floating point numbers must be used with base 10 numbers", Trace(getRangeToHere(start)));
+  if (number.back() == '.') throw Error("SyntaxError", "Malformed float, missing digits after decimal point", Trace(getFileName(), getRangeToHere(start)));
+  if (radix != 10 && isFloat) throw Error("SyntaxError", "Floating point numbers must be used with base 10 numbers", Trace(getFileName(), getRangeToHere(start)));
   if (radix != 10) number = std::to_string(std::stoll(number, 0, radix));
-  return Token(isFloat ? L_FLOAT : L_INTEGER, number, Trace(getRangeToHere(start)));
+  return Token(isFloat ? L_FLOAT : L_INTEGER, number, Trace(getFileName(), getRangeToHere(start)));
 }
 
 #endif

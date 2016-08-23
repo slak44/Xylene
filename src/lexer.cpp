@@ -17,8 +17,9 @@ uint64 LexerBase::getLineCount() const {
   return getCurrentLine();
 }
 
-LexerBase& LexerBase::tokenize(std::string code) {
+LexerBase& LexerBase::tokenize(std::string code, std::string fileName) {
   this->code = code;
+  this->fileName = fileName;
   pos = 0;
   tokens = {};
   currentLine = 1;
@@ -48,18 +49,18 @@ void Lexer::processInput() {
     if (current() == '"') {
       Position start = getCurrentPosition();
       skip(1); // Skip the quote
-      addToken(Token(L_STRING, getQuotedString(), Trace(getRangeToHere(start))));
+      addToken(Token(L_STRING, getQuotedString(), Trace(getFileName(), getRangeToHere(start))));
       continue;
     }
     // Check for constructs
     TokenType construct = findConstruct();
     if (construct != UNPROCESSED) {
-      addToken(Token(construct, current(1), Trace(Range(getCurrentPosition(), 1))));
+      addToken(Token(construct, current(1), Trace(getFileName(), Range(getCurrentPosition(), 1))));
       continue;
     }
     // Check for fat arrows
     if (current(2) == "=>") {
-      addToken(Token(K_FAT_ARROW, "=>", Trace(Range(getCurrentPosition(), 2))));
+      addToken(Token(K_FAT_ARROW, "=>", Trace(getFileName(), Range(getCurrentPosition(), 2))));
       skip(2);
       continue;
     }
@@ -90,7 +91,7 @@ void Lexer::processInput() {
     if (operatorIt != operatorList.end()) {
       Position operatorStart = getCurrentPosition();
       skip(operatorIt->getName().length());
-      addToken(Token(OPERATOR, operatorIt - operatorList.begin(), Trace(getRangeToHere(operatorStart))));
+      addToken(Token(OPERATOR, operatorIt - operatorList.begin(), Trace(getFileName(), getRangeToHere(operatorStart))));
       noIncrement();
       continue;
     }
@@ -98,7 +99,7 @@ void Lexer::processInput() {
     std::string str = "";
     Position identStart = getCurrentPosition();
     while (isIdentifierChar()) {
-      if (current() == '\\') throw Error("SyntaxError", "Extraneous escape character", Trace(Range(getCurrentPosition(), 1)));
+      if (current() == '\\') throw Error("SyntaxError", "Extraneous escape character", Trace(getFileName(), Range(getCurrentPosition(), 1)));
       str += current();
       skip(1);
     }
@@ -107,19 +108,19 @@ void Lexer::processInput() {
     if (str.length() == 0) continue;
     // Check for boolean literals
     if (str == "true" || str == "false") {
-      addToken(Token(L_BOOLEAN, str, Trace(getRangeToHere(identStart))));
+      addToken(Token(L_BOOLEAN, str, Trace(getFileName(), getRangeToHere(identStart))));
       continue;
     }
     // Check for keywords
     try {
       TokenType type = keywordsMap.at(str);
-      addToken(Token(type, str, Trace(getRangeToHere(identStart))));
+      addToken(Token(type, str, Trace(getFileName(), getRangeToHere(identStart))));
       continue;
     } catch (std::out_of_range &oor) {
       // This means it's not a keyword, so it must be an identifier
-      addToken(Token(IDENTIFIER, str, Trace(getRangeToHere(identStart))));
+      addToken(Token(IDENTIFIER, str, Trace(getFileName(), getRangeToHere(identStart))));
       continue;
     }
   }
-  addToken(Token(FILE_END, "\0", Trace(Range(getCurrentPosition(), 1))));
+  addToken(Token(FILE_END, "\0", Trace(getFileName(), Range(getCurrentPosition(), 1))));
 }
