@@ -36,7 +36,7 @@
   function = "function", [ ident ], [ "[", argument, { ",", argument }, "]"], [ "=>", type_list ], "do", block, "end" ;
   visibility_specifier = "public" | "private" | "protected" ;
   type_list = ident, {",", ident} ;
-  argument = ( type_list, ident ) | ( ident, ":", type_list ) ;
+  argument = ( type_list, ident ) ;
   expression = primary, { binary_op, primary } ;
   primary = { prefix_op }, terminal, { postfix_op } ;
   binary_op = ? binary operator ? ;

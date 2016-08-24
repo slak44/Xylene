@@ -36,15 +36,11 @@ TEST_F(ParserCompareTest, ExpressionStartingWithIdent) {
 
 TEST_F(ParserCompareTest, Functions) {
   test(R"code(
-    function add [Integer, Float a, b: Integer, Float] => Integer, Float do
+    function add [Integer, Float a, Integer, Float b] => Integer, Float do
     end
   )code", "data/parser/functions/complete.xml");
   test(R"code(
-    function add [Integer, Float a, b: Integer, Float] do
-    end
-  )code", "data/parser/functions/void_ret.xml");
-  test(R"code(
-    function add [Integer, Float a, b: Integer, Float] do
+    function add [Integer, Float a, Integer, Float b] do
     end
   )code", "data/parser/functions/void_ret.xml");
   test(R"code(
