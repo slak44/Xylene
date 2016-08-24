@@ -131,17 +131,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html">ASTNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A node in an <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a>.  <a href="class_a_s_t_node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html">Node&lt; T, std::enable_if&lt; std::is_base_of&lt; ASTNode, T &gt;::value &gt;::type * &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility class for managing smart pointers of <a class="el" href="class_a_s_t_node.html" title="A node in an AST. ">ASTNode</a> subclasses.  <a href="struct_node.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_block_node.html">BlockNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a block of statements. Children are those statements.  <a href="class_block_node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expression_node.html">ExpressionNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a piece of an expression.  <a href="class_expression_node.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html">Node&lt; T, std::enable_if&lt; std::is_base_of&lt; ASTNode, T &gt;::value &gt;::type * &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility class for managing smart pointers of <a class="el" href="class_a_s_t_node.html" title="A node in an AST. ">ASTNode</a> subclasses.  <a href="struct_node.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t.html">AST</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores an abstract syntax tree of a program.  <a href="class_a_s_t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_no_more_children_node.html">NoMoreChildrenNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_a_s_t_node.html" title="A node in an AST. ">ASTNode</a> with fixed children count.  <a href="class_no_more_children_node.html#details">More...</a><br /></td></tr>
@@ -163,6 +160,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_node.html">FunctionNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function definition.  <a href="class_function_node.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t.html">AST</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores an abstract syntax tree of a program.  <a href="class_a_s_t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_visitor.html">ASTVisitor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract class for visiting nodes on an <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a>.  <a href="class_a_s_t_visitor.html#details">More...</a><br /></td></tr>
@@ -223,9 +223,10 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a>(linkType, nameOf) <a class="code" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">\</a></div><div class="line"><a class="code" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a>(linkType, nameOf)</div><div class="ttc" id="ast_8hpp_html_af0d6541bd1c370ad92eaa279ef43a639"><div class="ttname"><a href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a></div><div class="ttdeci">#define SET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:170</div></div>
-<div class="ttc" id="ast_8hpp_html_a50e7b4077d96b981b6e5fd7792e0b3c2"><div class="ttname"><a href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a></div><div class="ttdeci">#define GET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:169</div></div>
-</div><!-- fragment -->
+<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a>(linkType, nameOf); <a class="code" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">\</a></div><div class="line"><a class="code" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a>(linkType, nameOf);</div><div class="ttc" id="ast_8hpp_html_af0d6541bd1c370ad92eaa279ef43a639"><div class="ttname"><a href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a></div><div class="ttdeci">#define SET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:154</div></div>
+<div class="ttc" id="ast_8hpp_html_a50e7b4077d96b981b6e5fd7792e0b3c2"><div class="ttname"><a href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a></div><div class="ttdeci">#define GET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:152</div></div>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#a96bf598044dc4e144f71ea438014fc42" title="Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses. ">GET_SET_FOR</a> </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="a50e7b4077d96b981b6e5fd7792e0b3c2"></a>
@@ -251,6 +252,7 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#a45b30b90695c27e50c2d6f8a5410b093" title="Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses. ">GET_FOR</a> </dd></dl>
 
 </div>
 </div>
@@ -267,7 +269,7 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#ab02a05c237493f61aa7e8d89e076d27a">VISITOR_VISIT_IMPL_FOR</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8overrides_8cpp.html#ab02a05c237493f61aa7e8d89e076d27a">VISITOR_VISIT_IMPL_FOR</a> </dd></dl>
 
 </div>
 </div>
@@ -294,6 +296,7 @@ Enumerations</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#a9f2db2cf3bd1860db9cf4f8e8974e1db" title="Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses. ">SET_FOR</a> </dd></dl>
 
 </div>
 </div>

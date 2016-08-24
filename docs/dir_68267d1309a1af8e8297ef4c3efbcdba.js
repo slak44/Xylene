@@ -4,6 +4,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "parser", "dir_6cd8491d143eb218b70983dbdb3c58bc.html", "dir_6cd8491d143eb218b70983dbdb3c58bc" ],
     [ "utils", "dir_313caf1132e152dd9b58bea13a4052ca.html", "dir_313caf1132e152dd9b58bea13a4052ca" ],
     [ "ast.cpp", "ast_8cpp.html", "ast_8cpp" ],
+    [ "ast.overrides.cpp", "ast_8overrides_8cpp.html", "ast_8overrides_8cpp" ],
     [ "lexer.cpp", "lexer_8cpp.html", null ],
     [ "main.cpp", "main_8cpp.html", "main_8cpp" ],
     [ "operator.cpp", "operator_8cpp.html", "operator_8cpp" ],
