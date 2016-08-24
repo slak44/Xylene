@@ -93,6 +93,9 @@ private:
 public:
   FunctionSignature(TypeInfo returnType, Arguments arguments);
   
+  TypeInfo getReturnType() const;
+  Arguments getArguments() const;
+  
   std::string toString() const;
 };
 

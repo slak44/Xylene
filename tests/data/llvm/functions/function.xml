@@ -1,0 +1,17 @@
+<!--
+function add [Integer a, Integer b] => Integer do
+  return a + b;
+end
+-->
+<block type="root">
+  <function ident="add" return="Integer" args="a:Integer,b:Integer">
+    <block type="function">
+      <return>
+        <expr type="Operator" value="Add">
+          <expr type="Identifier" value="a"/>
+          <expr type="Identifier" value="b"/>
+        </expr>
+      </return>
+    </block>
+  </function>
+</block>

@@ -58,3 +58,9 @@ TEST_F(LLVMCompilerTest, Assignment) {
   noThrowOnCompile("data/llvm/return_assign.xml");
   EXPECT_THROW(compile("data/llvm/assign_to_literal.xml"), Error);
 }
+
+TEST_F(LLVMCompilerTest, Functions) {
+  noThrowOnCompile("data/llvm/functions/function.xml");
+  noThrowOnCompile("data/llvm/functions/no_args.xml");
+  noThrowOnCompile("data/llvm/functions/void_ret.xml");
+}

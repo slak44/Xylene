@@ -119,6 +119,7 @@ void BreakLoopNode::printTree(uint level) const {
 void FunctionNode::printTree(uint level) const {
   printIndent(level);
   println("Function", isAnon() ? "<anonymous>" : ident);
+  printIndent(level);
   println(this->sig.toString());
   if (notNull(0)) getCode()->printTree(level + 1);
 }
