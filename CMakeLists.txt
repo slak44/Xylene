@@ -68,6 +68,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/token.cpp
   ${SRC_DIR}/lexer.cpp
   ${SRC_DIR}/ast.cpp
+  ${SRC_DIR}/ast.overrides.cpp
   ${SRC_DIR}/parser/tokenParser.cpp
   ${SRC_DIR}/parser/xmlParser.cpp
   ${SRC_DIR}/llvm/compiler.cpp
