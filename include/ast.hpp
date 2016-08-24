@@ -69,6 +69,31 @@ public:
 };
 
 /**
+  \brief Utility class for managing smart pointers of ASTNode subclasses
+*/
+template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
+struct Node: public PtrUtil<T> {
+  typedef typename PtrUtil<T>::Link Link;
+  typedef typename PtrUtil<T>::WeakLink WeakLink;
+  
+  /// Create a shared ptr that holds a node
+  template<typename... Args>
+  static Link make(Args... args) {
+    return std::make_shared<T>(args...);
+  }
+  
+  /// Technically overrides PtrUtil<T>::isSameType
+  static inline bool isSameType(ASTNode::Link node) {
+    return typeid(T) == typeid(*node);
+  }
+  
+  /// Technically overrides PtrUtil<T>::dynPtrCast
+  static inline Link dynPtrCast(ASTNode::Link node) {
+    return std::dynamic_pointer_cast<T>(node);
+  }
+};
+
+/**
   \brief All the types a BlockNode can be.
 */
 enum BlockType {
@@ -123,54 +148,14 @@ public:
   void visit(ASTVisitorLink visitor) override;
 };
 
-/**
-  \brief Utility class for managing smart pointers of ASTNode subclasses
-*/
-template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
-struct Node: public PtrUtil<T> {
-  typedef typename PtrUtil<T>::Link Link;
-  typedef typename PtrUtil<T>::WeakLink WeakLink;
-  
-  /// Create a shared ptr that holds a node
-  template<typename... Args>
-  static Link make(Args... args) {
-    return std::make_shared<T>(args...);
-  }
-  
-  /// Technically overrides PtrUtil<T>::isSameType
-  static inline bool isSameType(ASTNode::Link node) {
-    return typeid(T) == typeid(*node);
-  }
-  
-  /// Technically overrides PtrUtil<T>::dynPtrCast
-  static inline Link dynPtrCast(ASTNode::Link node) {
-    return std::dynamic_pointer_cast<T>(node);
-  }
-};
-
-/**
-  \brief Stores an abstract syntax tree of a program.
-*/
-class AST {
-private:
-  /// Root of AST
-  Node<BlockNode>::Link root;
-public:
-  AST(Node<BlockNode>::Link lk);
-  /// Print the tree
-  void print() const;
-  /// Get root
-  Node<BlockNode>::Link getRoot() const;
-  
-  bool operator==(const AST& rhs) const;
-  bool operator!=(const AST& rhs) const;
-};
-
+/// \see GET_FOR
 #define GET_SIG(linkType, nameOf) Node<linkType>::Link get##nameOf() const;
+/// \see SET_FOR
 #define SET_SIG(linkType, nameOf) void set##nameOf(std::shared_ptr<linkType> newNode);
+/// \see GET_SET_FOR
 #define GET_SET_SIGS(linkType, nameOf) \
-GET_SIG(linkType, nameOf) \
-SET_SIG(linkType, nameOf)
+GET_SIG(linkType, nameOf); \
+SET_SIG(linkType, nameOf);
 
 /**
   \brief ASTNode with fixed children count.
@@ -339,6 +324,24 @@ public:
 #undef GET_SIG
 #undef SET_SIG
 #undef GET_SET_SIGS
+
+/**
+  \brief Stores an abstract syntax tree of a program.
+*/
+class AST {
+private:
+  /// Root of AST
+  Node<BlockNode>::Link root;
+public:
+  AST(Node<BlockNode>::Link lk);
+  /// Print the tree
+  void print() const;
+  /// Get root
+  Node<BlockNode>::Link getRoot() const;
+  
+  bool operator==(const AST& rhs) const;
+  bool operator!=(const AST& rhs) const;
+};
 
 /**
   \see VISITOR_VISIT_IMPL_FOR
