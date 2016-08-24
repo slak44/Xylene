@@ -2,6 +2,7 @@ var searchData=
 [
   ['get',['get',['../class_scope.html#aad11d98fafa42c9dfd745cae5b717d35',1,'Scope']]],
   ['getaddressstringfrom',['getAddressStringFrom',['../util_8cpp.html#a8025ca4758bf291a0677d9c691fea381',1,'getAddressStringFrom(const void *ptr):&#160;util.cpp'],['../util_8hpp.html#a8025ca4758bf291a0677d9c691fea381',1,'getAddressStringFrom(const void *ptr):&#160;util.cpp']]],
+  ['getarguments',['getArguments',['../class_function_signature.html#af6df2b93862c7286d3d6acad06f6d7c4',1,'FunctionSignature']]],
   ['getarity',['getArity',['../class_operator.html#adac46824226042930c621543af19c0a6',1,'Operator']]],
   ['getassociativity',['getAssociativity',['../class_operator.html#a3a8783390d3202ad26c2abcdab7e9a1f',1,'Operator']]],
   ['getchildren',['getChildren',['../class_a_s_t_node.html#ace3f3c71e3e8de9806640289e3c14d49',1,'ASTNode']]],
@@ -26,6 +27,7 @@ var searchData=
   ['getrange',['getRange',['../class_trace.html#a537eef6db72f99b9ce362f2a6b4a9df0',1,'Trace']]],
   ['getrangetohere',['getRangeToHere',['../class_lexer_base.html#a20cca4468b26e5fd5373113f336fa13e',1,'LexerBase']]],
   ['getreflist',['getRefList',['../class_operator.html#a88e01f6aaaf0381132511218934cdc7e',1,'Operator']]],
+  ['getreturntype',['getReturnType',['../class_function_signature.html#a0a997d78e219bbb9268d964b1e8f2c11',1,'FunctionSignature']]],
   ['getroot',['getRoot',['../class_a_s_t.html#ae626b97f66a273c5dd9e92e34e41702d',1,'AST']]],
   ['getsignature',['getSignature',['../class_function_node.html#ab3ae12f281ea80115b171f70838e199a',1,'FunctionNode']]],
   ['getstart',['getStart',['../class_range.html#afaa57e795d353f1235bec576d6ee87e7',1,'Range']]],

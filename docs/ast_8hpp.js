@@ -1,10 +1,9 @@
 var ast_8hpp =
 [
     [ "ASTNode", "class_a_s_t_node.html", "class_a_s_t_node" ],
+    [ "Node", "struct_node.html", "struct_node" ],
     [ "BlockNode", "class_block_node.html", "class_block_node" ],
     [ "ExpressionNode", "class_expression_node.html", "class_expression_node" ],
-    [ "Node", "struct_node.html", "struct_node" ],
-    [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "NoMoreChildrenNode", "class_no_more_children_node.html", "class_no_more_children_node" ],
     [ "DeclarationNode", "class_declaration_node.html", "class_declaration_node" ],
     [ "BranchNode", "class_branch_node.html", "class_branch_node" ],
@@ -12,6 +11,7 @@ var ast_8hpp =
     [ "ReturnNode", "class_return_node.html", "class_return_node" ],
     [ "BreakLoopNode", "class_break_loop_node.html", "class_break_loop_node" ],
     [ "FunctionNode", "class_function_node.html", "class_function_node" ],
+    [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", null ],
     [ "GET_SET_SIGS", "ast_8hpp.html#ad6003bd0cb5d23a158c81606911c0724", null ],
     [ "GET_SIG", "ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2", null ],
