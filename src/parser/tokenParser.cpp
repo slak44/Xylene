@@ -234,19 +234,9 @@ Node<FunctionNode>::Link FunctionParser::function() {
     skip();
     while (true) {
       expect(IDENTIFIER, "Expected identifier in function arguments");
-      Token ident = current();
-      skip();
-      // argName: typeList
-      if (accept(C_2POINT)) {
-        skip();
-        args.insert(std::make_pair(ident.data, getTypeList()));
-      // typeList argName
-      } else {
-        skip(-1); // Don't eat the first identifier
-        TypeList tl = getTypeList();
-        args.insert(std::make_pair(current().data, tl));
-        skip(); // Skip the argument name
-      }
+      TypeList tl = getTypeList();
+      args.insert(std::make_pair(current().data, tl));
+      skip(); // Skip the argument name
       if (accept(C_SQPAREN_RIGHT)) {
         skip();
         break;

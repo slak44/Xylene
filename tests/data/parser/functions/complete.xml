@@ -1,5 +1,5 @@
 <!--
-function add [Integer, Float a, b: Integer, Float] => Integer, Float do
+function add [Integer, Float a, Integer, Float b] => Integer, Float do
 end
 -->
 <block type="root">
