@@ -32,6 +32,7 @@
 class CompileVisitor: public ASTVisitor, public std::enable_shared_from_this<CompileVisitor> {
 public:
   using Link = PtrUtil<CompileVisitor>::Link;
+  using TypeName = std::string;
 private:
   /// LLVM Context for this visitor
   llvm::LLVMContext* context;
@@ -123,7 +124,18 @@ private:
   /// Implementation detail
   TokenType getFromValueType(llvm::Type* ty);
   /// Implementation detail
-  llvm::Value* compileExpression(Node<ExpressionNode>::Link node, bool requirePointer = false);
+  llvm::Type* typeFromName(std::string typeName);
+  /// Implementation detail
+  llvm::Type* typeFromInfo(TypeInfo ti);
+  /// How to handle an identifier in compileExpression
+  enum IdentifierHandling {
+    AS_POINTER, ///< Return a pointer
+    AS_VALUE ///< Use a load instruction, and return that value
+  };
+  /// Implementation detail
+  llvm::Value* valueFromIdentifier(Node<ExpressionNode>::Link identifier, IdentifierHandling how);
+  /// Implementation detail
+  llvm::Value* compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how = AS_VALUE);
   /// Implementation detail
   void compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding = nullptr);
   /// Implementation detail

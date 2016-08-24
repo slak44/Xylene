@@ -1,0 +1,12 @@
+<!--
+function noop [Integer a, Integer b] do
+  return;
+end
+-->
+<block type="root">
+  <function ident="noop" args="a:Integer,b:Integer">
+    <block type="function">
+      <return/>
+    </block>
+  </function>
+</block>

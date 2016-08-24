@@ -74,6 +74,10 @@ llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const
         break;
     }
   }
+  // After functions are done, start inserting in the old block, not in the function
+  if (node->getType() == FUNCTION_BLOCK) {
+    builder->SetInsertPoint(oldBlock);
+  }
   return newBlock;
 }
 
@@ -81,6 +85,7 @@ void CompileVisitor::visitExpression(Node<ExpressionNode>::Link node) {
   compileExpression(node);
 }
 
+// TODO make this return a TypeName
 TokenType CompileVisitor::getFromValueType(llvm::Type* ty) {
   if (ty == integerType) return L_INTEGER;
   if (ty == floatType) return L_FLOAT;
@@ -89,9 +94,48 @@ TokenType CompileVisitor::getFromValueType(llvm::Type* ty) {
   throw InternalError("Not Implemented", {METADATA_PAIRS});
 }
 
-llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, bool requirePointer) {
+llvm::Type* CompileVisitor::typeFromName(TypeName name) {
+  if (name == "Boolean") return booleanType;
+  else if (name == "Integer") return integerType;
+  else if (name == "Float") return floatType;
+  else throw InternalError("Not Implemented", {METADATA_PAIRS});
+  // TODO user-defined types are handled here ^^
+  // Should have a map of user types to look into
+}
+
+llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti) {
+  if (ti.isVoid()) return llvm::Type::getVoidTy(*context);
+  TypeList tl = ti.getEvalTypeList();
+  if (tl.size() == 0) throw InternalError("Not Implemented", {METADATA_PAIRS});
+  if (tl.size() == 1) return typeFromName(*std::begin(tl));
+  // TODO multi type
+  throw InternalError("Not Implemented", {METADATA_PAIRS});
+}
+
+llvm::Value* CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Link identifier, IdentifierHandling how) {
+  llvm::Value* val;
+  // If it's a function arg, return it like 
+  for (auto& arg : functionStack.top()->getArgumentList()) {
+    if (arg.getName() == identifier->getToken().data) {
+      val = &arg;
+      if (AS_VALUE) return val;
+      // TODO: prob alloc a copy and give that for primitives
+      // for complex types, use the llvm::Argument to get ptr to parent function, then recursively search for where the damn thing was allocated, so we can get a pointer
+      // also be careful so that anything that uses the thing changes the right data, not a temporary copy
+      if (AS_POINTER) throw InternalError("Not Implemented", {METADATA_PAIRS});
+    }
+  }
+  val = builder->GetInsertBlock()->getValueSymbolTable()->lookup(identifier->getToken().data); // TODO check globals and types, not only locals
+  switch (how) {
+    case AS_POINTER: return val;
+    case AS_VALUE: return builder->CreateLoad(val, "identifierExpressionLoad");
+    default: throw InternalError("Unimplemented ident handler", {METADATA_PAIRS});
+  }
+}
+
+llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how) {
   Token tok = node->getToken();
-  if (requirePointer && tok.type != IDENTIFIER && tok.type != OPERATOR) 
+  if (how == AS_POINTER && tok.type != IDENTIFIER && tok.type != OPERATOR) 
     throw Error("ReferenceError", "Operator requires a mutable type", tok.trace);
   if (tok.isTerminal()) {
     switch (tok.type) {
@@ -99,11 +143,7 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, 
       case L_FLOAT: return llvm::ConstantFP::get(floatType, tok.data);
       case L_STRING: throw InternalError("Not Implemented", {METADATA_PAIRS});
       case L_BOOLEAN: return (tok.data == "true" ? llvm::ConstantInt::getTrue(booleanType) : llvm::ConstantInt::getFalse(booleanType));
-      case IDENTIFIER: {
-        llvm::Value* ptr = builder->GetInsertBlock()->getValueSymbolTable()->lookup(tok.data); // TODO check globals and types, not only locals
-        if (requirePointer) return ptr;
-        else return builder->CreateLoad(ptr, "identifierExpressionLoad");
-      }
+      case IDENTIFIER: return valueFromIdentifier(node, how);
       default: throw InternalError("Unhandled terminal symbol in switch case", {
         METADATA_PAIRS,
         {"token", tok.toString()}
@@ -115,7 +155,7 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, 
     std::size_t idx = 0;
     for (auto& child : node->getChildren()) {
       bool requirePointer = tok.getOperator().getRefList()[idx];
-      operands.push_back(compileExpression(Node<ExpressionNode>::dynPtrCast(child), requirePointer));
+      operands.push_back(compileExpression(Node<ExpressionNode>::staticPtrCast(child), requirePointer ? AS_POINTER : AS_VALUE));
       idx++;
     }
     // Make sure we have the correct amount of operands
@@ -142,13 +182,8 @@ void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
   TypeList declTypes = node->getTypeInfo().getEvalTypeList();
   // If this variable allows only one type, allocate it immediately
   if (declTypes.size() == 1) {
-    std::string typeName = *declTypes.begin();
-    llvm::Type* toAllocate;
-    if (typeName == "Boolean") toAllocate = booleanType;
-    else if (typeName == "Integer") toAllocate = integerType;
-    else if (typeName == "Float") toAllocate = floatType;
-    else throw InternalError("Not Implemented", {METADATA_PAIRS}); // TODO user-defined types are handled here
-    builder->CreateAlloca(toAllocate, nullptr, node->getIdentifier());
+    TypeName name = *declTypes.begin();
+    builder->CreateAlloca(typeFromName(name), nullptr, node->getIdentifier());
   // If this variable has 1+ or dynamic type, allocate a pointer + type data
   // The actual data will be allocated on initialization
   } else {
@@ -280,6 +315,10 @@ void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
 }
 
 void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
+  if (node->getValue() == nullptr) {
+    builder->CreateRetVoid();
+    return;
+  }
   auto result = compileExpression(node->getValue());
   if (functionStack.top()->getReturnType() != result->getType()) {
     // TODO: this is a very indiscriminate check
@@ -296,8 +335,23 @@ void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
 }
 
 void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
-  UNUSED(node);
-  throw InternalError("Not Implemented", {METADATA_PAIRS});
+  // TODO anon functions
+  const FunctionSignature& sig = node->getSignature();
+  std::vector<llvm::Type*> argTypes {};
+  std::vector<std::string> argNames {};
+  for (std::pair<std::string, DefiniteTypeInfo> p : sig.getArguments()) {
+    argTypes.push_back(typeFromInfo(p.second));
+    argNames.push_back(p.first);
+  }
+  llvm::FunctionType* funType = llvm::FunctionType::get(typeFromInfo(sig.getReturnType()), argTypes, false);
+  functionStack.push(llvm::Function::Create(funType, llvm::Function::ExternalLinkage, node->getIdentifier(), module));
+  std::size_t nameIdx = 0;
+  for (auto& arg : functionStack.top()->getArgumentList()) {
+    arg.setName(argNames[nameIdx]);
+    nameIdx++;
+  }
+  compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
+  functionStack.pop();
 }
 
 using CmpPred = llvm::CmpInst::Predicate;

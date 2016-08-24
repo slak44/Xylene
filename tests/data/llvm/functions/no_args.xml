@@ -1,0 +1,14 @@
+<!--
+function random => Integer do
+  return 4; // Chosen by fair dice roll
+end
+-->
+<block type="root">
+  <function ident="random" return="Integer">
+    <block type="function">
+      <return>
+        <expr type="Integer" value="4"/>
+      </return>
+    </block>
+  </function>
+</block>

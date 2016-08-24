@@ -53,6 +53,14 @@ std::string DefiniteTypeInfo::toString() const {
 
 FunctionSignature::FunctionSignature(TypeInfo returnType, Arguments arguments): returnType(returnType), arguments(arguments) {}
 
+TypeInfo FunctionSignature::getReturnType() const {
+  return returnType;
+}
+
+FunctionSignature::Arguments FunctionSignature::getArguments() const {
+  return arguments;
+}
+
 std::string FunctionSignature::toString() const {
   std::string str = "FunctionSignature (";
   str += "return: " + returnType.getTypeNameString();
