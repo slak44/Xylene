@@ -62,7 +62,7 @@ private:
     /// Signature for a lambda representing a CodegenFunction
     #define CODEGEN_SIG (std::vector<llvm::Value*> operands, __attribute__((unused)) Trace trace) -> llvm::Value*
     /// Maps operand types to a func that generates code from them
-    using TypeMap = std::unordered_map<std::vector<TokenType>, CodegenFunction, VectorHash<TokenType>>;
+    using TypeMap = std::unordered_map<std::vector<llvm::Type*>, CodegenFunction, VectorHash<llvm::Type*>>;
   private:
     CompileVisitor::Link cv;
     
@@ -80,7 +80,7 @@ private:
     /// Search for a CodegenFunction in the specialCodegenMap
     CodegenFunction getSpecialFun(Token tok) noexcept;
     /// Search for a CodegenFunction in the codegenMap
-    CodegenFunction getNormalFun(Token tok, const std::vector<TokenType>& types);
+    CodegenFunction getNormalFun(Token tok, const std::vector<llvm::Type*>& types);
   };
   
   /// Instance of OperatorCodegen
@@ -121,8 +121,6 @@ private:
   void visitBreakLoop(Node<BreakLoopNode>::Link node);
   void visitFunction(Node<FunctionNode>::Link node);
   
-  /// Implementation detail
-  TokenType getFromValueType(llvm::Type* ty);
   /// Implementation detail
   llvm::Type* typeFromName(std::string typeName);
   /// Implementation detail

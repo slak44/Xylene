@@ -85,15 +85,6 @@ void CompileVisitor::visitExpression(Node<ExpressionNode>::Link node) {
   compileExpression(node);
 }
 
-// TODO make this return a TypeName
-TokenType CompileVisitor::getFromValueType(llvm::Type* ty) {
-  if (ty == integerType) return L_INTEGER;
-  if (ty == floatType) return L_FLOAT;
-  if (ty == booleanType) return L_BOOLEAN;
-  // TODO the rest of the types
-  throw InternalError("Not Implemented", {METADATA_PAIRS});
-}
-
 llvm::Type* CompileVisitor::typeFromName(TypeName name) {
   if (name == "Boolean") return booleanType;
   else if (name == "Integer") return integerType;
@@ -361,30 +352,30 @@ CV::OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
   cv(cv),
   codegenMap({
     {"Add", {
-      {{L_INTEGER, L_INTEGER}, [=] CODEGEN_SIG {
+      {{cv->integerType, cv->integerType}, [=] CODEGEN_SIG {
         return cv->builder->CreateAdd(operands[0], operands[1], "intadd");
       }},
-      {{L_INTEGER, L_FLOAT}, [=] CODEGEN_SIG {
+      {{cv->integerType, cv->floatType}, [=] CODEGEN_SIG {
         return cv->builder->CreateFAdd(SItoFP(operands[0]), operands[1], "intfltadd");
       }},
-      {{L_FLOAT, L_INTEGER}, [=] CODEGEN_SIG {
+      {{cv->floatType, cv->integerType}, [=] CODEGEN_SIG {
         return cv->builder->CreateFAdd(operands[0], SItoFP(operands[1]), "fltintadd");
       }},
-      {{L_FLOAT, L_FLOAT}, [=] CODEGEN_SIG {
+      {{cv->floatType, cv->floatType}, [=] CODEGEN_SIG {
         return cv->builder->CreateFAdd(operands[0], operands[1], "fltadd");
       }},
     }},
     {"Less", {
-      {{L_INTEGER, L_INTEGER}, [=] CODEGEN_SIG {
+      {{cv->integerType, cv->integerType}, [=] CODEGEN_SIG {
         return cv->builder->CreateICmp(CmpPred::ICMP_SLT, operands[0], operands[1], "intcmpless");
       }},
-      {{L_INTEGER, L_FLOAT}, [=] CODEGEN_SIG {
+      {{cv->integerType, cv->floatType}, [=] CODEGEN_SIG {
         return cv->builder->CreateFCmp(CmpPred::FCMP_OLT, SItoFP(operands[0]), operands[1], "intfltcmpless");
       }},
-      {{L_FLOAT, L_INTEGER}, [=] CODEGEN_SIG {
+      {{cv->floatType, cv->integerType}, [=] CODEGEN_SIG {
         return cv->builder->CreateFCmp(CmpPred::FCMP_OLT, operands[0], SItoFP(operands[1]), "fltintcmpless");
       }},
-      {{L_FLOAT, L_FLOAT}, [=] CODEGEN_SIG {
+      {{cv->floatType, cv->floatType}, [=] CODEGEN_SIG {
         return cv->builder->CreateFCmp(CmpPred::FCMP_OLT, operands[0], operands[1], "fltcmpless");
       }},
     }}
@@ -410,11 +401,11 @@ CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::findAndGetFun(Token to
   if (func != nullptr) return func;
   // Otherwise look in the normal map
   // Get a list of types
-  std::vector<TokenType> operandTypes;
-  operandTypes.resize(operands.size(), UNPROCESSED);
-  // Map an operand to a TokenType representing it
+  std::vector<llvm::Type*> operandTypes;
+  operandTypes.resize(operands.size());
+  // Map an operand to a llvm::Type* representing it
   std::size_t idx = -1;
-  std::transform(ALL(operands), operandTypes.begin(), [=, &idx, &operands](llvm::Value* val) -> TokenType {
+  std::transform(ALL(operands), operandTypes.begin(), [=, &idx, &operands](llvm::Value* val) -> llvm::Type* {
     idx++;
     llvm::Type* opType = val->getType();
     if (llvm::dyn_cast_or_null<llvm::PointerType>(opType)) {
@@ -422,7 +413,7 @@ CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::findAndGetFun(Token to
       operands[idx] = load;
       opType = operands[idx]->getType();
     }
-    return cv->getFromValueType(opType);
+    return opType;
   });
   return getNormalFun(tok, operandTypes);
 }
@@ -434,7 +425,7 @@ CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getSpecialFun(Token to
   else return nullptr;
 }
 
-CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getNormalFun(Token tok, const std::vector<TokenType>& types) {
+CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getNormalFun(Token tok, const std::vector<llvm::Type*>& types) {
   const Operator::Name& toFind = operatorNameFrom(tok.idx);
   auto opMapIt = codegenMap.find(toFind);
   if (opMapIt == codegenMap.end()) {
