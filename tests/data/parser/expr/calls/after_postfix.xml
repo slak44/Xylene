@@ -1,0 +1,13 @@
+<!--
+-a++();
+-->
+<block type="root">
+  <expr type="Operator" value="Call">
+    <expr type="Operator" value="Postfix ++">
+      <expr type="Operator" value="Unary -">
+        <expr type="Identifier" value="a"/>
+      </expr>
+    </expr>
+    <expr type="Operator" value="No-op"/>
+  </expr>
+</block>

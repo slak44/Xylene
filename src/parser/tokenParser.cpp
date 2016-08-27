@@ -33,33 +33,64 @@ Node<ExpressionNode>::Link ExpressionParser::exprFromCurrent() {
   return e;
 }
 
-Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary() {
-  if (accept(C_SEMI) || accept(K_DO)) return nullptr; // Empty expression
+Node<ExpressionNode>::Link ExpressionParser::parsePostfix(Node<ExpressionNode>::Link terminal) {
+  Node<ExpressionNode>::Link expr;
+  // Check if there are any postfix operators around
+  if (accept(POSTFIX)) {
+    auto lastNode = expr = exprFromCurrent();
+    skip();
+    while (accept(POSTFIX)) {
+      auto newPostfix = exprFromCurrent();
+      lastNode->addChild(newPostfix);
+      lastNode = newPostfix;
+      skip();
+    }
+    lastNode->addChild(terminal);
+  } else {
+    expr = terminal;
+  }
+  return expr;
+}
+
+Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAsFuncCall = false) {
+  if (acceptEndOfExpression()) return nullptr; // Empty expression
   Node<ExpressionNode>::Link expr;
   if (accept(C_PAREN_LEFT)) {
     skip();
-    expr = expression();
+    expr = expression(false);
     expect(C_PAREN_RIGHT, "Mismatched parenthesis");
-    skip();
+    if (
+      // Something higher up the chain has higher level info forcing this parse path
+      parenAsFuncCall ||
+      // Empty expression between parens means it's actually a function call without arguments
+      expr == nullptr ||
+      // If it's a terminal, it's a function call with 1 arg
+      expr->getToken().isTerminal() ||
+      // If the root of the parenthesised expression is a comma, then this is a tree of arguments, so func call
+      (expr->getToken().isOperator() && expr->getToken().hasOperatorSymbol(","))
+    ) {
+      auto callOpExpr = Node<ExpressionNode>::make(Token(OPERATOR, operatorIndexFrom("Call"), current().trace));
+      // If expr is nullptr, use a no-op
+      callOpExpr->addChild(expr != nullptr ? expr : Node<ExpressionNode>::make(Token(OPERATOR, operatorIndexFrom("No-op"), current().trace)));
+      expr = callOpExpr;
+    }
+    skip(); // Skip ")"
+    expr = parsePostfix(expr);
     return expr;
   } else if (acceptTerminal()) {
-    auto terminal = Node<ExpressionNode>::make(current());
+    expr = exprFromCurrent();
     skip();
-    // Check if there are any postfix operators around
-    if (accept(POSTFIX)) {
-      auto lastNode = expr = exprFromCurrent();
-      skip();
-      while (accept(POSTFIX)) {
-        auto newPostfix = exprFromCurrent();
-        lastNode->addChild(newPostfix);
-        lastNode = newPostfix;
-        skip();
-      }
-      lastNode->addChild(terminal);
-    } else {
-      expr = terminal;
+    // Function call
+    if (expr->getToken().type == IDENTIFIER && accept(C_PAREN_LEFT)) {
+      auto call = parseExpressionPrimary(true);
+      // The expr being called must be the first operand of the call operator
+      // So remove the arguments, add expr, then put the arguments back in
+      auto argTree = call->removeChild(0);
+      call->addChild(expr);
+      call->addChild(argTree);
+      return call;
     }
-    return expr;
+    return parsePostfix(expr);
   // Prefix operators
   } else if (accept(PREFIX)) {
     auto lastNode = expr = exprFromCurrent();
@@ -69,7 +100,29 @@ Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary() {
       lastNode = lastNode->at(-1);
       skip();
     }
-    lastNode->addChild(parseExpressionPrimary());
+    auto terminalAndPostfix = parseExpressionPrimary();
+    // Postfix ops must get in front if at least one exists
+    if (
+      terminalAndPostfix->getToken().isOperator() && // Check that there is a postfix op, not a terminal
+      lastNode->getToken().getPrecedence() < terminalAndPostfix->getToken().getPrecedence()
+    ) {
+      auto lastPostfix = terminalAndPostfix;
+      // Go down the tree and find the last postfix
+      while (lastPostfix->getToken().isOperator() && lastPostfix->getToken().hasFixity(POSTFIX)) {
+        lastPostfix = lastPostfix->at(0);
+      }
+      // This loop iterates one too many times, and finds the terminal
+      // The last postfix is the terminal's parent
+      lastPostfix = Node<ExpressionNode>::staticPtrCast(lastPostfix->getParent().lock());
+      // Add the terminal to the prefixes
+      lastNode->addChild(lastPostfix->removeChild(0));
+      // Add the prefixes as a child of the last postfix
+      lastPostfix->addChild(expr);
+      // The postfixes are the root of the returned expr node
+      expr = terminalAndPostfix;
+    } else {
+      lastNode->addChild(terminalAndPostfix);
+    }
     return expr;
   } else {
     throw InternalError("Unimplemented primary expression", {
@@ -86,6 +139,29 @@ Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>
   Node<ExpressionNode>::Link lastExpr = nullptr;
   Token tok = current();
   if (acceptEndOfExpression()) return lhs;
+  if (lhs != nullptr) {
+    skip(-1);
+    auto tt = current().type;
+    skip(1);
+    // If we have any of:
+    // IDENTIFIER, C_PAREN_RIGHT, postfix ops
+    // before a paren, it's a function call
+    auto isCallable =
+      tt == IDENTIFIER ||
+      tt == C_PAREN_RIGHT ||
+      (tt == OPERATOR && lhs->getToken().hasFixity(POSTFIX));
+    if (accept(C_PAREN_LEFT) && isCallable) {
+      auto fCall = parseExpressionPrimary(true);
+      auto args = fCall->removeChild(0);
+      fCall->addChild(lhs);
+      fCall->addChild(args);
+      lhs = fCall;
+      // If the expression finishes here, return
+      if (acceptEndOfExpression()) return lhs;
+      // Otherwise, update tok
+      tok = current();
+    }
+  }
   while (tok.hasArity(BINARY) && tok.getPrecedence() >= minPrecedence) {
     auto tokExpr = Node<ExpressionNode>::make(tok);
     tokExpr->setTrace(tok.trace);

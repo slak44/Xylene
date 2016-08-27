@@ -8,18 +8,34 @@ void ASTNode::addChild(Link child) {
   children.push_back(child);
 }
 
+ASTNode::Link ASTNode::removeChild(int64 pos) {
+  Link child = this->at(pos);
+  child->setParent(WeakLink());
+  this->children.erase(children.begin() + transformArrayIndex(pos));
+  return child;
+}
+
+std::size_t ASTNode::transformArrayIndex(int64 idx) const {
+  std::size_t res = idx;
+  if (idx < 0) {
+    res = children.size() + idx; // Negative indices count from the end of the vector
+  }
+  if (res > children.size()) {
+    throw InternalError("Index out of array bounds", {
+      METADATA_PAIRS,
+      {"index", std::to_string(idx)},
+      {"calculated", std::to_string(res)}
+    });
+  }
+  return res;
+}
+
 ASTNode::Children ASTNode::getChildren() const {
   return children;
 }
 
 ASTNode::Link ASTNode::at(int64 pos) const {
-  if (pos < 0) {
-    pos = children.size() + pos; // Negative indices count from the end of the vector
-  }
-  if (static_cast<std::size_t>(abs(pos)) > children.size() || pos < 0) {
-    throw InternalError("Index out of array bounds", {METADATA_PAIRS, {"index", std::to_string(pos)}});
-  }
-  return children[pos];
+  return children.at(transformArrayIndex(pos));
 }
 
 void ASTNode::setParent(WeakLink newParent) {parent = newParent;}

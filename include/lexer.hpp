@@ -47,7 +47,7 @@ protected:
     currentLinePos += skipped;
     if (pos >= code.length()) pos = code.length();
   }
-  /// Decrement current position so the loop doesn't do so automatically
+  /// Decrement current position so the loop doesn't increment automatically
   inline void noIncrement() {
     pos--;
   }

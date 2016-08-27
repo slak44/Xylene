@@ -1,0 +1,9 @@
+<!--
+a();
+-->
+<block type="root">
+  <expr type="Operator" value="Call">
+    <expr type="Identifier" value="a"/>
+    <expr type="Operator" value="No-op"/>
+  </expr>
+</block>

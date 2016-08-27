@@ -1,0 +1,11 @@
+<!-- -(a + b)++; -->
+<block type="root">
+  <expr type="Operator" value="Postfix ++">
+    <expr type="Operator" value="Unary -">
+      <expr type="Operator" value="Add">
+        <expr type="Identifier" value="a"/>
+        <expr type="Identifier" value="b"/>
+      </expr>
+    </expr>
+  </expr>
+</block>

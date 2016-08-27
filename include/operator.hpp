@@ -9,7 +9,7 @@
 #include "utils/error.hpp"
 
 /**
-  \brief Represents how does an operator associate.
+  \brief Represents how an operator associates.
 */
 enum Associativity: int {
   /// The default. Operators associate from left to right.
@@ -35,7 +35,8 @@ enum Fixity: int {
   /// The default
   INFIX = 0,
   PREFIX = -1,
-  POSTFIX = 1
+  POSTFIX = 1,
+  CIRCUMFIX = 2
 };
 
 /**
@@ -91,13 +92,12 @@ static const Operator::RequireReferenceList unaryOps {true};
 
 /**
   \brief The main operator list.
-  This list contains the operators used by the lexer. Some of them, like ?: and [] can't be here due to their syntax.
+  This list contains the operators used by the lexer. Some of them, like (), ?: and [] can't be here due to their syntax.
 */
 const std::vector<Operator> operatorList {
   Operator("==", 7),
   Operator("!=", 7),
   
-  // TODO: Ternary "?:"
   Operator("=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
   Operator("+=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
   Operator("-=", 1, ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
@@ -120,7 +120,6 @@ const std::vector<Operator> operatorList {
   
   Operator("--", 13, ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
   Operator("++", 13, ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
-  //  Operator("[]", 13), // TODO: find subscript better
   
   Operator(".", 13, ASSOCIATE_FROM_LEFT, BINARY, INFIX, {true, false}),
   
@@ -145,7 +144,14 @@ const std::vector<Operator> operatorList {
   Operator("^", 5), // Bitwise XOR
   Operator("|", 4), // Bitwise OR
   
-  Operator(",", 0)
+  Operator(",", 0),
+  
+  // These don't get matched by the lexer as operators, but their symbols get matched as constructs
+  // They are created in the parser
+  Operator("()", 13, ASSOCIATE_FROM_LEFT, BINARY, POSTFIX, {true}), // Name of function and argument tree with commas
+  Operator("[]", 13, ASSOCIATE_FROM_LEFT, BINARY, CIRCUMFIX, {true, false}),
+  Operator("?:", 1, ASSOCIATE_FROM_LEFT, TERNARY, CIRCUMFIX),
+  Operator(" ", 0, ASSOCIATE_FROM_LEFT, NULLARY)
 };
 
 /**
@@ -192,6 +198,10 @@ static const std::unordered_map<Operator::Name, Operator::Index> operatorNameMap
   {"Bitwise XOR", 36},
   {"Bitwise OR", 37},
   {"Comma", 38},
+  {"Call", 39},
+  {"Subscript", 40},
+  {"Conditional", 41},
+  {"No-op", 42}
 };
 
 /**
