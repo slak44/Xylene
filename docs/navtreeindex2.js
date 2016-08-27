@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"struct_ptr_util.html":[3,0,33],
+"struct_ptr_util.html#a286fdbb8622c5244cbbb23b0c97b7b14":[3,0,33,0],
+"struct_ptr_util.html#aa2d03a447a6b9d8930e35b6fd0e8ea4b":[3,0,33,1],
 "struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52":[3,0,33,3],
 "struct_ptr_util.html#ac4d0a5ec217bf2771f420e8c8e3bfc74":[3,0,33,2],
 "struct_ptr_util.html#aed85841d8be9171dde6a0eb2383dd117":[3,0,33,4],

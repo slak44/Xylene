@@ -10,6 +10,7 @@ var searchData=
   ['canstoretype',['canStoreType',['../class_reference.html#af3f9b98eb0710ad9ad508536881d4d8d',1,'Reference']]],
   ['cast',['CAST',['../operator_map_8hpp.html#a58884bd5de4076c2ea301970de5a5e55',1,'operatorMap.hpp']]],
   ['children',['Children',['../class_a_s_t_node.html#ad64bdc35eff7b7ade1698416849dee41',1,'ASTNode::Children()'],['../class_a_s_t_node.html#adee8cd4d0ae395bc1b92a47d28aac76a',1,'ASTNode::children()']]],
+  ['circumfix',['CIRCUMFIX',['../operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8e331a7dd413ca9b66770a0544f6b0dd',1,'operator.hpp']]],
   ['cli_5ferror',['CLI_ERROR',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3a5065034024d4b6fd93047b6cb8eec6c9',1,'main.cpp']]],
   ['cmppred',['CmpPred',['../compiler_8cpp.html#ac8107e81fa0d66e3c3b5903745ef92b2',1,'compiler.cpp']]],
   ['code_5fblock',['CODE_BLOCK',['../ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3ae7ed9864d82cff511ac9d229ec94a074',1,'ast.hpp']]],

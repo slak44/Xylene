@@ -132,7 +132,7 @@ Classes</h2></td></tr>
 Enumerations</h2></td></tr>
 <tr class="memitem:af0c134c8c38b704002eecf49d690b2f2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2">Associativity</a> : int { <a class="el" href="operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2aa90f4bdd5dd80cb48623ffeb28e498b6">ASSOCIATE_FROM_LEFT</a>, 
 <a class="el" href="operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2abbd6c0d43c04ec6bf11ce63d0ea2e33a">ASSOCIATE_FROM_RIGHT</a>
- }<tr class="memdesc:af0c134c8c38b704002eecf49d690b2f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents how does an operator associate.  <a href="operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2">More...</a><br /></td></tr>
+ }<tr class="memdesc:af0c134c8c38b704002eecf49d690b2f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents how an operator associates.  <a href="operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:af0c134c8c38b704002eecf49d690b2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbd37d1e0466b60e27b6067623705cc8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8">Arity</a> : int { <a class="el" href="operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8a74742057ec9d5653bb9423647e73e1cb">NULLARY</a> = 0, 
@@ -144,7 +144,8 @@ Enumerations</h2></td></tr>
 <tr class="separator:acbd37d1e0466b60e27b6067623705cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af19b770f6e2116426144b702159f3bb0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0">Fixity</a> : int { <a class="el" href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a26ec03728fe7587ebb517811960c1b4e">INFIX</a> = 0, 
 <a class="el" href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0ab0960c67f412468bf9857089c2d27809">PREFIX</a> = -1, 
-<a class="el" href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8423fa5c736337e2bb8e0838515c05f1">POSTFIX</a> = 1
+<a class="el" href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8423fa5c736337e2bb8e0838515c05f1">POSTFIX</a> = 1, 
+<a class="el" href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8e331a7dd413ca9b66770a0544f6b0dd">CIRCUMFIX</a> = 2
  }<tr class="memdesc:af19b770f6e2116426144b702159f3bb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents where this operator should be placed in respect to his operands.  <a href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:af19b770f6e2116426144b702159f3bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,7 +177,7 @@ Variables</h2></td></tr>
 <tr class="memdesc:aafd2c7791584b838215873533da9c27b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some unary operators (eg ++) mutate their operand.  <a href="#aafd2c7791584b838215873533da9c27b">More...</a><br /></td></tr>
 <tr class="separator:aafd2c7791584b838215873533da9c27b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3ec2c3b68509d68af3e7d48bf335560"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="class_operator.html">Operator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8hpp.html#ac3ec2c3b68509d68af3e7d48bf335560">operatorList</a></td></tr>
-<tr class="memdesc:ac3ec2c3b68509d68af3e7d48bf335560"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main operator list. This list contains the operators used by the lexer. Some of them, like ?: and [] can't be here due to their syntax.  <a href="#ac3ec2c3b68509d68af3e7d48bf335560">More...</a><br /></td></tr>
+<tr class="memdesc:ac3ec2c3b68509d68af3e7d48bf335560"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main operator list. This list contains the operators used by the lexer. Some of them, like (), ?: and [] can't be here due to their syntax.  <a href="#ac3ec2c3b68509d68af3e7d48bf335560">More...</a><br /></td></tr>
 <tr class="separator:ac3ec2c3b68509d68af3e7d48bf335560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a786fcc12a0457a4ccbd7215569cfd81a"><td class="memItemLeft" align="right" valign="top">static const std::unordered_map&lt; <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>, <a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23">Operator::Index</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8hpp.html#a786fcc12a0457a4ccbd7215569cfd81a">operatorNameMap</a></td></tr>
 <tr class="memdesc:a786fcc12a0457a4ccbd7215569cfd81a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps simple descriptions of operators to their index in the operatorList. Also used in XML files.  <a href="#a786fcc12a0457a4ccbd7215569cfd81a">More...</a><br /></td></tr>
@@ -218,7 +219,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Represents how does an operator associate. </p>
+<p>Represents how an operator associates. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="af0c134c8c38b704002eecf49d690b2f2aa90f4bdd5dd80cb48623ffeb28e498b6"></a>ASSOCIATE_FROM_LEFT&#160;</td><td class="fielddoc">
 <p>The default. Operators associate from left to right. </p>
@@ -248,6 +249,8 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a class="anchor" id="af19b770f6e2116426144b702159f3bb0ab0960c67f412468bf9857089c2d27809"></a>PREFIX&#160;</td><td class="fielddoc">
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="af19b770f6e2116426144b702159f3bb0a8423fa5c736337e2bb8e0838515c05f1"></a>POSTFIX&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="af19b770f6e2116426144b702159f3bb0a8e331a7dd413ca9b66770a0544f6b0dd"></a>CIRCUMFIX&#160;</td><td class="fielddoc">
 </td></tr>
 </table>
 
@@ -376,7 +379,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The main operator list. This list contains the operators used by the lexer. Some of them, like ?: and [] can't be here due to their syntax. </p>
+<p>The main operator list. This list contains the operators used by the lexer. Some of them, like (), ?: and [] can't be here due to their syntax. </p>
 
 </div>
 </div>
