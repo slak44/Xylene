@@ -14,7 +14,8 @@ var operator_8hpp =
     [ "Fixity", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0", [
       [ "INFIX", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a26ec03728fe7587ebb517811960c1b4e", null ],
       [ "PREFIX", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0ab0960c67f412468bf9857089c2d27809", null ],
-      [ "POSTFIX", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8423fa5c736337e2bb8e0838515c05f1", null ]
+      [ "POSTFIX", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8423fa5c736337e2bb8e0838515c05f1", null ],
+      [ "CIRCUMFIX", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8e331a7dd413ca9b66770a0544f6b0dd", null ]
     ] ],
     [ "getConstructCharacters", "operator_8hpp.html#aa4507c164e65803670d831b4c32d709c", null ],
     [ "getOperatorCharacters", "operator_8hpp.html#a062e396f6ed3b6f674db98ab2352696e", null ],

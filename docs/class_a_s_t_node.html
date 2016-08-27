@@ -110,6 +110,7 @@ $(document).ready(function(){initNavTree('class_a_s_t_node.html','');});
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_a_s_t_node-members.html">List of all members</a>  </div>
@@ -158,6 +159,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1ccee2f28eacfef347a853a0e081ac94"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a1ccee2f28eacfef347a853a0e081ac94">addChild</a> (<a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">Link</a> child)</td></tr>
 <tr class="memdesc:a1ccee2f28eacfef347a853a0e081ac94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new child to this node.  <a href="#a1ccee2f28eacfef347a853a0e081ac94">More...</a><br /></td></tr>
 <tr class="separator:a1ccee2f28eacfef347a853a0e081ac94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70582ca8da7ae01d14d990ec1f7a5ec1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a70582ca8da7ae01d14d990ec1f7a5ec1">removeChild</a> (<a class="el" href="util_8hpp.html#ab0e5976e1a4967e9b13e68b5f271bb44">int64</a> pos)</td></tr>
+<tr class="memdesc:a70582ca8da7ae01d14d990ec1f7a5ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a child and return it.  <a href="#a70582ca8da7ae01d14d990ec1f7a5ec1">More...</a><br /></td></tr>
+<tr class="separator:a70582ca8da7ae01d14d990ec1f7a5ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace3f3c71e3e8de9806640289e3c14d49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_s_t_node.html#ad64bdc35eff7b7ade1698416849dee41">Children</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#ace3f3c71e3e8de9806640289e3c14d49">getChildren</a> () const </td></tr>
 <tr class="memdesc:ace3f3c71e3e8de9806640289e3c14d49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get list of children.  <a href="#ace3f3c71e3e8de9806640289e3c14d49">More...</a><br /></td></tr>
 <tr class="separator:ace3f3c71e3e8de9806640289e3c14d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,6 +185,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab7ed66dbc4e827afb927f395d7bbfb4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba2d694b903b866c9f68e07cb9bdfae2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#aba2d694b903b866c9f68e07cb9bdfae2">visit</a> (<a class="el" href="ast_8hpp.html#a5242bb806f94354e670b85544ec9d70a">ASTVisitorLink</a> visitor)=0</td></tr>
 <tr class="separator:aba2d694b903b866c9f68e07cb9bdfae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:abb5b90b9bd3f3b74d69f089e642a3f3a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#abb5b90b9bd3f3b74d69f089e642a3f3a">transformArrayIndex</a> (<a class="el" href="util_8hpp.html#ab0e5976e1a4967e9b13e68b5f271bb44">int64</a> idx) const </td></tr>
+<tr class="separator:abb5b90b9bd3f3b74d69f089e642a3f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
@@ -482,6 +491,38 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a70582ca8da7ae01d14d990ec1f7a5ec1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a> ASTNode::removeChild </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="util_8hpp.html#ab0e5976e1a4967e9b13e68b5f271bb44">int64</a>&#160;</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remove a child and return it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>which child. Suports negative positions that count from the end of the children </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a7e7102508b2aa3f914531681bd450816"></a>
 <div class="memitem">
 <div class="memproto">
@@ -510,6 +551,30 @@ Protected Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="abb5b90b9bd3f3b74d69f089e642a3f3a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t ASTNode::transformArrayIndex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="util_8hpp.html#ab0e5976e1a4967e9b13e68b5f271bb44">int64</a>&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
