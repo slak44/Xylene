@@ -26,12 +26,19 @@ protected:
   }
 };
 
-TEST_F(ParserCompareTest, Primaries) {
+TEST_F(ParserCompareTest, Expressions) {
   test("+ -- a ++ --;", "data/parser/unary.xml");
+  test("a + 1;", "data/parser/expr/start_with_ident.xml");
+  test("-(a + b)++;", "data/parser/expr/parens_unaries.xml");
 }
 
-TEST_F(ParserCompareTest, ExpressionStartingWithIdent) {
-  test("a + 1;", "data/parser/expr_with_ident.xml");
+TEST_F(ParserCompareTest, FunctionCalls) {
+  test("a();", "data/parser/expr/calls/no_args.xml");
+  test("a(42);", "data/parser/expr/calls/one_terminal_arg.xml");
+  test("a(1+1);", "data/parser/expr/calls/one_expr_arg.xml");
+  test("a(42, 6714);", "data/parser/expr/calls/2_args.xml");
+  test("a(1+1, 3 * (5 + 5));", "data/parser/expr/calls/expression_args.xml");
+  test("-a++();", "data/parser/expr/calls/after_postfix.xml");
 }
 
 TEST_F(ParserCompareTest, Functions) {

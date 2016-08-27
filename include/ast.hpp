@@ -36,6 +36,8 @@ protected:
   static inline void printIndent(uint level) {
     for (uint i = 0; i < level; i++) print("  ");
   }
+  
+  std::size_t transformArrayIndex(int64 idx) const;
 public:
   ASTNode();
   virtual ~ASTNode();
@@ -44,6 +46,12 @@ public:
     \brief Add a new child to this node.
   */
   virtual void addChild(Link child);
+  
+  /**
+    \brief Remove a child and return it.
+    \param pos which child. Suports negative positions that count from the end of the children
+  */
+  virtual Link removeChild(int64 pos);
   
   /// Get list of children
   Children getChildren() const;

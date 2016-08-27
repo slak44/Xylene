@@ -38,12 +38,12 @@
   type_list = ident, {",", ident} ;
   argument = ( type_list, ident ) ;
   expression = primary, { binary_op, primary } ;
-  primary = { prefix_op }, terminal, { postfix_op } ;
+  primary = { prefix_op }, terminal, { postfix_op | function_call } ;
+  function_call = "(", [ expression, { ",", expression } ], ")" ;
   binary_op = ? binary operator ? ;
   prefix_op = ? prefix operator ? ;
   postfix_op = ? postfix operator ? ;
   terminal = ? see Token's isTerminal method ? ;
-  function_call = ident, "(", expression, { ",", expression }, ")" ;
   ident = ? any valid identifier ? ;
 */
 
@@ -105,13 +105,16 @@ protected:
 private:
   /// Creates an ExpressionNode from the current Token
   Node<ExpressionNode>::Link exprFromCurrent();
+  /// Parse postfix ops in primaries
+  Node<ExpressionNode>::Link parsePostfix(Node<ExpressionNode>::Link terminal);
   /**
     \brief Parse a primary in the expression
     
+    \param parenAsFuncCall if a paren is found, it will be treated as a function call
     ';' is an empty expression for example
     \returns an ExpressionNode, or nullptr if the expression is empty (terminates immediately)
   */
-  Node<ExpressionNode>::Link parseExpressionPrimary();
+  Node<ExpressionNode>::Link parseExpressionPrimary(bool parenAsFuncCall);
   /**
     \brief Implementation detail of expression
     

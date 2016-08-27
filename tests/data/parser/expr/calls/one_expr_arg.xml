@@ -1,0 +1,12 @@
+<!--
+a(1+1);
+-->
+<block type="root">
+  <expr type="Operator" value="Call">
+    <expr type="Identifier" value="a"/>
+    <expr type="Operator" value="Add">
+      <expr type="Integer" value="1"/>
+      <expr type="Integer" value="1"/>
+    </expr>
+  </expr>
+</block>
