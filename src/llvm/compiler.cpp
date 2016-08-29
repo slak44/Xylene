@@ -70,7 +70,11 @@ llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const
         break;
       }
       case FUNCTION_BLOCK:
-        // TODO: create a ret instruction if it doesn't exist, or warn or something
+        if (functionStack.top()->getReturnType()->isVoidTy()) {
+          builder->CreateRetVoid();
+        } else {
+          throw Error("SyntaxError", "Function has non-void return type, but no return was found", node->getTrace());
+        }
         break;
     }
   }
