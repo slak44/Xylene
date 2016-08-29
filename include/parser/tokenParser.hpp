@@ -23,7 +23,8 @@
   block = [ statement, ";", { statement, ";" } ] ;
   statement = declaration | function | for_loop | while_loop | block | if_statement | try_catch | throw_statement | expression | "break" | "continue" ;
   declaration = "define" | type_list, ident, [ "=", expression ] ;
-  for_loop = "for", expression, ";", expression, ";", expression, "do", block, "end" ;
+  // TODO make sure for loop can handle multiple declarations
+  for_loop = "for", [ declaration, { ",", declaration } ], ";", [ expression ], ";", [ expression ], "do", block, "end" ;
   while_loop = "while", expression, "do", block, "end" ;
   if_statement = "if", expression, "do", block, [ "else", block | if_statement ] | "end" ;
   type_definition = "define", "type", ident, [ "inherits", type_list ], "do", [ contructor_definition ], [ { method_definition | member_definition } ], "end" ;

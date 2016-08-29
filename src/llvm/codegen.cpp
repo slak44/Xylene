@@ -248,6 +248,14 @@ CV::OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
     {"Assignment", [=] CODEGEN_SIG {
       return cv->builder->CreateStore(operands[1], operands[0]);
     }},
+    {"Call", [=] CODEGEN_SIG {
+      auto funcPtr = operands[0];
+      println(getAddressStringFrom(operands[0]));
+      // Slice the func ptr
+      auto args = std::vector<llvm::Value*>(operands.begin() + 1, operands.end());
+      // TODO: use invoke instead of call in the future, it has exception handling and stuff
+      return cv->builder->CreateCall(funcPtr, args, "call");
+    }},
     {"Postfix ++", POSTFIX_OP_FUN(Add, "inc")},
     {"Postfix --", POSTFIX_OP_FUN(Sub, "dec")},
     {"Prefix ++", PREFIX_OP_FUN(Add, "inc")},

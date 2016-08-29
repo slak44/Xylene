@@ -7,7 +7,7 @@ Operator::Operator(Operator::Name name, int precedence, Associativity associativ
   }
 }
   
-Operator::Name Operator::getName() const {return name;}
+Operator::Symbol Operator::getName() const {return name;}
 int Operator::getPrecedence() const {return precedence;}
 Associativity Operator::getAssociativity() const {return associativity;}
 Arity Operator::getArity() const {return arity;}
