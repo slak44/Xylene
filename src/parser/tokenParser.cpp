@@ -381,10 +381,12 @@ ASTNode::Link StatementParser::statement() {
   } else if (accept(K_CONTINUE)) {
     throw InternalError("Unimplemented", {METADATA_PAIRS, {"token", "loop continue"}});
   } else if (accept(K_RETURN)) {
+    auto trace = current().trace;
     skip(); // Skip "return"
     auto retValue = expression();
     expectSemi();
     auto retNode = Node<ReturnNode>::make();
+    retNode->setTrace(trace);
     retNode->setValue(retValue);
     return retNode;
   } else if (accept(K_FUNCTION)) {
