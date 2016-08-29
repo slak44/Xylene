@@ -105,7 +105,7 @@ llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti) {
 
 llvm::Value* CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Link identifier, IdentifierHandling how) {
   llvm::Value* val;
-  // If it's a function arg, return it like 
+  // If it's a function arg, return it like this
   for (auto& arg : functionStack.top()->getArgumentList()) {
     if (arg.getName() == identifier->getToken().data) {
       val = &arg;
@@ -116,7 +116,13 @@ llvm::Value* CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Link iden
       if (AS_POINTER) throw InternalError("Not Implemented", {METADATA_PAIRS});
     }
   }
-  val = builder->GetInsertBlock()->getValueSymbolTable()->lookup(identifier->getToken().data); // TODO check globals and types, not only locals
+  // TODO check more places for this thing, globals etc
+  // See if it's in the current block
+  val = builder->GetInsertBlock()->getValueSymbolTable()->lookup(identifier->getToken().data);
+  // See if it's a function in this module
+  if (val == nullptr) val = module->getFunction(identifier->getToken().data);
+  // Complain to the user if it still can't be found
+  if (val == nullptr) throw Error("ReferenceError", "Cannot find '" + identifier->getToken().data + "' in this scope", identifier->getTrace());
   switch (how) {
     case AS_POINTER: return val;
     case AS_VALUE: return builder->CreateLoad(val, "identifierExpressionLoad");
@@ -142,20 +148,43 @@ llvm::Value* CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, 
     };
   } else if (tok.isOperator()) {
     std::vector<llvm::Value*> operands {};
-    // Recursively compute all the operands
-    std::size_t idx = 0;
-    for (auto& child : node->getChildren()) {
-      bool requirePointer = tok.getOperator().getRefList()[idx];
-      operands.push_back(compileExpression(Node<ExpressionNode>::staticPtrCast(child), requirePointer ? AS_POINTER : AS_VALUE));
-      idx++;
-    }
-    // Make sure we have the correct amount of operands
-    if (static_cast<int>(operands.size()) != tok.getOperator().getArity()) {
-      throw InternalError("Operand count does not match operator arity", {
-        METADATA_PAIRS,
-        {"operator token", tok.toString()},
-        {"operand count", std::to_string(operands.size())}
-      });
+    // Do some magic for function calls
+    if (tok.hasOperatorSymbol("()")) {
+      // First arg to calls is the thing being called
+      // Should be a pointer
+      operands.push_back(compileExpression(node->at(0), AS_POINTER));
+      // Compute arguments and add them too
+      auto lastNode = node->at(1);
+      // If it's not an operator, it means this func call only has one argument
+      if (!lastNode->getToken().isOperator()) {
+        operands.push_back(compileExpression(lastNode, AS_VALUE));
+      // Only go through args if it isn't a no-op, because that means we have no args
+      } else if (operatorNameFrom(lastNode->getToken().idx) != "No-op") {
+        while (lastNode->at(1)->getToken().hasOperatorSymbol(",")) {
+          // TODO might need to change these AS_VALUE for complex objects
+          operands.push_back(compileExpression(lastNode->at(0), AS_VALUE));
+          lastNode = lastNode->at(1);
+        }
+        // The last comma's args are not processed in the loop
+        operands.push_back(compileExpression(lastNode->at(0), AS_VALUE));
+        operands.push_back(compileExpression(lastNode->at(1), AS_VALUE));
+      }
+    } else {
+      // Recursively compute all the operands
+      std::size_t idx = 0;
+      for (auto& child : node->getChildren()) {
+        bool requirePointer = tok.getOperator().getRefList()[idx];
+        operands.push_back(compileExpression(Node<ExpressionNode>::staticPtrCast(child), requirePointer ? AS_POINTER : AS_VALUE));
+        idx++;
+      }
+      // Make sure we have the correct amount of operands
+      if (static_cast<int>(operands.size()) != tok.getOperator().getArity()) {
+        throw InternalError("Operand count does not match operator arity", {
+          METADATA_PAIRS,
+          {"operator token", tok.toString()},
+          {"operand count", std::to_string(operands.size())}
+        });
+      }
     }
     auto func = codegen->findAndGetFun(tok, operands);
     // Call the code generating function, and return its result
