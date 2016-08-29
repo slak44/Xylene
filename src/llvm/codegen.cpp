@@ -249,12 +249,12 @@ CV::OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
       return cv->builder->CreateStore(operands[1], operands[0]);
     }},
     {"Call", [=] CODEGEN_SIG {
-      auto funcPtr = operands[0];
-      println(getAddressStringFrom(operands[0]));
+      llvm::Function* funcPtr = llvm::dyn_cast_or_null<llvm::Function>(operands[0]);
+      if (funcPtr == nullptr) throw Error("TypeError", "Attempt to call non-function", trace);
       // Slice the func ptr
       auto args = std::vector<llvm::Value*>(operands.begin() + 1, operands.end());
       // TODO: use invoke instead of call in the future, it has exception handling and stuff
-      return cv->builder->CreateCall(funcPtr, args, "call");
+      return cv->builder->CreateCall(funcPtr, args, funcPtr->getReturnType()->isVoidTy() ? "" : "call");
     }},
     {"Postfix ++", POSTFIX_OP_FUN(Add, "inc")},
     {"Postfix --", POSTFIX_OP_FUN(Sub, "dec")},
