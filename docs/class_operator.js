@@ -8,7 +8,7 @@ var class_operator =
     [ "getArity", "class_operator.html#adac46824226042930c621543af19c0a6", null ],
     [ "getAssociativity", "class_operator.html#a3a8783390d3202ad26c2abcdab7e9a1f", null ],
     [ "getFixity", "class_operator.html#a120cdbd24c1d8e82196effbc4ea25e45", null ],
-    [ "getName", "class_operator.html#a3fdd34f039a98523fe0e5005c8b7a509", null ],
+    [ "getName", "class_operator.html#a942eb543c9fbb5a22e24ad9f09c77fa1", null ],
     [ "getPrecedence", "class_operator.html#aada3e20fb83a2a66d8b2b619ae3d0af0", null ],
     [ "getRefList", "class_operator.html#a88e01f6aaaf0381132511218934cdc7e", null ],
     [ "operator!=", "class_operator.html#aa960aa92e87f37ae777a3177be1c7416", null ],

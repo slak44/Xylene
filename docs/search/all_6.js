@@ -24,7 +24,7 @@ var searchData=
   ['getidentifier',['getIdentifier',['../class_declaration_node.html#af7f5a1845c0f255fce5967f7de232b24',1,'DeclarationNode::getIdentifier()'],['../class_function_node.html#afe69eb712359b7e2a3dcb76c99458ff9',1,'FunctionNode::getIdentifier()']]],
   ['getlinecount',['getLineCount',['../class_lexer_base.html#ad02271ff926c4debe0494330845db870',1,'LexerBase']]],
   ['getmodule',['getModule',['../class_compile_visitor.html#ab1e28da4ac82693fddc60e2972ab5963',1,'CompileVisitor']]],
-  ['getname',['getName',['../class_operator.html#a3fdd34f039a98523fe0e5005c8b7a509',1,'Operator']]],
+  ['getname',['getName',['../class_operator.html#a942eb543c9fbb5a22e24ad9f09c77fa1',1,'Operator']]],
   ['getoperator',['getOperator',['../class_token.html#adb05cf930d671f1b0b7598e247dd1b03',1,'Token']]],
   ['getoperatorcharacters',['getOperatorCharacters',['../operator_8cpp.html#a062e396f6ed3b6f674db98ab2352696e',1,'getOperatorCharacters():&#160;operator.cpp'],['../operator_8hpp.html#a062e396f6ed3b6f674db98ab2352696e',1,'getOperatorCharacters():&#160;operator.cpp']]],
   ['getparent',['getParent',['../class_a_s_t_node.html#a6e92a289ed983cd56701f70ce3001204',1,'ASTNode::getParent()'],['../class_scope.html#a02f77e076ebd5cc81ddac4d8f0b9f646',1,'Scope::getParent()']]],
