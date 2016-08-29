@@ -66,12 +66,10 @@ private:
   private:
     CompileVisitor::Link cv;
     
+    /// All operands are values; pointers are loaded
     std::unordered_map<Operator::Name, TypeMap> codegenMap;
+    /// Operands are not processed
     std::unordered_map<Operator::Name, CodegenFunction> specialCodegenMap;
-    
-    inline llvm::Value* SItoFP(llvm::Value* integer) {
-      return cv->builder->CreateSIToFP(integer, cv->floatType, "SItoFPconv");
-    }
   public:
     OperatorCodegen(CompileVisitor::Link cv);
     
