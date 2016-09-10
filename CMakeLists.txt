@@ -74,6 +74,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/llvm/compiler.cpp
   ${SRC_DIR}/llvm/runner.cpp
   ${SRC_DIR}/llvm/codegen.cpp
+  ${PROJECT_SOURCE_DIR}/stdlib/src/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor)
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
@@ -85,10 +86,15 @@ if(NOT LLVM_FOUND)
 endif()
 include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
-llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES support core TransformUtils ExecutionEngine Interpreter X86Info X86AsmParser X86AsmPrinter X86Utils X86CodeGen)
+llvm_map_components_to_libnames(
+  REQ_LLVM_LIBRARIES
+  support core TransformUtils ExecutionEngine Interpreter MCJIT Target Analysis RuntimeDyld Object MCParser BitReader MC
+  X86Info X86AsmParser X86AsmPrinter X86Utils X86CodeGen
+)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/stdlib/include)
 
 add_custom_target(clean-all)
 
