@@ -103,7 +103,7 @@ int main(int argc, const char* argv[]) {
       std::string onError = "";
       auto eb = new llvm::EngineBuilder(std::unique_ptr<llvm::Module>(v->getModule()));
       llvm::ExecutionEngine* ee = eb
-        ->setEngineKind(llvm::EngineKind::Interpreter)
+        ->setEngineKind(llvm::EngineKind::JIT)
         .setErrorStr(&onError)
         .create();
       auto main = v->getEntryPoint();
