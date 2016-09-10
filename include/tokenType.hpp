@@ -19,12 +19,12 @@ enum TokenType: int {
   L_INTEGER = 100, L_FLOAT, L_BOOLEAN, L_STRING,
   
   K_DEFINE = 200,
-  K_AS, K_IMPORT, K_EXPORT,
+  K_AS, K_IMPORT, K_EXPORT, K_ALL, K_FROM,
   K_FUNCTION, K_RETURN,
   K_DO, K_END,
   K_IF, K_ELSE,
   K_WHILE, K_FOR, K_BREAK, K_CONTINUE,
-  K_FAT_ARROW, K_VOID,
+  K_FAT_ARROW, K_VOID, K_FOREIGN,
   K_TYPE, K_CONSTR, K_PUBLIC, K_PRIVATE, K_PROTECT, K_STATIC,
   K_THROW, K_TRY, K_CATCH,
   
@@ -74,6 +74,8 @@ const std::unordered_map<std::string, TokenType> keywordsMap {
   {"as", K_AS},
   {"import", K_IMPORT},
   {"export", K_EXPORT},
+  {"all", K_ALL},
+  {"from", K_FROM},
   {"function", K_FUNCTION},
   {"return", K_RETURN},
   {"do", K_DO},
@@ -94,7 +96,8 @@ const std::unordered_map<std::string, TokenType> keywordsMap {
   {"try", K_TRY},
   {"catch", K_CATCH},
   {"=>", K_FAT_ARROW},
-  {"void", K_VOID}
+  {"void", K_VOID},
+  {"foreign", K_FOREIGN},
 };
 
 /**

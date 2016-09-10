@@ -21,20 +21,37 @@
   
   program = block ;
   block = [ statement, ";", { statement, ";" } ] ;
-  statement = declaration | function | for_loop | while_loop | block | if_statement | try_catch | throw_statement | expression | "break" | "continue" ;
+  statement =
+    declaration | function | for_loop | while_loop | block | if_statement | try_catch | throw_statement |
+    expression | "break" | "continue" | import_statement | export_statement | type_definition | native_fun_decl;
   declaration = "define" | type_list, ident, [ "=", expression ] ;
   // TODO make sure for loop can handle multiple declarations
   for_loop = "for", [ declaration, { ",", declaration } ], ";", [ expression ], ";", [ expression ], "do", block, "end" ;
   while_loop = "while", expression, "do", block, "end" ;
   if_statement = "if", expression, "do", block, [ "else", block | if_statement ] | "end" ;
-  type_definition = "define", "type", ident, [ "inherits", type_list ], "do", [ contructor_definition ], [ { method_definition | member_definition } ], "end" ;
+  // TODO
+  type_definition = "define", "type", ident, [ "inherits", [ "from" ], type_list ], "do", [ contructor_definition ], [ { method_definition | member_definition } ], "end" ;
+  // TODO
   constructor_definition = "define", "constructor", [ argument, {",", argument } ], "do", block, "end" ;
+  // TODO
   method_definition = [ visibility_specifier ], [ "static" ], function ;
+  // TODO
   member_definition = [ visibility_specifier ], [ "static" ], declaration ;
+  // TODO
   try_catch = "try", block, "catch", type_list, ident, "do", block, "end" ;
+  // TODO
   throw_statement = "throw", expression ;
+  // TODO
+  import_statement = "import", ( ident, { ",", ident } ) | "all", [ "as", ident ], "from", ident ;
+  // TODO
+  export_statement = "export", ident, "as", ident ;
+  // TODO
+  typedef = "define", type_list, "as", ident ;
+  // TODO
+  native_fun_decl = "foreign", "function", function_signature ;
   
-  function = "function", [ ident ], [ "[", argument, { ",", argument }, "]"], [ "=>", type_list ], "do", block, "end" ;
+  function_signature = [ ident ], [ "[", argument, { ",", argument }, "]"], [ "=>", type_list ] ;
+  function = "function", function_signature, "do", block, "end" ;
   visibility_specifier = "public" | "private" | "protected" ;
   type_list = ident, {",", ident} ;
   argument = ( type_list, ident ) ;
