@@ -6,7 +6,6 @@ var searchData=
   ['error_2ehpp',['error.hpp',['../error_8hpp.html',1,'']]],
   ['errordata',['ErrorData',['../error_8hpp.html#a18ad73221b586aadca1c9ba59417f99d',1,'error.hpp']]],
   ['evalvalue',['evalValue',['../class_type_info.html#a4f85454f1feae1bcfb37cd55d78f9127',1,'TypeInfo']]],
-  ['executeoperator',['executeOperator',['../operator_map_8hpp.html#a66b2a2c8799d6dc197d438e424695ef9',1,'operatorMap.hpp']]],
   ['exitcodes',['ExitCodes',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3',1,'main.cpp']]],
   ['expect',['expect',['../class_token_base_parser.html#a4a8025561a7e13750c972d8eac0298ed',1,'TokenBaseParser']]],
   ['expectsemi',['expectSemi',['../class_token_base_parser.html#a2cc97081d8578b73ebd5aa86d30eaec4',1,'TokenBaseParser']]],

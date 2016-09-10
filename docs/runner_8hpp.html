@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Test Lang: Class Members</title>
+<title>Test Lang: /home/slak/Things/open/lg/include/llvm/runner.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -49,8 +49,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -71,43 +71,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
-      <li class="current"><a href="functions.html"><span>Class&#160;Members</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow3" class="tabs2">
-    <ul class="tablist">
-      <li class="current"><a href="functions.html"><span>All</span></a></li>
-      <li><a href="functions_func.html"><span>Functions</span></a></li>
-      <li><a href="functions_vars.html"><span>Variables</span></a></li>
-      <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow4" class="tabs3">
-    <ul class="tablist">
-      <li><a href="functions.html#index_a"><span>a</span></a></li>
-      <li><a href="functions_b.html#index_b"><span>b</span></a></li>
-      <li><a href="functions_c.html#index_c"><span>c</span></a></li>
-      <li><a href="functions_d.html#index_d"><span>d</span></a></li>
-      <li><a href="functions_e.html#index_e"><span>e</span></a></li>
-      <li><a href="functions_f.html#index_f"><span>f</span></a></li>
-      <li><a href="functions_g.html#index_g"><span>g</span></a></li>
-      <li><a href="functions_h.html#index_h"><span>h</span></a></li>
-      <li><a href="functions_i.html#index_i"><span>i</span></a></li>
-      <li><a href="functions_l.html#index_l"><span>l</span></a></li>
-      <li><a href="functions_m.html#index_m"><span>m</span></a></li>
-      <li><a href="functions_n.html#index_n"><span>n</span></a></li>
-      <li><a href="functions_o.html#index_o"><span>o</span></a></li>
-      <li><a href="functions_p.html#index_p"><span>p</span></a></li>
-      <li><a href="functions_r.html#index_r"><span>r</span></a></li>
-      <li><a href="functions_s.html#index_s"><span>s</span></a></li>
-      <li><a href="functions_t.html#index_t"><span>t</span></a></li>
-      <li><a href="functions_v.html#index_v"><span>v</span></a></li>
-      <li class="current"><a href="functions_w.html#index_w"><span>w</span></a></li>
-      <li><a href="functions_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_0x7e.html#index_0x7e"><span>~</span></a></li>
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -122,7 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('functions_w.html','');});
+$(document).ready(function(){initNavTree('runner_8hpp.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -139,21 +104,55 @@ $(document).ready(function(){initNavTree('functions_w.html','');});
 </iframe>
 </div>
 
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
+  <div class="headertitle">
+<div class="title">runner.hpp File Reference</div>  </div>
+</div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
+<div class="textblock"><code>#include &lt;llvm/IR/Module.h&gt;</code><br />
+<code>#include &lt;llvm/ExecutionEngine/GenericValue.h&gt;</code><br />
+<code>#include &lt;llvm/ExecutionEngine/ExecutionEngine.h&gt;</code><br />
+<code>#include &lt;llvm/ExecutionEngine/Interpreter.h&gt;</code><br />
+<code>#include &lt;llvm/Support/TargetSelect.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="compiler_8hpp_source.html">llvm/compiler.hpp</a>&quot;</code><br />
+</div>
+<p><a href="runner_8hpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_runner.html">Runner</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ac06afa9adee2d34afeedc666f2fc1599"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runner_8hpp.html#ac06afa9adee2d34afeedc666f2fc1599">ProgramResult</a> = std::pair&lt; int, std::string &gt;</td></tr>
+<tr class="memdesc:ac06afa9adee2d34afeedc666f2fc1599"><td class="mdescLeft">&#160;</td><td class="mdescRight">exit code + stdout  <a href="#ac06afa9adee2d34afeedc666f2fc1599">More...</a><br /></td></tr>
+<tr class="separator:ac06afa9adee2d34afeedc666f2fc1599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="ac06afa9adee2d34afeedc666f2fc1599"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="runner_8hpp.html#ac06afa9adee2d34afeedc666f2fc1599">ProgramResult</a> =  std::pair&lt;int, std::string&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
-<h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
-<li>WeakLink
-: <a class="el" href="class_a_s_t_node.html#af060da7729d9ce42e6b018594697b716">ASTNode</a>
-, <a class="el" href="struct_node.html#abdf35db90265850ac1219b7f28a3bdc2">Node&lt; T, std::enable_if&lt; std::is_base_of&lt; ASTNode, T &gt;::value &gt;::type * &gt;</a>
-, <a class="el" href="struct_ptr_util.html#aa2d03a447a6b9d8930e35b6fd0e8ea4b">PtrUtil&lt; T &gt;</a>
-</li>
-</ul>
+<p>exit code + stdout </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_dcde91663b8816e1e2311938ccd8f690.html">llvm</a></li><li class="navelem"><a class="el" href="runner_8hpp.html">runner.hpp</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>

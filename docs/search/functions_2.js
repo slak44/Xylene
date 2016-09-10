@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['canstoretype',['canStoreType',['../class_reference.html#af3f9b98eb0710ad9ad508536881d4d8d',1,'Reference']]],
   ['collate',['collate',['../util_8hpp.html#ac2877ccf6822bd1eb2a957e7b7ba8550',1,'util.hpp']]],
   ['collatetypelist',['collateTypeList',['../util_8cpp.html#a8bc720168318c10d118cf412e5b84503',1,'collateTypeList(TypeList typeList):&#160;util.cpp'],['../util_8hpp.html#a8bc720168318c10d118cf412e5b84503',1,'collateTypeList(TypeList typeList):&#160;util.cpp']]],
   ['contains',['contains',['../util_8hpp.html#a5b2998d0f98101452d2df3e43995f309',1,'util.hpp']]],
