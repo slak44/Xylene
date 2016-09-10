@@ -1,0 +1,11 @@
+<!--
+function foreign function putchar [Integer char] => Integer;
+putchar(65);
+-->
+<block type="root">
+  <function ident="putchar" return="Integer" args="char:Integer" foreign="true"/>
+  <expr type="Operator" value="Call">
+    <expr type="Identifier" value="putchar"/>
+    <expr type="Integer" value="65"/>
+  </expr>
+</block>
