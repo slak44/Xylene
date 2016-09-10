@@ -122,5 +122,5 @@ void Lexer::processInput() {
       continue;
     }
   }
-  addToken(Token(FILE_END, "\0", Trace(getFileName(), Range(getCurrentPosition(), 1))));
+  addToken(Token(FILE_END, "", Trace(getFileName(), Range(getCurrentPosition(), 1))));
 }
