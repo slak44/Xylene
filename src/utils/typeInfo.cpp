@@ -70,3 +70,10 @@ std::string FunctionSignature::toString() const {
   str += ")";
   return str;
 };
+
+bool FunctionSignature::operator==(const FunctionSignature& rhs) const {
+  return returnType == rhs.returnType && arguments == rhs.arguments;
+}
+bool FunctionSignature::operator!=(const FunctionSignature& rhs) const {
+  return !operator==(rhs);
+}
