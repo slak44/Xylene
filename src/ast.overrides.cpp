@@ -121,7 +121,12 @@ void FunctionNode::printTree(uint level) const {
   println("Function", isAnon() ? "<anonymous>" : ident);
   printIndent(level);
   println(this->sig.toString());
-  if (notNull(0)) getCode()->printTree(level + 1);
+  if (notNull(0)) {
+    getCode()->printTree(level + 1);
+  } else {
+    printIndent(level + 1);
+    println("<foreign>");
+  }
 }
 
 #undef PRETTY_PRINT_FOR
