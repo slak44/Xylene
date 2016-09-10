@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['get',['get',['../class_scope.html#aad11d98fafa42c9dfd745cae5b717d35',1,'Scope']]],
   ['getaddressstringfrom',['getAddressStringFrom',['../util_8cpp.html#a8025ca4758bf291a0677d9c691fea381',1,'getAddressStringFrom(const void *ptr):&#160;util.cpp'],['../util_8hpp.html#a8025ca4758bf291a0677d9c691fea381',1,'getAddressStringFrom(const void *ptr):&#160;util.cpp']]],
   ['getarguments',['getArguments',['../class_function_signature.html#af6df2b93862c7286d3d6acad06f6d7c4',1,'FunctionSignature']]],
   ['getarity',['getArity',['../class_operator.html#adac46824226042930c621543af19c0a6',1,'Operator']]],
@@ -22,7 +21,7 @@ var searchData=
   ['getname',['getName',['../class_operator.html#a942eb543c9fbb5a22e24ad9f09c77fa1',1,'Operator']]],
   ['getoperator',['getOperator',['../class_token.html#adb05cf930d671f1b0b7598e247dd1b03',1,'Token']]],
   ['getoperatorcharacters',['getOperatorCharacters',['../operator_8cpp.html#a062e396f6ed3b6f674db98ab2352696e',1,'getOperatorCharacters():&#160;operator.cpp'],['../operator_8hpp.html#a062e396f6ed3b6f674db98ab2352696e',1,'getOperatorCharacters():&#160;operator.cpp']]],
-  ['getparent',['getParent',['../class_a_s_t_node.html#a6e92a289ed983cd56701f70ce3001204',1,'ASTNode::getParent()'],['../class_scope.html#a02f77e076ebd5cc81ddac4d8f0b9f646',1,'Scope::getParent()']]],
+  ['getparent',['getParent',['../class_a_s_t_node.html#a6e92a289ed983cd56701f70ce3001204',1,'ASTNode']]],
   ['getprecedence',['getPrecedence',['../class_operator.html#aada3e20fb83a2a66d8b2b619ae3d0af0',1,'Operator::getPrecedence()'],['../class_token.html#aa7b64ab09c8acb82cac8ec67c99f4794',1,'Token::getPrecedence()']]],
   ['getrange',['getRange',['../class_trace.html#a537eef6db72f99b9ce362f2a6b4a9df0',1,'Trace']]],
   ['getrangetohere',['getRangeToHere',['../class_lexer_base.html#a20cca4468b26e5fd5373113f336fa13e',1,'LexerBase']]],
@@ -40,7 +39,5 @@ var searchData=
   ['gettree',['getTree',['../class_base_parser.html#afe91375a45707e551c2991ed9522af1b',1,'BaseParser']]],
   ['gettype',['getType',['../class_block_node.html#a9990c8395f6987aedf5c7fe2389ef165',1,'BlockNode']]],
   ['gettypeinfo',['getTypeInfo',['../class_declaration_node.html#a2ec2bfae44601d5b0678cd2589c036fc',1,'DeclarationNode']]],
-  ['gettypename',['getTypeName',['../class_object.html#a8c0e06723d36e89cf5f6f9b117782cba',1,'Object::getTypeName()'],['../class_reference.html#a9e39314d0f7656b19aa758291244b19a',1,'Reference::getTypeName()'],['../class_integer.html#a0e14c950f4255917cddf92f3494c2e4c',1,'Integer::getTypeName()'],['../class_float.html#adc7013711609517c2c32b2b477b4c5fc',1,'Float::getTypeName()'],['../class_string.html#a97515a4e2dea090d4e22dcb1b64df0b6',1,'String::getTypeName()'],['../class_boolean.html#a2c2f9498cac242d21efe52e7245b0f57',1,'Boolean::getTypeName()']]],
-  ['gettypenamestring',['getTypeNameString',['../class_type_info.html#ac98563a826535893d03ca1812a69de7b',1,'TypeInfo']]],
-  ['getvalue',['getValue',['../class_reference.html#a817d805559db76285fe355227d4ccff7',1,'Reference::getValue()'],['../class_integer.html#a8c068f664f1c2af88620053b4869199d',1,'Integer::getValue()'],['../class_float.html#a753e2a43bff2a9c6dc1f03bea37efe9a',1,'Float::getValue()'],['../class_string.html#a3592a1b1b2533f5fb5eb483cb4a789c6',1,'String::getValue()'],['../class_boolean.html#a682a2db12aaec82e4f4c42998158222b',1,'Boolean::getValue()']]]
+  ['gettypenamestring',['getTypeNameString',['../class_type_info.html#ac98563a826535893d03ca1812a69de7b',1,'TypeInfo']]]
 ];
