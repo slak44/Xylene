@@ -313,15 +313,17 @@ class FunctionNode: public NoMoreChildrenNode {
 private:
   std::string ident;
   FunctionSignature sig;
+  bool foreign;
 public:
   FunctionNode(FunctionSignature sig);
   /// \param ident if empty, behaves just like FunctionNode(FunctionSignature)
-  FunctionNode(std::string ident, FunctionSignature sig);
+  FunctionNode(std::string ident, FunctionSignature sig, bool foreign = false);
   
   GET_SET_SIGS(BlockNode, Code)
   
   std::string getIdentifier() const;
   const FunctionSignature& getSignature() const;
+  bool isForeign() const;
   bool isAnon() const;
   
   void printTree(uint level) const override;

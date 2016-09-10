@@ -294,7 +294,8 @@ TypeList FunctionParser::getTypeList() {
   return types;
 }
 
-Node<FunctionNode>::Link FunctionParser::function() {
+Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
+  if (isForeign) skip(); // Skip "foreign"
   Trace trace = current().trace;
   skip(); // Skip "function"
   std::string ident = "";
@@ -305,6 +306,7 @@ Node<FunctionNode>::Link FunctionParser::function() {
     ident = current().data;
     skip();
   }
+  if (isForeign && ident.empty()) throw Error("SyntaxError", "Foreign functions can't be anonymous", trace);
   // Has arguments
   if (accept(C_SQPAREN_LEFT)) {
     skip();
@@ -328,9 +330,10 @@ Node<FunctionNode>::Link FunctionParser::function() {
     skip();
     returnType = std::make_unique<TypeInfo>(TypeInfo(getTypeList()));
   }
-  auto func = Node<FunctionNode>::make(ident, FunctionSignature(returnType == nullptr ? nullptr : *returnType, args));
+  auto func = Node<FunctionNode>::make(ident, FunctionSignature(returnType == nullptr ? nullptr : *returnType, args), isForeign);
   func->setTrace(trace);
-  func->setCode(block(FUNCTION_BLOCK));
+  // Only non-foreign functions have code bodies
+  if (!isForeign) func->setCode(block(FUNCTION_BLOCK));
   return func;
 }
 
@@ -391,6 +394,8 @@ ASTNode::Link StatementParser::statement() {
     return retNode;
   } else if (accept(K_FUNCTION)) {
     return function();
+  } else if (accept(K_FOREIGN)) {
+    return function(true);
   } else {
     auto e = expression();
     expectSemi();
