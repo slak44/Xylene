@@ -374,6 +374,7 @@ void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
     arg.setName(argNames[nameIdx]);
     nameIdx++;
   }
-  compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
+  // Only non-foreign functions have a block after them
+  if (!node->isForeign()) compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
   functionStack.pop();
 }

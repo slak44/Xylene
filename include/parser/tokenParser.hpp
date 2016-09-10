@@ -48,7 +48,7 @@
   // TODO
   typedef = "define", type_list, "as", ident ;
   // TODO
-  native_fun_decl = "foreign", "function", function_signature ;
+  native_fun_decl = "foreign", "function", function_signature, ";" ;
   
   function_signature = [ ident ], [ "[", argument, { ",", argument }, "]"], [ "=>", type_list ] ;
   function = "function", function_signature, "do", block, "end" ;
