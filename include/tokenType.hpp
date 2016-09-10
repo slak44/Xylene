@@ -19,6 +19,7 @@ enum TokenType: int {
   L_INTEGER = 100, L_FLOAT, L_BOOLEAN, L_STRING,
   
   K_DEFINE = 200,
+  K_AS, K_IMPORT, K_EXPORT,
   K_FUNCTION, K_RETURN,
   K_DO, K_END,
   K_IF, K_ELSE,
@@ -70,6 +71,9 @@ const std::unordered_map<char, TokenType> constructMap {
 */
 const std::unordered_map<std::string, TokenType> keywordsMap {
   {"define", K_DEFINE},
+  {"as", K_AS},
+  {"import", K_IMPORT},
+  {"export", K_EXPORT},
   {"function", K_FUNCTION},
   {"return", K_RETURN},
   {"do", K_DO},
