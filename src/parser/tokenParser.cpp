@@ -200,7 +200,10 @@ Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>
 Node<ExpressionNode>::Link ExpressionParser::expression(bool throwIfEmpty) {
   auto primary = parseExpressionPrimary();
   if (primary == nullptr) {
-    if (throwIfEmpty) throw InternalError("Empty expression", {METADATA_PAIRS});
+    if (throwIfEmpty) throw InternalError("Empty expression", {
+      METADATA_PAIRS,
+      {"token", current().toString()}
+    });
     else return nullptr;
   }
   return expressionImpl(primary, 0);
@@ -334,6 +337,8 @@ Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
   func->setTrace(trace);
   // Only non-foreign functions have code bodies
   if (!isForeign) func->setCode(block(FUNCTION_BLOCK));
+  // Foreign declarations end in semicolon
+  if (isForeign) expectSemi();
   return func;
 }
 
@@ -386,11 +391,11 @@ ASTNode::Link StatementParser::statement() {
   } else if (accept(K_RETURN)) {
     auto trace = current().trace;
     skip(); // Skip "return"
-    auto retValue = expression();
+    auto retValue = expression(false);
     expectSemi();
     auto retNode = Node<ReturnNode>::make();
     retNode->setTrace(trace);
-    retNode->setValue(retValue);
+    if (retValue != nullptr) retNode->setValue(retValue);
     return retNode;
   } else if (accept(K_FUNCTION)) {
     return function();
