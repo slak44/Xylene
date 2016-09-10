@@ -8,9 +8,13 @@ Runner::Runner(CompileVisitor::Link v): v(v) {
   std::string onError = "";
   auto eb = new llvm::EngineBuilder(std::unique_ptr<llvm::Module>(v->getModule()));
   engine = eb
-    ->setEngineKind(llvm::EngineKind::Interpreter)
-    .setErrorStr(&onError)
+    ->setErrorStr(&onError)
+    .setEngineKind(llvm::EngineKind::JIT)
     .create();
+  for (const auto& pair : nameToFunPtr) {
+    engine->addGlobalMapping(v->getModule()->getFunction(pair.first), pair.second);
+  }
+  engine->finalizeObject();
   if (onError != "") throw InternalError("ExecutionEngine error", {
     METADATA_PAIRS,
     {"supplied error string", onError}
