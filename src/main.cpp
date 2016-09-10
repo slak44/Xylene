@@ -1,9 +1,5 @@
 #include <tclap/CmdLine.h>
 #include <llvm/IR/Module.h>
-#include <llvm/ExecutionEngine/GenericValue.h>
-#include <llvm/ExecutionEngine/ExecutionEngine.h>
-#include <llvm/ExecutionEngine/Interpreter.h>
-#include <llvm/Support/TargetSelect.h>
 #include <fstream>
 #include <sstream>
 
@@ -13,6 +9,7 @@
 #include "parser/tokenParser.hpp"
 #include "parser/xmlParser.hpp"
 #include "llvm/compiler.hpp"
+#include "llvm/runner.hpp"
 #include "interpreter/interpreter.hpp"
 
 enum ExitCodes: int {
@@ -96,22 +93,7 @@ int main(int argc, const char* argv[]) {
     }
     
     if (runner.getValue() == "llvm-lli") {
-      llvm::InitializeNativeTarget();
-      llvm::InitializeNativeTargetAsmPrinter();
-      llvm::InitializeNativeTargetAsmParser();
-
-      std::string onError = "";
-      auto eb = new llvm::EngineBuilder(std::unique_ptr<llvm::Module>(v->getModule()));
-      llvm::ExecutionEngine* ee = eb
-        ->setEngineKind(llvm::EngineKind::Interpreter)
-        .setErrorStr(&onError)
-        .create();
-      auto main = v->getEntryPoint();
-      if (onError != "") throw InternalError("ExecutionEngine error", {
-        METADATA_PAIRS,
-        {"supplied error string", onError}
-      });
-      return ee->runFunctionAsMain(main, {}, {});
+      return Runner(v).run();
     } else if (runner.getValue() == "llvm-llc") {
       println("Not yet implemented!");
       // TODO
