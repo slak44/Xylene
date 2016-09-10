@@ -10,7 +10,6 @@
 #include "parser/xmlParser.hpp"
 #include "llvm/compiler.hpp"
 #include "llvm/runner.hpp"
-#include "interpreter/interpreter.hpp"
 
 enum ExitCodes: int {
   NORMAL_EXIT = 0, ///< Everything is OK
@@ -33,7 +32,7 @@ int main(int argc, const char* argv[]) {
     TCLAP::SwitchArg doNotParse("", "no-parse", "Don't parse the token list", cmd);
     TCLAP::SwitchArg doNotRun("", "no-run", "Don't execute the AST", cmd);
     
-    std::vector<std::string> runnerValues {"llvm-lli", "llvm-llc", "tree-walk"};
+    std::vector<std::string> runnerValues {"llvm-lli", "llvm-llc"};
     TCLAP::ValuesConstraint<std::string> runnerConstraint(runnerValues);
     TCLAP::ValueArg<std::string> runner("r", "runner", "How to run this code", false, "llvm-lli", &runnerConstraint, cmd);
     
@@ -76,12 +75,6 @@ int main(int argc, const char* argv[]) {
     
     if (printAST.getValue()) ast->print();
     if (doNotRun.getValue()) return NORMAL_EXIT;
-    
-    if (runner.getValue() == "tree-walk") {
-      auto in = TreeWalkInterpreter();
-      in.interpret(*ast);
-      return NORMAL_EXIT;
-    }
     
     CompileVisitor::Link v = CompileVisitor::create("Command Line Module", *ast);
     try {
