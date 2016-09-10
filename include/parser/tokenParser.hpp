@@ -204,10 +204,10 @@ private:
   TypeList getTypeList();
 public:
   /**
-    \brief Parse a declaration starting at the current token
-    \param throwIfEmpty throws an error on empty declarations; if set to false, empty declarations return nullptr
+    \brief Parse a function starting at the current token
+    \param isForeign if true, treat this as an external function declaration
   */
-  Node<FunctionNode>::Link function();
+  Node<FunctionNode>::Link function(bool isForeign = false);
 };
 
 /**

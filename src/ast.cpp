@@ -126,14 +126,21 @@ ReturnNode::ReturnNode(): NoMoreChildrenNode(1) {}
 
 BreakLoopNode::BreakLoopNode(): NoMoreChildrenNode(0) {}
 
-FunctionNode::FunctionNode(std::string ident, FunctionSignature sig): NoMoreChildrenNode(1), ident(ident), sig(sig) {}
-FunctionNode::FunctionNode(FunctionSignature sig): FunctionNode("", sig) {}
+FunctionNode::FunctionNode(std::string ident, FunctionSignature sig, bool foreign):
+  NoMoreChildrenNode(1),
+  ident(ident),
+  sig(sig),
+  foreign(foreign) {}
+FunctionNode::FunctionNode(FunctionSignature sig): FunctionNode("", sig, false) {}
 
 std::string FunctionNode::getIdentifier() const {
   return ident;
 }
 const FunctionSignature& FunctionNode::getSignature() const {
   return sig;
+}
+bool FunctionNode::isForeign() const {
+  return foreign;
 }
 bool FunctionNode::isAnon() const {
   return ident.empty();
