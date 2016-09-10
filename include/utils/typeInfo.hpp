@@ -97,6 +97,9 @@ public:
   Arguments getArguments() const;
   
   std::string toString() const;
+  
+  bool operator==(const FunctionSignature& rhs) const;
+  bool operator!=(const FunctionSignature& rhs) const;
 };
 
 #endif
