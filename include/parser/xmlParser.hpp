@@ -51,7 +51,8 @@ public:
     - attribute \b ident: name of function, optional
     - attribute \b return: space separated list of return types, omit for void
     - attribute \b args: comma separated list of arguments. An argument is a identifier, a colon, then a space separated list of types for it
-    - children: only one block node
+    - attribute \b foreign: true or false. If true, this has no children and is an externally defined func
+    - children: zero or one block node
 */
 class XMLParser: public BaseParser {
 public:

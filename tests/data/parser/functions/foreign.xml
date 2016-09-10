@@ -1,0 +1,6 @@
+<!--
+function foreign function putchar [Integer char] => Integer;
+-->
+<block type="root">
+  <function ident="putchar" return="Integer" args="char:Integer" foreign="true"/>
+</block>
