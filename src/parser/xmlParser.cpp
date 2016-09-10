@@ -141,10 +141,15 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
         args.insert(std::make_pair(namePlusTypes[0], TypeList(ALL(types))));
       }
     }
-    auto codeBlock = node->first_node("block");
-    if (codeBlock == 0) throw XMLParseError("Function missing code block", {METADATA_PAIRS});
-    auto n = Node<FunctionNode>::make(ident, FunctionSignature(returnAttr == 0 ? nullptr : TypeInfo(TypeList(ALL(returnTypes))), args));
-    n->setCode(Node<BlockNode>::staticPtrCast(parseXMLNode(codeBlock)));
+    auto foreignAttr = node->first_attribute("foreign");
+    bool isForeign = foreignAttr != 0 && std::string(foreignAttr->value()) == "true";
+    auto n = Node<FunctionNode>::make(ident, FunctionSignature(returnAttr == 0 ? nullptr : TypeInfo(TypeList(ALL(returnTypes))), args), isForeign);
+    if (!isForeign) {
+      auto codeBlock = node->first_node("block");
+      if (codeBlock == 0) throw XMLParseError("Function missing code block", {METADATA_PAIRS});
+      n->setCode(Node<BlockNode>::staticPtrCast(parseXMLNode(codeBlock)));
+    }
+    if (isForeign && ident.empty()) throw XMLParseError("Can't have anonymous foreign fuunction", {METADATA_PAIRS});
     return n;
   }
   throw XMLParseError("Unknown type of node", {METADATA_PAIRS, {"node name", name}});

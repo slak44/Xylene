@@ -62,6 +62,9 @@ TEST_F(ParserCompareTest, Functions) {
     function [Integer e] => Integer do
     end
   )code", "data/parser/functions/anon.xml");
+  test(R"code(
+    foreign function putchar [Integer char] => Integer;
+  )code", "data/parser/functions/foreign.xml");
 }
 
 TEST_F(ParserCompareTest, IfStatement) {
