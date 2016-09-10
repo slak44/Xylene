@@ -328,6 +328,9 @@ public:
   
   void printTree(uint level) const override;
   
+  bool operator==(const ASTNode& rhs) const override;
+  bool operator!=(const ASTNode& rhs) const override;
+  
   void visit(ASTVisitorLink visitor) override;
 };
 

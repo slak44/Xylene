@@ -52,6 +52,7 @@ bool ASTNode::operator==(const ASTNode& rhs) const {
   if (typeid(*this) != typeid(rhs)) return false;
   if (children.size() != rhs.getChildren().size()) return false;
   for (uint64 i = 0; i < children.size(); i++) {
+    if (this->at(i) == nullptr && rhs.at(i) == nullptr) continue;
     if (*(this->at(i)) != *(rhs.at(i))) return false;
   }
   return true;

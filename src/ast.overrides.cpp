@@ -34,6 +34,18 @@ bool DeclarationNode::operator!=(const ASTNode& rhs) const {
   return !operator==(rhs);
 }
 
+bool FunctionNode::operator==(const ASTNode& rhs) const {
+  if (!ASTNode::operator==(rhs)) return false;
+  auto fun = dynamic_cast<const FunctionNode&>(rhs);
+  if (this->ident != fun.ident) return false;
+  if (this->sig != fun.sig) return false;
+  if (this->foreign != fun.foreign) return false;
+  return true;
+}
+bool FunctionNode::operator!=(const ASTNode& rhs) const {
+  return !operator==(rhs);
+}
+
 /**
   \brief Macro to help implement the 'visit' functions in each node
   \param nodeName name of node class, without 'Node' at the end, eg Loop, not LoopNode
