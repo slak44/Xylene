@@ -116,7 +116,10 @@ $(document).ready(function(){initNavTree('runner_8hpp.html','');});
 <code>#include &lt;llvm/ExecutionEngine/GenericValue.h&gt;</code><br />
 <code>#include &lt;llvm/ExecutionEngine/ExecutionEngine.h&gt;</code><br />
 <code>#include &lt;llvm/ExecutionEngine/Interpreter.h&gt;</code><br />
+<code>#include &lt;llvm/ExecutionEngine/MCJIT.h&gt;</code><br />
+<code>#include &lt;llvm/Object/ObjectFile.h&gt;</code><br />
 <code>#include &lt;llvm/Support/TargetSelect.h&gt;</code><br />
+<code>#include &quot;standard.hpp&quot;</code><br />
 <code>#include &quot;<a class="el" href="compiler_8hpp_source.html">llvm/compiler.hpp</a>&quot;</code><br />
 </div>
 <p><a href="runner_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -124,6 +127,7 @@ $(document).ready(function(){initNavTree('runner_8hpp.html','');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_runner.html">Runner</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes a <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a> and executes the module it parsed.  <a href="class_runner.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>

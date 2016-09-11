@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('class_runner.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Takes a <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a> and executes the module it parsed.  
+ <a href="class_runner.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="runner_8hpp_source.html">runner.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -126,7 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e7239d135646df27ee2014f5d604374"><td class="memItemLeft" align="right" valign="top"><a class="el" href="runner_8hpp.html#ac06afa9adee2d34afeedc666f2fc1599">ProgramResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_runner.html#a8e7239d135646df27ee2014f5d604374">runAndCapture</a> ()</td></tr>
 <tr class="separator:a8e7239d135646df27ee2014f5d604374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Takes a <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a> and executes the module it parsed. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ac61fd306bd325de63b6e342297f9793b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -156,6 +161,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>exit code of executed program </dd></dl>
 
 </div>
 </div>
@@ -171,6 +177,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="runner_8hpp.html#ac06afa9adee2d34afeedc666f2fc1599" title="exit code + stdout ">ProgramResult</a> </dd></dl>
 
 </div>
 </div>
