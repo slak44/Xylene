@@ -1,0 +1,4 @@
+<map id="TypeInfo" name="TypeInfo">
+<area shape="rect" id="node2" href="$class_definite_type_info.html" title="TypeInfo that can&#39;t be void. " alt="" coords="5,80,123,107"/>
+<area shape="rect" id="node3" href="$class_static_type_info.html" title="TypeInfo with a singular non&#45;void, non&#45;dynamic type. " alt="" coords="147,80,253,107"/>
+</map>

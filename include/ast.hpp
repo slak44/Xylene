@@ -295,7 +295,7 @@ public:
 /**
   \brief Break statement for exiting a loop.
   
-  \todo maybe add loop labels so this can break a specific loop
+  TODO maybe add loop labels so this can break a specific loop
 */
 class BreakLoopNode: public NoMoreChildrenNode {
 public:

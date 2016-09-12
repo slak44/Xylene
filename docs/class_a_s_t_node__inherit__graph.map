@@ -1,0 +1,11 @@
+<map id="ASTNode" name="ASTNode">
+<area shape="rect" id="node3" href="$class_block_node.html" title="Represents a block of statements. Children are those statements. " alt="" coords="65,169,149,196"/>
+<area shape="rect" id="node4" href="$class_expression_node.html" title="Represents a piece of an expression. " alt="" coords="174,169,289,196"/>
+<area shape="rect" id="node5" href="$class_no_more_children_node.html" title="ASTNode with fixed children count. " alt="" coords="313,169,456,196"/>
+<area shape="rect" id="node6" href="$class_branch_node.html" title="If statement in AST form. " alt="" coords="5,244,97,271"/>
+<area shape="rect" id="node7" href="$class_break_loop_node.html" title="Break statement for exiting a loop. " alt="" coords="121,244,235,271"/>
+<area shape="rect" id="node8" href="$class_declaration_node.html" title="Stores metadata about a declaration. " alt="" coords="259,244,377,271"/>
+<area shape="rect" id="node9" href="$class_function_node.html" title="Function definition. " alt="" coords="401,244,502,271"/>
+<area shape="rect" id="node10" href="$class_loop_node.html" title="Represents a loop. " alt="" coords="526,244,606,271"/>
+<area shape="rect" id="node11" href="$class_return_node.html" title="Return statement. " alt="" coords="631,244,720,271"/>
+</map>

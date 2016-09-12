@@ -34,6 +34,7 @@
    <div id="projectname">Test Lang
    &#160;<span id="projectnumber">pre-release</span>
    </div>
+   <div id="projectbrief">A small programming language</div>
   </td>
  </tr>
  </tbody>
@@ -47,7 +48,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -73,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -123,27 +123,32 @@ $(document).ready(function(){initNavTree('class_statement_parser.html','');});
 <div class="dynheader">
 Inheritance diagram for StatementParser:</div>
 <div class="dyncontent">
- <div class="center">
-  <img src="class_statement_parser.png" usemap="#StatementParser_map" alt=""/>
-  <map id="StatementParser_map" name="StatementParser_map">
-<area href="class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="IfStatementParser" shape="rect" coords="62,168,177,192"/>
-<area href="class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="DeclarationParser" shape="rect" coords="250,168,365,192"/>
-<area href="class_function_parser.html" title="Provides the function method for parsing a function definition. " alt="FunctionParser" shape="rect" coords="375,168,490,192"/>
-<area href="class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="ExpressionParser" shape="rect" coords="0,112,115,136"/>
-<area href="class_block_parser.html" title="Provides the block method for parsing a block. " alt="BlockParser" shape="rect" coords="125,112,240,136"/>
-<area href="class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="ExpressionParser" shape="rect" coords="250,112,365,136"/>
-<area href="class_block_parser.html" title="Provides the block method for parsing a block. " alt="BlockParser" shape="rect" coords="375,112,490,136"/>
-<area href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="TokenBaseParser" shape="rect" coords="0,56,115,80"/>
-<area href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="TokenBaseParser" shape="rect" coords="125,56,240,80"/>
-<area href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="TokenBaseParser" shape="rect" coords="250,56,365,80"/>
-<area href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="TokenBaseParser" shape="rect" coords="375,56,490,80"/>
-<area href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="BaseParser" shape="rect" coords="0,0,115,24"/>
-<area href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="BaseParser" shape="rect" coords="125,0,240,24"/>
-<area href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="BaseParser" shape="rect" coords="250,0,365,24"/>
-<area href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="BaseParser" shape="rect" coords="375,0,490,24"/>
-<area href="class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="TokenParser" shape="rect" coords="250,280,365,304"/>
+<div class="center"><img src="class_statement_parser__inherit__graph.png" border="0" usemap="#_statement_parser_inherit__map" alt="Inheritance graph"/></div>
+<map name="_statement_parser_inherit__map" id="_statement_parser_inherit__map">
+<area shape="rect" id="node9" href="class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="169,379,264,405"/>
+<area shape="rect" id="node2" href="class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="153,229,280,256"/>
+<area shape="rect" id="node3" href="class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="91,155,212,181"/>
+<area shape="rect" id="node7" href="class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="5,229,129,256"/>
+<area shape="rect" id="node4" href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="155,80,278,107"/>
+<area shape="rect" id="node6" href="class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="237,155,327,181"/>
+<area shape="rect" id="node5" href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="173,5,261,32"/>
+<area shape="rect" id="node8" href="class_function_parser.html" title="Provides the function method for parsing a function definition. " alt="" coords="304,229,412,256"/>
 </map>
- </div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for StatementParser:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_statement_parser__coll__graph.png" border="0" usemap="#_statement_parser_coll__map" alt="Collaboration graph"/></div>
+<map name="_statement_parser_coll__map" id="_statement_parser_coll__map">
+<area shape="rect" id="node6" href="class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="106,399,197,425"/>
+<area shape="rect" id="node2" href="class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="5,475,132,501"/>
+<area shape="rect" id="node3" href="class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="91,157,212,184"/>
+<area shape="rect" id="node7" href="class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="89,233,213,260"/>
+<area shape="rect" id="node4" href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="169,81,291,108"/>
+<area shape="rect" id="node5" href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="186,5,274,32"/>
+<area shape="rect" id="node8" href="class_function_parser.html" title="Provides the function method for parsing a function definition. " alt="" coords="168,475,276,501"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -298,8 +303,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/slak/Things/open/lg/include/parser/<a class="el" href="token_parser_8hpp_source.html">tokenParser.hpp</a></li>
-<li>/home/slak/Things/open/lg/src/parser/<a class="el" href="token_parser_8cpp.html">tokenParser.cpp</a></li>
+<li>include/parser/<a class="el" href="token_parser_8hpp_source.html">tokenParser.hpp</a></li>
+<li>src/parser/<a class="el" href="token_parser_8cpp.html">tokenParser.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
