@@ -63,7 +63,7 @@ private:
 public:
   /**
     \brief Creates an operator. Only the Symbol and the precedence are mandatory.
-    \todo this should not be public
+    TODO this should not be public
   */
   Operator(
     Symbol name,

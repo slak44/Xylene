@@ -113,7 +113,7 @@ CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getNormalFun(Token tok
   \brief Defines a postfix op.
   \param builderMethod Add or Sub; increment by one or decrement by one
   \param opTextName lowercase name of operation, used for ir printing
-  \todo work with floats
+  TODO work with floats
 */
 #define POSTFIX_OP_FUN(builderMethod, opTextName) \
 [=] CODEGEN_SIG {\
@@ -128,7 +128,7 @@ CV::OperatorCodegen::CodegenFunction CV::OperatorCodegen::getNormalFun(Token tok
   \brief Defines a prefix op.
   \param builderMethod Add or Sub; increment by one or decrement by one
   \param opTextName lowercase name of operation, used for ir printing
-  \todo work with floats
+  TODO work with floats
 */
 #define PREFIX_OP_FUN(builderMethod, opTextName) \
 [=] CODEGEN_SIG {\
