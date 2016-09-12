@@ -57,9 +57,20 @@ bool FunctionNode::operator!=(const ASTNode& rhs) const {
   return !operator==(rhs);
 }
 
+bool ConstructorNode::operator==(const ASTNode& rhs) const {
+  if (!FunctionNode::operator==(rhs)) return false;
+  auto constr = dynamic_cast<const ConstructorNode&>(rhs);
+  if (this->vis != constr.vis) return false;
+  return true;
+}
+bool ConstructorNode::operator!=(const ASTNode& rhs) const {
+  return !operator==(rhs);
+}
+
 bool MethodNode::operator==(const ASTNode& rhs) const {
   if (!FunctionNode::operator==(rhs)) return false;
   auto meth = dynamic_cast<const MethodNode&>(rhs);
+  if (this->vis != meth.vis) return false;
   if (this->staticM != meth.staticM) return false;
   return true;
 }
@@ -70,6 +81,7 @@ bool MethodNode::operator!=(const ASTNode& rhs) const {
 bool MemberNode::operator==(const ASTNode& rhs) const {
   if (!DeclarationNode::operator==(rhs)) return false;
   auto mem = dynamic_cast<const MemberNode&>(rhs);
+  if (this->vis != mem.vis) return false;
   if (this->staticM != mem.staticM) return false;
   return true;
 }
@@ -136,19 +148,19 @@ void DeclarationNode::printTree(uint level) const {
 
 void TypeNode::printTree(uint level) const {
   printIndent(level);
-  println("Type Node " + name + " inherits from " + collate(inheritsFrom));
+  print("Type Node", name, "inherits from", collate(inheritsFrom), "\n");
   for (auto& child : children) child->printTree(level + 1);
 }
 
 void ConstructorNode::printTree(uint level) const {
   printIndent(level);
-  println("ConstructorNode " + getSignature().toString());
+  print("Constructor Node with", getSignature().toString(), "\n");
   if (notNull(0)) getCode()->printTree(level + 1);
 }
 
 void MethodNode::printTree(uint level) const {
   printIndent(level);
-  println("MethodNode " + getIdentifier() + (isStatic() ? "(static)" : ""));
+  print("Method Node", getIdentifier(), (isStatic() ? "(static)" : ""), "\n");
   printIndent(level);
   println(getSignature().toString());
   if (notNull(0)) getCode()->printTree(level + 1);
@@ -156,7 +168,7 @@ void MethodNode::printTree(uint level) const {
 
 void MemberNode::printTree(uint level) const {
   printIndent(level);
-  println("Member Node: " + getIdentifier() + (isStatic() ? "(static)" : "") + " (" + getTypeInfo().toString() + ")");
+  print("Member Node", getIdentifier(), "(" + getTypeInfo().toString() + ")", (isStatic() ? "(static)" : ""), "\n");
   if (notNull(0)) children[0]->printTree(level + 1);
 }
 

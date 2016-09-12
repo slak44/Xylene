@@ -172,21 +172,33 @@ bool FunctionNode::isAnon() const {
   return ident.empty();
 }
 
-ConstructorNode::ConstructorNode(FunctionSignature::Arguments args):
-  FunctionNode(FunctionSignature(TypeInfo(nullptr), args)) {}
+ConstructorNode::ConstructorNode(FunctionSignature::Arguments args, Visibility vis):
+  FunctionNode(FunctionSignature(TypeInfo(nullptr), args)), vis(vis) {}
   
-MethodNode::MethodNode(std::string name, FunctionSignature sig, bool staticM):
-  FunctionNode(name, sig), staticM(staticM) {}
+Visibility ConstructorNode::getVisibility() const {
+  return vis;
+}
+  
+MethodNode::MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM):
+  FunctionNode(name, sig), vis(vis), staticM(staticM) {}
+  
+Visibility MethodNode::getVisibility() const {
+  return vis;
+}
   
 bool MethodNode::isStatic() const {
   return staticM;
 }
 
-MemberNode::MemberNode(std::string identifier, TypeList typeList, bool staticM):
-  DeclarationNode(identifier, typeList), staticM(staticM) {}
+MemberNode::MemberNode(std::string identifier, TypeList typeList, bool staticM, Visibility vis):
+  DeclarationNode(identifier, typeList), staticM(staticM), vis(vis) {}
 
 bool MemberNode::isStatic() const {
   return staticM;
+}
+
+Visibility MemberNode::getVisibility() const {
+  return vis;
 }
 
 /**

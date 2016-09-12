@@ -54,7 +54,7 @@ public:
   virtual Link removeChild(int64 pos);
   
   /// Get list of children
-  Children getChildren() const;
+  virtual Children getChildren() const;
   /**
     \brief Get child at position
     \param pos which child. Suports negative positions that count from the end of the children
@@ -364,15 +364,43 @@ public:
 };
 
 /**
+  \brief The visibility specifier for things in a type.
+*/
+enum Visibility {
+  PRIVATE, PROTECTED, PUBLIC,
+  INVALID ///< Not actually a valid specifier
+};
+
+/**
+  \brief Get visibility from token
+  
+  Defaults to INVALID if token doesn't specify a visibility.
+*/
+inline Visibility fromToken(Token t) {
+  return
+    t.type == K_PRIVATE ? PRIVATE :
+    t.type == K_PROTECT ? PROTECTED :
+    t.type == K_PUBLIC ? PUBLIC :
+      INVALID;
+}
+
+/**
   \brief Represents a constructor.
   
   It is just a mildly special function.
 */
 class ConstructorNode: public FunctionNode {
+private:
+  Visibility vis;
 public:
-  ConstructorNode(FunctionSignature::Arguments constructorArgs);
+  ConstructorNode(FunctionSignature::Arguments constructorArgs, Visibility vis = PUBLIC);
+  
+  Visibility getVisibility() const;
   
   void printTree(uint level) const override;
+  
+  bool operator==(const ASTNode& rhs) const override;
+  bool operator!=(const ASTNode& rhs) const override;
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -384,10 +412,12 @@ public:
 */
 class MethodNode: public FunctionNode {
 private:
+  Visibility vis;
   bool staticM;
 public:
-  MethodNode(std::string name, FunctionSignature sig, bool staticM = false);
+  MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM = false);
   
+  Visibility getVisibility() const;
   bool isStatic() const;
   
   void printTree(uint level) const override;
@@ -406,11 +436,13 @@ public:
 class MemberNode: public DeclarationNode {
 private:
   bool staticM;
+  Visibility vis;
 public:
   /// \copydoc DeclarationNode(std::string,TypeList)
-  MemberNode(std::string identifier, TypeList typeList, bool staticM = false);
+  MemberNode(std::string identifier, TypeList typeList, bool staticM = false, Visibility vis = PRIVATE);
   
   bool isStatic() const;
+  Visibility getVisibility() const;
   
   void printTree(uint level) const override;
   
