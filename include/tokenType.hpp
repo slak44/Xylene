@@ -25,7 +25,8 @@ enum TokenType: int {
   K_IF, K_ELSE,
   K_WHILE, K_FOR, K_BREAK, K_CONTINUE,
   K_FAT_ARROW, K_VOID, K_FOREIGN,
-  K_TYPE, K_CONSTR, K_PUBLIC, K_PRIVATE, K_PROTECT, K_STATIC,
+  K_TYPE, K_INHERITS, K_CONSTR, K_METHOD,
+  K_PUBLIC, K_PRIVATE, K_PROTECT, K_STATIC,
   K_THROW, K_TRY, K_CATCH,
   
   C_SEMI = 300, C_2POINT, C_QUESTION,
@@ -87,6 +88,8 @@ const std::unordered_map<std::string, TokenType> keywordsMap {
   {"break", K_BREAK},
   {"continue", K_CONTINUE},
   {"type", K_TYPE},
+  {"inherits", K_INHERITS},
+  {"method", K_METHOD},
   {"constructor", K_CONSTR},
   {"public", K_PUBLIC},
   {"private", K_PRIVATE},
