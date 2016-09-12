@@ -121,32 +121,37 @@ $(document).ready(function(){initNavTree('hierarchy.html','');});
 </td></tr>
 <tr><td><img src="inherit_graph_1.png" border="0" alt="" usemap="#_a_s_t_node"/>
 <map name="_a_s_t_node" id="_a_s_t_node">
-<area shape="rect" id="node1" href="class_a_s_t_visitor.html" title="Abstract class for visiting nodes on an AST. " alt="" coords="47,31,129,57"/>
-<area shape="rect" id="node2" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. " alt="" coords="219,31,323,57"/>
-<area shape="rect" id="node4" href="class_a_s_t_node.html" title="A node in an AST. " alt="" coords="233,81,309,108"/>
+<area shape="rect" id="node1" href="class_a_s_t_visitor.html" title="Abstract class for visiting nodes on an AST. " alt="" coords="47,56,129,83"/>
+<area shape="rect" id="node2" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. " alt="" coords="219,56,323,83"/>
+<area shape="rect" id="node4" href="class_a_s_t_node.html" title="A node in an AST. " alt="" coords="233,107,309,133"/>
 <area shape="rect" id="node5" href="class_block_node.html" title="Represents a block of statements. Children are those statements. " alt="" coords="400,31,484,57"/>
 <area shape="rect" id="node6" href="class_expression_node.html" title="Represents a piece of an expression. " alt="" coords="385,81,499,108"/>
 <area shape="rect" id="node7" href="class_no_more_children_node.html" title="ASTNode with fixed children count. " alt="" coords="371,132,513,159"/>
+<area shape="rect" id="node17" href="class_type_node.html" title="Definition of a new type. " alt="" coords="402,183,482,209"/>
 <area shape="rect" id="node8" href="class_branch_node.html" title="If statement in AST form. " alt="" coords="574,5,666,32"/>
 <area shape="rect" id="node9" href="class_break_loop_node.html" title="Break statement for exiting a loop. " alt="" coords="563,56,677,83"/>
 <area shape="rect" id="node10" href="class_declaration_node.html" title="Stores metadata about a declaration. " alt="" coords="561,107,679,133"/>
-<area shape="rect" id="node11" href="class_function_node.html" title="Function definition. " alt="" coords="569,157,671,184"/>
-<area shape="rect" id="node12" href="class_loop_node.html" title="Represents a loop. " alt="" coords="580,208,660,235"/>
-<area shape="rect" id="node13" href="class_return_node.html" title="Return statement. " alt="" coords="575,259,665,285"/>
+<area shape="rect" id="node12" href="class_function_node.html" title="Function definition. " alt="" coords="569,157,671,184"/>
+<area shape="rect" id="node15" href="class_loop_node.html" title="Represents a loop. " alt="" coords="580,208,660,235"/>
+<area shape="rect" id="node16" href="class_return_node.html" title="Return statement. " alt="" coords="575,259,665,285"/>
+<area shape="rect" id="node11" href="class_member_node.html" title="Represents a member declaration. " alt="" coords="737,107,835,133"/>
+<area shape="rect" id="node13" href="class_constructor_node.html" title="Represents a constructor. " alt="" coords="727,157,845,184"/>
+<area shape="rect" id="node14" href="class_method_node.html" title="Represents a method. " alt="" coords="739,208,833,235"/>
 </map>
 </td></tr>
 <tr><td><img src="inherit_graph_2.png" border="0" alt="" usemap="#_base_parser"/>
 <map name="_base_parser" id="_base_parser">
 <area shape="rect" id="node1" href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="5,81,93,108"/>
 <area shape="rect" id="node2" href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="141,56,264,83"/>
-<area shape="rect" id="node10" href="class_x_m_l_parser.html" title="Creates an AST from an XML file or string. " alt="" coords="160,107,245,133"/>
+<area shape="rect" id="node11" href="class_x_m_l_parser.html" title="Creates an AST from an XML file or string. " alt="" coords="160,107,245,133"/>
 <area shape="rect" id="node3" href="class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="327,31,418,57"/>
-<area shape="rect" id="node8" href="class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="312,81,433,108"/>
+<area shape="rect" id="node9" href="class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="312,81,433,108"/>
 <area shape="rect" id="node4" href="class_function_parser.html" title="Provides the function method for parsing a function definition. " alt="" coords="491,5,599,32"/>
-<area shape="rect" id="node7" href="class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="481,56,608,83"/>
-<area shape="rect" id="node5" href="class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="656,56,775,83"/>
-<area shape="rect" id="node6" href="class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="823,56,917,83"/>
-<area shape="rect" id="node9" href="class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="483,107,607,133"/>
+<area shape="rect" id="node8" href="class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="481,56,608,83"/>
+<area shape="rect" id="node5" href="class_type_parser.html" title="Provides the type method for parsing a type definition. " alt="" coords="656,107,743,133"/>
+<area shape="rect" id="node6" href="class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="791,81,909,108"/>
+<area shape="rect" id="node7" href="class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="957,81,1052,108"/>
+<area shape="rect" id="node10" href="class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="483,107,607,133"/>
 </map>
 </td></tr>
 <tr><td><img src="inherit_graph_3.png" border="0" alt="" usemap="#_error"/>

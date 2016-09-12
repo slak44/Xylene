@@ -10,6 +10,7 @@ var searchData=
   ['isforeign',['isForeign',['../class_function_node.html#ae5060706d4bb517046b31969e1cd29dc',1,'FunctionNode']]],
   ['isoperator',['isOperator',['../class_token.html#a6b00acddd1b64f9c6946be09b22c28b1',1,'Token']]],
   ['issametype',['isSameType',['../struct_node.html#a2917584f20d16aaf682948b439a3ac37',1,'Node::isSameType()'],['../struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52',1,'PtrUtil::isSameType()']]],
+  ['isstatic',['isStatic',['../class_method_node.html#a5599923b350d5677e1c92ed628e094c5',1,'MethodNode::isStatic()'],['../class_member_node.html#af7b3f6959f16d6f64cd9aad5457e3e36',1,'MemberNode::isStatic()']]],
   ['isterminal',['isTerminal',['../class_token.html#a676e5a7943030b49c361e07fbde0fc52',1,'Token']]],
   ['isvoid',['isVoid',['../class_type_info.html#a97eb3ab9c4526ae9fae0d7e54a71826b',1,'TypeInfo']]]
 ];

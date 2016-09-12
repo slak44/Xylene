@@ -8,8 +8,10 @@ var hierarchy =
       [ "TokenBaseParser", "class_token_base_parser.html", [
         [ "BlockParser", "class_block_parser.html", [
           [ "FunctionParser", "class_function_parser.html", [
-            [ "StatementParser", "class_statement_parser.html", [
-              [ "TokenParser", "class_token_parser.html", null ]
+            [ "TypeParser", "class_type_parser.html", [
+              [ "StatementParser", "class_statement_parser.html", [
+                [ "TokenParser", "class_token_parser.html", null ]
+              ] ]
             ] ]
           ] ],
           [ "IfStatementParser", "class_if_statement_parser.html", [
@@ -18,7 +20,7 @@ var hierarchy =
         ] ],
         [ "ExpressionParser", "class_expression_parser.html", [
           [ "DeclarationParser", "class_declaration_parser.html", [
-            [ "StatementParser", "class_statement_parser.html", null ]
+            [ "TypeParser", "class_type_parser.html", null ]
           ] ],
           [ "IfStatementParser", "class_if_statement_parser.html", null ]
         ] ]
@@ -32,11 +34,17 @@ var hierarchy =
         [ "NoMoreChildrenNode", "class_no_more_children_node.html", [
           [ "BranchNode", "class_branch_node.html", null ],
           [ "BreakLoopNode", "class_break_loop_node.html", null ],
-          [ "DeclarationNode", "class_declaration_node.html", null ],
-          [ "FunctionNode", "class_function_node.html", null ],
+          [ "DeclarationNode", "class_declaration_node.html", [
+            [ "MemberNode", "class_member_node.html", null ]
+          ] ],
+          [ "FunctionNode", "class_function_node.html", [
+            [ "ConstructorNode", "class_constructor_node.html", null ],
+            [ "MethodNode", "class_method_node.html", null ]
+          ] ],
           [ "LoopNode", "class_loop_node.html", null ],
           [ "ReturnNode", "class_return_node.html", null ]
-        ] ]
+        ] ],
+        [ "TypeNode", "class_type_node.html", null ]
       ] ],
       [ "CompileVisitor", "class_compile_visitor.html", null ]
     ] ],

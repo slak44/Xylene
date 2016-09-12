@@ -1,0 +1,6 @@
+<map id="MemberNode" name="MemberNode">
+<area shape="rect" id="node2" href="$class_declaration_node.html" title="Stores metadata about a declaration. " alt="" coords="89,261,206,288"/>
+<area shape="rect" id="node3" href="$class_no_more_children_node.html" title="ASTNode with fixed children count. " alt="" coords="76,185,219,212"/>
+<area shape="rect" id="node4" href="$class_a_s_t_node.html" title="A node in an AST. " alt="" coords="109,109,185,136"/>
+<area shape="rect" id="node6" href="$class_trace.html" title="Stores debug information. " alt="" coords="185,13,240,39"/>
+</map>

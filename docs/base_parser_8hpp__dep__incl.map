@@ -1,7 +1,7 @@
-<map id="include/parser/baseParser.hpp" name="include/parser/baseParser.hpp">
-<area shape="rect" id="node2" href="$token_parser_8hpp.html" title="include/parser/tokenParser.hpp" alt="" coords="43,80,245,107"/>
-<area shape="rect" id="node5" href="$xml_parser_8hpp.html" title="include/parser/xmlParser.hpp" alt="" coords="269,80,459,107"/>
-<area shape="rect" id="node3" href="$main_8cpp.html" title="src/main.cpp" alt="" coords="209,155,306,181"/>
-<area shape="rect" id="node4" href="$token_parser_8cpp.html" title="src/parser/tokenParser.cpp" alt="" coords="5,155,184,181"/>
-<area shape="rect" id="node6" href="$xml_parser_8cpp.html" title="src/parser/xmlParser.cpp" alt="" coords="330,155,497,181"/>
+<map id="/home/slak/Things/open/lg/include/parser/baseParser.hpp" name="/home/slak/Things/open/lg/include/parser/baseParser.hpp">
+<area shape="rect" id="node2" href="$token_parser_8hpp.html" title="/home/slak/Things/open\l/lg/include/parser/tokenParser.hpp" alt="" coords="77,95,298,136"/>
+<area shape="rect" id="node5" href="$xml_parser_8hpp.html" title="/home/slak/Things/open\l/lg/include/parser/xmlParser.hpp" alt="" coords="323,95,532,136"/>
+<area shape="rect" id="node3" href="$main_8cpp.html" title="/home/slak/Things/open\l/lg/src/main.cpp" alt="" coords="227,184,393,225"/>
+<area shape="rect" id="node4" href="$token_parser_8cpp.html" title="/home/slak/Things/open\l/lg/src/parser/tokenParser.cpp" alt="" coords="5,184,204,225"/>
+<area shape="rect" id="node6" href="$xml_parser_8cpp.html" title="/home/slak/Things/open\l/lg/src/parser/xmlParser.cpp" alt="" coords="417,184,603,225"/>
 </map>

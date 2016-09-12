@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['xmlparseerror',['XMLParseError',['../class_x_m_l_parse_error.html',1,'']]],
-  ['xmlparser',['XMLParser',['../class_x_m_l_parser.html',1,'']]]
+  ['vectorhash',['VectorHash',['../struct_vector_hash.html',1,'']]]
 ];

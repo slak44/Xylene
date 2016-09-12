@@ -1,4 +1,6 @@
 <map id="FunctionNode" name="FunctionNode">
-<area shape="rect" id="node2" href="$class_no_more_children_node.html" title="ASTNode with fixed children count. " alt="" coords="12,169,155,196"/>
-<area shape="rect" id="node3" href="$class_a_s_t_node.html" title="A node in an AST. " alt="" coords="45,95,121,121"/>
+<area shape="rect" id="node5" href="$class_constructor_node.html" title="Represents a constructor. " alt="" coords="5,319,124,345"/>
+<area shape="rect" id="node6" href="$class_method_node.html" title="Represents a method. " alt="" coords="148,319,243,345"/>
+<area shape="rect" id="node2" href="$class_no_more_children_node.html" title="ASTNode with fixed children count. " alt="" coords="59,169,201,196"/>
+<area shape="rect" id="node3" href="$class_a_s_t_node.html" title="A node in an AST. " alt="" coords="92,95,168,121"/>
 </map>

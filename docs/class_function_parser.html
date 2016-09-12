@@ -125,11 +125,12 @@ Inheritance diagram for FunctionParser:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_function_parser__inherit__graph.png" border="0" usemap="#_function_parser_inherit__map" alt="Inheritance graph"/></div>
 <map name="_function_parser_inherit__map" id="_function_parser_inherit__map">
-<area shape="rect" id="node5" href="class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="7,304,126,331"/>
+<area shape="rect" id="node5" href="class_type_parser.html" title="Provides the type method for parsing a type definition. " alt="" coords="23,304,110,331"/>
 <area shape="rect" id="node2" href="class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="21,155,112,181"/>
 <area shape="rect" id="node3" href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="5,80,128,107"/>
 <area shape="rect" id="node4" href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="23,5,111,32"/>
-<area shape="rect" id="node6" href="class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="19,379,114,405"/>
+<area shape="rect" id="node6" href="class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="7,379,126,405"/>
+<area shape="rect" id="node7" href="class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="19,453,114,480"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -137,13 +138,14 @@ Collaboration diagram for FunctionParser:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_function_parser__coll__graph.png" border="0" usemap="#_function_parser_coll__map" alt="Collaboration graph"/></div>
 <map name="_function_parser_coll__map" id="_function_parser_coll__map">
-<area shape="rect" id="node5" href="class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="189,309,308,336"/>
-<area shape="rect" id="node2" href="class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="113,399,203,425"/>
-<area shape="rect" id="node6" href="class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="185,475,312,501"/>
-<area shape="rect" id="node3" href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="123,81,246,108"/>
-<area shape="rect" id="node7" href="class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="191,157,312,184"/>
-<area shape="rect" id="node4" href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="141,5,229,32"/>
-<area shape="rect" id="node8" href="class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="189,233,313,260"/>
+<area shape="rect" id="node8" href="class_type_parser.html" title="Provides the type method for parsing a type definition. " alt="" coords="133,309,219,336"/>
+<area shape="rect" id="node2" href="class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="213,475,304,501"/>
+<area shape="rect" id="node6" href="class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="195,551,322,577"/>
+<area shape="rect" id="node3" href="class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="5,81,128,108"/>
+<area shape="rect" id="node7" href="class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="73,157,194,184"/>
+<area shape="rect" id="node4" href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="23,5,111,32"/>
+<area shape="rect" id="node5" href="class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="117,385,235,412"/>
+<area shape="rect" id="node9" href="class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="71,233,195,260"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -172,6 +174,12 @@ Public Member Functions</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a0f5b9d158469030fdf4ebd04d2984e85"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_parser.html#a0f5b9d158469030fdf4ebd04d2984e85">FunctionParser</a> (<a class="el" href="class_statement_parser.html">StatementParser</a> *<a class="el" href="class_block_parser.html#a568dd412ad89b6756e566d142c4c520a">stp</a>)</td></tr>
 <tr class="separator:a0f5b9d158469030fdf4ebd04d2984e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98f3acdd5752c48973f3a246ef7edc37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="util_8hpp.html#ab5d06be6c670b1b15d59910ef706886c">TypeList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_parser.html#a98f3acdd5752c48973f3a246ef7edc37">getTypeList</a> ()</td></tr>
+<tr class="memdesc:a98f3acdd5752c48973f3a246ef7edc37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a type list from current pos.  <a href="#a98f3acdd5752c48973f3a246ef7edc37">More...</a><br /></td></tr>
+<tr class="separator:a98f3acdd5752c48973f3a246ef7edc37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33eadf5a65d58a5ae1021136cb12cd43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">FunctionSignature::Arguments</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_parser.html#a33eadf5a65d58a5ae1021136cb12cd43">getSigArgs</a> ()</td></tr>
+<tr class="memdesc:a33eadf5a65d58a5ae1021136cb12cd43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get arguments for signatures.  <a href="#a33eadf5a65d58a5ae1021136cb12cd43">More...</a><br /></td></tr>
+<tr class="separator:a33eadf5a65d58a5ae1021136cb12cd43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_block_parser"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_block_parser')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_block_parser.html">BlockParser</a></td></tr>
 <tr class="memitem:a9828145732b4644db2413ae66454d90a inherit pro_methods_class_block_parser"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_block_parser.html#a9828145732b4644db2413ae66454d90a">BlockParser</a> (<a class="el" href="class_statement_parser.html">StatementParser</a> *<a class="el" href="class_block_parser.html#a568dd412ad89b6756e566d142c4c520a">stp</a>)</td></tr>
 <tr class="memdesc:a9828145732b4644db2413ae66454d90a inherit pro_methods_class_block_parser"><td class="mdescLeft">&#160;</td><td class="mdescRight">Storing this pointer avoids circular inheritance between <a class="el" href="class_block_parser.html" title="Provides the block method for parsing a block. ">BlockParser</a> and <a class="el" href="class_statement_parser.html" title="Provides the statement method for parsing an a statement. ">StatementParser</a>.  <a href="#a9828145732b4644db2413ae66454d90a">More...</a><br /></td></tr>
@@ -279,9 +287,60 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a33eadf5a65d58a5ae1021136cb12cd43"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">FunctionSignature::Arguments</a> FunctionParser::getSigArgs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get arguments for signatures. </p>
+<dl class="section return"><dt>Returns</dt><dd>an instance of <a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">FunctionSignature::Arguments</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a98f3acdd5752c48973f3a246ef7edc37"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="util_8hpp.html#ab5d06be6c670b1b15d59910ef706886c">TypeList</a> FunctionParser::getTypeList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a type list from current pos. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/parser/<a class="el" href="token_parser_8hpp_source.html">tokenParser.hpp</a></li>
-<li>src/parser/<a class="el" href="token_parser_8cpp.html">tokenParser.cpp</a></li>
+<li>/home/slak/Things/open/lg/include/parser/<a class="el" href="token_parser_8hpp_source.html">tokenParser.hpp</a></li>
+<li>/home/slak/Things/open/lg/src/parser/<a class="el" href="token_parser_8cpp.html">tokenParser.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

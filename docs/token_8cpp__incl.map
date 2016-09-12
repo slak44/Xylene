@@ -1,9 +1,9 @@
-<map id="src/token.cpp" name="src/token.cpp">
-<area shape="rect" id="node2" href="$token_8hpp.html" title="token.hpp" alt="" coords="449,80,528,107"/>
-<area shape="rect" id="node4" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="244,379,336,405"/>
-<area shape="rect" id="node14" href="$trace_8hpp.html" title="utils/trace.hpp" alt="" coords="47,304,151,331"/>
-<area shape="rect" id="node16" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="504,229,604,256"/>
-<area shape="rect" id="node20" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="389,155,481,181"/>
-<area shape="rect" id="node22" href="$token_type_8hpp.html" title="tokenType.hpp" alt="" coords="619,155,726,181"/>
-<area shape="rect" id="node11" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="305,453,488,480"/>
+<map id="/home/slak/Things/open/lg/src/token.cpp" name="/home/slak/Things/open/lg/src/token.cpp">
+<area shape="rect" id="node2" href="$token_8hpp.html" title="token.hpp" alt="" coords="449,95,528,121"/>
+<area shape="rect" id="node4" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="244,393,336,420"/>
+<area shape="rect" id="node14" href="$trace_8hpp.html" title="utils/trace.hpp" alt="" coords="47,319,151,345"/>
+<area shape="rect" id="node16" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="504,244,604,271"/>
+<area shape="rect" id="node20" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="389,169,481,196"/>
+<area shape="rect" id="node22" href="$token_type_8hpp.html" title="tokenType.hpp" alt="" coords="619,169,726,196"/>
+<area shape="rect" id="node11" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="305,468,488,495"/>
 </map>
