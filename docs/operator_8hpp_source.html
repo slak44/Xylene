@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Test Lang: /home/slak/Things/open/lg/include/operator.hpp Source File</title>
+<title>Test Lang: include/operator.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -34,6 +34,7 @@
    <div id="projectname">Test Lang
    &#160;<span id="projectnumber">pre-release</span>
    </div>
+   <div id="projectbrief">A small programming language</div>
   </td>
  </tr>
  </tbody>
@@ -47,7 +48,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('operator_8hpp_source.html','');});
 <div class="ttc" id="class_operator_html_a3a8783390d3202ad26c2abcdab7e9a1f"><div class="ttname"><a href="class_operator.html#a3a8783390d3202ad26c2abcdab7e9a1f">Operator::getAssociativity</a></div><div class="ttdeci">Associativity getAssociativity() const </div><div class="ttdef"><b>Definition:</b> operator.cpp:12</div></div>
 <div class="ttc" id="class_operator_html_a942eb543c9fbb5a22e24ad9f09c77fa1"><div class="ttname"><a href="class_operator.html#a942eb543c9fbb5a22e24ad9f09c77fa1">Operator::getName</a></div><div class="ttdeci">Symbol getName() const </div><div class="ttdef"><b>Definition:</b> operator.cpp:10</div></div>
 <div class="ttc" id="class_operator_html_aaded9de4bdc094d32d1ca306a482489c"><div class="ttname"><a href="class_operator.html#aaded9de4bdc094d32d1ca306a482489c">Operator::RequireReferenceList</a></div><div class="ttdeci">std::vector&lt; bool &gt; RequireReferenceList</div><div class="ttdoc">Require that the operand at that index can be mutated if true. </div><div class="ttdef"><b>Definition:</b> operator.hpp:55</div></div>
-<div class="ttc" id="class_operator_html_aa3409b3dcb5da1ad602b8ab905b29502"><div class="ttname"><a href="class_operator.html#aa3409b3dcb5da1ad602b8ab905b29502">Operator::Operator</a></div><div class="ttdeci">Operator(Symbol name, int precedence, Associativity associativity=ASSOCIATE_FROM_LEFT, Arity arity=BINARY, Fixity fixity=INFIX, RequireReferenceList refList={false, false, false})</div><div class="ttdoc">Creates an operator. Only the Symbol and the precedence are mandatory. </div><div class="ttdef"><b>Definition:</b> operator.cpp:3</div></div>
+<div class="ttc" id="class_operator_html_aa3409b3dcb5da1ad602b8ab905b29502"><div class="ttname"><a href="class_operator.html#aa3409b3dcb5da1ad602b8ab905b29502">Operator::Operator</a></div><div class="ttdeci">Operator(Symbol name, int precedence, Associativity associativity=ASSOCIATE_FROM_LEFT, Arity arity=BINARY, Fixity fixity=INFIX, RequireReferenceList refList={false, false, false})</div><div class="ttdoc">Creates an operator. Only the Symbol and the precedence are mandatory. TODO this should not be public...</div><div class="ttdef"><b>Definition:</b> operator.cpp:3</div></div>
 <div class="ttc" id="operator_8hpp_html_a786fcc12a0457a4ccbd7215569cfd81a"><div class="ttname"><a href="operator_8hpp.html#a786fcc12a0457a4ccbd7215569cfd81a">operatorNameMap</a></div><div class="ttdeci">static const std::unordered_map&lt; Operator::Name, Operator::Index &gt; operatorNameMap</div><div class="ttdoc">Maps simple descriptions of operators to their index in the operatorList. Also used in XML files...</div><div class="ttdef"><b>Definition:</b> operator.hpp:161</div></div>
 <div class="ttc" id="class_operator_html_aada3e20fb83a2a66d8b2b619ae3d0af0"><div class="ttname"><a href="class_operator.html#aada3e20fb83a2a66d8b2b619ae3d0af0">Operator::getPrecedence</a></div><div class="ttdeci">int getPrecedence() const </div><div class="ttdef"><b>Definition:</b> operator.cpp:11</div></div>
 <div class="ttc" id="operator_8hpp_html_a062e396f6ed3b6f674db98ab2352696e"><div class="ttname"><a href="operator_8hpp.html#a062e396f6ed3b6f674db98ab2352696e">getOperatorCharacters</a></div><div class="ttdeci">std::vector&lt; char &gt; getOperatorCharacters()</div><div class="ttdoc">Gets a vector of all chars used in Operator symbols. </div><div class="ttdef"><b>Definition:</b> operator.cpp:29</div></div>
