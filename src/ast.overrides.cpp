@@ -34,6 +34,17 @@ bool DeclarationNode::operator!=(const ASTNode& rhs) const {
   return !operator==(rhs);
 }
 
+bool TypeNode::operator==(const ASTNode& rhs) const {
+  if (!ASTNode::operator==(rhs)) return false;
+  auto decl = dynamic_cast<const TypeNode&>(rhs);
+  if (this->name != decl.name) return false;
+  if (this->inheritsFrom != decl.inheritsFrom) return false;
+  return true;
+}
+bool TypeNode::operator!=(const ASTNode& rhs) const {
+  return !operator==(rhs);
+}
+
 bool FunctionNode::operator==(const ASTNode& rhs) const {
   if (!ASTNode::operator==(rhs)) return false;
   auto fun = dynamic_cast<const FunctionNode&>(rhs);
@@ -43,6 +54,26 @@ bool FunctionNode::operator==(const ASTNode& rhs) const {
   return true;
 }
 bool FunctionNode::operator!=(const ASTNode& rhs) const {
+  return !operator==(rhs);
+}
+
+bool MethodNode::operator==(const ASTNode& rhs) const {
+  if (!FunctionNode::operator==(rhs)) return false;
+  auto meth = dynamic_cast<const MethodNode&>(rhs);
+  if (this->staticM != meth.staticM) return false;
+  return true;
+}
+bool MethodNode::operator!=(const ASTNode& rhs) const {
+  return !operator==(rhs);
+}
+
+bool MemberNode::operator==(const ASTNode& rhs) const {
+  if (!DeclarationNode::operator==(rhs)) return false;
+  auto mem = dynamic_cast<const MemberNode&>(rhs);
+  if (this->staticM != mem.staticM) return false;
+  return true;
+}
+bool MemberNode::operator!=(const ASTNode& rhs) const {
   return !operator==(rhs);
 }
 
@@ -64,6 +95,10 @@ VISITOR_VISIT_IMPL_FOR(Loop);
 VISITOR_VISIT_IMPL_FOR(Return);
 VISITOR_VISIT_IMPL_FOR(BreakLoop);
 VISITOR_VISIT_IMPL_FOR(Function);
+VISITOR_VISIT_IMPL_FOR(Type);
+VISITOR_VISIT_IMPL_FOR(Constructor);
+VISITOR_VISIT_IMPL_FOR(Method);
+VISITOR_VISIT_IMPL_FOR(Member);
 
 #undef VISITOR_VISIT_IMPL_FOR
 
@@ -96,7 +131,33 @@ void ExpressionNode::printTree(uint level) const {
 void DeclarationNode::printTree(uint level) const {
   printIndent(level);
   println("Declaration Node: " + identifier + " (" + info.toString() + ")");
-  if (children.size() > 0) children[0]->printTree(level + 1);
+  if (notNull(0)) children[0]->printTree(level + 1);
+}
+
+void TypeNode::printTree(uint level) const {
+  printIndent(level);
+  println("Type Node " + name + " inherits from " + collate(inheritsFrom));
+  for (auto& child : children) child->printTree(level + 1);
+}
+
+void ConstructorNode::printTree(uint level) const {
+  printIndent(level);
+  println("ConstructorNode " + getSignature().toString());
+  if (notNull(0)) getCode()->printTree(level + 1);
+}
+
+void MethodNode::printTree(uint level) const {
+  printIndent(level);
+  println("MethodNode " + getIdentifier() + (isStatic() ? "(static)" : ""));
+  printIndent(level);
+  println(getSignature().toString());
+  if (notNull(0)) getCode()->printTree(level + 1);
+}
+
+void MemberNode::printTree(uint level) const {
+  printIndent(level);
+  println("Member Node: " + getIdentifier() + (isStatic() ? "(static)" : "") + " (" + getTypeInfo().toString() + ")");
+  if (notNull(0)) children[0]->printTree(level + 1);
 }
 
 void BranchNode::printTree(uint level) const {

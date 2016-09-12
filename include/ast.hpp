@@ -156,6 +156,35 @@ public:
   void visit(ASTVisitorLink visitor) override;
 };
 
+/**
+  \brief Definition of a new type.
+  
+  Contains constructors, methods, and members as children.
+*/
+class TypeNode: public ASTNode {
+private:
+  std::string name;
+  TypeList inheritsFrom;
+public:
+  TypeNode(std::string name, TypeList inheritsFrom = {});
+  
+  std::string getName() const;
+  TypeList getAncestors() const;
+  
+  /**
+    \brief Only accepts ConstructorNode, MethodNode or MemberNode.
+    \throws InternalError if other types try to be inserted
+  */
+  void addChild(Link child) override;
+  
+  void printTree(uint level) const override;
+  
+  bool operator==(const ASTNode& rhs) const override;
+  bool operator!=(const ASTNode& rhs) const override;
+  
+  void visit(ASTVisitorLink visitor) override;
+};
+
 /// \see GET_FOR
 #define GET_SIG(linkType, nameOf) Node<linkType>::Link get##nameOf() const;
 /// \see SET_FOR
@@ -334,6 +363,63 @@ public:
   void visit(ASTVisitorLink visitor) override;
 };
 
+/**
+  \brief Represents a constructor.
+  
+  It is just a mildly special function.
+*/
+class ConstructorNode: public FunctionNode {
+public:
+  ConstructorNode(FunctionSignature::Arguments constructorArgs);
+  
+  void printTree(uint level) const override;
+  
+  void visit(ASTVisitorLink visitor) override;
+};
+
+/**
+  \brief Represents a method.
+  
+  It is just a mildly special function.
+*/
+class MethodNode: public FunctionNode {
+private:
+  bool staticM;
+public:
+  MethodNode(std::string name, FunctionSignature sig, bool staticM = false);
+  
+  bool isStatic() const;
+  
+  void printTree(uint level) const override;
+  
+  bool operator==(const ASTNode& rhs) const override;
+  bool operator!=(const ASTNode& rhs) const override;
+  
+  void visit(ASTVisitorLink visitor) override;
+};
+
+/**
+  \brief Represents a member declaration.
+  
+  It is just a mildly special declaration.
+*/
+class MemberNode: public DeclarationNode {
+private:
+  bool staticM;
+public:
+  /// \copydoc DeclarationNode(std::string,TypeList)
+  MemberNode(std::string identifier, TypeList typeList, bool staticM = false);
+  
+  bool isStatic() const;
+  
+  void printTree(uint level) const override;
+  
+  bool operator==(const ASTNode& rhs) const override;
+  bool operator!=(const ASTNode& rhs) const override;
+  
+  void visit(ASTVisitorLink visitor) override;
+};
+
 #undef GET_SIG
 #undef SET_SIG
 #undef GET_SET_SIGS
@@ -374,6 +460,10 @@ public:
   PURE_VIRTUAL_VISIT(Return)
   PURE_VIRTUAL_VISIT(BreakLoop)
   PURE_VIRTUAL_VISIT(Function)
+  PURE_VIRTUAL_VISIT(Type)
+  PURE_VIRTUAL_VISIT(Constructor)
+  PURE_VIRTUAL_VISIT(Method)
+  PURE_VIRTUAL_VISIT(Member)
 };
 
 #undef PURE_VIRTUAL_VISIT
