@@ -18,6 +18,8 @@ var searchData=
   ['k_5ffunction',['K_FUNCTION',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1baa885f1c0d6973971bfb5cbbebe854f23',1,'tokenType.hpp']]],
   ['k_5fif',['K_IF',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba5230db40c230d939dd7ff158afacb9cd',1,'tokenType.hpp']]],
   ['k_5fimport',['K_IMPORT',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1badb16ee8dc5d5584c91c86ec9bcf6d530',1,'tokenType.hpp']]],
+  ['k_5finherits',['K_INHERITS',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1baeb2cf4fa546572aaed17727558b10b01',1,'tokenType.hpp']]],
+  ['k_5fmethod',['K_METHOD',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba7901ffc186b04431849cfbda788b84f9',1,'tokenType.hpp']]],
   ['k_5fprivate',['K_PRIVATE',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba3d623dc5a5d067ada4e47fa1d96c2356',1,'tokenType.hpp']]],
   ['k_5fprotect',['K_PROTECT',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba36cf5867d2b0328835ec4e6603bb20bb',1,'tokenType.hpp']]],
   ['k_5fpublic',['K_PUBLIC',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba4443c5776c93cc925b4a6e6a6a47b1b4',1,'tokenType.hpp']]],

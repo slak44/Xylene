@@ -1,9 +1,10 @@
 <map id="FunctionParser" name="FunctionParser">
-<area shape="rect" id="node5" href="$class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="189,309,308,336"/>
-<area shape="rect" id="node2" href="$class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="113,399,203,425"/>
-<area shape="rect" id="node6" href="$class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="185,475,312,501"/>
-<area shape="rect" id="node3" href="$class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="123,81,246,108"/>
-<area shape="rect" id="node7" href="$class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="191,157,312,184"/>
-<area shape="rect" id="node4" href="$class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="141,5,229,32"/>
-<area shape="rect" id="node8" href="$class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="189,233,313,260"/>
+<area shape="rect" id="node8" href="$class_type_parser.html" title="Provides the type method for parsing a type definition. " alt="" coords="133,309,219,336"/>
+<area shape="rect" id="node2" href="$class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="213,475,304,501"/>
+<area shape="rect" id="node6" href="$class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="195,551,322,577"/>
+<area shape="rect" id="node3" href="$class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="5,81,128,108"/>
+<area shape="rect" id="node7" href="$class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="73,157,194,184"/>
+<area shape="rect" id="node4" href="$class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="23,5,111,32"/>
+<area shape="rect" id="node5" href="$class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="117,385,235,412"/>
+<area shape="rect" id="node9" href="$class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="71,233,195,260"/>
 </map>

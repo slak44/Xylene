@@ -1,12 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" href="$class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="5,81,93,108"/>
 <area shape="rect" id="node2" href="$class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="141,56,264,83"/>
-<area shape="rect" id="node10" href="$class_x_m_l_parser.html" title="Creates an AST from an XML file or string. " alt="" coords="160,107,245,133"/>
+<area shape="rect" id="node11" href="$class_x_m_l_parser.html" title="Creates an AST from an XML file or string. " alt="" coords="160,107,245,133"/>
 <area shape="rect" id="node3" href="$class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="327,31,418,57"/>
-<area shape="rect" id="node8" href="$class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="312,81,433,108"/>
+<area shape="rect" id="node9" href="$class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="312,81,433,108"/>
 <area shape="rect" id="node4" href="$class_function_parser.html" title="Provides the function method for parsing a function definition. " alt="" coords="491,5,599,32"/>
-<area shape="rect" id="node7" href="$class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="481,56,608,83"/>
-<area shape="rect" id="node5" href="$class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="656,56,775,83"/>
-<area shape="rect" id="node6" href="$class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="823,56,917,83"/>
-<area shape="rect" id="node9" href="$class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="483,107,607,133"/>
+<area shape="rect" id="node8" href="$class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="481,56,608,83"/>
+<area shape="rect" id="node5" href="$class_type_parser.html" title="Provides the type method for parsing a type definition. " alt="" coords="656,107,743,133"/>
+<area shape="rect" id="node6" href="$class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="791,81,909,108"/>
+<area shape="rect" id="node7" href="$class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="957,81,1052,108"/>
+<area shape="rect" id="node10" href="$class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="483,107,607,133"/>
 </map>

@@ -1,11 +1,11 @@
-<map id="include/llvm/compiler.hpp" name="include/llvm/compiler.hpp">
-<area shape="rect" id="node21" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="3147,468,3239,495"/>
-<area shape="rect" id="node30" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="3428,319,3528,345"/>
-<area shape="rect" id="node35" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="2966,87,3030,114"/>
-<area shape="rect" id="node39" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="3432,244,3524,271"/>
-<area shape="rect" id="node27" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="3256,543,3439,569"/>
-<area shape="rect" id="node34" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="2962,393,3037,420"/>
-<area shape="rect" id="node37" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="3013,244,3135,271"/>
-<area shape="rect" id="node38" href="$token_8hpp.html" title="token.hpp" alt="" coords="3347,169,3425,196"/>
-<area shape="rect" id="node41" href="$token_type_8hpp.html" title="tokenType.hpp" alt="" coords="3689,244,3795,271"/>
+<map id="/home/slak/Things/open/lg/include/llvm/compiler.hpp" name="/home/slak/Things/open/lg/include/llvm/compiler.hpp">
+<area shape="rect" id="node21" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="3147,483,3239,509"/>
+<area shape="rect" id="node30" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="3428,333,3528,360"/>
+<area shape="rect" id="node35" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="2966,102,3030,129"/>
+<area shape="rect" id="node39" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="3432,259,3524,285"/>
+<area shape="rect" id="node27" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="3256,557,3439,584"/>
+<area shape="rect" id="node34" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="2962,408,3037,435"/>
+<area shape="rect" id="node37" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="3013,259,3135,285"/>
+<area shape="rect" id="node38" href="$token_8hpp.html" title="token.hpp" alt="" coords="3347,184,3425,211"/>
+<area shape="rect" id="node41" href="$token_type_8hpp.html" title="tokenType.hpp" alt="" coords="3689,259,3795,285"/>
 </map>

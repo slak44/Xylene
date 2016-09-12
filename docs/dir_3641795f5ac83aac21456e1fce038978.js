@@ -10,6 +10,7 @@ var dir_3641795f5ac83aac21456e1fce038978 =
       [ "BlockParser", "class_block_parser.html", "class_block_parser" ],
       [ "FunctionParser", "class_function_parser.html", "class_function_parser" ],
       [ "IfStatementParser", "class_if_statement_parser.html", "class_if_statement_parser" ],
+      [ "TypeParser", "class_type_parser.html", "class_type_parser" ],
       [ "StatementParser", "class_statement_parser.html", "class_statement_parser" ],
       [ "TokenParser", "class_token_parser.html", "class_token_parser" ]
     ] ],

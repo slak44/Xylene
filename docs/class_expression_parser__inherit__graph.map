@@ -1,8 +1,9 @@
 <map id="ExpressionParser" name="ExpressionParser">
 <area shape="rect" id="node4" href="$class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="5,229,129,256"/>
-<area shape="rect" id="node7" href="$class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="153,229,280,256"/>
-<area shape="rect" id="node2" href="$class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="81,80,203,107"/>
-<area shape="rect" id="node3" href="$class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="98,5,186,32"/>
-<area shape="rect" id="node5" href="$class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="83,304,201,331"/>
-<area shape="rect" id="node6" href="$class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="95,379,189,405"/>
+<area shape="rect" id="node8" href="$class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="127,304,253,331"/>
+<area shape="rect" id="node2" href="$class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="55,80,178,107"/>
+<area shape="rect" id="node3" href="$class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="73,5,161,32"/>
+<area shape="rect" id="node5" href="$class_type_parser.html" title="Provides the type method for parsing a type definition. " alt="" coords="16,304,103,331"/>
+<area shape="rect" id="node6" href="$class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="65,379,184,405"/>
+<area shape="rect" id="node7" href="$class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="77,453,172,480"/>
 </map>

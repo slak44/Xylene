@@ -1,4 +1,5 @@
 <map id="DeclarationNode" name="DeclarationNode">
+<area shape="rect" id="node5" href="$class_member_node.html" title="Represents a member declaration. " alt="" coords="34,319,133,345"/>
 <area shape="rect" id="node2" href="$class_no_more_children_node.html" title="ASTNode with fixed children count. " alt="" coords="12,169,155,196"/>
 <area shape="rect" id="node3" href="$class_a_s_t_node.html" title="A node in an AST. " alt="" coords="45,95,121,121"/>
 </map>
