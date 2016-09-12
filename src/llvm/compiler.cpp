@@ -378,3 +378,23 @@ void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
   if (!node->isForeign()) compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
   functionStack.pop();
 }
+
+void CompileVisitor::visitType(Node<TypeNode>::Link node) {
+  UNUSED(node);
+  throw InternalError("Unimplemented", {METADATA_PAIRS});
+}
+
+void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
+  UNUSED(node);
+  throw InternalError("Unimplemented", {METADATA_PAIRS});
+}
+
+void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
+  UNUSED(node);
+  throw InternalError("Unimplemented", {METADATA_PAIRS});
+}
+
+void CompileVisitor::visitMember(Node<MemberNode>::Link node) {
+  UNUSED(node);
+  throw InternalError("Unimplemented", {METADATA_PAIRS});
+}
