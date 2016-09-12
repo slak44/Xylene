@@ -29,13 +29,9 @@
   for_loop = "for", [ declaration, { ",", declaration } ], ";", [ expression ], ";", [ expression ], "do", block, "end" ;
   while_loop = "while", expression, "do", block, "end" ;
   if_statement = "if", expression, "do", block, [ "else", block | if_statement ] | "end" ;
-  // TODO
-  type_definition = "define", "type", ident, [ "inherits", [ "from" ], type_list ], "do", [ contructor_definition ], [ { method_definition | member_definition } ], "end" ;
-  // TODO
-  constructor_definition = "define", "constructor", [ argument, {",", argument } ], "do", block, "end" ;
-  // TODO
-  method_definition = [ visibility_specifier ], [ "static" ], function ;
-  // TODO
+  type_definition = "type", ident, [ "inherits", [ "from" ], type_list ], "do", [ contructor_definition ], [ { method_definition | member_definition } ], "end" ;
+  constructor_definition = [ visibility_specifier ], "constructor", [ "[", argument, { ",", argument }, "]" ], "do", block, "end" ;
+  method_definition = visibility_specifier, [ "static" ], "method", function_signature, "do", block, "end" ;
   member_definition = [ visibility_specifier ], [ "static" ], declaration ;
   // TODO
   try_catch = "try", block, "catch", type_list, ident, "do", block, "end" ;
@@ -46,11 +42,11 @@
   // TODO
   export_statement = "export", ident, "as", ident ;
   // TODO
-  typedef = "define", type_list, "as", ident ;
+  typedef = "define", ident, "as", type_list ;
   // TODO
   native_fun_decl = "foreign", "function", function_signature, ";" ;
   
-  function_signature = [ ident ], [ "[", argument, { ",", argument }, "]"], [ "=>", type_list ] ;
+  function_signature = [ ident ], [ "[", argument, { ",", argument }, "]" ], [ "=>", type_list ] ;
   function = "function", function_signature, "do", block, "end" ;
   visibility_specifier = "public" | "private" | "protected" ;
   type_list = ident, {",", ident} ;
@@ -199,9 +195,13 @@ class FunctionParser: virtual public BlockParser {
 protected:
   /// \copydoc BlockNode::BlockNode(StatementParser*)
   FunctionParser(StatementParser* stp);
-private:
   /// Get a type list from current pos
   TypeList getTypeList();
+  /**
+    \brief Get arguments for signatures
+    \returns an instance of FunctionSignature::Arguments
+  */
+  FunctionSignature::Arguments getSigArgs();
 public:
   /**
     \brief Parse a function starting at the current token
@@ -229,6 +229,23 @@ public:
   Node<BranchNode>::Link ifStatement();
 };
 
+/**
+  \brief Provides the \link type \endlink method for parsing a type definition.
+  
+  Depends on FunctionParser for parsing constructors and methods.
+  Depends on DeclarationParser for parsing member definitions.
+*/
+
+class TypeParser: virtual public FunctionParser, virtual public DeclarationParser {
+protected:
+  TypeParser(StatementParser* stp);
+private:
+  Node<ConstructorNode>::Link constructor(Visibility vis);
+  Node<MethodNode>::Link method(Visibility vis, bool isStatic);
+  Node<MemberNode>::Link member(Visibility vis, bool isStatic);
+public:
+  Node<TypeNode>::Link type();
+};
 
 /**
   \brief Provides the \link statement \endlink method for parsing an a statement.
@@ -238,8 +255,9 @@ public:
   Depends on BlockParser for parsing blocks.
   Depends on DeclarationParser for parsing declarations.
   Depends on FunctionParser for parsing function definitions.
+  Depends on TypeParser for parsing type definitions.
 */
-class StatementParser: virtual public IfStatementParser, virtual public DeclarationParser, virtual public FunctionParser {
+class StatementParser: virtual public IfStatementParser, virtual public TypeParser {
 protected:
   /// \see BlockNode::BlockNode(StatementParser*)
   StatementParser();

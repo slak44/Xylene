@@ -24,8 +24,9 @@ TokenParser& TokenParser::parse(std::vector<Token> input) {
 BlockParser::BlockParser(StatementParser* stp): stp(stp) {}
 IfStatementParser::IfStatementParser(StatementParser* stp): BlockParser(stp) {}
 FunctionParser::FunctionParser(StatementParser* stp): BlockParser(stp) {}
-StatementParser::StatementParser(): BlockParser(this), IfStatementParser(this), FunctionParser(this) {}
-TokenParser::TokenParser(): BlockParser(this), IfStatementParser(this), FunctionParser(this) {}
+TypeParser::TypeParser(StatementParser* stp): BlockParser(stp), FunctionParser(stp) {}
+StatementParser::StatementParser(): BlockParser(this), IfStatementParser(this), FunctionParser(this), TypeParser(this) {}
+TokenParser::TokenParser(): BlockParser(this), IfStatementParser(this), FunctionParser(this), TypeParser(this) {}
 
 Node<ExpressionNode>::Link ExpressionParser::exprFromCurrent() {
   auto e = Node<ExpressionNode>::make(current());
@@ -230,16 +231,8 @@ Node<DeclarationNode>::Link DeclarationParser::declaration(bool throwIfEmpty) {
   if (accept(K_DEFINE)) {
     skip();
     // Dynamic variable declaration
-    if (accept(IDENTIFIER)) {
-      return declarationFromTypes({});
-    // Function declaration
-    } else if (accept(K_FUNCTION)) {
-      skip();
-      // TODO
-      throw InternalError("Unimplemented", {METADATA_PAIRS, {"token", "function def"}});
-    } else {
-      throw Error("SyntaxError", "Unexpected token after define keyword", current().trace);
-    }
+    expect(IDENTIFIER, "Unexpected token after define keyword");
+    return declarationFromTypes({});
   } else if (accept(IDENTIFIER)) {
     auto ident = current().data;
     skip();
@@ -260,7 +253,7 @@ Node<DeclarationNode>::Link DeclarationParser::declaration(bool throwIfEmpty) {
       return declarationFromTypes(types);
     }
   }
-  throw InternalError("Invalid declaration", {METADATA_PAIRS});
+  throw Error("SyntaxError", "Invalid declaration", current().trace);
 }
 
 Node<BranchNode>::Link IfStatementParser::ifStatement() {
@@ -297,10 +290,29 @@ TypeList FunctionParser::getTypeList() {
   return types;
 }
 
+FunctionSignature::Arguments FunctionParser::getSigArgs() {
+  FunctionSignature::Arguments args;
+  while (true) {
+    expect(IDENTIFIER, "Expected identifier in function arguments");
+    TypeList tl = getTypeList();
+    args.insert(std::make_pair(current().data, tl));
+    skip(); // Skip the argument name
+    if (accept(C_SQPAREN_RIGHT)) {
+      skip();
+      break;
+    }
+    if (!accept(",")) {
+      throw Error("SyntaxError", "Expected comma after function argument", current().trace);
+    }
+    skip(); // The comma
+  }
+  return args;
+}
+
 Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
   if (isForeign) skip(); // Skip "foreign"
   Trace trace = current().trace;
-  skip(); // Skip "function"
+  skip(); // Skip "function" or "method"
   std::string ident = "";
   FunctionSignature::Arguments args {};
   std::unique_ptr<TypeInfo> returnType;
@@ -313,20 +325,7 @@ Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
   // Has arguments
   if (accept(C_SQPAREN_LEFT)) {
     skip();
-    while (true) {
-      expect(IDENTIFIER, "Expected identifier in function arguments");
-      TypeList tl = getTypeList();
-      args.insert(std::make_pair(current().data, tl));
-      skip(); // Skip the argument name
-      if (accept(C_SQPAREN_RIGHT)) {
-        skip();
-        break;
-      }
-      if (!accept(",")) {
-        throw Error("SyntaxError", "Expected comma after function argument", current().trace);
-      }
-      skip(); // The comma
-    }
+    args = getSigArgs();
   }
   // Has return type
   if (accept(K_FAT_ARROW)) {
@@ -342,8 +341,92 @@ Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
   return func;
 }
 
+Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis) {
+  Trace constrTrace = current().trace;
+  skip(); // Skip "constructor"
+  FunctionSignature::Arguments args {};
+  // Has arguments
+  if (accept(C_SQPAREN_LEFT)) {
+    skip();
+    args = getSigArgs();
+  }
+  auto constr = Node<ConstructorNode>::make(args, vis);
+  constr->setTrace(constrTrace);
+  constr->setCode(block(FUNCTION_BLOCK));
+  return constr;
+}
+
+Node<MethodNode>::Link TypeParser::method(Visibility vis, bool isStatic) {
+  Trace methTrace = current().trace;
+  auto parsedAsFunc = function();
+  auto methNode = Node<MethodNode>::make(parsedAsFunc->getIdentifier(), parsedAsFunc->getSignature(), vis, isStatic);
+  methNode->setTrace(methTrace);
+  methNode->setCode(Node<BlockNode>::staticPtrCast(parsedAsFunc->removeChild(0)));
+  return methNode;
+}
+
+Node<MemberNode>::Link TypeParser::member(Visibility vis, bool isStatic) {
+  Trace mbTrace = current().trace;
+  auto parsedAsDecl = declaration();
+  auto mbNode = Node<MemberNode>::make(parsedAsDecl->getIdentifier(), parsedAsDecl->getTypeInfo().getEvalTypeList(), isStatic, vis);
+  mbNode->setTrace(mbTrace);
+  if (parsedAsDecl->getChildren().size() > 0) mbNode->setInit(Node<ExpressionNode>::staticPtrCast(parsedAsDecl->removeChild(0)));
+  return mbNode;
+}
+
+Node<TypeNode>::Link TypeParser::type() {
+  skip(); // Skip "type"
+  expect(IDENTIFIER, "Expected identifier after 'type' token");
+  Node<TypeNode>::Link tn;
+  Token identTok = current();
+  skip();
+  if (accept(K_INHERITS)) {
+    skip();
+    if (accept(K_FROM)) skip(); // Having "from" after "inherits" is optional
+    tn = Node<TypeNode>::make(identTok.data, getTypeList());
+  } else {
+    tn = Node<TypeNode>::make(identTok.data);
+  }
+  tn->setTrace(identTok.trace);
+  expect(K_DO, "Expected type body");
+  skip();
+  while (!accept(K_END)) {
+    if (accept(FILE_END)) {
+      skip(-1); // Go back to get a prettier trace
+      throw Error("SyntaxError", "Type body is not closed by 'end'", current().trace);
+    }
+    bool isStatic = false;
+    Visibility visibility = INVALID;
+    // Expect to see a visibility_specifier or static
+    while (accept(K_PUBLIC) || accept(K_PRIVATE) || accept(K_PROTECT) || accept(K_STATIC)) {
+      if (accept(K_STATIC)) {
+        if (isStatic == true) throw Error("SyntaxError", "Cannot specify 'static' more than once", current().trace);
+        isStatic = true;
+      } else {
+        if (visibility != INVALID) throw Error("SyntaxError", "Cannot have more than one visibility specifier", current().trace);
+        visibility = fromToken(current());
+      }
+      skip();
+    }
+    // Handle things that go in the body
+    if (accept(K_CONSTR)) {
+      if (isStatic) throw Error("SyntaxError", "Constructors can't be static", current().trace);
+      tn->addChild(constructor(visibility));
+    } else if (accept(K_METHOD)) {
+      if (visibility == INVALID) throw Error("SyntaxError", "Methods require a visibility specifier", current().trace);
+      tn->addChild(method(visibility, isStatic));
+    } else {
+      tn->addChild(member(visibility, isStatic));
+      expectSemi();
+    }
+  }
+  return tn;
+}
+
 ASTNode::Link StatementParser::statement() {
-  if (accept(K_IF)) {
+  if (accept(K_TYPE)) {
+    return type();
+  } else if (accept(K_IF)) {
     skip();
     return ifStatement();
   } else if (accept(K_FOR)) {

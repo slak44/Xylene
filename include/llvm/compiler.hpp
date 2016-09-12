@@ -118,6 +118,10 @@ private:
   void visitBlock(Node<BlockNode>::Link node);
   void visitBreakLoop(Node<BreakLoopNode>::Link node);
   void visitFunction(Node<FunctionNode>::Link node);
+  void visitType(Node<TypeNode>::Link node);
+  void visitConstructor(Node<ConstructorNode>::Link node);
+  void visitMethod(Node<MethodNode>::Link node);
+  void visitMember(Node<MemberNode>::Link node);
   
   /// Implementation detail
   llvm::Type* typeFromName(std::string typeName);
