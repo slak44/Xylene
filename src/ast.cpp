@@ -112,6 +112,31 @@ bool DeclarationNode::hasInit() const {
   return children[0] != nullptr;
 }
 
+TypeNode::TypeNode(std::string name, TypeList inheritsFrom): name(name), inheritsFrom(inheritsFrom) {}
+
+std::string TypeNode::getName() const {
+  return name;
+}
+
+TypeList TypeNode::getAncestors() const {
+  return inheritsFrom;
+}
+
+void TypeNode::addChild(Link child) {
+  if (
+    Node<ConstructorNode>::dynPtrCast(child) ||
+    Node<MethodNode>::dynPtrCast(child) ||
+    Node<MemberNode>::dynPtrCast(child)
+  ) {
+    ASTNode::addChild(child);
+  } else {
+    throw InternalError("Attempt to add invalid type to TypeNode", {
+      METADATA_PAIRS,
+      {"valid types", "ConstructorNode MethodNode MemberNode"}
+    });
+  }
+}
+
 BranchNode::BranchNode(): NoMoreChildrenNode(3) {}
 
 LoopNode::LoopNode(): NoMoreChildrenNode(4) {}
@@ -145,6 +170,23 @@ bool FunctionNode::isForeign() const {
 }
 bool FunctionNode::isAnon() const {
   return ident.empty();
+}
+
+ConstructorNode::ConstructorNode(FunctionSignature::Arguments args):
+  FunctionNode(FunctionSignature(TypeInfo(nullptr), args)) {}
+  
+MethodNode::MethodNode(std::string name, FunctionSignature sig, bool staticM):
+  FunctionNode(name, sig), staticM(staticM) {}
+  
+bool MethodNode::isStatic() const {
+  return staticM;
+}
+
+MemberNode::MemberNode(std::string identifier, TypeList typeList, bool staticM):
+  DeclarationNode(identifier, typeList), staticM(staticM) {}
+
+bool MemberNode::isStatic() const {
+  return staticM;
 }
 
 /**
