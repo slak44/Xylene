@@ -173,14 +173,18 @@ bool FunctionNode::isAnon() const {
 }
 
 ConstructorNode::ConstructorNode(FunctionSignature::Arguments args, Visibility vis):
-  FunctionNode(FunctionSignature(TypeInfo(nullptr), args)), vis(vis) {}
+  FunctionNode(FunctionSignature(TypeInfo(nullptr), args)), vis(vis) {
+  if (vis == INVALID) throw InternalError("Invalid visibility", {METADATA_PAIRS});
+}
   
 Visibility ConstructorNode::getVisibility() const {
   return vis;
 }
   
 MethodNode::MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM, bool isForeign):
-  FunctionNode(name, sig, isForeign), vis(vis), staticM(staticM) {}
+  FunctionNode(name, sig, isForeign), vis(vis), staticM(staticM) {
+  if (vis == INVALID) throw InternalError("Invalid visibility", {METADATA_PAIRS});
+}
   
 Visibility MethodNode::getVisibility() const {
   return vis;

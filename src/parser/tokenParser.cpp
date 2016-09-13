@@ -350,7 +350,7 @@ Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis) {
     skip();
     args = getSigArgs();
   }
-  auto constr = Node<ConstructorNode>::make(args, vis);
+  auto constr = Node<ConstructorNode>::make(args, vis == INVALID ? PUBLIC : vis);
   constr->setTrace(constrTrace);
   constr->setCode(block(FUNCTION_BLOCK));
   return constr;
@@ -368,7 +368,7 @@ Node<MethodNode>::Link TypeParser::method(Visibility vis, bool isStatic, bool is
 Node<MemberNode>::Link TypeParser::member(Visibility vis, bool isStatic) {
   Trace mbTrace = current().trace;
   auto parsedAsDecl = declaration();
-  auto mbNode = Node<MemberNode>::make(parsedAsDecl->getIdentifier(), parsedAsDecl->getTypeInfo().getEvalTypeList(), isStatic, vis);
+  auto mbNode = Node<MemberNode>::make(parsedAsDecl->getIdentifier(), parsedAsDecl->getTypeInfo().getEvalTypeList(), isStatic, vis == INVALID ? PRIVATE : vis);
   mbNode->setTrace(mbTrace);
   if (parsedAsDecl->getChildren().size() > 0) mbNode->setInit(Node<ExpressionNode>::staticPtrCast(parsedAsDecl->removeChild(0)));
   return mbNode;
