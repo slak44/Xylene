@@ -47,4 +47,6 @@ TEST(UtilTest, Collate) {
 TEST(UtilTest, Split) {
   auto splitted = split("Lorem ipsum dolor sit amet", ' ');
   ASSERT_EQ(splitted, std::vector<std::string>({"Lorem", "ipsum", "dolor", "sit", "amet"}));
+  auto empty = split("", ' ');
+  ASSERT_EQ(empty, std::vector<std::string> {});
 }
