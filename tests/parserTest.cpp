@@ -98,3 +98,17 @@ TEST_F(ParserCompareTest, ReturnStatement) {
     return 1 + 1;
   )code", "data/parser/simple_return.xml");
 }
+
+TEST_F(ParserCompareTest, Type) {
+  test(R"code(
+    type CoolType inherits from CoolParentType do
+      Integer i = 0;
+      public constructor [Integer int] do
+        i = int;
+      end
+      public static method nice [Integer x] => Integer do
+        return x + 1;
+      end
+    end
+  )code", "data/parser/type_complete.xml");
+}
