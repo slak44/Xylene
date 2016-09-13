@@ -414,11 +414,13 @@ class MethodNode: public FunctionNode {
 private:
   Visibility vis;
   bool staticM;
+  bool foreignM;
 public:
-  MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM = false);
+  MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM = false, bool foreignM = false);
   
   Visibility getVisibility() const;
   bool isStatic() const;
+  bool isForeign() const;
   
   void printTree(uint level) const override;
   

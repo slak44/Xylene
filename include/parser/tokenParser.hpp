@@ -31,7 +31,7 @@
   if_statement = "if", expression, "do", block, [ "else", block | if_statement ] | "end" ;
   type_definition = "type", ident, [ "inherits", [ "from" ], type_list ], "do", [ contructor_definition ], [ { method_definition | member_definition } ], "end" ;
   constructor_definition = [ visibility_specifier ], "constructor", [ "[", argument, { ",", argument }, "]" ], "do", block, "end" ;
-  method_definition = visibility_specifier, [ "static" ], "method", function_signature, "do", block, "end" ;
+  method_definition = visibility_specifier, [ "static" ], [ "foreign" ], "method", function_signature, "do", block, "end" ;
   member_definition = [ visibility_specifier ], [ "static" ], declaration ;
   // TODO
   try_catch = "try", block, "catch", type_list, ident, "do", block, "end" ;
@@ -47,7 +47,7 @@
   native_fun_decl = "foreign", "function", function_signature, ";" ;
   
   function_signature = [ ident ], [ "[", argument, { ",", argument }, "]" ], [ "=>", type_list ] ;
-  function = "function", function_signature, "do", block, "end" ;
+  function = [ "foreign" ], "function", function_signature, "do", block, "end" ;
   visibility_specifier = "public" | "private" | "protected" ;
   type_list = ident, {",", ident} ;
   argument = ( type_list, ident ) ;
@@ -241,7 +241,7 @@ protected:
   TypeParser(StatementParser* stp);
 private:
   Node<ConstructorNode>::Link constructor(Visibility vis);
-  Node<MethodNode>::Link method(Visibility vis, bool isStatic);
+  Node<MethodNode>::Link method(Visibility vis, bool isStatic, bool isForeign);
   Node<MemberNode>::Link member(Visibility vis, bool isStatic);
 public:
   Node<TypeNode>::Link type();
