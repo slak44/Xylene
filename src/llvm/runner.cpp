@@ -12,7 +12,9 @@ Runner::Runner(CompileVisitor::Link v): v(v) {
     .setEngineKind(llvm::EngineKind::JIT)
     .create();
   for (const auto& pair : nameToFunPtr) {
-    engine->addGlobalMapping(v->getModule()->getFunction(pair.first), pair.second);
+    auto funPtr = v->getModule()->getFunction(pair.first);
+    if (funPtr == nullptr) continue; // Function not used
+    engine->addGlobalMapping(funPtr, pair.second);
   }
   engine->finalizeObject();
   if (onError != "") throw InternalError("ExecutionEngine error", {
