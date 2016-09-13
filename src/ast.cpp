@@ -179,8 +179,8 @@ Visibility ConstructorNode::getVisibility() const {
   return vis;
 }
   
-MethodNode::MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM):
-  FunctionNode(name, sig), vis(vis), staticM(staticM) {}
+MethodNode::MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM, bool foreignM):
+  FunctionNode(name, sig), vis(vis), staticM(staticM), foreignM(foreignM) {}
   
 Visibility MethodNode::getVisibility() const {
   return vis;
@@ -188,6 +188,10 @@ Visibility MethodNode::getVisibility() const {
   
 bool MethodNode::isStatic() const {
   return staticM;
+}
+
+bool MethodNode::isForeign() const {
+  return foreignM;
 }
 
 MemberNode::MemberNode(std::string identifier, TypeList typeList, bool staticM, Visibility vis):

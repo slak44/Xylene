@@ -356,12 +356,12 @@ Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis) {
   return constr;
 }
 
-Node<MethodNode>::Link TypeParser::method(Visibility vis, bool isStatic) {
+Node<MethodNode>::Link TypeParser::method(Visibility vis, bool isStatic, bool isForeign) {
   Trace methTrace = current().trace;
-  auto parsedAsFunc = function();
+  auto parsedAsFunc = function(isForeign);
   auto methNode = Node<MethodNode>::make(parsedAsFunc->getIdentifier(), parsedAsFunc->getSignature(), vis, isStatic);
   methNode->setTrace(methTrace);
-  methNode->setCode(Node<BlockNode>::staticPtrCast(parsedAsFunc->removeChild(0)));
+  if (!isForeign) methNode->setCode(Node<BlockNode>::staticPtrCast(parsedAsFunc->removeChild(0)));
   return methNode;
 }
 
@@ -396,12 +396,16 @@ Node<TypeNode>::Link TypeParser::type() {
       throw Error("SyntaxError", "Type body is not closed by 'end'", current().trace);
     }
     bool isStatic = false;
+    bool isForeign = false;
     Visibility visibility = INVALID;
-    // Expect to see a visibility_specifier or static
-    while (accept(K_PUBLIC) || accept(K_PRIVATE) || accept(K_PROTECT) || accept(K_STATIC)) {
+    // Expect to see a visibility_specifier or static or foreign
+    while (accept(K_PUBLIC) || accept(K_PRIVATE) || accept(K_PROTECT) || accept(K_STATIC) || accept(K_FOREIGN)) {
       if (accept(K_STATIC)) {
         if (isStatic == true) throw Error("SyntaxError", "Cannot specify 'static' more than once", current().trace);
         isStatic = true;
+      } else if (accept(K_FOREIGN)) {
+        if (isForeign == true) throw Error("SyntaxError", "Cannot specify 'foreign' more than once", current().trace);
+        isForeign = true;
       } else {
         if (visibility != INVALID) throw Error("SyntaxError", "Cannot have more than one visibility specifier", current().trace);
         visibility = fromToken(current());
@@ -411,11 +415,13 @@ Node<TypeNode>::Link TypeParser::type() {
     // Handle things that go in the body
     if (accept(K_CONSTR)) {
       if (isStatic) throw Error("SyntaxError", "Constructors can't be static", current().trace);
+      if (isForeign) throw Error("SyntaxError", "Constructors can't be foreign", current().trace);
       tn->addChild(constructor(visibility));
     } else if (accept(K_METHOD)) {
       if (visibility == INVALID) throw Error("SyntaxError", "Methods require a visibility specifier", current().trace);
-      tn->addChild(method(visibility, isStatic));
+      tn->addChild(method(visibility, isStatic, isForeign));
     } else {
+      if (isForeign) throw Error("SyntaxError", "Member fields can't be foreign", current().trace);
       tn->addChild(member(visibility, isStatic));
       expectSemi();
     }
