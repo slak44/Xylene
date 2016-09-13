@@ -53,6 +53,22 @@ public:
     - attribute \b args: comma separated list of arguments. An argument is a identifier, a colon, then a space separated list of types for it
     - attribute \b foreign: true or false. If true, this has no children and is an externally defined func
     - children: zero or one block node
+  - \c type: maps to a TypeNode
+    - attribute \b name: name of new type
+    - attribute \b inherits: list of space space-separated superclasses
+    - children: any number of constructors, methods and members
+  - \c constructor: maps to a ConstructorNode
+    - attribute \b args: comma separated list of arguments. An argument is a identifier, a colon, then a space separated list of types for it
+    - attribute \b visibility: public, private or protected
+    - children: inherit from function
+  - \c method: maps to a MethodNode
+    - inherit function attributes and children
+    - attribute \b visibility: public, private or protected
+    - attribute \b static: true if static
+  - \c member: maps to a MemberNode
+    - inherits declaration attributes and children
+    - attribute \b visibility: public, private or protected
+    - attribute \b static: true if static
 */
 class XMLParser: public BaseParser {
 public:
