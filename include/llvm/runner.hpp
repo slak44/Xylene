@@ -26,7 +26,10 @@ public:
   Runner(CompileVisitor::Link v);
   /// \return exit code of executed program
   int run();
-  /// \see ProgramResult
+  /**
+    \brief Runs the program and captures stdout (unreliable)
+    \deprecated spawn another process instead, this doesn't always work
+  */
   ProgramResult runAndCapture();
 };
 

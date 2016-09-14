@@ -57,6 +57,18 @@ ExternalProject_Add(
 )
 include_directories(SYSTEM ${TCLAP_PREFIX}/src/tclap/include)
 
+set(TINY_PROC_LIB_PREFIX ${PROJECT_SOURCE_DIR}/libs/tiny-process-library)
+ExternalProject_Add(
+  tiny-process-library
+  GIT_REPOSITORY https://github.com/eidheim/tiny-process-library.git
+  GIT_TAG v1.0.5
+  PREFIX ${TINY_PROC_LIB_PREFIX}
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
+)
+include_directories(SYSTEM ${TINY_PROC_LIB_PREFIX}/src)
+link_directories(${TINY_PROC_LIB_PREFIX}/src/tiny-process-library-build)
+
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 set(COMMON_SOURCES
   ${SRC_DIR}/utils/util.cpp
@@ -105,9 +117,10 @@ add_custom_command(TARGET clean-all PRE_BUILD COMMAND ${CMAKE_COMMAND} -E make_d
 
 function(make_exe_symlink target_name)
   set(SYMLINK_LOCATION ${PROJECT_SOURCE_DIR}/lg)
+  add_custom_target(${target_name})
+  add_dependencies(${target_name} ${target_name}_bin)
   # Remove old link
-  file(REMOVE ${SYMLINK_LOCATION})
+  add_custom_command(TARGET ${target_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E remove ${SYMLINK_LOCATION})
   # Symlink the exe to the project root
-  add_custom_target(symlink_${target_name} ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/bin/${target_name} ${SYMLINK_LOCATION})
-  add_dependencies(${target_name} symlink_${target_name})
+  add_custom_command(TARGET ${target_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/bin/${target_name} ${SYMLINK_LOCATION})
 endfunction(make_exe_symlink)

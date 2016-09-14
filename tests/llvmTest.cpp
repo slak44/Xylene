@@ -1,6 +1,7 @@
 #include <sstream>
 #include <gtest/gtest.h>
 #include <rapidxml_utils.hpp>
+#include <tiny-process-library/process.hpp>
 
 #include "llvm/compiler.hpp"
 #include "llvm/runner.hpp"
@@ -10,9 +11,12 @@ class LLVMCompilerTest: public ::testing::Test {
 protected:
   XMLParser xpx = XMLParser();
   
+  inline std::string absoluteXmlPath(std::string relativePath) {
+    return DATA_PARENT_DIR + ("/" + relativePath);
+  }
+  
   inline rapidxml::file<> xmlFile(std::string path) {
-    path = DATA_PARENT_DIR + ("/" + path);
-    return rapidxml::file<>(path.c_str());
+    return rapidxml::file<>(absoluteXmlPath(path).c_str());
   }
   
   inline CompileVisitor::Link compile(std::string xmlFilePath) {
@@ -35,9 +39,13 @@ protected:
   }
   
   inline ProgramResult compileAndRun(std::string xmlFilePath) {
-    auto v = compile(xmlFilePath);
-    Runner r(v);
-    return r.runAndCapture();
+    std::string stdout;
+    Process self(std::string(FULL_PROGRAM_PATH) + " --xml -f " + absoluteXmlPath(xmlFilePath), "",
+    [&stdout](const char* bytes, std::size_t) {
+      stdout = bytes;
+    });
+    auto exitCode = self.get_exit_status();
+    return {exitCode, stdout};
   }
 };
 
