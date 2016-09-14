@@ -1,32 +1,36 @@
 #include <sstream>
 #include <gtest/gtest.h>
 #include <rapidxml_utils.hpp>
+#include <experimental/filesystem>
 #include <tiny-process-library/process.hpp>
 
 #include "llvm/compiler.hpp"
 #include "llvm/runner.hpp"
 #include "parser/xmlParser.hpp"
 
+namespace fs = std::experimental::filesystem;
+
 class LLVMCompilerTest: public ::testing::Test {
 protected:
   XMLParser xpx = XMLParser();
   
-  inline std::string absoluteXmlPath(std::string relativePath) {
-    return DATA_PARENT_DIR + ("/" + relativePath);
+  inline std::string absoluteXmlPath(fs::path relativePath) {
+    fs::path dataParentDir = DATA_PARENT_DIR/relativePath;
+    return dataParentDir;
   }
   
-  inline rapidxml::file<> xmlFile(std::string path) {
+  inline rapidxml::file<> xmlFile(fs::path path) {
     return rapidxml::file<>(absoluteXmlPath(path).c_str());
   }
   
-  inline CompileVisitor::Link compile(std::string xmlFilePath) {
+  inline CompileVisitor::Link compile(fs::path xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
     CompileVisitor::Link visitor = CompileVisitor::create(xmlFilePath, xpx.getTree());
     visitor->visit();
     return visitor;
   }
   
-  inline void noThrowOnCompile(std::string xmlFilePath) {
+  inline void noThrowOnCompile(fs::path xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
     CompileVisitor::Link visitor = CompileVisitor::create(xmlFilePath, xpx.getTree());
     try {
@@ -38,7 +42,7 @@ protected:
     }
   }
   
-  inline ProgramResult compileAndRun(std::string xmlFilePath) {
+  inline ProgramResult compileAndRun(fs::path xmlFilePath) {
     std::string stdout;
     Process self(std::string(FULL_PROGRAM_PATH) + " --xml -f " + absoluteXmlPath(xmlFilePath), "",
     [&stdout](const char* bytes, std::size_t) {
