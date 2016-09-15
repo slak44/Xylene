@@ -1,6 +1,7 @@
 var NAVTREE =
 [
   [ "Test Lang", "index.html", [
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ]
     ] ],
@@ -34,7 +35,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "class_runner.html#ac61fd306bd325de63b6e342297f9793b",
-"token_type_8cpp.html#a48ae41cc1a8c0d131afebd2849f11e44"
+"token_type_8cpp.html#a229ef5d568ab52e67ca8524a8d33b676"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
