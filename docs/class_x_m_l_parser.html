@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -211,7 +212,31 @@ Additional Inherited Members</h2></td></tr>
 <li>attribute <b>return:</b> space separated list of return types, omit for void</li>
 <li>attribute <b>args:</b> comma separated list of arguments. An argument is a identifier, a colon, then a space separated list of types for it</li>
 <li>attribute <b>foreign:</b> true or false. If true, this has no children and is an externally defined func</li>
-<li>children: zero or one block node </li>
+<li>children: zero or one block node</li>
+</ul>
+</li>
+<li><code>type:</code> maps to a <a class="el" href="class_type_node.html" title="Definition of a new type. ">TypeNode</a><ul>
+<li>attribute <b>name:</b> name of new type</li>
+<li>attribute <b>inherits:</b> list of space space-separated superclasses</li>
+<li>children: any number of constructors, methods and members</li>
+</ul>
+</li>
+<li><code>constructor:</code> maps to a <a class="el" href="class_constructor_node.html" title="Represents a constructor. ">ConstructorNode</a><ul>
+<li>attribute <b>args:</b> comma separated list of arguments. An argument is a identifier, a colon, then a space separated list of types for it</li>
+<li>attribute <b>visibility:</b> public, private or protected</li>
+<li>children: inherit from function</li>
+</ul>
+</li>
+<li><code>method:</code> maps to a <a class="el" href="class_method_node.html" title="Represents a method. ">MethodNode</a><ul>
+<li>inherit function attributes and children</li>
+<li>attribute <b>visibility:</b> public, private or protected</li>
+<li>attribute <b>static:</b> true if static</li>
+</ul>
+</li>
+<li><code>member:</code> maps to a <a class="el" href="class_member_node.html" title="Represents a member declaration. ">MemberNode</a><ul>
+<li>inherits declaration attributes and children</li>
+<li>attribute <b>visibility:</b> public, private or protected</li>
+<li>attribute <b>static:</b> true if static </li>
 </ul>
 </li>
 </ul>
