@@ -93,9 +93,7 @@ llvm::Type* CompileVisitor::typeFromName(TypeName name) {
   if (name == "Boolean") return booleanType;
   else if (name == "Integer") return integerType;
   else if (name == "Float") return floatType;
-  else throw InternalError("Not Implemented", {METADATA_PAIRS});
-  // TODO user-defined types are handled here ^^
-  // Should have a map of user types to look into
+  else module->getValueSymbolTable().lookup(name);
 }
 
 llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti) {
@@ -380,8 +378,11 @@ void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
 }
 
 void CompileVisitor::visitType(Node<TypeNode>::Link node) {
-  UNUSED(node);
-  throw InternalError("Unimplemented", {METADATA_PAIRS});
+  // Opaque struct, body gets added after members are processed
+  auto structTy = llvm::StructType::create(*context, node->getName());
+  node->setTyData(new TypeData(structTy, shared_from_this(), node));
+  for (auto& child : node->getChildren()) child->visit(shared_from_this());
+  structTy->setBody(node->getTyData()->getStructMembers());
 }
 
 void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
@@ -395,6 +396,46 @@ void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
 }
 
 void CompileVisitor::visitMember(Node<MemberNode>::Link node) {
-  UNUSED(node);
-  throw InternalError("Unimplemented", {METADATA_PAIRS});
+  auto tyNode = Node<TypeNode>::staticPtrCast(node->getParent().lock());
+  auto nameFrom = [&tyNode](std::string prefix, std::string nameOfThing) -> std::string {
+    return prefix + "_" + tyNode->getName() + "_" + nameOfThing;
+  };
+  auto tyData = tyNode->getTyData();
+  if (node->isStatic()) {
+    llvm::GlobalVariable* staticVar = new llvm::GlobalVariable(
+      *module,
+      typeFromInfo(node->getTypeInfo()),
+      false,
+      llvm::GlobalValue::InternalLinkage,
+      nullptr,
+      nameFrom("static_member", node->getIdentifier())
+    );
+    if (node->hasInit()) {
+      auto currentBlock = builder->GetInsertBlock();
+      tyData->builderToStaticInit();
+      // Do the initialization
+      auto initValue = compileExpression(node->getInit());
+      builder->CreateStore(initValue, staticVar);
+      // Exit static initializer
+      functionStack.pop();
+      builder->SetInsertPoint(currentBlock);
+    }
+    return;
+  }
+  tyData->addStructMember(typeFromInfo(node->getTypeInfo()));
+  if (node->hasInit()) {
+    auto currentBlock = builder->GetInsertBlock();
+    tyData->builderToInit();
+    // Do the initialization
+    auto initValue = compileExpression(node->getInit());
+    auto structElemPtr = builder->CreateGEP(
+      tyData->getStructTy(),
+      tyData->getInitStructArg(),
+      llvm::ConstantInt::getSigned(integerType, tyData->getStructMemberIdx())
+    );
+    builder->CreateStore(initValue, structElemPtr);
+    // Exit initializer
+    functionStack.pop();
+    builder->SetInsertPoint(currentBlock);
+  }
 }
