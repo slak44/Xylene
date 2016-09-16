@@ -30,6 +30,7 @@
   \brief Each CompileVisitor creates a llvm::Module from an AST.
 */
 class CompileVisitor: public ASTVisitor, public std::enable_shared_from_this<CompileVisitor> {
+friend class TypeData;
 public:
   using Link = PtrUtil<CompileVisitor>::Link;
   using TypeName = std::string;
@@ -140,6 +141,61 @@ private:
   void compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding = nullptr);
   /// Implementation detail
   llvm::BasicBlock* compileBlock(Node<BlockNode>::Link node, const std::string& name);
+};
+
+/**
+  \brief Stores data about a type.
+*/
+class TypeData {
+private:
+  llvm::StructType* dataType;
+  CompileVisitor::Link cv;
+  std::vector<llvm::Type*> structMembers;
+  std::vector<std::string> structMemberNames;
+  Node<TypeNode>::Link node;
+  
+  inline std::string nameFrom(std::string prefix, std::string nameOfThing) {
+    return prefix + "_" + node->getName() + "_" + nameOfThing;
+  }
+  
+  // The static init signature does not change for different types
+  llvm::FunctionType* staticInitializerTy;
+  // The normal init, however, does change with the type
+  llvm::FunctionType* initializerTy;
+
+  llvm::Function* staticInitializer;
+  // TODO: Might be a good candidate for inlining
+  llvm::Function* initializer;
+  
+  llvm::BasicBlock* staticInitBlock;
+  llvm::BasicBlock* initBlock;
+  
+  bool hasStaticInit = false;
+  bool hasNormalInit = false;
+public:
+  /**
+    \brief Create a TypeData
+  */
+  TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNode>::Link tyNode);
+  
+  /// Gets a list of types used for this type's struct
+  std::vector<llvm::Type*> getStructMembers() const;
+  /// Add a new member to the type
+  void addStructMember(llvm::Type* newTy, std::string memberName);
+  /// Get the index of a member in the list using its name
+  std::size_t getStructMemberIdxFrom(std::string memberName) const;
+  /// Get the index of the last member
+  std::size_t getStructMemberIdx() const;
+  
+  /// Get the llvm::StructType backing this type
+  llvm::StructType* getStructTy() const;
+  
+  /// Set the attached CompileVisitor's builder to insert in the static initializer
+  void builderToStaticInit();
+  /// Set the attached CompileVisitor's builder to insert in the normal initializer
+  void builderToInit();
+  /// Get the first argument of the normal initializer, the pointer to the struct to manipulate
+  llvm::Argument* getInitStructArg() const;
 };
 
 #endif
