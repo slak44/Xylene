@@ -122,5 +122,5 @@ function(make_exe_symlink target_name)
   # Remove old link
   add_custom_command(TARGET ${target_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E remove ${SYMLINK_LOCATION})
   # Symlink the exe to the project root
-  add_custom_command(TARGET ${target_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/bin/${target_name} ${SYMLINK_LOCATION})
+  add_custom_command(TARGET ${target_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/bin/${target_name}_bin ${SYMLINK_LOCATION})
 endfunction(make_exe_symlink)
