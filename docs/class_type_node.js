@@ -4,8 +4,10 @@ var class_type_node =
     [ "addChild", "class_type_node.html#a226b3321e40bb3c54934185e610ee3b2", null ],
     [ "getAncestors", "class_type_node.html#ae34d2ad7e2a9eaa627676e11b42bcc81", null ],
     [ "getName", "class_type_node.html#ad7009d89a6c49d3eccaef2bed3f3847e", null ],
+    [ "getTyData", "class_type_node.html#a7305056987c409de22f18f4d4dcc9501", null ],
     [ "operator!=", "class_type_node.html#a5a017d7476b5c6898d5868396c4fc415", null ],
     [ "operator==", "class_type_node.html#a609183b7856070c156ecb89846f9f87d", null ],
     [ "printTree", "class_type_node.html#af7f31613750238e4980087f396a95c44", null ],
+    [ "setTyData", "class_type_node.html#a2fb402d2e4ec442ab998398967b74c8e", null ],
     [ "visit", "class_type_node.html#af31650192fe1f44d48be85e2df1d54b5", null ]
 ];

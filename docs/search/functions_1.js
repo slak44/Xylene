@@ -5,5 +5,7 @@ var searchData=
   ['blocknode',['BlockNode',['../class_block_node.html#ad3ed3631997e21c040c0aec7faac3db4',1,'BlockNode']]],
   ['blockparser',['BlockParser',['../class_block_parser.html#a9828145732b4644db2413ae66454d90a',1,'BlockParser']]],
   ['branchnode',['BranchNode',['../class_branch_node.html#aff288ed3cc7177c03614a0895f00534f',1,'BranchNode']]],
-  ['breakloopnode',['BreakLoopNode',['../class_break_loop_node.html#a6fb3cc9197dd0dc1fdefdd26609e6f4e',1,'BreakLoopNode']]]
+  ['breakloopnode',['BreakLoopNode',['../class_break_loop_node.html#a6fb3cc9197dd0dc1fdefdd26609e6f4e',1,'BreakLoopNode']]],
+  ['buildertoinit',['builderToInit',['../class_type_data.html#ad5427d75566b9595a7d6f697fe902a24',1,'TypeData']]],
+  ['buildertostaticinit',['builderToStaticInit',['../class_type_data.html#ad432cd6f9236d4a9d4ffee25944633f1',1,'TypeData']]]
 ];
