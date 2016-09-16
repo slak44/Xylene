@@ -122,6 +122,14 @@ TypeList TypeNode::getAncestors() const {
   return inheritsFrom;
 }
 
+TypeData* TypeNode::getTyData() const{
+  return typeData;
+}
+
+void TypeNode::setTyData(TypeData* newData) {
+  typeData = newData;
+}
+
 void TypeNode::addChild(Link child) {
   if (
     Node<ConstructorNode>::dynPtrCast(child) ||

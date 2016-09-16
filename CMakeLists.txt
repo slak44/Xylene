@@ -86,6 +86,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/llvm/compiler.cpp
   ${SRC_DIR}/llvm/runner.cpp
   ${SRC_DIR}/llvm/codegen.cpp
+  ${SRC_DIR}/llvm/type.cpp
   ${PROJECT_SOURCE_DIR}/stdlib/src/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor)
