@@ -62,6 +62,9 @@ var hierarchy =
       [ "Node< BlockNode >", "struct_node.html", null ]
     ] ],
     [ "PtrUtil< CompileVisitor >", "struct_ptr_util.html", null ],
+    [ "PtrUtil< TypeNode >", "struct_ptr_util.html", [
+      [ "Node< TypeNode >", "struct_node.html", null ]
+    ] ],
     [ "Range", "class_range.html", null ],
     [ "Runner", "class_runner.html", null ],
     [ "runtime_error", null, [
@@ -72,6 +75,7 @@ var hierarchy =
     ] ],
     [ "Token", "class_token.html", null ],
     [ "Trace", "class_trace.html", null ],
+    [ "TypeData", "class_type_data.html", null ],
     [ "TypeInfo", "class_type_info.html", [
       [ "DefiniteTypeInfo", "class_definite_type_info.html", null ],
       [ "StaticTypeInfo", "class_static_type_info.html", null ]

@@ -41,6 +41,7 @@ var annotated_dup =
     [ "TokenBaseParser", "class_token_base_parser.html", "class_token_base_parser" ],
     [ "TokenParser", "class_token_parser.html", "class_token_parser" ],
     [ "Trace", "class_trace.html", "class_trace" ],
+    [ "TypeData", "class_type_data.html", "class_type_data" ],
     [ "TypeInfo", "class_type_info.html", "class_type_info" ],
     [ "TypeNode", "class_type_node.html", "class_type_node" ],
     [ "TypeParser", "class_type_parser.html", "class_type_parser" ],
