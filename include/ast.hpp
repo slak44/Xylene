@@ -13,11 +13,43 @@
 
 namespace llvm {
   class BasicBlock;
+  class Function;
 }
+
 class TypeData;
+class DeclarationWrapper;
+class FunctionWrapper;
 
 class ASTVisitor;
 using ASTVisitorLink = PtrUtil<ASTVisitor>::Link;
+
+class ASTNode;
+using ASTNodeLink = std::shared_ptr<ASTNode>;
+
+/**
+  \brief Utility class for managing smart pointers of ASTNode subclasses
+*/
+template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
+struct Node: public PtrUtil<T> {
+  typedef typename PtrUtil<T>::Link Link;
+  typedef typename PtrUtil<T>::WeakLink WeakLink;
+  
+  /// Create a shared ptr that holds a node
+  template<typename... Args>
+  static Link make(Args... args) {
+    return std::make_shared<T>(args...);
+  }
+  
+  /// Technically overrides PtrUtil<T>::isSameType
+  static inline bool isSameType(ASTNodeLink node) {
+    return typeid(T) == typeid(*node);
+  }
+  
+  /// Technically overrides PtrUtil<T>::dynPtrCast
+  static inline Link dynPtrCast(ASTNodeLink node) {
+    return std::dynamic_pointer_cast<T>(node);
+  }
+};
 
 /**
   \brief A node in an AST
@@ -68,6 +100,26 @@ public:
   void setTrace(Trace trace);
   Trace getTrace() const;
   
+  /**
+    \brief Traverse the tree upwards until a node satisfies the condition or until we hit the root
+    \param isOk must return true for the node that satisfies the condition
+    \returns the first node that satisfies isOk, or nullptr if there aren't any
+  */
+  Link findAbove(std::function<bool(Link)> isOk) const;
+  
+  /**
+    \brief Traverse the tree upwards until a node that matches the type in the template is found
+    \returns the first node of type T
+  */
+  template<typename T>
+  typename Node<T>::Link findAbove() const {
+    return Node<T>::staticPtrCast(
+      findAbove([](ASTNode::Link lk) {
+        return Node<T>::dynPtrCast(lk) != nullptr;
+      })
+    );
+  }
+  
   /// Pretty printing for this node and all his children
   virtual void printTree(uint level) const;
   
@@ -75,31 +127,6 @@ public:
   virtual bool operator!=(const ASTNode& rhs) const;
   
   virtual void visit(ASTVisitorLink visitor) = 0;
-};
-
-/**
-  \brief Utility class for managing smart pointers of ASTNode subclasses
-*/
-template<typename T, typename std::enable_if<std::is_base_of<ASTNode, T>::value>::type* = nullptr>
-struct Node: public PtrUtil<T> {
-  typedef typename PtrUtil<T>::Link Link;
-  typedef typename PtrUtil<T>::WeakLink WeakLink;
-  
-  /// Create a shared ptr that holds a node
-  template<typename... Args>
-  static Link make(Args... args) {
-    return std::make_shared<T>(args...);
-  }
-  
-  /// Technically overrides PtrUtil<T>::isSameType
-  static inline bool isSameType(ASTNode::Link node) {
-    return typeid(T) == typeid(*node);
-  }
-  
-  /// Technically overrides PtrUtil<T>::dynPtrCast
-  static inline Link dynPtrCast(ASTNode::Link node) {
-    return std::dynamic_pointer_cast<T>(node);
-  }
 };
 
 /**
@@ -119,6 +146,11 @@ class BlockNode: public ASTNode {
 private:
   BlockType type;
 public:
+  /// Maps identifiers to their declaration (contains current value/type)
+  std::map<std::string, std::shared_ptr<DeclarationWrapper>> blockScope {};
+  /// Maps function names to their respective FunctionWrapper
+  std::map<std::string, std::shared_ptr<FunctionWrapper>> blockFuncs {};
+  
   BlockNode(BlockType type);
   
   BlockType getType() const;
