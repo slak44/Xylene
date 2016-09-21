@@ -1,3 +1,4 @@
 <map id="StaticTypeInfo" name="StaticTypeInfo">
-<area shape="rect" id="node2" href="$class_type_info.html" title="Stores info about the type of something. " alt="" coords="22,5,95,32"/>
+<area shape="rect" id="node2" href="$class_definite_type_info.html" title="TypeInfo that can&#39;t be void. " alt="" coords="5,80,123,107"/>
+<area shape="rect" id="node3" href="$class_type_info.html" title="Stores info about the type of something. " alt="" coords="27,5,101,32"/>
 </map>

@@ -2,7 +2,7 @@ var searchData=
 [
   ['tclap_5ferror',['TCLAP_ERROR',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3ac6dab3cc470e4f868e155a99cf426270',1,'main.cpp']]],
   ['ternary',['TERNARY',['../operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8a1ff4b84dd5f493753248cb3879535df6',1,'operator.hpp']]],
-  ['throwifvoid',['throwIfVoid',['../class_type_info.html#a54973dfc4dbbc15e574211338f2517d0',1,'TypeInfo']]],
+  ['throwifvoid',['throwIfVoid',['../class_type_info.html#ac1b095e12a7144674d33b04270d9bb75',1,'TypeInfo']]],
   ['token',['Token',['../class_token.html',1,'Token'],['../class_token.html#ab012e46d9985c9b636715d74c0d35f7b',1,'Token::Token(TokenType type, std::string data, Trace trace)'],['../class_token.html#aad2fec2bf78203f581eb86e00cb54bfd',1,'Token::Token(TokenType type, Operator::Index idx, Trace trace)'],['../class_token.html#a3c5fec977a46a214d0f91e897d3e8044',1,'Token::Token(TokenType type, Trace trace)']]],
   ['token_2ecpp',['token.cpp',['../token_8cpp.html',1,'']]],
   ['token_2ehpp',['token.hpp',['../token_8hpp.html',1,'']]],
@@ -15,11 +15,11 @@ var searchData=
   ['tokentype_2ecpp',['tokenType.cpp',['../token_type_8cpp.html',1,'']]],
   ['tokentype_2ehpp',['tokenType.hpp',['../token_type_8hpp.html',1,'']]],
   ['tokentypemap',['tokenTypeMap',['../token_type_8hpp.html#aaafb0742aecfaab458622a59ee7640c7',1,'tokenType.hpp']]],
-  ['tostring',['toString',['../class_token.html#a773d56523f5d9f8c510cf8a6ed3543a0',1,'Token::toString()'],['../struct_position.html#a898d96dc168c02365de0966e6797b18f',1,'Position::toString()'],['../class_range.html#a57ff942e8e698081cbf119f48e218a59',1,'Range::toString()'],['../class_trace.html#ac36c7d3d9c505dd8a96641654479beee',1,'Trace::toString()'],['../class_type_info.html#af9455fccefba2bcea7f5d51d86d9a683',1,'TypeInfo::toString()'],['../class_static_type_info.html#ab513dc5304b0a3f74a5cb3a26a80a238',1,'StaticTypeInfo::toString()'],['../class_definite_type_info.html#a7260c7341eeb832a885aad84376ca647',1,'DefiniteTypeInfo::toString()'],['../class_function_signature.html#afcfdbb6cd5f0c58362cad91c2f51740a',1,'FunctionSignature::toString()']]],
-  ['trace',['Trace',['../class_trace.html',1,'Trace'],['../class_trace.html#aa93f0325777bb0a7d357a87732a4b942',1,'Trace::Trace()'],['../class_a_s_t_node.html#a47a7fd44581057ba3d60e7b908630c7d',1,'ASTNode::trace()'],['../class_token.html#a74883fe52d2eb1226d988567def96633',1,'Token::trace()']]],
+  ['tostring',['toString',['../class_token.html#a6f1c3f5f607e9b576b4202b108f13c60',1,'Token::toString()'],['../struct_position.html#a898d96dc168c02365de0966e6797b18f',1,'Position::toString()'],['../class_range.html#a57ff942e8e698081cbf119f48e218a59',1,'Range::toString()'],['../class_trace.html#ac36c7d3d9c505dd8a96641654479beee',1,'Trace::toString()'],['../class_type_info.html#a207ff23756bb92e5491eabe29e560f89',1,'TypeInfo::toString()'],['../class_definite_type_info.html#a30a4b436c9338247b324ae9894e4691a',1,'DefiniteTypeInfo::toString()'],['../class_static_type_info.html#ad61cff9ab797d1cc1476ccf105beff4e',1,'StaticTypeInfo::toString()'],['../class_function_signature.html#a3cd5e8129edd430276649e555fe11566',1,'FunctionSignature::toString()']]],
+  ['trace',['Trace',['../class_trace.html',1,'Trace'],['../class_a_s_t_node.html#a47a7fd44581057ba3d60e7b908630c7d',1,'ASTNode::trace()'],['../class_token.html#a74883fe52d2eb1226d988567def96633',1,'Token::trace()'],['../class_trace.html#aa93f0325777bb0a7d357a87732a4b942',1,'Trace::Trace()']]],
   ['trace_2ecpp',['trace.cpp',['../trace_8cpp.html',1,'']]],
   ['trace_2ehpp',['trace.hpp',['../trace_8hpp.html',1,'']]],
-  ['transformarrayindex',['transformArrayIndex',['../class_a_s_t_node.html#abb5b90b9bd3f3b74d69f089e642a3f3a',1,'ASTNode']]],
+  ['transformarrayindex',['transformArrayIndex',['../class_a_s_t_node.html#a99773970b5735a10904ec24c1ba6827f',1,'ASTNode']]],
   ['tree',['tree',['../class_base_parser.html#a220c4ea03faa24b83264d73760c340d8',1,'BaseParser']]],
   ['type',['type',['../class_token.html#a67919af9f3a80dc0b28a0ab1e6d5bf8a',1,'Token::type()'],['../class_type_parser.html#a321e4d8f216ba3c5cf9310d6d2dbd8f3',1,'TypeParser::type()']]],
   ['type_2ecpp',['type.cpp',['../type_8cpp.html',1,'']]],
@@ -28,7 +28,8 @@ var searchData=
   ['typeinfo_2ecpp',['typeInfo.cpp',['../type_info_8cpp.html',1,'']]],
   ['typeinfo_2ehpp',['typeInfo.hpp',['../type_info_8hpp.html',1,'']]],
   ['typelist',['TypeList',['../util_8hpp.html#ab5d06be6c670b1b15d59910ef706886c',1,'util.hpp']]],
-  ['typename',['TypeName',['../class_compile_visitor.html#ae1437df3ca24836fa70f0724c21c7445',1,'CompileVisitor']]],
+  ['typemap',['TypeMap',['../class_operator_codegen.html#a74a06e97807382ef59b92356e9cfe637',1,'OperatorCodegen']]],
+  ['typename',['TypeName',['../compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874',1,'compiler.hpp']]],
   ['typenode',['TypeNode',['../class_type_node.html',1,'TypeNode'],['../class_type_node.html#a0b1e4eeaec30c1af29cdc11879c6c2c1',1,'TypeNode::TypeNode()']]],
   ['typeparser',['TypeParser',['../class_type_parser.html',1,'TypeParser'],['../class_type_parser.html#a4128dceb45a4f8d57ba470dc8bce829d',1,'TypeParser::TypeParser()']]]
 ];
