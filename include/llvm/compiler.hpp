@@ -26,14 +26,75 @@
 #include "ast.hpp"
 #include "operator.hpp"
 
+using TypeName = std::string;
+
+class OperatorCodegen;
+
+/**
+  \brief Holds a llvm::Value* and the type it currently carries
+*/
+class ValueWrapper {
+friend class CompileVisitor;
+public:
+  using Link = std::shared_ptr<ValueWrapper>;
+protected:
+  llvm::Value* llvmValue;
+  TypeName currentType;
+public:
+  ValueWrapper(llvm::Value* value, TypeName name);
+  ValueWrapper(std::pair<llvm::Value*, TypeName> pair);
+  
+  /// If the value is nullptr
+  bool isInitialized() const;
+  /// If the llvm::Type of the value is a pointer type
+  bool hasPointerValue() const;
+  
+  llvm::Value* getValue() const;
+  TypeName getCurrentTypeName() const;
+  void setValue(llvm::Value* newVal, TypeName newType);
+  
+  /// If the held value is a Boolean or can be converted to one
+  bool canBeBooleanValue() const;
+};
+
+/**
+  \brief Holds a llvm::Function* and its respective FunctionSignature
+*/
+class FunctionWrapper: public ValueWrapper {
+public:
+  using Link = std::shared_ptr<FunctionWrapper>;
+private:
+  FunctionSignature sig;
+public:
+  FunctionWrapper(llvm::Function* func, FunctionSignature sig);
+  
+  FunctionSignature getSignature() const;
+  
+  llvm::Function* getValue() const;
+};
+
+/**
+  \brief Holds the value pointing to the declared variable, its current type, and its list of allowed types
+*/
+class DeclarationWrapper: public ValueWrapper {
+public:
+  using Link = std::shared_ptr<DeclarationWrapper>;
+private:
+  TypeList tl;
+public:
+  DeclarationWrapper(llvm::Value* decl, TypeName current, TypeList tl);
+  
+  TypeList getTypeList() const;
+};
+
 /**
   \brief Each CompileVisitor creates a llvm::Module from an AST.
 */
 class CompileVisitor: public ASTVisitor, public std::enable_shared_from_this<CompileVisitor> {
 friend class TypeData;
+friend class OperatorCodegen;
 public:
   using Link = PtrUtil<CompileVisitor>::Link;
-  using TypeName = std::string;
 private:
   /// LLVM Context for this visitor
   llvm::LLVMContext* context;
@@ -45,42 +106,23 @@ private:
   llvm::Type* floatType;
   /// Boolean type
   llvm::IntegerType* booleanType;
+  
+  // TODO: this might not have to be global, since there will be collisions of types with the same name from different scopes
+  /**
+    \brief Maps type names to llvm::Type pointers so they can be allocated
+    
+    Type names must be obtained using scope resolution. This map only assigns those names their respective llvm type.
+  */
+  std::unordered_map<TypeName, llvm::Type*> typeMap;
 
   std::unique_ptr<llvm::IRBuilder<>> builder; ///< Used to construct llvm instructions
   llvm::Module* module; ///< The module that is being created
   llvm::Function* entryPoint; ///< Entry point for module
-  std::stack<llvm::Function*> functionStack; ///< Current function stack
+  std::stack<FunctionWrapper::Link> functionStack; ///< Current function stack
   AST ast; ///< Source AST
   
   /// Used for throwing consistent type mismatch errors
   static const std::string typeMismatchErrorString;
-  
-  /// Used to generate IR for operators
-  class OperatorCodegen {
-  public:
-    /// Generates IR using provided arguments
-    using CodegenFunction = std::function<llvm::Value*(std::vector<llvm::Value*>, Trace)>;
-    /// Signature for a lambda representing a CodegenFunction
-    #define CODEGEN_SIG (std::vector<llvm::Value*> operands, __attribute__((unused)) Trace trace) -> llvm::Value*
-    /// Maps operand types to a func that generates code from them
-    using TypeMap = std::unordered_map<std::vector<llvm::Type*>, CodegenFunction, VectorHash<llvm::Type*>>;
-  private:
-    CompileVisitor::Link cv;
-    
-    /// All operands are values; pointers are loaded
-    std::unordered_map<Operator::Name, TypeMap> codegenMap;
-    /// Operands are not processed
-    std::unordered_map<Operator::Name, CodegenFunction> specialCodegenMap;
-  public:
-    OperatorCodegen(CompileVisitor::Link cv);
-    
-    /// Search for a CodegenFunction everywhere
-    CodegenFunction findAndGetFun(Token tok, std::vector<llvm::Value*>& operands);
-    /// Search for a CodegenFunction in the specialCodegenMap
-    CodegenFunction getSpecialFun(Token tok) noexcept;
-    /// Search for a CodegenFunction in the codegenMap
-    CodegenFunction getNormalFun(Token tok, const std::vector<llvm::Type*>& types);
-  };
   
   /// Instance of OperatorCodegen
   std::unique_ptr<OperatorCodegen> codegen;
@@ -96,11 +138,7 @@ public:
     This method guarantees that at least one such pointer exists.
     It also handles creation of the OperatorCodegen, since that also requires a shared_ptr of this.
   */
-  static Link create(std::string moduleName, AST ast) {
-    auto thisThing = std::make_shared<CompileVisitor>(CompileVisitor(moduleName, ast));
-    thisThing->codegen = std::make_unique<OperatorCodegen>(OperatorCodegen(thisThing));
-    return thisThing;
-  }
+  static Link create(std::string moduleName, AST ast);
   
   /**
     \brief Compile the AST. Call this before trying to retrieve the module.
@@ -124,23 +162,69 @@ private:
   void visitMethod(Node<MethodNode>::Link node);
   void visitMember(Node<MemberNode>::Link node);
   
-  /// Implementation detail
-  llvm::Type* typeFromName(std::string typeName);
-  /// Implementation detail
+  /// Utility function for checking if a type is in a TypeList
+  static inline bool isTypeAllowedIn(TypeList tl, TypeName type) {
+    return std::find(ALL(tl), type) != tl.end();
+  }
+  
+  /// Get the DeclarationWrapper for an ExpressionNode containing an identifier
+  DeclarationWrapper::Link findDeclaration(Node<ExpressionNode>::Link node);
+  /// Gets the llvm:Type* to be allocated for the given type info
   llvm::Type* typeFromInfo(TypeInfo ti);
   /// How to handle an identifier in compileExpression
   enum IdentifierHandling {
     AS_POINTER, ///< Return a pointer
     AS_VALUE ///< Use a load instruction, and return that value
   };
-  /// Implementation detail
-  llvm::Value* valueFromIdentifier(Node<ExpressionNode>::Link identifier, IdentifierHandling how);
-  /// Implementation detail
-  llvm::Value* compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how = AS_VALUE);
-  /// Implementation detail
+  /// Gets a ValueWrapper for an ExpressionNode containing an identifier
+  ValueWrapper::Link valueFromIdentifier(Node<ExpressionNode>::Link identifier);
+  /// Implementation detail of visitExpression
+  ValueWrapper::Link compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how = AS_VALUE);
+  /// Implementation detail of visitBranch
   void compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding = nullptr);
-  /// Implementation detail
+  /// Implementation detail of visitBlock
   llvm::BasicBlock* compileBlock(Node<BlockNode>::Link node, const std::string& name);
+};
+
+/// Used to generate IR for operators
+class OperatorCodegen {
+friend class CompileVisitor;
+public:
+  /// Generates IR using provided arguments
+  using CodegenFunction = std::function<ValueWrapper::Link(std::vector<ValueWrapper::Link>&, std::vector<ValueWrapper::Link>&, Trace)>;
+  /// Generates IR using provided arguments
+  using SpecialCodegenFunction = std::function<ValueWrapper::Link(std::vector<ValueWrapper::Link>&, ASTNode::Link, Trace)>;
+  /// Signature for a lambda representing a CodegenFunction
+  #define CODEGEN_SIG (\
+    __attribute__((unused)) std::vector<ValueWrapper::Link>& operands,\
+    __attribute__((unused)) std::vector<ValueWrapper::Link>& rawOperands,\
+    __attribute__((unused)) Trace trace\
+  ) -> ValueWrapper::Link
+  /// Signature for a lambda representing a SpecialCodegenFunction
+  #define SPECIAL_CODEGEN_SIG (\
+    std::vector<ValueWrapper::Link>& operands,\
+    __attribute__((unused)) ASTNode::Link node,\
+    __attribute__((unused)) Trace trace\
+  ) -> ValueWrapper::Link
+  /// Maps operand types to a func that generates code from them
+  using TypeMap = std::unordered_map<std::vector<TypeName>, CodegenFunction, VectorHash<TypeName>>;
+private:
+  CompileVisitor::Link cv;
+  
+  /// All operands are values; pointers are loaded
+  std::unordered_map<Operator::Name, TypeMap> codegenMap;
+  /// Operands are not processed
+  std::unordered_map<Operator::Name, SpecialCodegenFunction> specialCodegenMap;
+  
+  /// Only CompileVisitor can construct this
+  OperatorCodegen(CompileVisitor::Link cv);
+public:
+  /// Search for a CodegenFunction everywhere, and run it
+  ValueWrapper::Link findAndRunFun(Node<ExpressionNode>::Link node, std::vector<ValueWrapper::Link>& operands);
+  /// Search for a CodegenFunction in the specialCodegenMap
+  SpecialCodegenFunction getSpecialFun(Node<ExpressionNode>::Link node) noexcept;
+  /// Search for a CodegenFunction in the codegenMap
+  CodegenFunction getNormalFun(Node<ExpressionNode>::Link node, const std::vector<TypeName>& types);
 };
 
 /**
@@ -163,9 +247,9 @@ private:
   // The normal init, however, does change with the type
   llvm::FunctionType* initializerTy;
 
-  llvm::Function* staticInitializer;
+  FunctionWrapper::Link staticInitializer = nullptr;
   // TODO: Might be a good candidate for inlining
-  llvm::Function* initializer;
+  FunctionWrapper::Link initializer = nullptr;
   
   llvm::BasicBlock* staticInitBlock;
   llvm::BasicBlock* initBlock;
