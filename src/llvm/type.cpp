@@ -14,27 +14,35 @@ TypeData::TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNod
     {llvm::PointerType::get(dataType, 0)},
     false
   )),
-  staticInitializer(llvm::Function::Create(
-    staticInitializerTy,
-    llvm::GlobalValue::InternalLinkage,
-    nameFrom("initializer", "static"),
-    cv->module
+  staticInitializer(std::make_shared<FunctionWrapper>(
+    llvm::Function::Create(
+      staticInitializerTy,
+      llvm::GlobalValue::InternalLinkage,
+      nameFrom("initializer", "static"),
+      cv->module
+    ),
+    FunctionSignature(nullptr, {})
   )),
-  initializer(llvm::Function::Create(
-    initializerTy,
-    llvm::GlobalValue::InternalLinkage,
-    nameFrom("initializer", "normal"),
-    cv->module
+  initializer(std::make_shared<FunctionWrapper>(
+    llvm::Function::Create(
+      initializerTy,
+      llvm::GlobalValue::InternalLinkage,
+      nameFrom("initializer", "normal"),
+      cv->module
+    ),
+    FunctionSignature(nullptr, {
+      {"this", StaticTypeInfo(tyNode->getName())}
+    })
   )),
   staticInitBlock(llvm::BasicBlock::Create(
     *cv->context,
     nameFrom("initializer", "staticblock"),
-    staticInitializer
+    staticInitializer->getValue()
   )),
   initBlock(llvm::BasicBlock::Create(
     *cv->context,
     nameFrom("initializer", "normalblock"),
-    initializer
+    initializer->getValue()
   )) {}
   
 std::vector<llvm::Type*> TypeData::getStructMembers() const {
@@ -63,7 +71,7 @@ void TypeData::builderToInit() {
 }
 
 llvm::Argument* TypeData::getInitStructArg() const {
-  return &(*initializer->getArgumentList().begin());
+  return &(*initializer->getValue()->getArgumentList().begin());
 }
 
 std::size_t TypeData::getStructMemberIdx() const {
@@ -72,4 +80,56 @@ std::size_t TypeData::getStructMemberIdx() const {
 
 std::size_t TypeData::getStructMemberIdxFrom(std::string memberName) const {
   return std::find(ALL(structMemberNames), memberName) - structMemberNames.begin();
+}
+
+ValueWrapper::ValueWrapper(llvm::Value* value, TypeName name):
+  llvmValue(value),
+  currentType(name) {}
+ValueWrapper::ValueWrapper(std::pair<llvm::Value*, TypeName> pair):
+  ValueWrapper(pair.first, pair.second) {}
+
+bool ValueWrapper::isInitialized() const {
+  return llvmValue != nullptr || currentType == "";
+}
+
+bool ValueWrapper::hasPointerValue() const {
+  return isInitialized() && llvmValue->getType()->isPointerTy();
+}
+
+llvm::Value* ValueWrapper::getValue() const {
+  return llvmValue;
+}
+
+void ValueWrapper::setValue(llvm::Value* newVal, TypeName newName) {
+  llvmValue = newVal;
+  currentType = newName;
+}
+
+TypeName ValueWrapper::getCurrentTypeName() const {
+  return currentType;
+}
+
+bool ValueWrapper::canBeBooleanValue() const {
+  // TODO: it might be convertible to boolean, check for that as well
+  return currentType == "Boolean";
+}
+
+FunctionWrapper::FunctionWrapper(llvm::Function* func, FunctionSignature sig):
+  ValueWrapper(func, "Function"),
+  sig(sig) {}
+
+FunctionSignature FunctionWrapper::getSignature() const {
+  return sig;
+}
+
+llvm::Function* FunctionWrapper::getValue() const {
+  return static_cast<llvm::Function*>(llvmValue);
+}
+
+DeclarationWrapper::DeclarationWrapper(llvm::Value* decl, TypeName current, TypeList tl):
+  ValueWrapper(decl, current),
+  tl(tl) {}
+
+TypeList DeclarationWrapper::getTypeList() const {
+  return tl;
 }
