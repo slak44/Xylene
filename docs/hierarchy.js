@@ -54,6 +54,7 @@ var hierarchy =
       [ "Lexer", "class_lexer.html", null ]
     ] ],
     [ "Operator", "class_operator.html", null ],
+    [ "OperatorCodegen", "class_operator_codegen.html", null ],
     [ "Position", "struct_position.html", null ],
     [ "PtrUtil< T >", "struct_ptr_util.html", [
       [ "Node< T, std::enable_if< std::is_base_of< ASTNode, T >::value >::type * >", "struct_node.html", null ]
@@ -77,8 +78,13 @@ var hierarchy =
     [ "Trace", "class_trace.html", null ],
     [ "TypeData", "class_type_data.html", null ],
     [ "TypeInfo", "class_type_info.html", [
-      [ "DefiniteTypeInfo", "class_definite_type_info.html", null ],
-      [ "StaticTypeInfo", "class_static_type_info.html", null ]
+      [ "DefiniteTypeInfo", "class_definite_type_info.html", [
+        [ "StaticTypeInfo", "class_static_type_info.html", null ]
+      ] ]
+    ] ],
+    [ "ValueWrapper", "class_value_wrapper.html", [
+      [ "DeclarationWrapper", "class_declaration_wrapper.html", null ],
+      [ "FunctionWrapper", "class_function_wrapper.html", null ]
     ] ],
     [ "VectorHash< T >", "struct_vector_hash.html", null ]
 ];

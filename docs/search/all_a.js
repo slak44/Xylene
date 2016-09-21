@@ -9,8 +9,9 @@ var searchData=
   ['lexer_2ehpp',['lexer.hpp',['../lexer_8hpp.html',1,'']]],
   ['lexerbase',['LexerBase',['../class_lexer_base.html',1,'']]],
   ['line',['line',['../struct_position.html#a188e34bf052a700e6483471b4d00269e',1,'Position']]],
-  ['link',['Link',['../class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df',1,'ASTNode::Link()'],['../struct_node.html#a936b66f046851bac4d2475cfb8192002',1,'Node::Link()'],['../class_compile_visitor.html#adbf7fd45a9e4d3bf5f987e0a4856ca98',1,'CompileVisitor::Link()'],['../struct_ptr_util.html#a286fdbb8622c5244cbbb23b0c97b7b14',1,'PtrUtil::Link()']]],
+  ['link',['Link',['../struct_node.html#a936b66f046851bac4d2475cfb8192002',1,'Node::Link()'],['../class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df',1,'ASTNode::Link()'],['../class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702',1,'ValueWrapper::Link()'],['../class_function_wrapper.html#acb5821d956cc84cf097d2ef4746367ac',1,'FunctionWrapper::Link()'],['../class_declaration_wrapper.html#ade064fa0c7d136ae83fbb84ead2ca399',1,'DeclarationWrapper::Link()'],['../class_compile_visitor.html#adbf7fd45a9e4d3bf5f987e0a4856ca98',1,'CompileVisitor::Link()'],['../struct_ptr_util.html#a286fdbb8622c5244cbbb23b0c97b7b14',1,'PtrUtil::Link()']]],
   ['llvm',['llvm',['../namespacellvm.html',1,'']]],
-  ['loadifpointer',['loadIfPointer',['../codegen_8cpp.html#a7b94b79caaca9d8d37538182f8f99e04',1,'codegen.cpp']]],
+  ['llvmvalue',['llvmValue',['../class_value_wrapper.html#afcd4fd19764a7ad73318a9a7f2116eb7',1,'ValueWrapper']]],
+  ['loadifpointer',['loadIfPointer',['../codegen_8cpp.html#a9077bfc05d41cbf631acb7c2b3b4d150',1,'codegen.cpp']]],
   ['loopnode',['LoopNode',['../class_loop_node.html',1,'LoopNode'],['../class_loop_node.html#aa4acfd7f28076437bde9b28a94539043',1,'LoopNode::LoopNode()']]]
 ];
