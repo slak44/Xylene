@@ -8,6 +8,8 @@
 #include "llvm/runner.hpp"
 #include "parser/xmlParser.hpp"
 
+extern "C" bool printIr;
+
 namespace fs = std::experimental::filesystem;
 
 class LLVMCompilerTest: public ::testing::Test {
@@ -27,6 +29,7 @@ protected:
     xpx.parse(xmlFile(xmlFilePath));
     CompileVisitor::Link visitor = CompileVisitor::create(xmlFilePath, xpx.getTree());
     visitor->visit();
+    if (printIr) visitor->getModule()->dump();
     return visitor;
   }
   
@@ -35,6 +38,7 @@ protected:
     CompileVisitor::Link visitor = CompileVisitor::create(xmlFilePath, xpx.getTree());
     try {
       visitor->visit();
+      if (printIr) visitor->getModule()->dump();
     } catch (InternalError& err) {
       EXPECT_NO_THROW(throw InternalError(err));
       println(err.what());
@@ -44,7 +48,8 @@ protected:
   
   inline ProgramResult compileAndRun(fs::path xmlFilePath) {
     std::string stdout;
-    Process self(std::string(FULL_PROGRAM_PATH) + " --xml -f " + absoluteXmlPath(xmlFilePath), "",
+    auto printIrSwitch = printIr ? " --ir" : "";
+    Process self(std::string(FULL_PROGRAM_PATH) + " --xml -f " + absoluteXmlPath(xmlFilePath) + printIrSwitch, "",
     [&stdout](const char* bytes, std::size_t) {
       stdout = bytes;
     });

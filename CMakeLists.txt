@@ -89,7 +89,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/llvm/type.cpp
   ${PROJECT_SOURCE_DIR}/stdlib/src/io.cpp
 )
-set(COMMON_DEPS rapidxml termcolor)
+set(COMMON_DEPS rapidxml termcolor tclap)
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
