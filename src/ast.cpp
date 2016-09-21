@@ -48,6 +48,14 @@ Trace ASTNode::getTrace() const {
   return trace;
 }
 
+ASTNode::Link ASTNode::findAbove(std::function<bool(Link)> isOk) const {
+  auto lastParent = this->getParent();
+  for (; ; lastParent = lastParent.lock()->getParent()) {
+    if (lastParent.lock() == nullptr) return nullptr;
+    if (isOk(lastParent.lock())) return lastParent.lock();
+  }
+}
+
 bool ASTNode::operator==(const ASTNode& rhs) const {
   if (typeid(*this) != typeid(rhs)) return false;
   if (children.size() != rhs.getChildren().size()) return false;
