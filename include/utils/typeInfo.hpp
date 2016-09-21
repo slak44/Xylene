@@ -51,21 +51,6 @@ public:
 };
 
 /**
-  \brief TypeInfo with a singular non-void, non-dynamic type.
-*/
-class StaticTypeInfo: public TypeInfo {
-public:
-  /**
-    \param type name of type to store
-  */
-  StaticTypeInfo(std::string type);
-  /// \copydoc StaticTypeInfo(std::string)
-  StaticTypeInfo(const char* type);
-  
-  std::string toString() const;
-};
-
-/**
   \brief TypeInfo that can't be void.
   
   Has the same constructors as TypeInfo, except for the void one.
@@ -77,6 +62,21 @@ public:
   /// \copydoc TypeInfo::TypeInfo()
   DefiniteTypeInfo();
   DefiniteTypeInfo(std::nullptr_t voidType) = delete;
+  
+  std::string toString() const;
+};
+
+/**
+  \brief TypeInfo with a singular non-void, non-dynamic type.
+*/
+class StaticTypeInfo: public DefiniteTypeInfo {
+public:
+  /**
+    \param type name of type to store
+  */
+  StaticTypeInfo(std::string type);
+  /// \copydoc StaticTypeInfo(std::string)
+  StaticTypeInfo(const char* type);
   
   std::string toString() const;
 };

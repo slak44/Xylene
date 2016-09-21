@@ -37,7 +37,7 @@ bool TypeInfo::operator!=(const TypeInfo& rhs) const {
   return !operator==(rhs);
 }
 
-StaticTypeInfo::StaticTypeInfo(std::string type): TypeInfo({type}) {}
+StaticTypeInfo::StaticTypeInfo(std::string type): DefiniteTypeInfo({type}) {}
 StaticTypeInfo::StaticTypeInfo(const char* type): StaticTypeInfo(std::string(type)) {}
 
 std::string StaticTypeInfo::toString() const {
