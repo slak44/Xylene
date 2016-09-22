@@ -131,32 +131,30 @@ struct Identity {
 };
 
 static const auto defaultCollateCombine = [](std::string prev, std::string current) {return prev + ", " + current;};
-#define COLLATE_TYPE const typename Container::value_type&
 
 /**
   \brief Collates a bunch of objects from Container into a string
+  \tparam Container full type of source container (ex std::vector<int>)
   \param c the Container with objects
   \param objToString lambda to convert the object to a string (by default uses Identity)
   \param combine reduce-style lambda
 */
 template<typename Container>
 std::string collate(Container c,
-  std::function<std::string(COLLATE_TYPE)> objToString = Identity(),
+  std::function<std::string(const typename Container::value_type&)> objToString = Identity(),
   std::function<std::string(std::string, std::string)> combine = defaultCollateCombine
   ) {
   if (c.size() == 0) return "";
   if (c.size() == 1) return objToString(*c.begin());
   if (c.size() >= 2) {
     std::string str = objToString(*c.begin());
-    std::for_each(++c.begin(), c.end(), [&str, &objToString, &combine](COLLATE_TYPE object) {
+    std::for_each(++c.begin(), c.end(), [&str, &objToString, &combine](const typename Container::value_type& object) {
       str = combine(str, objToString(object));
     });
     return str;
   }
   throw std::logic_error("Size of container must be a positive integer");
 }
-
-#undef COLLATE_TYPE
 
 /**
   \brief Convenience function
