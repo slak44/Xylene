@@ -228,15 +228,34 @@ public:
 };
 
 /**
+  \brief Stores information about a field in a type
+*/
+class MemberMetadata {
+public:
+  using Link = std::shared_ptr<MemberMetadata>;
+private:
+  DefiniteTypeInfo allowed;
+  llvm::Type* toAllocate;
+  std::string name;
+  Trace where;
+public:
+  MemberMetadata(DefiniteTypeInfo allowed, llvm::Type* toAllocate, std::string name, Trace where);
+  
+  DefiniteTypeInfo getTypeInfo() const;
+  llvm::Type* getAllocaType() const;
+  std::string getName() const;
+  Trace getTrace() const;
+};
+
+/**
   \brief Stores data about a type.
 */
 class TypeData {
 private:
   llvm::StructType* dataType;
   CompileVisitor::Link cv;
-  std::vector<llvm::Type*> structMembers;
-  std::vector<std::string> structMemberNames;
   Node<TypeNode>::Link node;
+  std::vector<MemberMetadata::Link> members;
   
   inline std::string nameFrom(std::string prefix, std::string nameOfThing) {
     return prefix + "_" + node->getName() + "_" + nameOfThing;
@@ -262,14 +281,12 @@ public:
   */
   TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNode>::Link tyNode);
   
-  /// Gets a list of types used for this type's struct
-  std::vector<llvm::Type*> getStructMembers() const;
+  /// Gets a list of members
+  std::vector<MemberMetadata::Link> getStructMembers() const;
+  /// Gets a list of types so we know what to allocate for the struct
+  std::vector<llvm::Type*> getAllocaTypes() const;
   /// Add a new member to the type
-  void addStructMember(llvm::Type* newTy, std::string memberName);
-  /// Get the index of a member in the list using its name
-  std::size_t getStructMemberIdxFrom(std::string memberName) const;
-  /// Get the index of the last member
-  std::size_t getStructMemberIdx() const;
+  void addStructMember(MemberMetadata newMember);
   
   /// Get the llvm::StructType backing this type
   llvm::StructType* getStructTy() const;

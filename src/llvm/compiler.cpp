@@ -484,7 +484,7 @@ void CompileVisitor::visitType(Node<TypeNode>::Link node) {
   auto structTy = llvm::StructType::create(*context, node->getName());
   node->setTyData(new TypeData(structTy, shared_from_this(), node));
   for (auto& child : node->getChildren()) child->visit(shared_from_this());
-  structTy->setBody(node->getTyData()->getStructMembers());
+  structTy->setBody(node->getTyData()->getAllocaTypes());
   typeMap.insert({node->getName(), structTy});
 }
 
@@ -528,7 +528,12 @@ void CompileVisitor::visitMember(Node<MemberNode>::Link node) {
     }
     return;
   }
-  tyData->addStructMember(typeFromInfo(node->getTypeInfo()), node->getIdentifier());
+  tyData->addStructMember(MemberMetadata(
+    node->getTypeInfo(),
+    typeFromInfo(node->getTypeInfo()),
+    node->getIdentifier(),
+    node->getTrace()
+  ));
   if (node->hasInit()) {
     auto currentBlock = builder->GetInsertBlock();
     tyData->builderToInit();
@@ -540,7 +545,7 @@ void CompileVisitor::visitMember(Node<MemberNode>::Link node) {
     auto structElemPtr = builder->CreateGEP(
       tyData->getStructTy(),
       tyData->getInitStructArg(),
-      llvm::ConstantInt::getSigned(integerType, tyData->getStructMemberIdx())
+      llvm::ConstantInt::getSigned(integerType, 0)
     );
     builder->CreateStore(initValue->getValue(), structElemPtr);
     // Exit initializer
