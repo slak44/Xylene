@@ -1,5 +1,32 @@
 #include "llvm/compiler.hpp"
 
+MemberMetadata::MemberMetadata(
+  DefiniteTypeInfo allowed,
+  llvm::Type* toAllocate,
+  std::string name,
+  Trace where
+):
+  allowed(allowed),
+  toAllocate(toAllocate),
+  name(name),
+  where(where) {}
+
+DefiniteTypeInfo MemberMetadata::getTypeInfo() const {
+  return allowed;
+}
+
+llvm::Type* MemberMetadata::getAllocaType() const {
+  return toAllocate;
+}
+
+std::string MemberMetadata::getName() const {
+  return name;
+}
+
+Trace MemberMetadata::getTrace() const {
+  return where;
+}
+
 TypeData::TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNode>::Link tyNode):
   dataType(type),
   cv(cv),
@@ -45,13 +72,28 @@ TypeData::TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNod
     initializer->getValue()
   )) {}
   
-std::vector<llvm::Type*> TypeData::getStructMembers() const {
-  return structMembers;
+std::vector<MemberMetadata::Link> TypeData::getStructMembers() const {
+  return members;
 }
 
-void TypeData::addStructMember(llvm::Type* newTy, std::string memberName) {
-  structMembers.push_back(newTy);
-  structMemberNames.push_back(memberName);
+std::vector<llvm::Type*> TypeData::getAllocaTypes() const {
+  std::vector<llvm::Type*> allocaTypes {};
+  std::transform(ALL(members), std::back_inserter(allocaTypes), [](auto a) {
+    return a->getAllocaType();
+  });
+  return allocaTypes;
+}
+
+void TypeData::addStructMember(MemberMetadata newMember) {
+  // Check if this name isn't already used
+  // TODO this is O(n) every time a member is added. If there's issues, use a map for checking in O(1).
+  if (std::find_if(ALL(members), [&newMember](MemberMetadata::Link m) {
+    return m->getName() == newMember.getName();
+  }) != members.end()) throw Error("SyntaxError",
+    "Duplicate member with name '" + newMember.getName() + "' in type " + node->getName(),
+    newMember.getTrace()
+  );
+  members.push_back(std::make_shared<MemberMetadata>(newMember));
 }
 
 llvm::StructType* TypeData::getStructTy() const {
@@ -72,14 +114,6 @@ void TypeData::builderToInit() {
 
 llvm::Argument* TypeData::getInitStructArg() const {
   return &(*initializer->getValue()->getArgumentList().begin());
-}
-
-std::size_t TypeData::getStructMemberIdx() const {
-  return structMembers.size() - 1;
-}
-
-std::size_t TypeData::getStructMemberIdxFrom(std::string memberName) const {
-  return std::find(ALL(structMemberNames), memberName) - structMemberNames.begin();
 }
 
 ValueWrapper::ValueWrapper(llvm::Value* value, TypeName name):
