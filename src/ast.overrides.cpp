@@ -148,7 +148,7 @@ void DeclarationNode::printTree(uint level) const {
 
 void TypeNode::printTree(uint level) const {
   printIndent(level);
-  print("Type Node", name, "inherits from", collate(inheritsFrom), "\n");
+  print("Type Node", name, inheritsFrom.size() ? "inherits from" + collate(inheritsFrom) : "\b", "\n");
   for (auto& child : children) child->printTree(level + 1);
 }
 
