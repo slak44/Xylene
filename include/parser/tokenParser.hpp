@@ -23,14 +23,16 @@
   block = [ statement, ";", { statement, ";" } ] ;
   statement =
     declaration | function | for_loop | while_loop | block | if_statement | try_catch | throw_statement |
-    expression | "break" | "continue" | import_statement | export_statement | type_definition | native_fun_decl;
+    expression | "break" | "continue" | import_statement | export_statement | type_definition | native_fun_decl ;
   declaration = "define" | type_list, ident, [ "=", expression ] ;
   // TODO make sure for loop can handle multiple declarations
-  for_loop = "for", [ declaration, { ",", declaration } ], ";", [ expression ], ";", [ expression ], "do", block, "end" ;
+  // TODO make sure for loop can handle multiple update expressions
+  for_loop = "for", [ declaration, { ",", declaration } ], ";", [ expression ], ";", [ expression, { ",", expression } ], "do", block, "end" ;
   while_loop = "while", expression, "do", block, "end" ;
   if_statement = "if", expression, "do", block, [ "else", block | if_statement ] | "end" ;
+  // TODO inheritance
   type_definition = "type", ident, [ "inherits", [ "from" ], type_list ], "do", [ contructor_definition ], [ { method_definition | member_definition } ], "end" ;
-  constructor_definition = [ visibility_specifier ], "constructor", [ "[", argument, { ",", argument }, "]" ], "do", block, "end" ;
+  constructor_definition = [ visibility_specifier ], [ "foreign" ], "constructor", [ "[", argument, { ",", argument }, "]" ], "do", block, "end" ;
   method_definition = visibility_specifier, [ "static" ], [ "foreign" ], "method", function_signature, "do", block, "end" ;
   member_definition = [ visibility_specifier ], [ "static" ], declaration ;
   // TODO
@@ -43,7 +45,6 @@
   export_statement = "export", ident, "as", ident ;
   // TODO
   typedef = "define", ident, "as", type_list ;
-  // TODO
   native_fun_decl = "foreign", "function", function_signature, ";" ;
   
   function_signature = [ ident ], [ "[", argument, { ",", argument }, "]" ], [ "=>", type_list ] ;
