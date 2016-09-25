@@ -1,6 +1,7 @@
 var searchData=
 [
   ['file_5fend',['FILE_END',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba240dccd0aaab5b16e9ee16070adf5382',1,'tokenType.hpp']]],
+  ['finalize',['finalize',['../class_type_data.html#abe40f4bf6631f3a0c927eafef3a577af',1,'TypeData']]],
   ['findabove',['findAbove',['../class_a_s_t_node.html#a47725885665cefb5d0fac9da915c4fa3',1,'ASTNode::findAbove(std::function&lt; bool(Link)&gt; isOk) const'],['../class_a_s_t_node.html#aa15addd0c2a2a0edb6e0fb5de113dce6',1,'ASTNode::findAbove() const']]],
   ['findandrunfun',['findAndRunFun',['../class_operator_codegen.html#a1de7c11e604a5db575f23aeef4f33966',1,'OperatorCodegen']]],
   ['fixity',['Fixity',['../operator_8hpp.html#af19b770f6e2116426144b702159f3bb0',1,'operator.hpp']]],

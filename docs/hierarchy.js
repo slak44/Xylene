@@ -53,6 +53,7 @@ var hierarchy =
     [ "LexerBase", "class_lexer_base.html", [
       [ "Lexer", "class_lexer.html", null ]
     ] ],
+    [ "MemberMetadata", "class_member_metadata.html", null ],
     [ "Operator", "class_operator.html", null ],
     [ "OperatorCodegen", "class_operator_codegen.html", null ],
     [ "Position", "struct_position.html", null ],
@@ -63,6 +64,9 @@ var hierarchy =
       [ "Node< BlockNode >", "struct_node.html", null ]
     ] ],
     [ "PtrUtil< CompileVisitor >", "struct_ptr_util.html", null ],
+    [ "PtrUtil< MemberNode >", "struct_ptr_util.html", [
+      [ "Node< MemberNode >", "struct_node.html", null ]
+    ] ],
     [ "PtrUtil< TypeNode >", "struct_ptr_util.html", [
       [ "Node< TypeNode >", "struct_node.html", null ]
     ] ],
@@ -83,7 +87,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "ValueWrapper", "class_value_wrapper.html", [
-      [ "DeclarationWrapper", "class_declaration_wrapper.html", null ],
+      [ "DeclarationWrapper", "class_declaration_wrapper.html", [
+        [ "InstanceWrapper", "class_instance_wrapper.html", null ]
+      ] ],
       [ "FunctionWrapper", "class_function_wrapper.html", null ]
     ] ],
     [ "VectorHash< T >", "struct_vector_hash.html", null ]

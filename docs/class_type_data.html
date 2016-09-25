@@ -82,14 +82,16 @@ $(document).ready(function(){initNavTree('class_type_data.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="class_type_data-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TypeData Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Stores data about a type.  
+<p>Maintans state for a type.  
  <a href="class_type_data.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="compiler_8hpp_source.html">compiler.hpp</a>&gt;</code></p>
@@ -97,38 +99,50 @@ $(document).ready(function(){initNavTree('class_type_data.html','');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a681f6e053d069245b2601d1f09c9ce9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a681f6e053d069245b2601d1f09c9ce9b">TypeData</a> (llvm::StructType *type, <a class="el" href="class_compile_visitor.html#adbf7fd45a9e4d3bf5f987e0a4856ca98">CompileVisitor::Link</a> cv, <a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_type_node.html">TypeNode</a> &gt;::Link tyNode)</td></tr>
-<tr class="memdesc:a681f6e053d069245b2601d1f09c9ce9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="class_type_data.html" title="Stores data about a type. ">TypeData</a>.  <a href="#a681f6e053d069245b2601d1f09c9ce9b">More...</a><br /></td></tr>
+<tr class="memdesc:a681f6e053d069245b2601d1f09c9ce9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="class_type_data.html" title="Maintans state for a type. ">TypeData</a>.  <a href="#a681f6e053d069245b2601d1f09c9ce9b">More...</a><br /></td></tr>
 <tr class="separator:a681f6e053d069245b2601d1f09c9ce9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b8fa3f526a153c414949a9d738b7221"><td class="memItemLeft" align="right" valign="top">std::vector&lt; llvm::Type * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a6b8fa3f526a153c414949a9d738b7221">getStructMembers</a> () const</td></tr>
-<tr class="memdesc:a6b8fa3f526a153c414949a9d738b7221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a list of types used for this type's struct.  <a href="#a6b8fa3f526a153c414949a9d738b7221">More...</a><br /></td></tr>
-<tr class="separator:a6b8fa3f526a153c414949a9d738b7221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cc487a07d1f5630a5a7d4fc897b4ad6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a0cc487a07d1f5630a5a7d4fc897b4ad6">addStructMember</a> (llvm::Type *newTy, std::string memberName)</td></tr>
-<tr class="memdesc:a0cc487a07d1f5630a5a7d4fc897b4ad6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new member to the type.  <a href="#a0cc487a07d1f5630a5a7d4fc897b4ad6">More...</a><br /></td></tr>
-<tr class="separator:a0cc487a07d1f5630a5a7d4fc897b4ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c3d6b5ef321eb926acd6014e960cf58"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a5c3d6b5ef321eb926acd6014e960cf58">getStructMemberIdxFrom</a> (std::string memberName) const</td></tr>
-<tr class="memdesc:a5c3d6b5ef321eb926acd6014e960cf58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of a member in the list using its name.  <a href="#a5c3d6b5ef321eb926acd6014e960cf58">More...</a><br /></td></tr>
-<tr class="separator:a5c3d6b5ef321eb926acd6014e960cf58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a8995749e1c7edb2d42c5eb40b9bd83"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a8a8995749e1c7edb2d42c5eb40b9bd83">getStructMemberIdx</a> () const</td></tr>
-<tr class="memdesc:a8a8995749e1c7edb2d42c5eb40b9bd83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the last member.  <a href="#a8a8995749e1c7edb2d42c5eb40b9bd83">More...</a><br /></td></tr>
-<tr class="separator:a8a8995749e1c7edb2d42c5eb40b9bd83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa962d7e8ea982f3977c8c9d508bdbd0c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#aa962d7e8ea982f3977c8c9d508bdbd0c">~TypeData</a> ()</td></tr>
+<tr class="separator:aa962d7e8ea982f3977c8c9d508bdbd0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95d3b9292467f235950d501cf15d0b25"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a95d3b9292467f235950d501cf15d0b25">TypeData</a> (const <a class="el" href="class_type_data.html">TypeData</a> &amp;)=delete</td></tr>
+<tr class="memdesc:a95d3b9292467f235950d501cf15d0b25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disallow copy constructor.  <a href="#a95d3b9292467f235950d501cf15d0b25">More...</a><br /></td></tr>
+<tr class="separator:a95d3b9292467f235950d501cf15d0b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94f35fc652f964c406d8a8327802e1a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_type_data.html">TypeData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a94f35fc652f964c406d8a8327802e1a0">operator=</a> (const <a class="el" href="class_type_data.html">TypeData</a> &amp;)=delete</td></tr>
+<tr class="memdesc:a94f35fc652f964c406d8a8327802e1a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disallow copy assignment.  <a href="#a94f35fc652f964c406d8a8327802e1a0">More...</a><br /></td></tr>
+<tr class="separator:a94f35fc652f964c406d8a8327802e1a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbc35bbacf44205a57333047781f8ac3"><td class="memItemLeft" align="right" valign="top">llvm::StructType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#adbc35bbacf44205a57333047781f8ac3">getStructTy</a> () const</td></tr>
 <tr class="memdesc:adbc35bbacf44205a57333047781f8ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the llvm::StructType backing this type.  <a href="#adbc35bbacf44205a57333047781f8ac3">More...</a><br /></td></tr>
 <tr class="separator:adbc35bbacf44205a57333047781f8ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad432cd6f9236d4a9d4ffee25944633f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ad432cd6f9236d4a9d4ffee25944633f1">builderToStaticInit</a> ()</td></tr>
-<tr class="memdesc:ad432cd6f9236d4a9d4ffee25944633f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the attached <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a>'s builder to insert in the static initializer.  <a href="#ad432cd6f9236d4a9d4ffee25944633f1">More...</a><br /></td></tr>
-<tr class="separator:ad432cd6f9236d4a9d4ffee25944633f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5427d75566b9595a7d6f697fe902a24"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ad5427d75566b9595a7d6f697fe902a24">builderToInit</a> ()</td></tr>
-<tr class="memdesc:ad5427d75566b9595a7d6f697fe902a24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the attached <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a>'s builder to insert in the normal initializer.  <a href="#ad5427d75566b9595a7d6f697fe902a24">More...</a><br /></td></tr>
-<tr class="separator:ad5427d75566b9595a7d6f697fe902a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade3debfeceee09df02f98bc208da7153"><td class="memItemLeft" align="right" valign="top">llvm::Argument *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ade3debfeceee09df02f98bc208da7153">getInitStructArg</a> () const</td></tr>
-<tr class="memdesc:ade3debfeceee09df02f98bc208da7153"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the first argument of the normal initializer, the pointer to the struct to manipulate.  <a href="#ade3debfeceee09df02f98bc208da7153">More...</a><br /></td></tr>
-<tr class="separator:ade3debfeceee09df02f98bc208da7153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d922e7746f85fe5ca6d73d6c03a320b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a4d922e7746f85fe5ca6d73d6c03a320b">getName</a> () const</td></tr>
+<tr class="memdesc:a4d922e7746f85fe5ca6d73d6c03a320b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of this type.  <a href="#a4d922e7746f85fe5ca6d73d6c03a320b">More...</a><br /></td></tr>
+<tr class="separator:a4d922e7746f85fe5ca6d73d6c03a320b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79bfe67f871ae5b2012cbe47de3693a2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_member_metadata.html#a663cd9d1e7faa9666c3fba64566b1d23">MemberMetadata::Link</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a79bfe67f871ae5b2012cbe47de3693a2">getStructMembers</a> () const</td></tr>
+<tr class="memdesc:a79bfe67f871ae5b2012cbe47de3693a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a list of members.  <a href="#a79bfe67f871ae5b2012cbe47de3693a2">More...</a><br /></td></tr>
+<tr class="separator:a79bfe67f871ae5b2012cbe47de3693a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3914d23bacac64683f5f0bd1839f6045"><td class="memItemLeft" align="right" valign="top">std::vector&lt; llvm::Type * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a3914d23bacac64683f5f0bd1839f6045">getAllocaTypes</a> () const</td></tr>
+<tr class="memdesc:a3914d23bacac64683f5f0bd1839f6045"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a list of types so we know what to allocate for the struct.  <a href="#a3914d23bacac64683f5f0bd1839f6045">More...</a><br /></td></tr>
+<tr class="separator:a3914d23bacac64683f5f0bd1839f6045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac99f96e6d67e326de22d1a7266ce35f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ac99f96e6d67e326de22d1a7266ce35f3">validateName</a> (std::string name) const</td></tr>
+<tr class="memdesc:ac99f96e6d67e326de22d1a7266ce35f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this name isn't already used for something else.  <a href="#ac99f96e6d67e326de22d1a7266ce35f3">More...</a><br /></td></tr>
+<tr class="separator:ac99f96e6d67e326de22d1a7266ce35f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3e669e4e3491df2819f07dcaad68f47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ad3e669e4e3491df2819f07dcaad68f47">addMember</a> (<a class="el" href="class_member_metadata.html">MemberMetadata</a> newMember, bool isStatic)</td></tr>
+<tr class="memdesc:ad3e669e4e3491df2819f07dcaad68f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new member to the type.  <a href="#ad3e669e4e3491df2819f07dcaad68f47">More...</a><br /></td></tr>
+<tr class="separator:ad3e669e4e3491df2819f07dcaad68f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe40f4bf6631f3a0c927eafef3a577af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#abe40f4bf6631f3a0c927eafef3a577af">finalize</a> ()</td></tr>
+<tr class="memdesc:abe40f4bf6631f3a0c927eafef3a577af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal that this type is completely built, and can be instantiated.  <a href="#abe40f4bf6631f3a0c927eafef3a577af">More...</a><br /></td></tr>
+<tr class="separator:abe40f4bf6631f3a0c927eafef3a577af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad88f0f530be32647d5aa16551fb95e2d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ad88f0f530be32647d5aa16551fb95e2d">isReady</a> () const</td></tr>
+<tr class="separator:ad88f0f530be32647d5aa16551fb95e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:aca1123bf97aa0cefedfb90514eb32a5d"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#aca1123bf97aa0cefedfb90514eb32a5d">InstanceWrapper</a></td></tr>
+<tr class="separator:aca1123bf97aa0cefedfb90514eb32a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Stores data about a type. </p>
+<div class="textblock"><p>Maintans state for a type. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a681f6e053d069245b2601d1f09c9ce9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a681f6e053d069245b2601d1f09c9ce9b">&sect;&nbsp;</a></span>TypeData()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a681f6e053d069245b2601d1f09c9ce9b">&sect;&nbsp;</a></span>TypeData() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,28 +173,81 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Create a <a class="el" href="class_type_data.html" title="Stores data about a type. ">TypeData</a>. </p>
+<p>Create a <a class="el" href="class_type_data.html" title="Maintans state for a type. ">TypeData</a>. </p>
+
+</div>
+</div>
+<a id="aa962d7e8ea982f3977c8c9d508bdbd0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa962d7e8ea982f3977c8c9d508bdbd0c">&sect;&nbsp;</a></span>~TypeData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TypeData::~TypeData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a95d3b9292467f235950d501cf15d0b25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95d3b9292467f235950d501cf15d0b25">&sect;&nbsp;</a></span>TypeData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TypeData::TypeData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_type_data.html">TypeData</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Disallow copy constructor. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0cc487a07d1f5630a5a7d4fc897b4ad6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cc487a07d1f5630a5a7d4fc897b4ad6">&sect;&nbsp;</a></span>addStructMember()</h2>
+<a id="ad3e669e4e3491df2819f07dcaad68f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3e669e4e3491df2819f07dcaad68f47">&sect;&nbsp;</a></span>addMember()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TypeData::addStructMember </td>
+          <td class="memname">void TypeData::addMember </td>
           <td>(</td>
-          <td class="paramtype">llvm::Type *&#160;</td>
-          <td class="paramname"><em>newTy</em>, </td>
+          <td class="paramtype"><a class="el" href="class_member_metadata.html">MemberMetadata</a>&#160;</td>
+          <td class="paramname"><em>newMember</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>memberName</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isStatic</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -194,14 +261,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad5427d75566b9595a7d6f697fe902a24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5427d75566b9595a7d6f697fe902a24">&sect;&nbsp;</a></span>builderToInit()</h2>
+<a id="abe40f4bf6631f3a0c927eafef3a577af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe40f4bf6631f3a0c927eafef3a577af">&sect;&nbsp;</a></span>finalize()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TypeData::builderToInit </td>
+          <td class="memname">void TypeData::finalize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -209,37 +276,22 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set the attached <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a>'s builder to insert in the normal initializer. </p>
+<p>Signal that this type is completely built, and can be instantiated. </p>
+<p>This does a couple things:</p><ul>
+<li>Adds codegen functions to initializers</li>
+<li>Finalizes both initializers </li>
+</ul>
 
 </div>
 </div>
-<a id="ad432cd6f9236d4a9d4ffee25944633f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad432cd6f9236d4a9d4ffee25944633f1">&sect;&nbsp;</a></span>builderToStaticInit()</h2>
+<a id="a3914d23bacac64683f5f0bd1839f6045"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3914d23bacac64683f5f0bd1839f6045">&sect;&nbsp;</a></span>getAllocaTypes()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TypeData::builderToStaticInit </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the attached <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a>'s builder to insert in the static initializer. </p>
-
-</div>
-</div>
-<a id="ade3debfeceee09df02f98bc208da7153"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade3debfeceee09df02f98bc208da7153">&sect;&nbsp;</a></span>getInitStructArg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">llvm::Argument * TypeData::getInitStructArg </td>
+          <td class="memname">std::vector&lt; llvm::Type * &gt; TypeData::getAllocaTypes </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -247,18 +299,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the first argument of the normal initializer, the pointer to the struct to manipulate. </p>
+<p>Gets a list of types so we know what to allocate for the struct. </p>
 
 </div>
 </div>
-<a id="a8a8995749e1c7edb2d42c5eb40b9bd83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a8995749e1c7edb2d42c5eb40b9bd83">&sect;&nbsp;</a></span>getStructMemberIdx()</h2>
+<a id="a4d922e7746f85fe5ca6d73d6c03a320b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d922e7746f85fe5ca6d73d6c03a320b">&sect;&nbsp;</a></span>getName()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TypeData::getStructMemberIdx </td>
+          <td class="memname"><a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> TypeData::getName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -266,38 +318,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the index of the last member. </p>
+<p>Get the name of this type. </p>
 
 </div>
 </div>
-<a id="a5c3d6b5ef321eb926acd6014e960cf58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c3d6b5ef321eb926acd6014e960cf58">&sect;&nbsp;</a></span>getStructMemberIdxFrom()</h2>
+<a id="a79bfe67f871ae5b2012cbe47de3693a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79bfe67f871ae5b2012cbe47de3693a2">&sect;&nbsp;</a></span>getStructMembers()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TypeData::getStructMemberIdxFrom </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>memberName</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get the index of a member in the list using its name. </p>
-
-</div>
-</div>
-<a id="a6b8fa3f526a153c414949a9d738b7221"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b8fa3f526a153c414949a9d738b7221">&sect;&nbsp;</a></span>getStructMembers()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; llvm::Type * &gt; TypeData::getStructMembers </td>
+          <td class="memname">std::vector&lt; <a class="el" href="class_member_metadata.html#a663cd9d1e7faa9666c3fba64566b1d23">MemberMetadata::Link</a> &gt; TypeData::getStructMembers </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -305,7 +337,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets a list of types used for this type's struct. </p>
+<p>Gets a list of members. </p>
 
 </div>
 </div>
@@ -325,6 +357,96 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the llvm::StructType backing this type. </p>
+
+</div>
+</div>
+<a id="ad88f0f530be32647d5aa16551fb95e2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad88f0f530be32647d5aa16551fb95e2d">&sect;&nbsp;</a></span>isReady()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TypeData::isReady </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p></p>
+
+</div>
+</div>
+<a id="a94f35fc652f964c406d8a8327802e1a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94f35fc652f964c406d8a8327802e1a0">&sect;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_type_data.html">TypeData</a>&amp; TypeData::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_type_data.html">TypeData</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Disallow copy assignment. </p>
+
+</div>
+</div>
+<a id="ac99f96e6d67e326de22d1a7266ce35f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac99f96e6d67e326de22d1a7266ce35f3">&sect;&nbsp;</a></span>validateName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TypeData::validateName </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if this name isn't already used for something else. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="aca1123bf97aa0cefedfb90514eb32a5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1123bf97aa0cefedfb90514eb32a5d">&sect;&nbsp;</a></span>InstanceWrapper</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="class_instance_wrapper.html">InstanceWrapper</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

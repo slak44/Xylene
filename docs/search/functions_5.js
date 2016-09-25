@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['finalize',['finalize',['../class_type_data.html#abe40f4bf6631f3a0c927eafef3a577af',1,'TypeData']]],
   ['findabove',['findAbove',['../class_a_s_t_node.html#a47725885665cefb5d0fac9da915c4fa3',1,'ASTNode::findAbove(std::function&lt; bool(Link)&gt; isOk) const'],['../class_a_s_t_node.html#aa15addd0c2a2a0edb6e0fb5de113dce6',1,'ASTNode::findAbove() const']]],
   ['findandrunfun',['findAndRunFun',['../class_operator_codegen.html#a1de7c11e604a5db575f23aeef4f33966',1,'OperatorCodegen']]],
   ['fromstring',['fromString',['../xml_parser_8cpp.html#ae386800c0dc89fb29899ae29649daba6',1,'xmlParser.cpp']]],
