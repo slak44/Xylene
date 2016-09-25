@@ -117,6 +117,7 @@ llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti) {
 ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Link identifier) {
   if (identifier->getToken().type != IDENTIFIER) throw InternalError("This function takes identifies only", {METADATA_PAIRS});
   // Check if it's an argument to this function, return it
+  // TODO might have to load it
   // LLVM arguments
   auto& argList = functionStack.top()->getValue()->getArgumentList();
   // FunctionSignature arguments
@@ -504,8 +505,37 @@ void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
 }
 
 void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
-  UNUSED(node);
-  throw InternalError("Unimplemented", {METADATA_PAIRS});
+  TypeData* tyData = Node<TypeNode>::staticPtrCast(node->getParent().lock())->getTyData();
+  auto sig = node->getSignature();
+  std::vector<llvm::Type*> argTypes {};
+  std::vector<std::string> argNames {};
+  // Non-static methods' first arg is a ptr to their object
+  if (!node->isStatic()) {
+    argTypes.push_back(tyData->getStructTy());
+    argNames.push_back("this");
+  }
+  for (std::pair<std::string, DefiniteTypeInfo> p : sig.getArguments()) {
+    argTypes.push_back(typeFromInfo(p.second));
+    argNames.push_back(p.first);
+  }
+  llvm::FunctionType* funType = llvm::FunctionType::get(typeFromInfo(sig.getReturnType()), argTypes, false);
+  auto funWrapper = std::make_shared<FunctionWrapper>(
+    llvm::Function::Create(
+      funType,
+      llvm::Function::InternalLinkage,
+      std::string(node->isStatic() ? "static" : "") + "method_" + tyData->getName() + "_" + node->getIdentifier(),
+      module
+    ),
+    sig
+  );
+  std::size_t nameIdx = 0;
+  for (auto& arg : funWrapper->getValue()->getArgumentList()) {
+    arg.setName(argNames[nameIdx]);
+    nameIdx++;
+  }
+  tyData->addMethod(MethodData(node, node->getIdentifier(), funWrapper), node->isStatic());
+  // Only non-foreign functions have a block after them
+  if (!node->isForeign()) compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
 }
 
 void CompileVisitor::visitMember(Node<MemberNode>::Link node) {

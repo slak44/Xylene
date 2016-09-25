@@ -275,6 +275,24 @@ public:
 };
 
 /**
+  \brief Stores a method in a type
+*/
+class MethodData {
+public:
+  using Link = std::shared_ptr<MethodData>;
+private:
+  Node<MethodNode>::Link meth;
+  std::string name;
+  FunctionWrapper::Link fun;
+public:
+  MethodData(Node<MethodNode>::Link meth, std::string name, FunctionWrapper::Link fun);
+  
+  FunctionWrapper::Link getFunction() const;
+  std::string getName() const;
+  Trace getTrace() const;
+};
+
+/**
   \brief Maintans state for a type.
 */
 class TypeData {
@@ -337,6 +355,10 @@ private:
   std::vector<MemberMetadata::Link> members;
   /// Metadata for static members of this type
   std::vector<MemberMetadata::Link> staticMembers;
+  /// List of methods
+  std::vector<MethodData::Link> methods;
+  /// List of static functions
+  std::vector<MethodData::Link> staticFunctions;
   /// The static initializer for this type. Can be empty
   TypeInitializer staticTi;
   /// The normal initializer for this type. Can be empty
@@ -372,6 +394,8 @@ public:
   void validateName(std::string name) const;
   /// Add a new member to the type
   void addMember(MemberMetadata newMember, bool isStatic);
+  /// Add a new method to the type
+  void addMethod(MethodData func, bool isStatic);
   /**
     \brief Signal that this type is completely built, and can be instantiated
     
