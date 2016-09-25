@@ -88,10 +88,37 @@ public:
 };
 
 /**
+  \brief Stores data about an instance of a type.
+  
+  This is still a DeclarationWrapper: the type whose instace is
+  being held can be changed if it is allowed by the TypeList.
+*/
+class InstanceWrapper: public DeclarationWrapper {
+public:
+  using Link = std::shared_ptr<InstanceWrapper>;
+private:
+  /// Maps member names to their declaration
+  std::map<std::string, DeclarationWrapper::Link> members {};
+  /// Maps static member names to their declaration
+  std::map<std::string, DeclarationWrapper::Link> staticMembers {};
+  /// TypeData associated with this type
+  TypeData* tyData;
+public:
+  InstanceWrapper(llvm::Value* instance, TypeList tl, TypeData* tyData);
+  
+  /// Changes the type of this instance (when assigning another type)
+  void changeTypeOfInstance(TypeData* newType);
+  /// Get a pointer to the member with the specified name
+  DeclarationWrapper::Link getMember(std::string name);
+};
+
+/**
   \brief Each CompileVisitor creates a llvm::Module from an AST.
 */
 class CompileVisitor: public ASTVisitor, public std::enable_shared_from_this<CompileVisitor> {
 friend class TypeData;
+friend class TypeInitializer;
+friend class InstanceWrapper;
 friend class OperatorCodegen;
 public:
   using Link = PtrUtil<CompileVisitor>::Link;
@@ -234,69 +261,127 @@ class MemberMetadata {
 public:
   using Link = std::shared_ptr<MemberMetadata>;
 private:
-  DefiniteTypeInfo allowed;
+  Node<MemberNode>::Link mem;
   llvm::Type* toAllocate;
-  std::string name;
-  Trace where;
 public:
-  MemberMetadata(DefiniteTypeInfo allowed, llvm::Type* toAllocate, std::string name, Trace where);
+  MemberMetadata(Node<MemberNode>::Link mem, llvm::Type* toAllocate);
   
   DefiniteTypeInfo getTypeInfo() const;
   llvm::Type* getAllocaType() const;
   std::string getName() const;
+  bool hasInit() const;
+  Node<ExpressionNode>::Link getInit() const;
   Trace getTrace() const;
 };
 
 /**
-  \brief Stores data about a type.
+  \brief Maintans state for a type.
 */
 class TypeData {
+friend class InstanceWrapper;
 private:
-  llvm::StructType* dataType;
-  CompileVisitor::Link cv;
-  Node<TypeNode>::Link node;
-  std::vector<MemberMetadata::Link> members;
+  /**
+    \brief Contains information about an initializer of a type
+    
+    Static initializers are don't take parameters.
+    Normal initializers take a pointer to the object to be initialized,
+    which has the type stored by the associated TypeData.
+  */
+  class TypeInitializer {
+  private:
+    /// Owner of this initializer
+    TypeData& owner;
+    /// Initializer type
+    llvm::FunctionType* ty;
+    /// Initializer function
+    FunctionWrapper::Link init;
+    /// BasicBlock in the initializer function
+    llvm::BasicBlock* initBlock;
+    /// If the initializer initializes anything
+    bool initExists = false;
+    /// Codegen functions to be called inside the initializer
+    std::vector<std::function<void(TypeInitializer&)>> initsToAdd;
+    /**
+      \brief The this object passed to be initialized
+      
+      Only for normal initializers.
+    */
+    InstanceWrapper::Link initializerInstance = nullptr;
+    
+    /**
+      \brief Gets the pointer passed to the initializerInstance
+      
+      Only for normal initializers.
+    */
+    ValueWrapper::Link getInitStructArg() const;
+  public:
+    enum Kind {STATIC, NORMAL};
+    TypeInitializer(TypeData& ty, Kind k);
+    
+    /// Signals that all codegen functions have been added, and builds the initializer
+    void finalize();
+    /// Adds a new codegen function to be called inside the initializer
+    void insertCode(std::function<void(TypeInitializer&)> what);
+    
+    FunctionWrapper::Link getInit() const;
+    InstanceWrapper::Link getInitInstance() const;
+  };
   
+  /// Pointer to the owning CompileVisitor
+  CompileVisitor::Link cv;
+  /// Pointer to the TypeNode where this type was defined
+  Node<TypeNode>::Link node;
+  /// llvm::Type of the llvm struct for this type
+  llvm::StructType* dataType;
+  /// Metadata for normal members of this type
+  std::vector<MemberMetadata::Link> members;
+  /// Metadata for static members of this type
+  std::vector<MemberMetadata::Link> staticMembers;
+  /// The static initializer for this type. Can be empty
+  TypeInitializer staticTi;
+  /// The normal initializer for this type. Can be empty
+  TypeInitializer normalTi;
+  /// If this object is ready to be instantiated or have its static members accessed
+  bool finalized = false;
+
+  /// Utility function for creating some identifiers
   inline std::string nameFrom(std::string prefix, std::string nameOfThing) {
     return prefix + "_" + node->getName() + "_" + nameOfThing;
   }
-  
-  // The static init signature does not change for different types
-  llvm::FunctionType* staticInitializerTy;
-  // The normal init, however, does change with the type
-  llvm::FunctionType* initializerTy;
-
-  FunctionWrapper::Link staticInitializer = nullptr;
-  // TODO: Might be a good candidate for inlining
-  FunctionWrapper::Link initializer = nullptr;
-  
-  llvm::BasicBlock* staticInitBlock;
-  llvm::BasicBlock* initBlock;
-  
-  bool hasStaticInit = false;
-  bool hasNormalInit = false;
 public:
   /**
     \brief Create a TypeData
   */
   TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNode>::Link tyNode);
+  inline ~TypeData() {}
   
+  /// Disallow copy constructor
+  TypeData(const TypeData&) = delete;
+  /// Disallow copy assignment
+  TypeData& operator=(const TypeData&) = delete;
+
+  /// Get the llvm::StructType backing this type
+  llvm::StructType* getStructTy() const;
+  /// Get the name of this type
+  TypeName getName() const;
   /// Gets a list of members
   std::vector<MemberMetadata::Link> getStructMembers() const;
   /// Gets a list of types so we know what to allocate for the struct
   std::vector<llvm::Type*> getAllocaTypes() const;
+  /// Check if this name isn't already used for something else
+  void validateName(std::string name) const;
   /// Add a new member to the type
-  void addStructMember(MemberMetadata newMember);
-  
-  /// Get the llvm::StructType backing this type
-  llvm::StructType* getStructTy() const;
-  
-  /// Set the attached CompileVisitor's builder to insert in the static initializer
-  void builderToStaticInit();
-  /// Set the attached CompileVisitor's builder to insert in the normal initializer
-  void builderToInit();
-  /// Get the first argument of the normal initializer, the pointer to the struct to manipulate
-  llvm::Argument* getInitStructArg() const;
+  void addMember(MemberMetadata newMember, bool isStatic);
+  /**
+    \brief Signal that this type is completely built, and can be instantiated
+    
+    This does a couple things:
+    - Adds codegen functions to initializers
+    - Finalizes both initializers
+  */
+  void finalize();
+  /// \copydoc finalized
+  bool isReady() const;
 };
 
 #endif
