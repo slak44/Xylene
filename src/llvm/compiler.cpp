@@ -480,12 +480,22 @@ void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
 }
 
 void CompileVisitor::visitType(Node<TypeNode>::Link node) {
+  auto structTy = module->getTypeByName(node->getName());
+  // TODO: check for scope. maybe it was defined in another scope
+  if (structTy) throw Error("SyntaxError", "Redefinition of type " + node->getName(), node->getTrace());
   // Opaque struct, body gets added after members are processed
-  auto structTy = llvm::StructType::create(*context, node->getName());
+  structTy = llvm::StructType::create(*context, node->getName());
   node->setTyData(new TypeData(structTy, shared_from_this(), node));
   for (auto& child : node->getChildren()) child->visit(shared_from_this());
   structTy->setBody(node->getTyData()->getAllocaTypes());
-  typeMap.insert({node->getName(), structTy});
+  // Insert the type in the typeMap
+  auto tyMapIt = typeMap.find(node->getName());
+  if (tyMapIt != typeMap.end()) throw Error(
+    "ReferenceError",
+    "Type " + node->getName() + " already exists",
+    node->getTrace()
+  );
+  typeMap[tyMapIt->first] = structTy;
 }
 
 void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
@@ -500,56 +510,7 @@ void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
 
 void CompileVisitor::visitMember(Node<MemberNode>::Link node) {
   auto tyNode = Node<TypeNode>::staticPtrCast(node->getParent().lock());
-  auto nameFrom = [&tyNode](std::string prefix, std::string nameOfThing) -> std::string {
-    return prefix + "_" + tyNode->getName() + "_" + nameOfThing;
-  };
-  auto tyData = tyNode->getTyData();
-  if (node->isStatic()) {
-    llvm::GlobalVariable* staticVar = new llvm::GlobalVariable(
-      *module,
-      typeFromInfo(node->getTypeInfo()),
-      false,
-      llvm::GlobalValue::InternalLinkage,
-      nullptr,
-      nameFrom("static_member", node->getIdentifier())
-    );
-    if (node->hasInit()) {
-      auto currentBlock = builder->GetInsertBlock();
-      tyData->builderToStaticInit();
-      // Do the initialization
-      auto initValue = compileExpression(node->getInit());
-      if (!isTypeAllowedIn(node->getTypeInfo().getEvalTypeList(), initValue->getCurrentTypeName())) {
-        throw Error("TypeError", "Static member initialization does not match its type", node->getInit()->getTrace());
-      }
-      builder->CreateStore(initValue->getValue(), staticVar);
-      // Exit static initializer
-      functionStack.pop();
-      builder->SetInsertPoint(currentBlock);
-    }
-    return;
-  }
-  tyData->addStructMember(MemberMetadata(
-    node->getTypeInfo(),
-    typeFromInfo(node->getTypeInfo()),
-    node->getIdentifier(),
-    node->getTrace()
-  ));
-  if (node->hasInit()) {
-    auto currentBlock = builder->GetInsertBlock();
-    tyData->builderToInit();
-    // Do the initialization
-    auto initValue = compileExpression(node->getInit());
-    if (!isTypeAllowedIn(node->getTypeInfo().getEvalTypeList(), initValue->getCurrentTypeName())) {
-      throw Error("TypeError", "Member initialization does not match its type", node->getInit()->getTrace());
-    }
-    auto structElemPtr = builder->CreateGEP(
-      tyData->getStructTy(),
-      tyData->getInitStructArg(),
-      llvm::ConstantInt::getSigned(integerType, 0)
-    );
-    builder->CreateStore(initValue->getValue(), structElemPtr);
-    // Exit initializer
-    functionStack.pop();
-    builder->SetInsertPoint(currentBlock);
-  }
+  const auto& tyData = tyNode->getTyData();
+  // This method also makes sure the members are initialized when appropriate
+  tyData->addMember(MemberMetadata(node, typeFromInfo(node->getTypeInfo())), node->isStatic());
 }
