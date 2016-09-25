@@ -91,3 +91,7 @@ TEST_F(LLVMCompilerTest, Functions) {
   noThrowOnCompile("data/llvm/functions/void_ret.xml");
   EXPECT_EQ(compileAndRun("data/llvm/functions/foreign.xml"), ProgramResult({0, "A"}));
 }
+
+TEST_F(LLVMCompilerTest, UserTypes) {
+  noThrowOnCompile("data/llvm/simple_type.xml");
+}

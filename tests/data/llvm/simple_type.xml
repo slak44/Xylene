@@ -1,0 +1,38 @@
+<!--
+type CoolType do
+  Integer i = 0;
+  public constructor [Integer int] do
+    i = int;
+  end
+  public static method nice [Integer x] => Integer do
+    return x + 1;
+  end
+end
+CoolType ct;
+-->
+<block type="root">
+  <type name="CoolType">
+    <member ident="i" types="Integer" visibility="private" static="false">
+      <expr type="Integer" value="0"/>
+    </member>
+    <constructor args="int:Integer" visibility="public">
+      <block type="function">
+        <expr type="Operator" value="Assignment">
+          <expr type="Identifier" value="i"/>
+          <expr type="Identifier" value="int"/>
+        </expr>
+      </block>
+    </constructor>
+    <method ident="nice" return="Integer" args="x:Integer" foreign="false" static="true" visibility="public">
+      <block type="function">
+        <return>
+          <expr type="Operator" value="Add">
+            <expr type="Identifier" value="x"/>
+            <expr type="Integer" value="1"/>
+          </expr>
+        </return>
+      </block>
+    </method>
+  </type>
+  <decl ident="ct" types="CoolType"></decl>
+</block>
