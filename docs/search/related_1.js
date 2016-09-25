@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operatorcodegen',['OperatorCodegen',['../class_compile_visitor.html#aa7051afbbb1c3ad552a7abaa58bcb454',1,'CompileVisitor']]]
+  ['instancewrapper',['InstanceWrapper',['../class_compile_visitor.html#aca1123bf97aa0cefedfb90514eb32a5d',1,'CompileVisitor::InstanceWrapper()'],['../class_type_data.html#aca1123bf97aa0cefedfb90514eb32a5d',1,'TypeData::InstanceWrapper()']]]
 ];

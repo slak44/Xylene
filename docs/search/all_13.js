@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['validatename',['validateName',['../class_type_data.html#ac99f96e6d67e326de22d1a7266ce35f3',1,'TypeData']]],
   ['valuewrapper',['ValueWrapper',['../class_value_wrapper.html',1,'ValueWrapper'],['../class_value_wrapper.html#a61330b8f922b6e239c8c6ca14a903748',1,'ValueWrapper::ValueWrapper(llvm::Value *value, TypeName name)'],['../class_value_wrapper.html#aa7c4678fa8e3b3da0b2326c723179ddf',1,'ValueWrapper::ValueWrapper(std::pair&lt; llvm::Value *, TypeName &gt; pair)']]],
   ['vectorhash',['VectorHash',['../struct_vector_hash.html',1,'']]],
   ['visibility',['Visibility',['../ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162',1,'ast.hpp']]],

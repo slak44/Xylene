@@ -1,12 +1,16 @@
 var class_type_data =
 [
     [ "TypeData", "class_type_data.html#a681f6e053d069245b2601d1f09c9ce9b", null ],
-    [ "addStructMember", "class_type_data.html#a0cc487a07d1f5630a5a7d4fc897b4ad6", null ],
-    [ "builderToInit", "class_type_data.html#ad5427d75566b9595a7d6f697fe902a24", null ],
-    [ "builderToStaticInit", "class_type_data.html#ad432cd6f9236d4a9d4ffee25944633f1", null ],
-    [ "getInitStructArg", "class_type_data.html#ade3debfeceee09df02f98bc208da7153", null ],
-    [ "getStructMemberIdx", "class_type_data.html#a8a8995749e1c7edb2d42c5eb40b9bd83", null ],
-    [ "getStructMemberIdxFrom", "class_type_data.html#a5c3d6b5ef321eb926acd6014e960cf58", null ],
-    [ "getStructMembers", "class_type_data.html#a6b8fa3f526a153c414949a9d738b7221", null ],
-    [ "getStructTy", "class_type_data.html#adbc35bbacf44205a57333047781f8ac3", null ]
+    [ "~TypeData", "class_type_data.html#aa962d7e8ea982f3977c8c9d508bdbd0c", null ],
+    [ "TypeData", "class_type_data.html#a95d3b9292467f235950d501cf15d0b25", null ],
+    [ "addMember", "class_type_data.html#ad3e669e4e3491df2819f07dcaad68f47", null ],
+    [ "finalize", "class_type_data.html#abe40f4bf6631f3a0c927eafef3a577af", null ],
+    [ "getAllocaTypes", "class_type_data.html#a3914d23bacac64683f5f0bd1839f6045", null ],
+    [ "getName", "class_type_data.html#a4d922e7746f85fe5ca6d73d6c03a320b", null ],
+    [ "getStructMembers", "class_type_data.html#a79bfe67f871ae5b2012cbe47de3693a2", null ],
+    [ "getStructTy", "class_type_data.html#adbc35bbacf44205a57333047781f8ac3", null ],
+    [ "isReady", "class_type_data.html#ad88f0f530be32647d5aa16551fb95e2d", null ],
+    [ "operator=", "class_type_data.html#a94f35fc652f964c406d8a8327802e1a0", null ],
+    [ "validateName", "class_type_data.html#ac99f96e6d67e326de22d1a7266ce35f3", null ],
+    [ "InstanceWrapper", "class_type_data.html#aca1123bf97aa0cefedfb90514eb32a5d", null ]
 ];

@@ -4,7 +4,7 @@ var searchData=
   ['acceptendofexpression',['acceptEndOfExpression',['../class_token_base_parser.html#a7749a4285cd5953079e9bab21a746389',1,'TokenBaseParser']]],
   ['acceptterminal',['acceptTerminal',['../class_token_base_parser.html#a361d5d44a718fb3d074d0cf09d9f6030',1,'TokenBaseParser']]],
   ['addchild',['addChild',['../class_a_s_t_node.html#a1ccee2f28eacfef347a853a0e081ac94',1,'ASTNode::addChild()'],['../class_type_node.html#a226b3321e40bb3c54934185e610ee3b2',1,'TypeNode::addChild()'],['../class_no_more_children_node.html#a987d2dedde5cdabab2ee220477ac66f6',1,'NoMoreChildrenNode::addChild()']]],
-  ['addstructmember',['addStructMember',['../class_type_data.html#a0cc487a07d1f5630a5a7d4fc897b4ad6',1,'TypeData']]],
+  ['addmember',['addMember',['../class_type_data.html#ad3e669e4e3491df2819f07dcaad68f47',1,'TypeData']]],
   ['addtoken',['addToken',['../class_lexer_base.html#aa4776a92d2d07ae428fe62fb0296c2e6',1,'LexerBase']]],
   ['all',['ALL',['../util_8hpp.html#a0fde0af84d5566911a450db1a8acb728',1,'util.hpp']]],
   ['arguments',['Arguments',['../class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4',1,'FunctionSignature']]],

@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_range.html" title="Tracks a range from a position to another in a file. " alt="" coords="5,5,64,32"/>
+<area shape="rect" id="node1" href="$struct_ptr_util.html" title="Smart pointer utils. " alt="" coords="5,27,89,54"/>
+<area shape="rect" id="node2" href="$struct_node.html" title="Utility class for managing smart pointers of ASTNode subclasses. " alt="" coords="137,5,284,76"/>
 </map>
