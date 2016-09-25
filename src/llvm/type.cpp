@@ -34,17 +34,19 @@ TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k):
         {"this", StaticTypeInfo(tyData.node->getName())}
       })
     );
-    initializerInstance = std::make_shared<InstanceWrapper>(
-      getInitStructArg()->getValue(),
-      TypeList {tyData.node->getName()},
-      &tyData
-    );
   }
   initBlock = llvm::BasicBlock::Create(
     *tyData.cv->context,
     tyData.nameFrom("initializer", k == STATIC ? "staticblock" : "normalblock"),
     init->getValue()
   );
+  if (k == NORMAL) {
+    initializerInstance = std::make_shared<InstanceWrapper>(
+      getInitStructArg()->getValue(),
+      TypeList {tyData.node->getName()},
+      &tyData
+    );
+  }
 }
 
 FunctionWrapper::Link TypeData::TypeInitializer::getInit() const {
@@ -57,17 +59,26 @@ InstanceWrapper::Link TypeData::TypeInitializer::getInitInstance() const {
 
 ValueWrapper::Link TypeData::TypeInitializer::getInitStructArg() const {
   static ValueWrapper::Link thisObject = nullptr;
-  // We can't use the function argument, so we create a pointer, and
-  // store the arg in it. That pointer we made is returned in the wrapper.
-  // This is only done once per initializer, since we only need a pointer, so then
+  // We can't use the function argument as is, so we create a pointer, and
+  // store the arg in it. That pointer is returned in the wrapper.
+  // This is only done once per initializer, since we only need a pointer and
   // we can keep returning that one pointer
   if (thisObject == nullptr) {
+    // Remember where we begin
+    auto startingPosition = owner.cv->builder->GetInsertBlock();
+    // Enter initializer
+    owner.cv->functionStack.push(init);
+    owner.cv->builder->SetInsertPoint(initBlock);
+    // Do the thing explained above
     llvm::Argument* thisArgPtr = &*init->getValue()->getArgumentList().begin();
     auto structPtrTy = llvm::PointerType::getUnqual(owner.dataType);
     llvm::Value* thisObjectValue = owner.cv->builder->CreateAlloca(structPtrTy, nullptr, "thisAlloc");
     owner.cv->builder->CreateStore(thisArgPtr, thisObjectValue);
     thisObjectValue = owner.cv->builder->CreateLoad(structPtrTy, thisObjectValue, "this");
     thisObject = std::make_shared<ValueWrapper>(thisObjectValue, owner.node->getName());
+    // Exit initializer
+    owner.cv->functionStack.pop();
+    owner.cv->builder->SetInsertPoint(startingPosition);
   }
   return thisObject;
 }
