@@ -138,6 +138,23 @@ Trace MemberMetadata::getTrace() const {
   return mem->getTrace();
 }
 
+MethodData::MethodData(Node<MethodNode>::Link meth, std::string name, FunctionWrapper::Link fun):
+  meth(meth),
+  name(name),
+  fun(fun) {}
+
+FunctionWrapper::Link MethodData::getFunction() const {
+  return fun;
+}
+
+std::string MethodData::getName() const {
+  return name;
+}
+
+Trace MethodData::getTrace() const {
+  return meth->getTrace();
+}
+
 TypeData::TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNode>::Link tyNode):
   cv(cv),
   node(tyNode),
@@ -180,6 +197,11 @@ void TypeData::validateName(std::string name) const {
 void TypeData::addMember(MemberMetadata newMember, bool isStatic) {
   validateName(newMember.getName());
   (isStatic ? staticMembers : members).push_back(std::make_shared<MemberMetadata>(newMember));
+}
+
+void TypeData::addMethod(MethodData func, bool isStatic) {
+  validateName(func.getName());
+  (isStatic ? staticFunctions : methods).push_back(std::make_shared<MethodData>(func));
 }
 
 llvm::StructType* TypeData::getStructTy() const {
