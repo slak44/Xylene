@@ -120,7 +120,9 @@ bool DeclarationNode::hasInit() const {
   return children[0] != nullptr;
 }
 
-TypeNode::TypeNode(std::string name, TypeList inheritsFrom): name(name), inheritsFrom(inheritsFrom) {}
+TypeNode::TypeNode(std::string name, TypeList inheritsFrom):
+  name(name),
+  inheritsFrom(inheritsFrom) {}
 
 std::string TypeNode::getName() const {
   return name;
