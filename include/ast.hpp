@@ -430,7 +430,7 @@ class ConstructorNode: public FunctionNode {
 private:
   Visibility vis;
 public:
-  ConstructorNode(FunctionSignature::Arguments constructorArgs, Visibility vis = PUBLIC);
+  ConstructorNode(FunctionSignature::Arguments constructorArgs, Visibility vis = PUBLIC, bool isForeign = false);
   
   Visibility getVisibility() const;
   

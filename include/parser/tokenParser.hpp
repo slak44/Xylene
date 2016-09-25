@@ -241,7 +241,7 @@ class TypeParser: virtual public FunctionParser, virtual public DeclarationParse
 protected:
   TypeParser(StatementParser* stp);
 private:
-  Node<ConstructorNode>::Link constructor(Visibility vis);
+  Node<ConstructorNode>::Link constructor(Visibility vis, bool isForeign);
   Node<MethodNode>::Link method(Visibility vis, bool isStatic, bool isForeign);
   Node<MemberNode>::Link member(Visibility vis, bool isStatic);
 public:

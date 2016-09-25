@@ -341,7 +341,7 @@ Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
   return func;
 }
 
-Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis) {
+Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis, bool isForeign) {
   Trace constrTrace = current().trace;
   skip(); // Skip "constructor"
   FunctionSignature::Arguments args {};
@@ -350,9 +350,13 @@ Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis) {
     skip();
     args = getSigArgs();
   }
-  auto constr = Node<ConstructorNode>::make(args, vis == INVALID ? PUBLIC : vis);
+  auto constr = Node<ConstructorNode>::make(args, vis == INVALID ? PUBLIC : vis, isForeign);
   constr->setTrace(constrTrace);
-  constr->setCode(block(FUNCTION_BLOCK));
+  if (isForeign) {
+    expectSemi();
+  } else {
+    constr->setCode(block(FUNCTION_BLOCK));    
+  }
   return constr;
 }
 
@@ -361,7 +365,11 @@ Node<MethodNode>::Link TypeParser::method(Visibility vis, bool isStatic, bool is
   auto parsedAsFunc = function(isForeign);
   auto methNode = Node<MethodNode>::make(parsedAsFunc->getIdentifier(), parsedAsFunc->getSignature(), vis, isStatic);
   methNode->setTrace(methTrace);
-  if (!isForeign) methNode->setCode(Node<BlockNode>::staticPtrCast(parsedAsFunc->removeChild(0)));
+  if (isForeign) {
+    expectSemi();
+  } else {
+    methNode->setCode(Node<BlockNode>::staticPtrCast(parsedAsFunc->removeChild(0)));
+  }
   return methNode;
 }
 
@@ -415,8 +423,7 @@ Node<TypeNode>::Link TypeParser::type() {
     // Handle things that go in the body
     if (accept(K_CONSTR)) {
       if (isStatic) throw Error("SyntaxError", "Constructors can't be static", current().trace);
-      if (isForeign) throw Error("SyntaxError", "Constructors can't be foreign", current().trace);
-      tn->addChild(constructor(visibility));
+      tn->addChild(constructor(visibility, isForeign));
     } else if (accept(K_METHOD)) {
       if (visibility == INVALID) throw Error("SyntaxError", "Methods require a visibility specifier", current().trace);
       tn->addChild(method(visibility, isStatic, isForeign));

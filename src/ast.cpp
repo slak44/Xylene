@@ -190,8 +190,8 @@ bool FunctionNode::isAnon() const {
   return ident.empty();
 }
 
-ConstructorNode::ConstructorNode(FunctionSignature::Arguments args, Visibility vis):
-  FunctionNode(FunctionSignature(TypeInfo(nullptr), args)), vis(vis) {
+ConstructorNode::ConstructorNode(FunctionSignature::Arguments args, Visibility vis, bool isForeign):
+  FunctionNode("constructor", FunctionSignature(TypeInfo(nullptr), args), isForeign), vis(vis) {
   if (vis == INVALID) throw InternalError("Invalid visibility", {METADATA_PAIRS});
 }
   
