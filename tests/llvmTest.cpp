@@ -93,5 +93,6 @@ TEST_F(LLVMCompilerTest, Functions) {
 }
 
 TEST_F(LLVMCompilerTest, UserTypes) {
-  noThrowOnCompile("data/llvm/simple_type.xml");
+  noThrowOnCompile("data/llvm/types/simple_type.xml");
+  noThrowOnCompile("data/llvm/types/method.xml");
 }
