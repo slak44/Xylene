@@ -208,6 +208,10 @@ llvm::StructType* TypeData::getStructTy() const {
   return dataType;
 }
 
+std::string TypeData::getName() const {
+  return node->getName();
+}
+
 void TypeData::finalize() {
   std::for_each(ALL(members), [&](MemberMetadata::Link mb) {
     if (!mb->hasInit()) return;
