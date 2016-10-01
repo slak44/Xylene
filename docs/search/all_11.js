@@ -2,6 +2,7 @@ var searchData=
 [
   ['tclap_5ferror',['TCLAP_ERROR',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3ac6dab3cc470e4f868e155a99cf426270',1,'main.cpp']]],
   ['ternary',['TERNARY',['../operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8a1ff4b84dd5f493753248cb3879535df6',1,'operator.hpp']]],
+  ['thisptrref',['thisPtrRef',['../class_constructor_data.html#a80db1149312c6e59fee721b7bdeb938c',1,'ConstructorData']]],
   ['throwifvoid',['throwIfVoid',['../class_type_info.html#ac1b095e12a7144674d33b04270d9bb75',1,'TypeInfo']]],
   ['token',['Token',['../class_token.html',1,'Token'],['../class_token.html#ab012e46d9985c9b636715d74c0d35f7b',1,'Token::Token(TokenType type, std::string data, Trace trace)'],['../class_token.html#aad2fec2bf78203f581eb86e00cb54bfd',1,'Token::Token(TokenType type, Operator::Index idx, Trace trace)'],['../class_token.html#a3c5fec977a46a214d0f91e897d3e8044',1,'Token::Token(TokenType type, Trace trace)']]],
   ['token_2ecpp',['token.cpp',['../token_8cpp.html',1,'']]],
