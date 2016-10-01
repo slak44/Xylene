@@ -15,11 +15,11 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
   module(new llvm::Module(moduleName, *context)),
   ast(ast) {
   llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
-  entryPoint = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module);
   functionStack.push(std::make_shared<FunctionWrapper>(
-    entryPoint,
+    llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module),
     FunctionSignature(TypeInfo({"Integer"}), {})
   ));
+  entryPoint = functionStack.top();
 }
 
 CompileVisitor::Link CompileVisitor::create(std::string moduleName, AST ast) {
@@ -52,7 +52,7 @@ llvm::Module* CompileVisitor::getModule() const {
 }
 
 llvm::Function* CompileVisitor::getEntryPoint() const {
-  return entryPoint;
+  return entryPoint->getValue();
 }
 
 void CompileVisitor::visitBlock(Node<BlockNode>::Link node) {
@@ -161,20 +161,27 @@ ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Lin
       return fIt->second;
     }
   }
-  throw Error("ReferenceError", "Cannot find '" + identifier->getToken().data + "' in this scope", identifier->getTrace());
-}
-
-DeclarationWrapper::Link CompileVisitor::findDeclaration(Node<ExpressionNode>::Link node) {
-  if (node->getToken().type != IDENTIFIER) throw InternalError("This function takes identifies only", {METADATA_PAIRS});
-  // Iterate over all the blocks above this identifier
-  for (auto p = node->findAbove<BlockNode>(); p != nullptr; p = p->findAbove<BlockNode>()) {
-    // If we find this ident in any of their scopes, return what we found
-    auto it = p->blockScope.find(node->getToken().data);
-    if (it != p->blockScope.end()) {
-      return it->second;
+  // Maybe the identifier is part of the enclosing type
+  // If we're in a constructor or method, attempt to obtain the 'this' object
+  ASTNode::Link parentFun = identifier->findAbove<ConstructorNode>();
+  if (parentFun == nullptr) parentFun = identifier->findAbove<MethodNode>();
+  if (parentFun != nullptr) {
+    Node<TypeNode>::Link type = Node<TypeNode>::staticPtrCast(parentFun->getParent().lock());
+    auto thisObj = getPtrForArgument(type->getName(), type->getTyData()->getStructTy(), functionStack.top(), 0);
+    InstanceWrapper::Link thisInstance = std::make_shared<InstanceWrapper>(
+      thisObj->getValue(),
+      TypeList {type->getName()},
+      type->getTyData()
+    );
+    try {
+      return thisInstance->getMember(identifier->getToken().data);
+    } catch (const Error& err) {
+      // getMember throws Error instances only when it can't find the member
+      // So this means the identifier we're looking for isn't here
+      // Which means that this catch block can be safely ignored
     }
   }
-  throw Error("ReferenceError", "Cannot find '" + node->getToken().data + "' in this scope", node->getToken().trace);
+  throw Error("ReferenceError", "Cannot find '" + identifier->getToken().data + "' in this scope", identifier->getTrace());
 }
 
 ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how) {
@@ -496,12 +503,72 @@ void CompileVisitor::visitType(Node<TypeNode>::Link node) {
     "Type " + node->getName() + " already exists",
     node->getTrace()
   );
-  typeMap[tyMapIt->first] = structTy;
+  typeMap[node->getName()] = structTy;
+  node->getTyData()->finalize();
+}
+
+ValueWrapper::Link CompileVisitor::getPtrForArgument(TypeName argType, llvm::Type* llvmArgType, FunctionWrapper::Link fun, std::size_t which) {
+  if (which >= fun->getValue()->getArgumentList().size()) {
+    throw InternalError("Bad argument index", {
+      METADATA_PAIRS,
+      {"which index", std::to_string(which)}
+    });
+  }
+  llvm::Argument* argPtr = nullptr;
+  // Obtain desired argument + its type's name
+  auto argIt = fun->getValue()->getArgumentList().begin();
+  for (std::size_t i = 0; i < fun->getValue()->getArgumentList().size(); i++, argIt++) {
+    if (i == which) {
+      argPtr = &*argIt;
+      break;
+    }
+  }
+  auto argName = std::string("arg_" + argPtr->getName().str());
+  // If we already obtained this arg, fetch it and return it
+  if (auto val = fun->getValue()->getValueSymbolTable().lookup(argName)) {
+    return std::make_shared<ValueWrapper>(val, argType);
+  }
+  // We can't use the function argument as is, so we create a pointer, and
+  // store the arg in it, and return the loaded value.
+  auto structPtrTy = llvm::PointerType::getUnqual(llvmArgType);
+  llvm::Value* objValue = builder->CreateAlloca(structPtrTy, nullptr, "argAlloc_" + argPtr->getName());
+  builder->CreateStore(argPtr, objValue);
+  auto value = builder->CreateLoad(structPtrTy, objValue, argName);
+  return std::make_shared<ValueWrapper>(value, argType);
 }
 
 void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
-  UNUSED(node);
-  throw InternalError("Unimplemented", {METADATA_PAIRS});
+  TypeData* tyData = Node<TypeNode>::staticPtrCast(node->getParent().lock())->getTyData();
+  auto sig = node->getSignature();
+  if (!sig.getReturnType().isVoid()) throw InternalError("Constructor return type not void", {
+    METADATA_PAIRS,
+    {"type", tyData->getName()}
+  });
+  std::vector<llvm::Type*> argTypes {llvm::PointerType::getUnqual(tyData->getStructTy())};
+  std::vector<std::string> argNames {"this"};
+  for (std::pair<std::string, DefiniteTypeInfo> p : sig.getArguments()) {
+    argTypes.push_back(typeFromInfo(p.second));
+    argNames.push_back(p.first);
+  }
+  auto newArgs = sig.getArguments();
+  newArgs["this"] = StaticTypeInfo(tyData->getName());
+  auto updatedSignature = FunctionSignature(sig.getReturnType(), newArgs);
+  llvm::FunctionType* funType = llvm::FunctionType::get(llvm::Type::getVoidTy(*context), argTypes, false);
+  auto funWrapper = std::make_shared<FunctionWrapper>(
+    llvm::Function::Create(
+      funType,
+      llvm::Function::InternalLinkage,
+      "constructor_" + tyData->getName(),
+      module
+    ),
+    updatedSignature
+  );
+  std::size_t nameIdx = 0;
+  for (auto& arg : funWrapper->getValue()->getArgumentList()) {
+    arg.setName(argNames[nameIdx]);
+    nameIdx++;
+  }
+  tyData->addConstructor(ConstructorData(node, funWrapper));
 }
 
 void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
@@ -533,9 +600,12 @@ void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
     arg.setName(argNames[nameIdx]);
     nameIdx++;
   }
+  // Static methods bodies can be dealt with in here
+  // Normal methods are done in TypeData::finalize
+  if (node->isStatic() && !node->isForeign()) {
+    compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
+  }
   tyData->addMethod(MethodData(node, node->getIdentifier(), funWrapper), node->isStatic());
-  // Only non-foreign functions have a block after them
-  if (!node->isForeign()) compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
 }
 
 void CompileVisitor::visitMember(Node<MemberNode>::Link node) {

@@ -44,6 +44,8 @@ public:
   ValueWrapper(llvm::Value* value, TypeName name);
   ValueWrapper(std::pair<llvm::Value*, TypeName> pair);
   
+  inline virtual ~ValueWrapper() {}
+  
   /// If the value is nullptr
   bool isInitialized() const;
   /// If the llvm::Type of the value is a pointer type
@@ -99,8 +101,6 @@ public:
 private:
   /// Maps member names to their declaration
   std::map<std::string, DeclarationWrapper::Link> members {};
-  /// Maps static member names to their declaration
-  std::map<std::string, DeclarationWrapper::Link> staticMembers {};
   /// TypeData associated with this type
   TypeData* tyData;
 public:
@@ -144,7 +144,7 @@ private:
 
   std::unique_ptr<llvm::IRBuilder<>> builder; ///< Used to construct llvm instructions
   llvm::Module* module; ///< The module that is being created
-  llvm::Function* entryPoint; ///< Entry point for module
+  FunctionWrapper::Link entryPoint; ///< Entry point for module
   std::stack<FunctionWrapper::Link> functionStack; ///< Current function stack
   AST ast; ///< Source AST
   
@@ -194,8 +194,13 @@ private:
     return std::find(ALL(tl), type) != tl.end();
   }
   
-  /// Get the DeclarationWrapper for an ExpressionNode containing an identifier
-  DeclarationWrapper::Link findDeclaration(Node<ExpressionNode>::Link node);
+  /**
+    \brief Creates a pointer pointing to a specific function's argument
+    
+    Be careful where and when this gets called, since it inserts IR,
+    and it assumes it is already in the right place.
+  */
+  ValueWrapper::Link getPtrForArgument(TypeName argType, llvm::Type* llvmArgType, FunctionWrapper::Link fun, std::size_t which);
   /// Gets the llvm:Type* to be allocated for the given type info
   llvm::Type* typeFromInfo(TypeInfo ti);
   /// How to handle an identifier in compileExpression
@@ -287,8 +292,29 @@ private:
 public:
   MethodData(Node<MethodNode>::Link meth, std::string name, FunctionWrapper::Link fun);
   
+  bool isForeign() const;
+  Node<BlockNode>::Link getCodeBlock() const;
   FunctionWrapper::Link getFunction() const;
   std::string getName() const;
+  Trace getTrace() const;
+};
+
+/**
+  \brief Stores a constructor in a type
+*/
+class ConstructorData {
+public:
+  using Link = std::shared_ptr<ConstructorData>;
+private:
+  Node<ConstructorNode>::Link constr;
+  FunctionWrapper::Link fun;
+public:
+  ValueWrapper::Link thisPtrRef;
+  ConstructorData(Node<ConstructorNode>::Link constr, FunctionWrapper::Link fun);
+  
+  bool isForeign() const;
+  Node<BlockNode>::Link getCodeBlock() const;
+  FunctionWrapper::Link getFunction() const;
   Trace getTrace() const;
 };
 
@@ -341,8 +367,16 @@ private:
     /// Adds a new codegen function to be called inside the initializer
     void insertCode(std::function<void(TypeInitializer&)> what);
     
+    /// The initializer
     FunctionWrapper::Link getInit() const;
+    /**
+      \brief The InstanceWrapper used
+      
+      Only for normal initializers.
+    */
     InstanceWrapper::Link getInitInstance() const;
+    /// \copydoc initExists
+    bool exists() const;
   };
   
   /// Pointer to the owning CompileVisitor
@@ -359,6 +393,8 @@ private:
   std::vector<MethodData::Link> methods;
   /// List of static functions
   std::vector<MethodData::Link> staticFunctions;
+  /// List of constructors
+  std::vector<ConstructorData::Link> constructors;
   /// The static initializer for this type. Can be empty
   TypeInitializer staticTi;
   /// The normal initializer for this type. Can be empty
@@ -386,8 +422,10 @@ public:
   llvm::StructType* getStructTy() const;
   /// Get the name of this type
   TypeName getName() const;
-  /// Gets a list of members
-  std::vector<MemberMetadata::Link> getStructMembers() const;
+  /// Get initializer
+  TypeInitializer getInit() const;
+  /// Get static initializer
+  TypeInitializer getStaticInit() const;
   /// Gets a list of types so we know what to allocate for the struct
   std::vector<llvm::Type*> getAllocaTypes() const;
   /// Check if this name isn't already used for something else
@@ -396,6 +434,8 @@ public:
   void addMember(MemberMetadata newMember, bool isStatic);
   /// Add a new method to the type
   void addMethod(MethodData func, bool isStatic);
+  /// Add a new constructor to the type
+  void addConstructor(ConstructorData c);
   /**
     \brief Signal that this type is completely built, and can be instantiated
     

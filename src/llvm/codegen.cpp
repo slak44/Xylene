@@ -319,9 +319,10 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
   }),
   specialCodegenMap({
     {"Assignment", [=] SPECIAL_CODEGEN_SIG {
-      // If the declaration doesn't allow this type, complain
       auto varIdent = Node<ExpressionNode>::staticPtrCast(node)->at(0);
-      DeclarationWrapper::Link decl = cv->findDeclaration(varIdent);
+      DeclarationWrapper::Link decl = PtrUtil<DeclarationWrapper>::dynPtrCast(operands[0]);
+      if (decl == nullptr) throw Error("ReferenceError", "Cannot assign to this value", varIdent->getToken().trace);
+      // If the declaration doesn't allow this type, complain
       if (!cv->isTypeAllowedIn(decl->getTypeList(), operands[1]->getCurrentTypeName())) {
         throw Error("TypeError",
           "Type list of '" + varIdent->getToken().data +
