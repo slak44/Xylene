@@ -442,6 +442,8 @@ public:
     This does a couple things:
     - Adds codegen functions to initializers
     - Finalizes both initializers
+    - Adds the bodies of non-static, non-foreign methods
+    - Adds the bodies of non-foreign constructors
   */
   void finalize();
   /// \copydoc finalized
