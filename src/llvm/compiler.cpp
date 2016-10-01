@@ -603,7 +603,9 @@ void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
   // Static methods bodies can be dealt with in here
   // Normal methods are done in TypeData::finalize
   if (node->isStatic() && !node->isForeign()) {
+    functionStack.push(funWrapper);
     compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
+    functionStack.pop();
   }
   tyData->addMethod(MethodData(node, node->getIdentifier(), funWrapper), node->isStatic());
 }

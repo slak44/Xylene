@@ -1,0 +1,21 @@
+<!--
+type CoolType do
+  public static method nice [Integer x] => Integer do
+    return x + 1;
+  end
+end
+-->
+<block type="root">
+  <type name="CoolType">
+    <method ident="nice" return="Integer" args="x:Integer" foreign="false" static="true" visibility="public">
+      <block type="function">
+        <return>
+          <expr type="Operator" value="Add">
+            <expr type="Identifier" value="x"/>
+            <expr type="Integer" value="1"/>
+          </expr>
+        </return>
+      </block>
+    </method>
+  </type>
+</block>
