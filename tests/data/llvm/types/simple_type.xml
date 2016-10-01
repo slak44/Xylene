@@ -4,9 +4,6 @@ type CoolType do
   public constructor [Integer int] do
     i = int;
   end
-  public static method nice [Integer x] => Integer do
-    return x + 1;
-  end
 end
 CoolType ct;
 -->
@@ -23,16 +20,6 @@ CoolType ct;
         </expr>
       </block>
     </constructor>
-    <method ident="nice" return="Integer" args="x:Integer" foreign="false" static="true" visibility="public">
-      <block type="function">
-        <return>
-          <expr type="Operator" value="Add">
-            <expr type="Identifier" value="x"/>
-            <expr type="Integer" value="1"/>
-          </expr>
-        </return>
-      </block>
-    </method>
   </type>
   <decl ident="ct" types="CoolType"></decl>
 </block>
