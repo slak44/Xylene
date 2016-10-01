@@ -318,7 +318,6 @@ void TypeData::finalize() {
       cv->builder->SetInsertPoint(oldBlock);
     }
   }
-
   finalized = true;
 }
 
