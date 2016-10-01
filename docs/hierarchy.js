@@ -27,6 +27,7 @@ var hierarchy =
       ] ],
       [ "XMLParser", "class_x_m_l_parser.html", null ]
     ] ],
+    [ "ConstructorData", "class_constructor_data.html", null ],
     [ "enable_shared_from_this", null, [
       [ "ASTNode", "class_a_s_t_node.html", [
         [ "BlockNode", "class_block_node.html", null ],
@@ -54,6 +55,7 @@ var hierarchy =
       [ "Lexer", "class_lexer.html", null ]
     ] ],
     [ "MemberMetadata", "class_member_metadata.html", null ],
+    [ "MethodData", "class_method_data.html", null ],
     [ "Operator", "class_operator.html", null ],
     [ "OperatorCodegen", "class_operator_codegen.html", null ],
     [ "Position", "struct_position.html", null ],
@@ -64,8 +66,14 @@ var hierarchy =
       [ "Node< BlockNode >", "struct_node.html", null ]
     ] ],
     [ "PtrUtil< CompileVisitor >", "struct_ptr_util.html", null ],
+    [ "PtrUtil< ConstructorNode >", "struct_ptr_util.html", [
+      [ "Node< ConstructorNode >", "struct_node.html", null ]
+    ] ],
     [ "PtrUtil< MemberNode >", "struct_ptr_util.html", [
       [ "Node< MemberNode >", "struct_node.html", null ]
+    ] ],
+    [ "PtrUtil< MethodNode >", "struct_ptr_util.html", [
+      [ "Node< MethodNode >", "struct_node.html", null ]
     ] ],
     [ "PtrUtil< TypeNode >", "struct_ptr_util.html", [
       [ "Node< TypeNode >", "struct_node.html", null ]

@@ -112,12 +112,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adbc35bbacf44205a57333047781f8ac3"><td class="memItemLeft" align="right" valign="top">llvm::StructType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#adbc35bbacf44205a57333047781f8ac3">getStructTy</a> () const</td></tr>
 <tr class="memdesc:adbc35bbacf44205a57333047781f8ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the llvm::StructType backing this type.  <a href="#adbc35bbacf44205a57333047781f8ac3">More...</a><br /></td></tr>
 <tr class="separator:adbc35bbacf44205a57333047781f8ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d922e7746f85fe5ca6d73d6c03a320b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a4d922e7746f85fe5ca6d73d6c03a320b">getName</a> () const</td></tr>
-<tr class="memdesc:a4d922e7746f85fe5ca6d73d6c03a320b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of this type.  <a href="#a4d922e7746f85fe5ca6d73d6c03a320b">More...</a><br /></td></tr>
-<tr class="separator:a4d922e7746f85fe5ca6d73d6c03a320b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79bfe67f871ae5b2012cbe47de3693a2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_member_metadata.html#a663cd9d1e7faa9666c3fba64566b1d23">MemberMetadata::Link</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a79bfe67f871ae5b2012cbe47de3693a2">getStructMembers</a> () const</td></tr>
-<tr class="memdesc:a79bfe67f871ae5b2012cbe47de3693a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a list of members.  <a href="#a79bfe67f871ae5b2012cbe47de3693a2">More...</a><br /></td></tr>
-<tr class="separator:a79bfe67f871ae5b2012cbe47de3693a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac16b0d2c8f4444049614a006a4a234b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ac16b0d2c8f4444049614a006a4a234b7">getName</a> () const</td></tr>
+<tr class="memdesc:ac16b0d2c8f4444049614a006a4a234b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of this type.  <a href="#ac16b0d2c8f4444049614a006a4a234b7">More...</a><br /></td></tr>
+<tr class="separator:ac16b0d2c8f4444049614a006a4a234b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c8c811574c0d776aa50ea48422d85b0"><td class="memItemLeft" align="right" valign="top">TypeInitializer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a0c8c811574c0d776aa50ea48422d85b0">getInit</a> () const</td></tr>
+<tr class="memdesc:a0c8c811574c0d776aa50ea48422d85b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get initializer.  <a href="#a0c8c811574c0d776aa50ea48422d85b0">More...</a><br /></td></tr>
+<tr class="separator:a0c8c811574c0d776aa50ea48422d85b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae875b66c0fbb2961718324d0059f722b"><td class="memItemLeft" align="right" valign="top">TypeInitializer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ae875b66c0fbb2961718324d0059f722b">getStaticInit</a> () const</td></tr>
+<tr class="memdesc:ae875b66c0fbb2961718324d0059f722b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get static initializer.  <a href="#ae875b66c0fbb2961718324d0059f722b">More...</a><br /></td></tr>
+<tr class="separator:ae875b66c0fbb2961718324d0059f722b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3914d23bacac64683f5f0bd1839f6045"><td class="memItemLeft" align="right" valign="top">std::vector&lt; llvm::Type * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a3914d23bacac64683f5f0bd1839f6045">getAllocaTypes</a> () const</td></tr>
 <tr class="memdesc:a3914d23bacac64683f5f0bd1839f6045"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a list of types so we know what to allocate for the struct.  <a href="#a3914d23bacac64683f5f0bd1839f6045">More...</a><br /></td></tr>
 <tr class="separator:a3914d23bacac64683f5f0bd1839f6045"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,6 +130,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad3e669e4e3491df2819f07dcaad68f47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ad3e669e4e3491df2819f07dcaad68f47">addMember</a> (<a class="el" href="class_member_metadata.html">MemberMetadata</a> newMember, bool isStatic)</td></tr>
 <tr class="memdesc:ad3e669e4e3491df2819f07dcaad68f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new member to the type.  <a href="#ad3e669e4e3491df2819f07dcaad68f47">More...</a><br /></td></tr>
 <tr class="separator:ad3e669e4e3491df2819f07dcaad68f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab237016f15371481ceda263c39d29e3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ab237016f15371481ceda263c39d29e3d">addMethod</a> (<a class="el" href="class_method_data.html">MethodData</a> func, bool isStatic)</td></tr>
+<tr class="memdesc:ab237016f15371481ceda263c39d29e3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new method to the type.  <a href="#ab237016f15371481ceda263c39d29e3d">More...</a><br /></td></tr>
+<tr class="separator:ab237016f15371481ceda263c39d29e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a284f19017a4d64ec51817b668f239695"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#a284f19017a4d64ec51817b668f239695">addConstructor</a> (<a class="el" href="class_constructor_data.html">ConstructorData</a> c)</td></tr>
+<tr class="memdesc:a284f19017a4d64ec51817b668f239695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new constructor to the type.  <a href="#a284f19017a4d64ec51817b668f239695">More...</a><br /></td></tr>
+<tr class="separator:a284f19017a4d64ec51817b668f239695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe40f4bf6631f3a0c927eafef3a577af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#abe40f4bf6631f3a0c927eafef3a577af">finalize</a> ()</td></tr>
 <tr class="memdesc:abe40f4bf6631f3a0c927eafef3a577af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal that this type is completely built, and can be instantiated.  <a href="#abe40f4bf6631f3a0c927eafef3a577af">More...</a><br /></td></tr>
 <tr class="separator:abe40f4bf6631f3a0c927eafef3a577af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,6 +240,26 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a284f19017a4d64ec51817b668f239695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a284f19017a4d64ec51817b668f239695">&sect;&nbsp;</a></span>addConstructor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TypeData::addConstructor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_constructor_data.html">ConstructorData</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add a new constructor to the type. </p>
+
+</div>
+</div>
 <a id="ad3e669e4e3491df2819f07dcaad68f47"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad3e669e4e3491df2819f07dcaad68f47">&sect;&nbsp;</a></span>addMember()</h2>
 
@@ -258,6 +287,36 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Add a new member to the type. </p>
+
+</div>
+</div>
+<a id="ab237016f15371481ceda263c39d29e3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab237016f15371481ceda263c39d29e3d">&sect;&nbsp;</a></span>addMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TypeData::addMethod </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_method_data.html">MethodData</a>&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isStatic</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add a new method to the type. </p>
 
 </div>
 </div>
@@ -303,14 +362,33 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a4d922e7746f85fe5ca6d73d6c03a320b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d922e7746f85fe5ca6d73d6c03a320b">&sect;&nbsp;</a></span>getName()</h2>
+<a id="a0c8c811574c0d776aa50ea48422d85b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c8c811574c0d776aa50ea48422d85b0">&sect;&nbsp;</a></span>getInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> TypeData::getName </td>
+          <td class="memname">TypeData::TypeInitializer TypeData::getInit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get initializer. </p>
+
+</div>
+</div>
+<a id="ac16b0d2c8f4444049614a006a4a234b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac16b0d2c8f4444049614a006a4a234b7">&sect;&nbsp;</a></span>getName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string TypeData::getName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -322,14 +400,14 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a79bfe67f871ae5b2012cbe47de3693a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79bfe67f871ae5b2012cbe47de3693a2">&sect;&nbsp;</a></span>getStructMembers()</h2>
+<a id="ae875b66c0fbb2961718324d0059f722b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae875b66c0fbb2961718324d0059f722b">&sect;&nbsp;</a></span>getStaticInit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="class_member_metadata.html#a663cd9d1e7faa9666c3fba64566b1d23">MemberMetadata::Link</a> &gt; TypeData::getStructMembers </td>
+          <td class="memname">TypeData::TypeInitializer TypeData::getStaticInit </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -337,7 +415,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets a list of members. </p>
+<p>Get static initializer. </p>
 
 </div>
 </div>

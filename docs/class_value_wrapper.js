@@ -3,6 +3,7 @@ var class_value_wrapper =
     [ "Link", "class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702", null ],
     [ "ValueWrapper", "class_value_wrapper.html#a61330b8f922b6e239c8c6ca14a903748", null ],
     [ "ValueWrapper", "class_value_wrapper.html#aa7c4678fa8e3b3da0b2326c723179ddf", null ],
+    [ "~ValueWrapper", "class_value_wrapper.html#a1097c096e606caa2682d898e9a44ec21", null ],
     [ "canBeBooleanValue", "class_value_wrapper.html#a8248f0adceb92c0bbbdc08a1ae9344a9", null ],
     [ "getCurrentTypeName", "class_value_wrapper.html#a5f37eabb97865a0e00e816cd570665dd", null ],
     [ "getValue", "class_value_wrapper.html#a967fde9f08a0aceb5c15c317f0a2522b", null ],
