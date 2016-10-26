@@ -1,6 +1,7 @@
 var searchData=
 [
   ['range',['Range',['../class_range.html',1,'Range'],['../class_range.html#ac1185af966638d36ef4bd5d9d9e575eb',1,'Range::Range(Position start, Position end)'],['../class_range.html#a83d413a2a13ee81afef4b3efc9a04fe8',1,'Range::Range(Position where, uint charCount)']]],
+  ['readme_2emd',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
   ['removechild',['removeChild',['../class_a_s_t_node.html#a70582ca8da7ae01d14d990ec1f7a5ec1',1,'ASTNode']]],
   ['requirereferencelist',['RequireReferenceList',['../class_operator.html#aaded9de4bdc094d32d1ca306a482489c',1,'Operator']]],
   ['returnnode',['ReturnNode',['../class_return_node.html',1,'ReturnNode'],['../class_return_node.html#a1e79c04a4e82c37af4aafa39be12b3ba',1,'ReturnNode::ReturnNode()']]],
