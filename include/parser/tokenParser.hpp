@@ -12,10 +12,6 @@
 #include "token.hpp"
 #include "operator.hpp"
 
-// The compiler was whining about some move assignments for virtual bases
-// The classes it mentioned don't actually have anything to assign, so I don't care
-#pragma GCC diagnostic ignored "-Wvirtual-move-assign"
-
 /**
   \brief Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it.
 */
