@@ -21,7 +21,7 @@ bool TypeInfo::isVoid() const {
 
 std::string TypeInfo::getTypeNameString() const {
   if (isVoidType) return "[void]";
-  return isDynamic() ? "[dynamic]" : collateTypeList(evalValue);
+  return isDynamic() ? "[dynamic]" : collate(evalValue);
 }
 
 std::string TypeInfo::toString() const {

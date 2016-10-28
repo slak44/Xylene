@@ -13,7 +13,3 @@ std::string getAddressStringFrom(const void* ptr) {
   ss << "0x" << std::hex << reinterpret_cast<std::uintptr_t>(ptr);
   return ss.str();
 }
-
-std::string collateTypeList(TypeList typeList) {
-  return collate<TypeList>(typeList);
-}
