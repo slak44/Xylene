@@ -5,7 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include <memory>
 #include <functional>
 
@@ -19,18 +19,31 @@ using int64 = long long;
 using uint64 = unsigned long long;
 
 /// Represents a list of types. Used in multiple places
-using TypeList = std::set<std::string>;
+using TypeList = std::unordered_set<std::string>;
 
-/// Print something to stdout with a trailing newline
-template<typename T>
-void println(T thing) {
-  std::cout << thing << std::endl;
-}
+/// Syntactic sugar
+using TypeName = std::string;
+
+/// Get a pretty address string from a pointer
+std::string getAddressStringFrom(const void* ptr);
+
+/**
+  \brief Split a string into substrings
+  \param delim where to break the string
+*/
+std::vector<std::string> split(const std::string& str, char delim);
 
 /// Print something to stdout
 template<typename T>
 void print(T thing) {
   std::cout << thing;
+}
+
+/// Print something to stdout with a trailing newline
+template<typename T>
+void println(T thing) {
+  print(thing);
+  std::cout << std::endl;
 }
 
 /// Print multiple things (with spaces in-between) to stdout
@@ -61,12 +74,6 @@ template<typename T>
 bool contains(std::vector<T> vec, T item) {
   return std::find(vec.begin(), vec.end(), item) != vec.end();
 }
-
-/**
-  \brief Split a string into substrings
-  \param delim where to break the string
-*/
-std::vector<std::string> split(const std::string& str, char delim);
 
 /// Allows the use of vectors as map keys
 template<typename T>
@@ -119,9 +126,6 @@ struct PtrUtil {
   }
 };
 
-/// Get a pretty address string from a pointer
-std::string getAddressStringFrom(const void* ptr);
-
 /// Identity function. Does literally nothing.
 struct Identity {
   template<typename T>
@@ -131,7 +135,6 @@ struct Identity {
 };
 
 static const auto defaultCollateCombine = [](std::string prev, std::string current) {return prev + ", " + current;};
-
 /**
   \brief Collates a bunch of objects from Container into a string
   \tparam Container full type of source container (ex std::vector<int>)
@@ -155,11 +158,5 @@ std::string collate(Container c,
   }
   throw std::logic_error("Size of container must be a positive integer");
 }
-
-/**
-  \brief Convenience function
-  \see collate
-*/
-std::string collateTypeList(TypeList typeList);
 
 #endif
