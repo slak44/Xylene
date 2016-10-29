@@ -5,11 +5,13 @@
 #include <vector>
 #include <memory>
 #include <typeinfo>
+#include <unordered_set>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 #include "utils/typeInfo.hpp"
 #include "token.hpp"
+#include "llvm/typeId.hpp"
 
 namespace llvm {
   class BasicBlock;
@@ -150,6 +152,8 @@ public:
   std::map<std::string, std::shared_ptr<DeclarationWrapper>> blockScope {};
   /// Maps function names to their respective FunctionWrapper
   std::map<std::string, std::shared_ptr<FunctionWrapper>> blockFuncs {};
+  /// List of types defined in this block
+  std::unordered_set<AbstractId::Link> blockTypes {};
   
   BlockNode(BlockType type);
   

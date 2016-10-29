@@ -1,4 +1,5 @@
 #include "llvm/compiler.hpp"
+#include "llvm/typeId.hpp"
 
 TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k):
   owner(tyData) {
@@ -132,6 +133,10 @@ bool MemberMetadata::hasInit() const {
 
 Node<ExpressionNode>::Link MemberMetadata::getInit() const {
   return mem->getInit();
+}
+
+Node<MemberNode>::Link MemberMetadata::getNode() const {
+  return mem;
 }
 
 Trace MemberMetadata::getTrace() const {
@@ -272,7 +277,7 @@ void TypeData::finalize() {
   std::for_each(ALL(staticMembers), [&](MemberMetadata::Link mb) {
     llvm::GlobalVariable* staticVar = new llvm::GlobalVariable(
       *cv->module,
-      cv->typeFromInfo(mb->getTypeInfo()),
+      cv->typeFromInfo(mb->getTypeInfo(), mb->getNode()),
       false,
       llvm::GlobalValue::InternalLinkage,
       nullptr,
@@ -418,4 +423,72 @@ void InstanceWrapper::changeTypeOfInstance(TypeData* newType) {
   // TODO check if the type allows this
   tyData = newType;
   members = {};
+}
+
+int AbstractId::getId() const {
+  return id;
+}
+
+TypeName AbstractId::getName() const {
+  return name;
+}
+
+TypeId::TypeId(TypeData* tyData): tyData(tyData) {
+  name = tyData->getName();
+}
+TypeId::TypeId(TypeName name, llvm::Type* ty): basicTy(ty) {
+  this->name = name;
+}
+
+std::shared_ptr<TypeId> TypeId::create(TypeData* tyData) {
+  return std::make_shared<TypeId>(TypeId(tyData));
+}
+
+std::shared_ptr<TypeId> TypeId::createBasic(TypeName name, llvm::Type* ty) {
+  return std::make_shared<TypeId>(TypeId(name, ty));
+}
+
+TypeData* TypeId::getTyData() const {
+  return tyData;
+}
+
+llvm::Type* TypeId::getAllocaType() const {
+  if (basicTy) return basicTy;
+  else return tyData->getStructTy();
+}
+
+TypeList TypeId::storedNames() const {
+  return {name};
+}
+
+TypeListId::TypeListId(TypeName name, std::unordered_set<AbstractId::Link> types):
+  // FIXME this nullptr should actually be the tagged union type
+  taggedUnionTy(nullptr), types(types) {
+    this->name = name;
+    if (types.size() <= 1) {
+      throw InternalError(
+        "Trying to make a list of 1 or less elements (use TypeId for 1 element)",
+        {METADATA_PAIRS, {"size", std::to_string(types.size())}}
+      );
+    }
+  }
+  
+TypeListId::Link TypeListId::create(TypeName n, std::unordered_set<AbstractId::Link> v) {
+  return std::make_shared<TypeListId>(TypeListId(n, v));
+}
+
+std::unordered_set<AbstractId::Link> TypeListId::getTypes() const {
+  return types;
+}
+
+TypeList TypeListId::storedNames() const {
+  TypeList names;
+  std::for_each(ALL(types), [&](AbstractId::Link id) {
+    names.insert(id->getName());
+  });
+  return names;
+}
+
+llvm::Type* TypeListId::getAllocaType() const {
+  return taggedUnionTy;
 }
