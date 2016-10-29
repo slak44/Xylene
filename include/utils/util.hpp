@@ -35,13 +35,25 @@ std::vector<std::string> split(const std::string& str, char delim);
 
 /// Print something to stdout
 template<typename T>
-void print(T thing) {
+inline void print(T thing) {
+  std::cout << thing;
+}
+
+/// Print a pointer address to stdout
+template<typename T>
+inline void print(T* thing) {
+  std::cout << getAddressStringFrom(thing);
+}
+
+/// Print contents, not address for const char*
+template<>
+inline void print(const char* thing) {
   std::cout << thing;
 }
 
 /// Print something to stdout with a trailing newline
 template<typename T>
-void println(T thing) {
+inline void println(T thing) {
   print(thing);
   std::cout << std::endl;
 }
