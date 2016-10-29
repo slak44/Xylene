@@ -339,24 +339,35 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
       return operands[1];
     }},
     {"Call", [=] SPECIAL_CODEGEN_SIG {
-      if (operands[0]->getCurrentTypeName() != "Function") throw Error("TypeError", "Attempt to call non-function", trace);
-      FunctionWrapper::Link fw = PtrUtil<FunctionWrapper>::staticPtrCast(operands[0]);
-      llvm::Function* funcPtr = llvm::dyn_cast<llvm::Function>(fw->getValue());
-      // Slice the func ptr
+      if (operands[0]->getCurrentTypeName() != "Function") {
+        throw Error("TypeError", "Attempt to call non-function", trace);
+      }
+      auto fw = PtrUtil<FunctionWrapper>::staticPtrCast(operands[0]);
+      // Get a list of arguments to pass to CreateCall
       std::vector<llvm::Value*> args {};
-      args.resize(operands.size() - 1);
-      auto it = fw->getSignature().getArguments().begin();
-      std::transform(operands.begin() + 1, operands.end(), args.begin(), [&trace, &it, &fw, &cv](ValueWrapper::Link w) {
-        if (!cv->isTypeAllowedIn(it->second.getEvalTypeList(), w->getCurrentTypeName())) {
+      // We skip the first operand because it is the function itself, not an arg
+      auto opIt = operands.begin() + 1;
+      auto map = fw->getSignature().getArguments();
+      if (operands.size() - 1 != fw->getSignature().getArguments().size()) {
+        throw InternalError(
+          "Operand count mismatches func sig argument count",
+          {
+            METADATA_PAIRS,
+            {"ops", std::to_string(operands.size() - 1)},
+            {"args", std::to_string(fw->getSignature().getArguments().size())},
+          }
+        );
+      }
+      for (auto it = map.begin(); it != map.end(); ++it, ++opIt) {
+        if (!cv->isTypeAllowedIn(it->second.getEvalTypeList(), (*opIt)->getCurrentTypeName())) {
           throw Error("TypeError",
-            "Function argument type list does not contain type '" +
-            w->getCurrentTypeName() + "'",
+            "Function argument '" + it->first + "' type list does not contain type '" +
+            (*opIt)->getCurrentTypeName() + "'",
             trace
           );
         }
-        it++;
-        return w->getValue();
-      });
+        args.push_back((*opIt)->getValue());
+      }
       TypeList returnTl = fw->getSignature().getReturnType().getEvalTypeList();
       TypeName returnedType;
       if (returnTl.size() == 1) returnedType = *returnTl.begin();
@@ -364,9 +375,9 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
       // TODO: use invoke instead of call in the future, it has exception handling and stuff
       return std::make_shared<ValueWrapper>(
         cv->builder->CreateCall(
-          funcPtr,
+          fw->getValue(),
           args,
-          funcPtr->getReturnType()->isVoidTy() ? "" : "call"
+          fw->getValue()->getReturnType()->isVoidTy() ? "" : "call"
         ),
         returnedType
       );
