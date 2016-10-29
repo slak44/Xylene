@@ -48,3 +48,4 @@ TODO list:
 - try-catch, throw, exceptions
 - modules, import, export
 - typedefs
+- windoze build
