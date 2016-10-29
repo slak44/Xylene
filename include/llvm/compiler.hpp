@@ -20,13 +20,13 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <unordered_set>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 #include "ast.hpp"
 #include "operator.hpp"
-
-using TypeName = std::string;
+#include "llvm/typeId.hpp"
 
 class OperatorCodegen;
 
@@ -141,6 +141,9 @@ private:
     Type names must be obtained using scope resolution. This map only assigns those names their respective llvm type.
   */
   std::unordered_map<TypeName, llvm::Type*> typeMap;
+  
+  /// Complete type list
+  std::unordered_set<AbstractId::Link> types;
 
   std::unique_ptr<llvm::IRBuilder<>> builder; ///< Used to construct llvm instructions
   llvm::Module* module; ///< The module that is being created
@@ -163,7 +166,8 @@ public:
     This is a static factory because std::enable_shared_from_this<CompileVisitor>
     requires a shared_ptr to already exist before being used.
     This method guarantees that at least one such pointer exists.
-    It also handles creation of the OperatorCodegen, since that also requires a shared_ptr of this.
+    It also handles creation of the OperatorCodegen, since that also requires a
+    shared_ptr of this.
   */
   static Link create(std::string moduleName, AST ast);
   
@@ -202,7 +206,7 @@ private:
   */
   ValueWrapper::Link getPtrForArgument(TypeName argType, llvm::Type* llvmArgType, FunctionWrapper::Link fun, std::size_t which);
   /// Gets the llvm:Type* to be allocated for the given type info
-  llvm::Type* typeFromInfo(TypeInfo ti);
+  llvm::Type* typeFromInfo(TypeInfo ti, ASTNode::Link context);
   /// How to handle an identifier in compileExpression
   enum IdentifierHandling {
     AS_POINTER, ///< Return a pointer
@@ -276,6 +280,7 @@ public:
   std::string getName() const;
   bool hasInit() const;
   Node<ExpressionNode>::Link getInit() const;
+  Node<MemberNode>::Link getNode() const;
   Trace getTrace() const;
 };
 

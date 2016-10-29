@@ -11,6 +11,11 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
     {"Float", floatType},
     {"Boolean", booleanType}
   }),
+  types({
+    TypeId::createBasic("Integer", integerType),
+    TypeId::createBasic("Float", floatType),
+    TypeId::createBasic("Boolean", booleanType),
+  }),
   builder(std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context))),
   module(new llvm::Module(moduleName, *context)),
   ast(ast) {
@@ -20,6 +25,12 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
     FunctionSignature(TypeInfo({"Integer"}), {})
   ));
   entryPoint = functionStack.top();
+  // Insert basic types in root block
+  ast.getRoot()->blockTypes.insert({
+    TypeId::createBasic("Integer", integerType),
+    TypeId::createBasic("Float", floatType),
+    TypeId::createBasic("Boolean", booleanType),
+  });
 }
 
 CompileVisitor::Link CompileVisitor::create(std::string moduleName, AST ast) {
@@ -105,17 +116,36 @@ void CompileVisitor::visitExpression(Node<ExpressionNode>::Link node) {
   compileExpression(node);
 }
 
-llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti) {
+llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti, ASTNode::Link node) {
   if (ti.isVoid()) return llvm::Type::getVoidTy(*context);
-  TypeList tl = ti.getEvalTypeList();
-  if (tl.size() == 0) throw InternalError("Not Implemented", {METADATA_PAIRS});
-  if (tl.size() == 1) return typeMap[*std::begin(tl)];
-  // TODO multiple types
-  throw InternalError("Not Implemented", {METADATA_PAIRS});
+  // TODO: do we even allow no type checking?
+  if (ti.isDynamic()) throw InternalError("Not Implemented", {METADATA_PAIRS});
+  
+  AbstractId::Link id = nullptr;
+  ASTNode::Link defBlock = node->findAbove([&](ASTNode::Link n) {
+    auto b = Node<BlockNode>::dynPtrCast(n);
+    if (!b) return false;
+    auto it = std::find_if(ALL(b->blockTypes), [&](AbstractId::Link id) {
+      if (ti.getEvalTypeList().size() != id->storedTypeCount()) return false;
+      return ti.getEvalTypeList() == id->storedNames();
+    });
+    if (it != b->blockTypes.end()) {
+      id = *it;
+      return true;
+    }
+    return false;
+  });
+  if (id == nullptr) throw Error(
+    "TypeError",
+    "Can't find type '" + ti.getTypeNameString() + "'",
+    node->getTrace()
+  );
+  return id->getAllocaType();
 }
 
 ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Link identifier) {
-  if (identifier->getToken().type != IDENTIFIER) throw InternalError("This function takes identifies only", {METADATA_PAIRS});
+  if (identifier->getToken().type != IDENTIFIER)
+    throw InternalError("This function takes identifies only", {METADATA_PAIRS});
   // Check if it's an argument to this function, return it
   // TODO might have to load it
   // LLVM arguments
@@ -134,7 +164,20 @@ ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Lin
   // Iterate over them at the same time
   auto sigArg = sigArgList.begin();
   for (auto arg = argList.begin(); arg != argList.end(); arg++, sigArg++) {
+    // Complain if arg names aren't the same
+    if (arg->getName() != sigArg->first) {
+      throw InternalError("Func arg name mismatch", {
+        METADATA_PAIRS,
+        {"llvm arg name", arg->getName()},
+        {"func sig arg name", sigArg->first}
+      });
+    }
+    // auto ty = typeFromInfo(sigArg->second, identifier);
+    // return std::make_shared<ValueWrapper>(&(*arg), ty);
+
+    // FIXME: remove this garbage ->
     if (arg->getName() == identifier->getToken().data) {
+      // TODO make this scoped due to name collisions
       auto currentTypeNameIt = std::find_if(ALL(typeMap), [&arg](auto e) {
         return e.second == arg->getType();
       });
@@ -256,14 +299,14 @@ ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link 
 }
 
 void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
-  Node<BlockNode>::Link enclosingBlock = Node<BlockNode>::staticPtrCast(node->findAbove<BlockNode>());
+  Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
   // TODO make sure dynamic vars and user types are boxed
   TypeList declTypes = node->getTypeInfo().getEvalTypeList();
   llvm::Value* decl;
   // If this variable allows only one type, allocate it immediately
   if (declTypes.size() == 1) {
-    TypeName name = *declTypes.begin();
-    decl = builder->CreateAlloca(typeMap[name], nullptr, node->getIdentifier());
+    llvm::Type* ty = typeFromInfo(node->getTypeInfo(), node);
+    decl = builder->CreateAlloca(ty, nullptr, node->getIdentifier());
   // If this variable has 1+ or dynamic type, allocate a pointer + type data
   // The actual data will be allocated on initialization
   } else {
@@ -462,10 +505,14 @@ void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
   std::vector<llvm::Type*> argTypes {};
   std::vector<std::string> argNames {};
   for (std::pair<std::string, DefiniteTypeInfo> p : sig.getArguments()) {
-    argTypes.push_back(typeFromInfo(p.second));
+    argTypes.push_back(typeFromInfo(p.second, node));
     argNames.push_back(p.first);
   }
-  llvm::FunctionType* funType = llvm::FunctionType::get(typeFromInfo(sig.getReturnType()), argTypes, false);
+  llvm::FunctionType* funType = llvm::FunctionType::get(
+    typeFromInfo(sig.getReturnType(), node),
+    argTypes,
+    false
+  );
   functionStack.push(std::make_shared<FunctionWrapper>(
     llvm::Function::Create(funType, llvm::Function::ExternalLinkage, node->getIdentifier(), module),
     sig
@@ -476,7 +523,7 @@ void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
     nameIdx++;
   }
   // Add the function to the enclosing block's scope
-  Node<BlockNode>::Link enclosingBlock = Node<BlockNode>::staticPtrCast(node->findAbove<BlockNode>());
+  Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
   auto inserted = enclosingBlock->blockFuncs.insert({node->getIdentifier(), functionStack.top()});
   // If it failed, it means the function already exists
   if (!inserted.second) {
@@ -489,13 +536,32 @@ void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
 
 void CompileVisitor::visitType(Node<TypeNode>::Link node) {
   auto structTy = module->getTypeByName(node->getName());
-  // TODO: check for scope. maybe it was defined in another scope
-  if (structTy) throw Error("SyntaxError", "Redefinition of type " + node->getName(), node->getTrace());
+  // If it's already defined, get the block where it is stored
+  ASTNode::Link defBlock = node->findAbove([=](ASTNode::Link n) {
+    auto b = Node<BlockNode>::dynPtrCast(n);
+    if (!b) return false;
+    auto it = std::find_if(ALL(b->blockTypes), [=](AbstractId::Link id) {
+      return id->getName() == node->getName();
+    });
+    if (it != b->blockTypes.end()) return true;
+    else return false;
+  });
+  if (defBlock) {
+    throw Error(
+      "SyntaxError",
+      "Redefinition of type " + node->getName(),
+      node->getTrace()
+    );
+  }
   // Opaque struct, body gets added after members are processed
+  // TODO: warning, these stupid StructTypes aren't uniqued, but their names are at
+  // the context level. So make sure we don't do collisions with names
   structTy = llvm::StructType::create(*context, node->getName());
   node->setTyData(new TypeData(structTy, shared_from_this(), node));
   for (auto& child : node->getChildren()) child->visit(shared_from_this());
   structTy->setBody(node->getTyData()->getAllocaTypes());
+  
+  // FIXME remove this garbage
   // Insert the type in the typeMap
   auto tyMapIt = typeMap.find(node->getName());
   if (tyMapIt != typeMap.end()) throw Error(
@@ -504,6 +570,12 @@ void CompileVisitor::visitType(Node<TypeNode>::Link node) {
     node->getTrace()
   );
   typeMap[node->getName()] = structTy;
+  
+  // We already checked for redefinitions above, so we know it's safe to insert
+  Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
+  auto tid = TypeId::create(node->getTyData());
+  enclosingBlock->blockTypes.insert(tid);
+  types.insert(tid);
   node->getTyData()->finalize();
 }
 
@@ -540,14 +612,14 @@ ValueWrapper::Link CompileVisitor::getPtrForArgument(TypeName argType, llvm::Typ
 void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
   TypeData* tyData = Node<TypeNode>::staticPtrCast(node->getParent().lock())->getTyData();
   auto sig = node->getSignature();
-  if (!sig.getReturnType().isVoid()) throw InternalError("Constructor return type not void", {
-    METADATA_PAIRS,
-    {"type", tyData->getName()}
-  });
+  if (!sig.getReturnType().isVoid()) throw InternalError(
+    "Constructor return type not void",
+    {METADATA_PAIRS, {"type", tyData->getName()}}
+  );
   std::vector<llvm::Type*> argTypes {llvm::PointerType::getUnqual(tyData->getStructTy())};
   std::vector<std::string> argNames {"this"};
   for (std::pair<std::string, DefiniteTypeInfo> p : sig.getArguments()) {
-    argTypes.push_back(typeFromInfo(p.second));
+    argTypes.push_back(typeFromInfo(p.second, node));
     argNames.push_back(p.first);
   }
   auto newArgs = sig.getArguments();
@@ -582,10 +654,14 @@ void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
     argNames.push_back("this");
   }
   for (std::pair<std::string, DefiniteTypeInfo> p : sig.getArguments()) {
-    argTypes.push_back(typeFromInfo(p.second));
+    argTypes.push_back(typeFromInfo(p.second, node));
     argNames.push_back(p.first);
   }
-  llvm::FunctionType* funType = llvm::FunctionType::get(typeFromInfo(sig.getReturnType()), argTypes, false);
+  llvm::FunctionType* funType = llvm::FunctionType::get(
+    typeFromInfo(sig.getReturnType(), node),
+    argTypes,
+    false
+  );
   auto funWrapper = std::make_shared<FunctionWrapper>(
     llvm::Function::Create(
       funType,
@@ -614,5 +690,8 @@ void CompileVisitor::visitMember(Node<MemberNode>::Link node) {
   auto tyNode = Node<TypeNode>::staticPtrCast(node->getParent().lock());
   const auto& tyData = tyNode->getTyData();
   // This method also makes sure the members are initialized when appropriate
-  tyData->addMember(MemberMetadata(node, typeFromInfo(node->getTypeInfo())), node->isStatic());
+  tyData->addMember(
+    MemberMetadata(node, typeFromInfo(node->getTypeInfo(), node)),
+    node->isStatic()
+  );
 }
