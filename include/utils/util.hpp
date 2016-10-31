@@ -87,19 +87,6 @@ bool contains(std::vector<T> vec, T item) {
   return std::find(vec.begin(), vec.end(), item) != vec.end();
 }
 
-/// Allows the use of vectors as map keys
-template<typename T>
-struct VectorHash {
-  std::size_t operator()(const std::vector<T>& vec) const {
-    std::size_t seed = vec.size();
-    std::hash<T> hash;
-    for (const T& i : vec) {
-      seed ^= hash(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    }
-    return seed;
-  }
-};
-
 /// Smart pointer utils
 template<typename T>
 struct PtrUtil {
