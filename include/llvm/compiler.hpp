@@ -39,10 +39,10 @@ public:
   using Link = std::shared_ptr<ValueWrapper>;
 protected:
   llvm::Value* llvmValue;
-  TypeName currentType;
+  AbstractId::Link currentType;
 public:
-  ValueWrapper(llvm::Value* value, TypeName name);
-  ValueWrapper(std::pair<llvm::Value*, TypeName> pair);
+  ValueWrapper(llvm::Value* value, AbstractId::Link tid);
+  ValueWrapper(std::pair<llvm::Value*, AbstractId::Link> pair);
   
   inline virtual ~ValueWrapper() {}
   
@@ -52,8 +52,8 @@ public:
   bool hasPointerValue() const;
   
   llvm::Value* getValue() const;
-  TypeName getCurrentTypeName() const;
-  void setValue(llvm::Value* newVal, TypeName newType);
+  AbstractId::Link getCurrentType() const;
+  void setValue(llvm::Value* newVal, AbstractId::Link newType);
   
   /// If the held value is a Boolean or can be converted to one
   bool canBeBooleanValue() const;
@@ -68,46 +68,48 @@ public:
 private:
   FunctionSignature sig;
 public:
-  FunctionWrapper(llvm::Function* func, FunctionSignature sig);
+  FunctionWrapper(llvm::Function* func, FunctionSignature sig, TypeId::Link funTy);
   
   FunctionSignature getSignature() const;
   
   llvm::Function* getValue() const;
 };
 
+// FIXME: look at every single damn user of this stupid class and make sure it
+// optimizes the only-one-type edge case
 /**
-  \brief Holds the value pointing to the declared variable, its current type, and its list of allowed types
+  \brief Holds the value pointing to the declared variable, its current type, and its
+  list of allowed types
 */
 class DeclarationWrapper: public ValueWrapper {
 public:
   using Link = std::shared_ptr<DeclarationWrapper>;
 private:
-  TypeList tl;
+  TypeListId::Link tlid = nullptr;
 public:
-  DeclarationWrapper(llvm::Value* decl, TypeName current, TypeList tl);
+  /**
+    \brief Create a DeclarationWrapper
+    \param c current type in decl (type of initializer) or nullptr
+    \param allowed either a TypeListId or a TypeId of what is allowed to be assigned
+    to this
+  */
+  DeclarationWrapper(llvm::Value*, AbstractId::Link c, AbstractId::Link allowed);
   
-  TypeList getTypeList() const;
+  TypeListId::Link getTypeList() const;
 };
 
 /**
-  \brief Stores data about an instance of a type.
-  
-  This is still a DeclarationWrapper: the type whose instace is
-  being held can be changed if it is allowed by the TypeList.
+  \brief Stores an instance of a user type.
 */
-class InstanceWrapper: public DeclarationWrapper {
+class InstanceWrapper: public ValueWrapper {
 public:
   using Link = std::shared_ptr<InstanceWrapper>;
 private:
   /// Maps member names to their declaration
   std::map<std::string, DeclarationWrapper::Link> members {};
-  /// TypeData associated with this type
-  TypeData* tyData;
 public:
-  InstanceWrapper(llvm::Value* instance, TypeList tl, TypeData* tyData);
+  InstanceWrapper(llvm::Value*, TypeId::Link current);
   
-  /// Changes the type of this instance (when assigning another type)
-  void changeTypeOfInstance(TypeData* newType);
   /// Get a pointer to the member with the specified name
   DeclarationWrapper::Link getMember(std::string name);
 };
@@ -127,21 +129,17 @@ private:
   llvm::LLVMContext* context;
 
   static const uint bitsPerInt = 64;
-  /// Integral type
+
   llvm::IntegerType* integerType;
-  /// Floating-point type
   llvm::Type* floatType;
-  /// Boolean type
   llvm::IntegerType* booleanType;
+  llvm::PointerType* functionType;
   
-  // TODO: this might not have to be global, since there will be collisions of types with the same name from different scopes
-  /**
-    \brief Maps type names to llvm::Type pointers so they can be allocated
+  TypeId::Link integerTid;
+  TypeId::Link floatTid;
+  TypeId::Link booleanTid;
+  TypeId::Link functionTid;
     
-    Type names must be obtained using scope resolution. This map only assigns those names their respective llvm type.
-  */
-  std::unordered_map<TypeName, llvm::Type*> typeMap;
-  
   /// Complete type list
   std::unordered_set<AbstractId::Link> types;
 
@@ -193,20 +191,17 @@ private:
   void visitMethod(Node<MethodNode>::Link node);
   void visitMember(Node<MemberNode>::Link node);
   
-  /// Utility function for checking if a type is in a TypeList
-  static inline bool isTypeAllowedIn(TypeList tl, TypeName type) {
-    return std::find(ALL(tl), type) != tl.end();
-  }
-  
   /**
     \brief Creates a pointer pointing to a specific function's argument
     
     Be careful where and when this gets called, since it inserts IR,
     and it assumes it is already in the right place.
   */
-  ValueWrapper::Link getPtrForArgument(TypeName argType, llvm::Type* llvmArgType, FunctionWrapper::Link fun, std::size_t which);
+  ValueWrapper::Link getPtrForArgument(TypeId::Link argType, FunctionWrapper::Link fun, std::size_t which);
   /// Gets the llvm:Type* to be allocated for the given type info
-  llvm::Type* typeFromInfo(TypeInfo ti, ASTNode::Link context);
+  llvm::Type* typeFromInfo(TypeInfo ti, ASTNode::Link node);
+  /// Gets an id for the given type info
+  AbstractId::Link typeIdFromInfo(TypeInfo ti, ASTNode::Link node);
   /// How to handle an identifier in compileExpression
   enum IdentifierHandling {
     AS_POINTER, ///< Return a pointer
@@ -226,24 +221,25 @@ private:
 class OperatorCodegen {
 friend class CompileVisitor;
 public:
-  /// Generates IR using provided arguments
-  using CodegenFunction = std::function<ValueWrapper::Link(std::vector<ValueWrapper::Link>&, std::vector<ValueWrapper::Link>&, Trace)>;
-  /// Generates IR using provided arguments
-  using SpecialCodegenFunction = std::function<ValueWrapper::Link(std::vector<ValueWrapper::Link>&, ASTNode::Link, Trace)>;
+  using ValueList = std::vector<ValueWrapper::Link>;
   /// Signature for a lambda representing a CodegenFunction
   #define CODEGEN_SIG (\
-    __attribute__((unused)) std::vector<ValueWrapper::Link>& operands,\
-    __attribute__((unused)) std::vector<ValueWrapper::Link>& rawOperands,\
+    __attribute__((unused)) ValueList operands,\
+    __attribute__((unused)) ValueList rawOperands,\
     __attribute__((unused)) Trace trace\
   ) -> ValueWrapper::Link
+  /// Generates IR using provided arguments
+  using CodegenFunction = std::function<ValueWrapper::Link(ValueList, ValueList, Trace)>;
   /// Signature for a lambda representing a SpecialCodegenFunction
   #define SPECIAL_CODEGEN_SIG (\
-    std::vector<ValueWrapper::Link>& operands,\
+    ValueList operands,\
     __attribute__((unused)) ASTNode::Link node,\
     __attribute__((unused)) Trace trace\
   ) -> ValueWrapper::Link
+  /// Generates IR using provided arguments
+  using SpecialCodegenFunction = std::function<ValueWrapper::Link(ValueList, ASTNode::Link, Trace)>;
   /// Maps operand types to a func that generates code from them
-  using TypeMap = std::unordered_map<std::vector<TypeName>, CodegenFunction, VectorHash<TypeName>>;
+  using TypeMap = std::unordered_map<std::vector<AbstractId::Link>, CodegenFunction>;
 private:
   CompileVisitor::Link cv;
   
@@ -256,11 +252,11 @@ private:
   OperatorCodegen(CompileVisitor::Link cv);
 public:
   /// Search for a CodegenFunction everywhere, and run it
-  ValueWrapper::Link findAndRunFun(Node<ExpressionNode>::Link node, std::vector<ValueWrapper::Link>& operands);
+  ValueWrapper::Link findAndRunFun(Node<ExpressionNode>::Link node, ValueList operands);
   /// Search for a CodegenFunction in the specialCodegenMap
   SpecialCodegenFunction getSpecialFun(Node<ExpressionNode>::Link node) noexcept;
   /// Search for a CodegenFunction in the codegenMap
-  CodegenFunction getNormalFun(Node<ExpressionNode>::Link node, const std::vector<TypeName>& types);
+  CodegenFunction getNormalFun(Node<ExpressionNode>::Link node, std::vector<AbstractId::Link> types);
 };
 
 /**

@@ -136,4 +136,13 @@ public:
 
 // TODO class AliasId: public AbstractId
 
+/// Utility function for checking if a type is in a TypeList
+inline bool isTypeAllowedIn(TypeList tl, AbstractId::Link type) {
+  return std::find(ALL(tl), type->getName()) != tl.end();
+}
+/// Utility function for checking if a type is in a TypeListId
+inline bool isTypeAllowedIn(TypeListId::Link tl, AbstractId::Link type) {
+  return std::find(ALL(tl->getTypes()), type) != tl->getTypes().end();
+}
+
 #endif

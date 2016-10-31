@@ -202,15 +202,15 @@ class TypeNode: public ASTNode {
 private:
   std::string name;
   TypeList inheritsFrom;
-  TypeData* typeData;
+  TypeId::Link tid;
 public:
   TypeNode(std::string name, TypeList inheritsFrom = {});
   
   std::string getName() const;
   TypeList getAncestors() const;
   
-  TypeData* getTyData() const;
-  void setTyData(TypeData* newData);
+  TypeId::Link getTid() const;
+  void setTid(TypeId::Link newData);
   
   /**
     \brief Only accepts ConstructorNode, MethodNode or MemberNode.

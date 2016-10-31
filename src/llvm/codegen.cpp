@@ -6,26 +6,26 @@ static ValueWrapper::Link loadIfPointer(std::unique_ptr<llvm::IRBuilder<>>& buil
   if (llvm::dyn_cast_or_null<llvm::PointerType>(maybePointer->getValue()->getType())) {
     return std::make_shared<ValueWrapper>(
       builder->CreateLoad(maybePointer->getValue(), "loadIfPointer"),
-      maybePointer->getCurrentTypeName()
+      maybePointer->getCurrentType()
     );
   }
   return maybePointer;
 }
 
-ValueWrapper::Link OperatorCodegen::findAndRunFun(Node<ExpressionNode>::Link node, std::vector<ValueWrapper::Link>& operands) {
+ValueWrapper::Link OperatorCodegen::findAndRunFun(Node<ExpressionNode>::Link node, ValueList operands) {
   // Check if it's a special case
   SpecialCodegenFunction func = getSpecialFun(node);
   if (func != nullptr) return func(operands, node, node->getToken().trace);
   // Otherwise look in the normal map
   // Get a list of type names
-  std::vector<TypeName> operandTypes;
+  std::vector<AbstractId::Link> operandTypes;
   operandTypes.resize(operands.size());
   // Deref pointers
   std::vector<ValueWrapper::Link> processedOperands;
   // Map an operand to a std::string representing its type
-  std::transform(ALL(operands), operandTypes.begin(), [=, &operands, &processedOperands](ValueWrapper::Link val) -> TypeName {
+  std::transform(ALL(operands), operandTypes.begin(), [&](ValueWrapper::Link val) {
     processedOperands.push_back(loadIfPointer(cv->builder, val));
-    return val->getCurrentTypeName();
+    return val->getCurrentType();
   });
   return getNormalFun(node, operandTypes)(processedOperands, operands, node->getToken().trace);
 }
@@ -37,7 +37,10 @@ OperatorCodegen::SpecialCodegenFunction OperatorCodegen::getSpecialFun(Node<Expr
   else return nullptr;
 }
 
-OperatorCodegen::CodegenFunction OperatorCodegen::getNormalFun(Node<ExpressionNode>::Link node, const std::vector<TypeName>& types) {
+OperatorCodegen::CodegenFunction OperatorCodegen::getNormalFun(
+  Node<ExpressionNode>::Link node,
+  std::vector<AbstractId::Link> types
+) {
   const Operator::Name& toFind = operatorNameFrom(node->getToken().idx);
   auto opMapIt = codegenMap.find(toFind);
   if (opMapIt == codegenMap.end()) {
@@ -66,36 +69,36 @@ OperatorCodegen::CodegenFunction OperatorCodegen::getNormalFun(Node<ExpressionNo
   \param opTextName lowercase name of operation, used for ir printing
 */
 #define ARITHM_PAIRS(builderMethod, fltBuilderMethod, opTextName) \
-{{"Integer", "Integer"}, [=] CODEGEN_SIG {\
+{{cv->integerTid, cv->integerTid}, [=] CODEGEN_SIG {\
   return std::make_shared<ValueWrapper>(\
     cv->builder->Create##builderMethod(BIN_VALUES, "int" opTextName),\
-    "Integer"\
+    cv->integerTid\
   );\
 }},\
-{{"Integer", "Float"}, [=] CODEGEN_SIG {\
+{{cv->integerTid, cv->floatTid}, [=] CODEGEN_SIG {\
   return std::make_shared<ValueWrapper>(\
     cv->builder->Create##fltBuilderMethod(BIN_VALUES, "intflt" opTextName),\
-    "Float"\
+    cv->floatTid\
   );\
 }},\
-{{"Float", "Integer"}, [=] CODEGEN_SIG {\
+{{cv->floatTid, cv->integerTid}, [=] CODEGEN_SIG {\
   return std::make_shared<ValueWrapper>(\
     cv->builder->Create##fltBuilderMethod(BIN_VALUES, "fltint" opTextName),\
-    "Float"\
+    cv->floatTid\
   );\
 }},\
-{{"Float", "Float"}, [=] CODEGEN_SIG {\
+{{cv->floatTid, cv->floatTid}, [=] CODEGEN_SIG {\
   return std::make_shared<ValueWrapper>(\
     cv->builder->Create##fltBuilderMethod(BIN_VALUES, "flt" opTextName),\
-    "Float"\
+    cv->floatTid\
   );\
 }}
 
 /**
   \brief Util function to create ValueWrappers with booleans more easily
 */
-static inline ValueWrapper::Link boolVal(llvm::Value* v) {
-  return std::make_shared<ValueWrapper>(v, "Boolean");
+static inline ValueWrapper::Link boolVal(TypeId::Link b, llvm::Value* v) {
+  return std::make_shared<ValueWrapper>(v, b);
 }
 
 /**
@@ -107,28 +110,28 @@ static inline ValueWrapper::Link boolVal(llvm::Value* v) {
   \param opTextName lowercase name of operation, used for ir printing
 */
 #define CMP_PAIRS(intCmpPred, fltCmpPred, opTextName) \
-{{"Boolean", "Boolean"}, [=] CODEGEN_SIG {\
-  return boolVal(cv->builder->CreateICmp(intCmpPred, BIN_VALUES, "boolcmp" opTextName));\
+{{cv->booleanTid, cv->booleanTid}, [=] CODEGEN_SIG {\
+  return boolVal(cv->booleanTid, cv->builder->CreateICmp(intCmpPred, BIN_VALUES, "boolcmp" opTextName));\
 }},\
-{{"Integer", "Integer"}, [=] CODEGEN_SIG {\
-  return boolVal(cv->builder->CreateICmp(intCmpPred, BIN_VALUES, "intcmp" opTextName));\
+{{cv->integerTid, cv->integerTid}, [=] CODEGEN_SIG {\
+  return boolVal(cv->booleanTid, cv->builder->CreateICmp(intCmpPred, BIN_VALUES, "intcmp" opTextName));\
 }},\
-{{"Integer", "Float"}, [=] CODEGEN_SIG {\
+{{cv->integerTid, cv->floatTid}, [=] CODEGEN_SIG {\
   operands[0]->setValue(\
     cv->builder->CreateSIToFP(operands[0]->getValue(), cv->floatType, "SItoFPconv"),\
-    "Float"\
+    cv->floatTid\
   );\
-  return boolVal(cv->builder->CreateFCmp(fltCmpPred, BIN_VALUES, "intfltcmp" opTextName));\
+  return boolVal(cv->booleanTid, cv->builder->CreateFCmp(fltCmpPred, BIN_VALUES, "intfltcmp" opTextName));\
 }},\
-{{"Float", "Integer"}, [=] CODEGEN_SIG {\
+{{cv->floatTid, cv->integerTid}, [=] CODEGEN_SIG {\
   operands[1]->setValue(\
     cv->builder->CreateSIToFP(operands[1]->getValue(), cv->floatType, "SItoFPconv"),\
-    "Float"\
+    cv->floatTid\
   );\
-  return boolVal(cv->builder->CreateFCmp(fltCmpPred, BIN_VALUES, "fltintcmp" opTextName));\
+  return boolVal(cv->booleanTid, cv->builder->CreateFCmp(fltCmpPred, BIN_VALUES, "fltintcmp" opTextName));\
 }},\
-{{"Float", "Float"}, [=] CODEGEN_SIG {\
-  return boolVal(cv->builder->CreateFCmp(fltCmpPred, BIN_VALUES, "fltcmp" opTextName));\
+{{cv->floatTid, cv->floatTid}, [=] CODEGEN_SIG {\
+  return boolVal(cv->booleanTid, cv->builder->CreateFCmp(fltCmpPred, BIN_VALUES, "fltcmp" opTextName));\
 }}
 
 /**
@@ -159,7 +162,7 @@ static llvm::Constant* getOne(std::string ofWhat, llvm::Type* intTy, llvm::Type*
 #define POSTFIX_OP_FUN(builderMethod, type, opTextName) \
 {{type}, [=] CODEGEN_SIG {\
   auto initial = cv->builder->CreateLoad(rawOperands[0]->getValue(), "postfix" opTextName "load");\
-  auto changed = cv->builder->Create##builderMethod(initial, getOne(type, cv->integerType, cv->floatType), "int" opTextName);\
+  auto changed = cv->builder->Create##builderMethod(initial, getOne(type->getName(), cv->integerType, cv->floatType), "int" opTextName);\
   cv->builder->CreateStore(changed, rawOperands[0]->getValue());\
   return std::make_shared<ValueWrapper>(initial, type);\
 }}
@@ -173,7 +176,7 @@ static llvm::Constant* getOne(std::string ofWhat, llvm::Type* intTy, llvm::Type*
 #define PREFIX_OP_FUN(builderMethod, type, opTextName) \
 {{type}, [=] CODEGEN_SIG {\
   auto initial = cv->builder->CreateLoad(rawOperands[0]->getValue(), "prefix" opTextName "load");\
-  auto changed = cv->builder->Create##builderMethod(initial, getOne(type, cv->integerType, cv->floatType), "int" opTextName);\
+  auto changed = cv->builder->Create##builderMethod(initial, getOne(type->getName(), cv->integerType, cv->floatType), "int" opTextName);\
   return std::make_shared<ValueWrapper>(cv->builder->CreateStore(changed, rawOperands[0]->getValue()), type);\
 }}
 
@@ -242,79 +245,79 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
       CMP_PAIRS(CmpPred::ICMP_SGE, CmpPred::FCMP_OGE, "greaterequal")
     }},
     {"Unary +", {
-      UNARY_NO_OP("Integer"),
-      UNARY_NO_OP("Float")
+      UNARY_NO_OP(cv->integerTid),
+      UNARY_NO_OP(cv->floatTid)
     }},
     {"Unary -", {
-      {{"Integer"}, [=] CODEGEN_SIG {
+      {{cv->integerTid}, [=] CODEGEN_SIG {
         return std::make_shared<ValueWrapper>(
           cv->builder->CreateNeg(operands[0]->getValue(), "negateint"),
-          "Integer"
+          cv->integerTid
         );
       }},
-      {{"Float"}, [=] CODEGEN_SIG {
+      {{cv->floatTid}, [=] CODEGEN_SIG {
         return std::make_shared<ValueWrapper>(
           cv->builder->CreateFNeg(operands[0]->getValue(), "negateflt"),
-          "Float"
+          cv->floatTid
         );
       }}
     }},
     {"Bitshift >>", {
-      {{"Integer", "Integer"}, [=] CODEGEN_SIG {
+      {{cv->integerTid, cv->integerTid}, [=] CODEGEN_SIG {
         return std::make_shared<ValueWrapper>(
           cv->builder->CreateShl(BIN_VALUES, "leftshift"),
-          "Integer"
+          cv->integerTid
         );
       }}
     }},
     {"Bitshift <<", {
-      {{"Integer", "Integer"}, [=] CODEGEN_SIG {
+      {{cv->integerTid, cv->integerTid}, [=] CODEGEN_SIG {
         return std::make_shared<ValueWrapper>(
           cv->builder->CreateAShr(BIN_VALUES, "rightshift"),
-          "Integer"
+          cv->integerTid
         );
       }}
     }},
     {"Bitwise NOT", {
-      BITWISE_NOT_PAIR("Integer", "int", "bit"),
-      BITWISE_NOT_PAIR("Boolean", "bool", "bit")
+      BITWISE_NOT_PAIR(cv->integerTid, "int", "bit"),
+      BITWISE_NOT_PAIR(cv->booleanTid, "bool", "bit")
     }},
     {"Logical NOT", {
-      BITWISE_NOT_PAIR("Boolean", "bool", "logical")
+      BITWISE_NOT_PAIR(cv->booleanTid, "bool", "logical")
     }},
     {"Bitwise AND", {
-      BITWISE_BIN_PAIR("Integer", And, "intbitand"),
-      BITWISE_BIN_PAIR("Boolean", And, "boolbitand"),
+      BITWISE_BIN_PAIR(cv->integerTid, And, "intbitand"),
+      BITWISE_BIN_PAIR(cv->booleanTid, And, "boolbitand"),
     }},
     {"Logical AND", {
-      BITWISE_BIN_PAIR("Boolean", And, "boollogicaland"),
+      BITWISE_BIN_PAIR(cv->booleanTid, And, "boollogicaland"),
     }},
     {"Bitwise OR", {
-      BITWISE_BIN_PAIR("Integer", Or, "intbitor"),
-      BITWISE_BIN_PAIR("Boolean", Or, "boolbitor"),
+      BITWISE_BIN_PAIR(cv->integerTid, Or, "intbitor"),
+      BITWISE_BIN_PAIR(cv->booleanTid, Or, "boolbitor"),
     }},
     {"Logical OR", {
-      BITWISE_BIN_PAIR("Boolean", Or, "boollogicalor"),
+      BITWISE_BIN_PAIR(cv->booleanTid, Or, "boollogicalor"),
     }},
     {"Bitwise XOR", {
-      BITWISE_BIN_PAIR("Integer", Xor, "intbitxor"),
-      BITWISE_BIN_PAIR("Boolean", Xor, "boolbitxor"),
+      BITWISE_BIN_PAIR(cv->integerTid, Xor, "intbitxor"),
+      BITWISE_BIN_PAIR(cv->booleanTid, Xor, "boolbitxor"),
     }},
     {"Postfix ++", {
-      POSTFIX_OP_FUN(Add, "Integer", "inc"),
-      POSTFIX_OP_FUN(FAdd, "Float", "inc")
+      POSTFIX_OP_FUN(Add, cv->integerTid, "inc"),
+      POSTFIX_OP_FUN(FAdd, cv->floatTid, "inc")
     }},
     {"Postfix --", {
-      POSTFIX_OP_FUN(Sub, "Integer", "dec"),
-      POSTFIX_OP_FUN(FSub, "Float", "dec")
+      POSTFIX_OP_FUN(Sub, cv->integerTid, "dec"),
+      POSTFIX_OP_FUN(FSub, cv->floatTid, "dec")
     }},
     {"Prefix ++", {
-      PREFIX_OP_FUN(Add, "Integer", "inc"),
-      PREFIX_OP_FUN(FAdd, "Float", "inc")
+      PREFIX_OP_FUN(Add, cv->integerTid, "inc"),
+      PREFIX_OP_FUN(FAdd, cv->floatTid, "inc")
     }},
     {"Prefix --", {
-      PREFIX_OP_FUN(Sub, "Integer", "dec"),
-      PREFIX_OP_FUN(FSub, "Float", "dec")
+      PREFIX_OP_FUN(Sub, cv->integerTid, "dec"),
+      PREFIX_OP_FUN(FSub, cv->floatTid, "dec")
     }}
   }),
   specialCodegenMap({
@@ -323,10 +326,10 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
       DeclarationWrapper::Link decl = PtrUtil<DeclarationWrapper>::dynPtrCast(operands[0]);
       if (decl == nullptr) throw Error("ReferenceError", "Cannot assign to this value", varIdent->getToken().trace);
       // If the declaration doesn't allow this type, complain
-      if (!cv->isTypeAllowedIn(decl->getTypeList(), operands[1]->getCurrentTypeName())) {
+      if (!isTypeAllowedIn(decl->getTypeList(), operands[1]->getCurrentType())) {
         throw Error("TypeError",
           "Type list of '" + varIdent->getToken().data +
-          "' does not contain type '" + operands[1]->getCurrentTypeName() + "'",
+          "' does not contain type '" + operands[1]->getCurrentType()->getName() + "'",
           varIdent->getToken().trace
         );
       }
@@ -334,12 +337,12 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
       cv->builder->CreateStore(operands[1]->getValue(), operands[0]->getValue());
       // The value of the decl will remain the pointer to the var in memory,
       // The type is changed to the newly assigned one
-      decl->setValue(decl->getValue(), operands[1]->getCurrentTypeName());
+      decl->setValue(decl->getValue(), operands[1]->getCurrentType());
       // Return the assigned value
       return operands[1];
     }},
     {"Call", [=] SPECIAL_CODEGEN_SIG {
-      if (operands[0]->getCurrentTypeName() != "Function") {
+      if (operands[0]->getCurrentType() != cv->functionTid) {
         throw Error("TypeError", "Attempt to call non-function", trace);
       }
       auto fw = PtrUtil<FunctionWrapper>::staticPtrCast(operands[0]);
@@ -359,19 +362,15 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
         );
       }
       for (auto it = map.begin(); it != map.end(); ++it, ++opIt) {
-        if (!cv->isTypeAllowedIn(it->second.getEvalTypeList(), (*opIt)->getCurrentTypeName())) {
+        if (!isTypeAllowedIn(it->second.getEvalTypeList(), (*opIt)->getCurrentType())) {
           throw Error("TypeError",
             "Function argument '" + it->first + "' type list does not contain type '" +
-            (*opIt)->getCurrentTypeName() + "'",
+            (*opIt)->getCurrentType()->getName() + "'",
             trace
           );
         }
         args.push_back((*opIt)->getValue());
       }
-      TypeList returnTl = fw->getSignature().getReturnType().getEvalTypeList();
-      TypeName returnedType;
-      if (returnTl.size() == 1) returnedType = *returnTl.begin();
-      else throw InternalError("Not implemented", {METADATA_PAIRS});
       // TODO: use invoke instead of call in the future, it has exception handling and stuff
       return std::make_shared<ValueWrapper>(
         cv->builder->CreateCall(
@@ -379,7 +378,7 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
           args,
           fw->getValue()->getReturnType()->isVoidTy() ? "" : "call"
         ),
-        returnedType
+        cv->typeIdFromInfo(fw->getSignature().getReturnType(), node)
       );
     }}
   }) {}
