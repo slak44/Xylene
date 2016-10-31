@@ -42,10 +42,17 @@ public:
   virtual TypeList storedNames() const = 0;
   /// \returns what should llvm allocate for this id
   virtual llvm::Type* getAllocaType() const = 0;
+  
+  inline bool operator==(const AbstractId& rhs) {
+    return this->getId() == rhs.getId();
+  }
+  inline bool operator!=(const AbstractId& rhs) {
+    return !operator==(rhs);
+  }
 };
 
 namespace std {
-  /// Template specialization for hash function
+  /// AbstractId std::hash template specialization
   template<>
   struct hash<AbstractId> {
     using argument_type = AbstractId;
@@ -53,6 +60,18 @@ namespace std {
     size_t operator()(const AbstractId& tid) const {
       // These ids are unique, so they should work well as hashes
       return tid.getId();
+    }
+  };
+  template<>
+  struct hash<vector<AbstractId::Link>> {
+    using argument_type = vector<AbstractId::Link>;
+    using result_type = size_t;
+    size_t operator()(const vector<AbstractId::Link>& vec) const {
+      size_t seed = vec.size();
+      for (auto e : vec) {
+        seed ^= e->getId() + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+      }
+      return seed;
     }
   };
 };
