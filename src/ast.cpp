@@ -132,12 +132,12 @@ TypeList TypeNode::getAncestors() const {
   return inheritsFrom;
 }
 
-TypeData* TypeNode::getTyData() const{
-  return typeData;
+TypeId::Link TypeNode::getTid() const{
+  return tid;
 }
 
-void TypeNode::setTyData(TypeData* newData) {
-  typeData = newData;
+void TypeNode::setTid(TypeId::Link newData) {
+  tid = newData;
 }
 
 void TypeNode::addChild(Link child) {

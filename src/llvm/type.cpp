@@ -16,7 +16,8 @@ TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k):
         tyData.nameFrom("initializer", "static"),
         tyData.cv->module
       ),
-      FunctionSignature(nullptr, {})
+      FunctionSignature(nullptr, {}),
+      tyData.cv->functionTid
     );
   } else {
     ty = llvm::FunctionType::get(
@@ -33,7 +34,8 @@ TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k):
       ),
       FunctionSignature(nullptr, {
         {"this", StaticTypeInfo(tyData.node->getName())}
-      })
+      }),
+      owner.cv->functionTid
     );
     init->getValue()->getArgumentList().begin()->setName("this");
   }
@@ -45,8 +47,7 @@ TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k):
   if (k == NORMAL) {
     initializerInstance = std::make_shared<InstanceWrapper>(
       getInitStructArg()->getValue(),
-      TypeList {tyData.node->getName()},
-      &tyData
+      tyData.node->getTid()
     );
   }
 }
@@ -74,7 +75,7 @@ ValueWrapper::Link TypeData::TypeInitializer::getInitStructArg() const {
     owner.cv->functionStack.push(init);
     owner.cv->builder->SetInsertPoint(initBlock);
     // Actually get the argument
-    thisObject = owner.cv->getPtrForArgument(owner.getName(), owner.dataType, init, 0);
+    thisObject = owner.cv->getPtrForArgument(owner.node->getTid(), init, 0);
     // Exit initializer
     owner.cv->functionStack.pop();
     owner.cv->builder->SetInsertPoint(startingPosition);
@@ -265,12 +266,12 @@ void TypeData::finalize() {
     if (!mb->hasInit()) return;
     normalTi.insertCode([&](TypeInitializer& ref) {
       auto initValue = cv->compileExpression(mb->getInit());
-      if (!cv->isTypeAllowedIn(mb->getTypeInfo().getEvalTypeList(), initValue->getCurrentTypeName())) {
+      if (!isTypeAllowedIn(mb->getTypeInfo().getEvalTypeList(), initValue->getCurrentType())) {
         throw Error("TypeError", "Member initialization does not match its type", mb->getInit()->getTrace());
       }
       auto memberDecl = ref.getInitInstance()->getMember(mb->getName());
       cv->builder->CreateStore(initValue->getValue(), memberDecl->getValue());
-      memberDecl->setValue(memberDecl->getValue(), initValue->getCurrentTypeName());
+      memberDecl->setValue(memberDecl->getValue(), initValue->getCurrentType());
     });
   });
   normalTi.finalize();
@@ -285,7 +286,7 @@ void TypeData::finalize() {
     );
     if (!mb->hasInit()) return;
     auto initValue = cv->compileExpression(mb->getInit());
-    if (!cv->isTypeAllowedIn(mb->getTypeInfo().getEvalTypeList(), initValue->getCurrentTypeName())) {
+    if (!isTypeAllowedIn(mb->getTypeInfo().getEvalTypeList(), initValue->getCurrentType())) {
       throw Error("TypeError", "Static member initialization does not match its type", mb->getInit()->getTrace());
     }
     cv->builder->CreateStore(initValue->getValue(), staticVar);
@@ -310,7 +311,7 @@ void TypeData::finalize() {
       cv->functionStack.push(constr->getFunction());
       auto newBlock = llvm::BasicBlock::Create(*cv->context, "constrEntryBlock", cv->functionStack.top()->getValue());
       cv->builder->SetInsertPoint(newBlock);
-      auto thisPtrRef = cv->getPtrForArgument(getName(), getStructTy(), constr->getFunction(), 0);
+      auto thisPtrRef = cv->getPtrForArgument(node->getTid(), constr->getFunction(), 0);
       if (normalTi.exists()) {
         cv->builder->CreateCall(
           normalTi.getInit()->getValue(),
@@ -326,14 +327,14 @@ void TypeData::finalize() {
   finalized = true;
 }
 
-ValueWrapper::ValueWrapper(llvm::Value* value, TypeName name):
+ValueWrapper::ValueWrapper(llvm::Value* value, AbstractId::Link tid):
   llvmValue(value),
-  currentType(name) {}
-ValueWrapper::ValueWrapper(std::pair<llvm::Value*, TypeName> pair):
+  currentType(tid) {}
+ValueWrapper::ValueWrapper(std::pair<llvm::Value*, AbstractId::Link> pair):
   ValueWrapper(pair.first, pair.second) {}
 
 bool ValueWrapper::isInitialized() const {
-  return llvmValue != nullptr || currentType == "";
+  return llvmValue != nullptr && currentType->getAllocaType() != nullptr;
 }
 
 bool ValueWrapper::hasPointerValue() const {
@@ -344,23 +345,26 @@ llvm::Value* ValueWrapper::getValue() const {
   return llvmValue;
 }
 
-void ValueWrapper::setValue(llvm::Value* newVal, TypeName newName) {
+void ValueWrapper::setValue(llvm::Value* newVal, AbstractId::Link newType) {
   llvmValue = newVal;
-  currentType = newName;
+  currentType = newType;
 }
 
-TypeName ValueWrapper::getCurrentTypeName() const {
+AbstractId::Link ValueWrapper::getCurrentType() const {
   return currentType;
 }
 
 bool ValueWrapper::canBeBooleanValue() const {
-  // TODO: it might be convertible to boolean, check for that as well
-  return currentType == "Boolean";
+  // TODO: value might be convertible to boolean, check for that as well
+  // TODO: we can pretend this id isn't hardcoded, but it really should be changed
+  return currentType->getId() == 103;
 }
 
-FunctionWrapper::FunctionWrapper(llvm::Function* func, FunctionSignature sig):
-  ValueWrapper(func, "Function"),
-  sig(sig) {}
+FunctionWrapper::FunctionWrapper(
+  llvm::Function* func,
+  FunctionSignature sig,
+  TypeId::Link funTy
+): ValueWrapper(func, funTy), sig(sig) {}
 
 FunctionSignature FunctionWrapper::getSignature() const {
   return sig;
@@ -370,59 +374,77 @@ llvm::Function* FunctionWrapper::getValue() const {
   return static_cast<llvm::Function*>(llvmValue);
 }
 
-DeclarationWrapper::DeclarationWrapper(llvm::Value* decl, TypeName current, TypeList tl):
-  ValueWrapper(decl, current),
-  tl(tl) {}
-
-TypeList DeclarationWrapper::getTypeList() const {
-  return tl;
+DeclarationWrapper::DeclarationWrapper(
+  llvm::Value* decl,
+  AbstractId::Link current,
+  AbstractId::Link id
+): ValueWrapper(decl, current) {
+  if (id->storedTypeCount() == 1) {
+    // We already assigned the type in the ValueWrapper constructor, just check the
+    // user of this class isn't misled
+    if (current != nullptr && current != id) throw InternalError(
+      "Current type must match allowed type",
+      {METADATA_PAIRS}
+    );
+  } else if (id->storedTypeCount() > 1) {
+    tlid = PtrUtil<TypeListId>::staticPtrCast(id);
+  } else {
+    // Should never hit this code path
+    throw InternalError("Unhandled AbstractId derivative", {METADATA_PAIRS});
+  }
 }
 
-InstanceWrapper::InstanceWrapper(llvm::Value* instance, TypeList tl, TypeData* tyData):
-  DeclarationWrapper(instance, tyData->node->getName(), tl),
-  tyData(tyData) {}
+TypeListId::Link DeclarationWrapper::getTypeList() const {
+  if (tlid == nullptr) throw InternalError(
+    "This decl only has one type, use getCurrentType to get it",
+    {METADATA_PAIRS}
+  );
+  return tlid;
+}
+
+InstanceWrapper::InstanceWrapper(
+  llvm::Value* instance,
+  TypeId::Link tid
+): ValueWrapper(instance, tid) {
+  if (tid->getTyData() == nullptr) throw InternalError(
+    "Can't create instance of non-struct type",
+    {METADATA_PAIRS}
+  );
+}
 
 DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
-  if (static_cast<llvm::StructType*>(tyData->dataType)->isOpaque())
+  TypeData* tyd = PtrUtil<TypeId>::staticPtrCast(currentType)->getTyData();
+  if (static_cast<llvm::StructType*>(tyd->dataType)->isOpaque())
     throw InternalError("Member was accessed before struct body was added", {
       METADATA_PAIRS,
       {"member name", name},
-      {"type name", tyData->node->getName()}
+      {"type name", currentType->getName()}
     });
   std::size_t idx = -1;
-  auto member = std::find_if(ALL(tyData->members), [&idx, &name](MemberMetadata::Link m) {
+  auto member = std::find_if(ALL(tyd->members),
+  [&idx, &name](MemberMetadata::Link m) {
     idx++;
     return m->getName() == name;
   });
-  if (member == tyData->members.end()) throw Error(
+  if (member == tyd->members.end()) throw Error(
     "ReferenceError",
-    "No member named '" + name + "' in type " + tyData->node->getName(),
-    tyData->node->getTrace()
+    "No member named '" + name + "' in type " + currentType->getName(),
+    tyd->node->getTrace()
   );
   auto declMember = members.find(name);
   if (declMember == members.end()) {
     // Add it if it isn't there
-    auto gep = tyData->cv->builder->CreateStructGEP(
-      tyData->dataType,
+    auto gep = tyd->cv->builder->CreateStructGEP(
+      tyd->dataType,
       this->getValue(),
       idx,
       "gep_" + name
     );
-    auto decl = std::make_shared<DeclarationWrapper>(
-      gep,
-      "",
-      (*member)->getTypeInfo().getEvalTypeList()
-    );
-    return members[name] = decl;
+    auto id = tyd->cv->typeIdFromInfo((*member)->getTypeInfo(), tyd->node);
+    return members[name] = std::make_shared<DeclarationWrapper>(gep, nullptr, id);
   } else {
     return members[name];
   }
-}
-
-void InstanceWrapper::changeTypeOfInstance(TypeData* newType) {
-  // TODO check if the type allows this
-  tyData = newType;
-  members = {};
 }
 
 int AbstractId::getId() const {
