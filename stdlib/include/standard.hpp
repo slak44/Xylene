@@ -10,7 +10,7 @@
   \brief Maps standard library function names to pointers to those functions.
 */
 const std::unordered_map<std::string, void*> nameToFunPtr {
-  {"printC", (void*) printC}
+  {"printC", reinterpret_cast<void*>(printC)}
 };
 
 #endif
