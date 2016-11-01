@@ -90,7 +90,11 @@ set(COMMON_SOURCES
   ${PROJECT_SOURCE_DIR}/stdlib/src/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor tclap)
-set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -pedantic \
+-Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wfloat-equal -Wold-style-cast \
+-Wswitch-default -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs \
+-Wnoexcept -Woverloaded-virtual -Wredundant-decls -Wstrict-null-sentinel -Wundef \
+-Wstrict-overflow=5 -Wuseless-cast -Wzero-as-null-pointer-constant")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 find_package(LLVM)

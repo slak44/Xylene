@@ -129,7 +129,7 @@ private:
   /// \copydoc findConstruct
   inline int getNumberRadix();
   /// \copydoc findConstruct
-  inline Token getNumberToken(int radix);
+  inline Token getNumberToken(uint radix);
   /// \copydoc findConstruct
   inline std::string getQuotedString();
 protected:
@@ -188,7 +188,7 @@ inline std::string Lexer::getQuotedString() {
           if (std::isxdigit(peekAhead(1))) hexNumber += peekAhead(1);
           else throw badEscape;
           skip(2);
-          str += static_cast<char>(std::stoll(hexNumber, 0, 16));
+          str += static_cast<char>(std::stoll(hexNumber, nullptr, 16));
           continue;
         // \00 octal escape code
         } else if (isdigit(escapedChar)) {
@@ -200,7 +200,7 @@ inline std::string Lexer::getQuotedString() {
           if (isOctalDigit(peekAhead(1))) octalNumber += peekAhead(1);
           else throw badEscape;
           skip(3);
-          str += static_cast<char>(std::stoll(octalNumber, 0, 8));
+          str += static_cast<char>(std::stoll(octalNumber, nullptr, 8));
           continue;
         }
         throw badEscape;
@@ -249,7 +249,7 @@ inline int Lexer::getNumberRadix() {
   }
 }
 
-inline Token Lexer::getNumberToken(int radix) {
+inline Token Lexer::getNumberToken(uint radix) {
   Position start = getCurrentPosition();
   if (current() == '0' && isdigit(peekAhead(1)))
     throw Error("SyntaxError", "Numbers cannot begin with '0'", Trace(getFileName(), Range(start, 1)));
@@ -265,8 +265,8 @@ inline Token Lexer::getNumberToken(int radix) {
       number += current();
       skip(1);
     } else if (
-        (current() >= 'A' && current() < 'A' + radix - 10) ||
-        (current() >= 'a' && current() < 'a' + radix - 10)
+        (current() >= 'A' && static_cast<uint>(current()) < 'A' + radix - 10) ||
+        (current() >= 'a' && static_cast<uint>(current()) < 'a' + radix - 10)
       ) {
       number += current();
       skip(1);
@@ -277,7 +277,7 @@ inline Token Lexer::getNumberToken(int radix) {
   noIncrement();
   if (number.back() == '.') throw Error("SyntaxError", "Malformed float, missing digits after decimal point", Trace(getFileName(), getRangeToHere(start)));
   if (radix != 10 && isFloat) throw Error("SyntaxError", "Floating point numbers must be used with base 10 numbers", Trace(getFileName(), getRangeToHere(start)));
-  if (radix != 10) number = std::to_string(std::stoll(number, 0, radix));
+  if (radix != 10) number = std::to_string(std::stoll(number, nullptr, radix));
   return Token(isFloat ? L_FLOAT : L_INTEGER, number, Trace(getFileName(), getRangeToHere(start)));
 }
 

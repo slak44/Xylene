@@ -34,10 +34,13 @@ int main(int argc, const char* argv[]) {
     
     std::vector<std::string> runnerValues {"llvm-lli", "llvm-llc"};
     TCLAP::ValuesConstraint<std::string> runnerConstraint(runnerValues);
-    TCLAP::ValueArg<std::string> runner("r", "runner", "How to run this code", false, "llvm-lli", &runnerConstraint, cmd);
+    TCLAP::ValueArg<std::string> runner("r", "runner", "How to run this code", false,
+      "llvm-lli", &runnerConstraint, cmd, nullptr);
     
-    TCLAP::ValueArg<std::string> code("e", "eval", "Code to evaluate", false, std::string(), "string", cmd);
-    TCLAP::ValueArg<std::string> filePath("f", "file", "Load code from this file", false, std::string(), "path", cmd);
+    TCLAP::ValueArg<std::string> code("e", "eval", "Code to evaluate", false,
+      std::string(), "string", cmd, nullptr);
+    TCLAP::ValueArg<std::string> filePath("f", "file", "Load code from this file",
+      false, std::string(), "path", cmd, nullptr);
     cmd.parse(argc, argv);
     
     if (code.getValue().empty() && filePath.getValue().empty()) {

@@ -1,5 +1,8 @@
 #include "parser/xmlParser.hpp"
 
+// Too many false-positives involving default parameters in library functions
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+
 XMLParser::XMLParser() {}
 
 XMLParser& XMLParser::parse(char* str) {
@@ -14,7 +17,7 @@ XMLParser& XMLParser::parse(char* str) {
     });
   }
   auto rootNode = Node<BlockNode>::dynPtrCast(parseXMLNode(doc.first_node()));
-  if (rootNode == 0) throw XMLParseError("Root node isn't a block node", {
+  if (rootNode == nullptr) throw XMLParseError("Root node isn't a block node", {
     METADATA_PAIRS,
     {"tag name", doc.first_node()->name()}
   });
@@ -50,12 +53,12 @@ static Visibility fromString(std::string str) {
 ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   auto safeAttr = [node](std::string what, std::string defaultValue = "") -> std::string {
     auto attr = node->first_attribute(what.c_str());
-    if (attr != 0) return attr->value();
+    if (attr != nullptr) return attr->value();
     else return defaultValue;
   };
   auto requiredAttr = [node](std::string what) -> std::string {
     auto attr = node->first_attribute(what.c_str());
-    if (attr != 0) return attr->value();
+    if (attr != nullptr) return attr->value();
     else throw XMLParseError("Can't find required attribute", {
       METADATA_PAIRS,
       {"missing attribute", what}
@@ -78,7 +81,7 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   auto funBlock = [=](Node<FunctionNode>::Link f) {
     if (!f->isForeign()) {
       auto codeBlock = node->first_node("block");
-      if (codeBlock == 0) throw XMLParseError("Method missing code block", {METADATA_PAIRS});
+      if (codeBlock == nullptr) throw XMLParseError("Method missing code block", {METADATA_PAIRS});
       f->setCode(Node<BlockNode>::staticPtrCast(parseXMLNode(codeBlock)));
     }
   };
@@ -103,7 +106,7 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   } else if (name == "return") {
     auto retNode = Node<ReturnNode>::make();
     auto val = node->first_node("expr");
-    if (val != 0) retNode->setValue(Node<ExpressionNode>::dynPtrCast(parseXMLNode(val)));
+    if (val != nullptr) retNode->setValue(Node<ExpressionNode>::dynPtrCast(parseXMLNode(val)));
     return retNode;
   } else if (name == "expr") {
     TokenType tokenType = getTokenTypeByName(requiredAttr("type"));
@@ -129,43 +132,43 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
       decl = Node<DeclarationNode>::make(ident, TypeList(ALL(vec)));
     }
     auto expr = node->first_node("expr");
-    if (expr != 0) {
+    if (expr != nullptr) {
       decl->setInit(Node<ExpressionNode>::dynPtrCast(parseXMLNode(expr)));
     }
     return decl;
   } else if (name == "branch") {
     auto branch = Node<BranchNode>::make();
     auto cond = node->first_node();
-    if (cond == 0) throw XMLParseError("Missing condition in branch", {METADATA_PAIRS});
+    if (cond == nullptr) throw XMLParseError("Missing condition in branch", {METADATA_PAIRS});
     branch->setCondition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
     auto success = cond->next_sibling();
-    if (success == 0) throw XMLParseError("Missing success node in branch", {METADATA_PAIRS});
+    if (success == nullptr) throw XMLParseError("Missing success node in branch", {METADATA_PAIRS});
     branch->setSuccessBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(success)));
     auto blockFailiure = success->next_sibling("block");
-    if (blockFailiure != 0) {
+    if (blockFailiure != nullptr) {
       branch->setFailiureBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(blockFailiure)));
     }
     auto branchFailiure = success->next_sibling("branch");
-    if (branchFailiure != 0) {
+    if (branchFailiure != nullptr) {
       branch->setFailiureBlock(Node<BranchNode>::dynPtrCast(parseXMLNode(branchFailiure)));
     }
     return branch;
   } else if (name == "loop") {
     auto loop = Node<LoopNode>::make();
     auto init = node->first_node("loop_init");
-    if (init != 0) {
+    if (init != nullptr) {
       loop->setInit(Node<DeclarationNode>::dynPtrCast(parseXMLNode(init)));
     }
     auto cond = node->first_node("loop_condition");
-    if (cond != 0) {
+    if (cond != nullptr) {
       loop->setCondition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
     }
     auto update = node->first_node("loop_update");
-    if (update != 0) {
+    if (update != nullptr) {
       loop->setUpdate(Node<ExpressionNode>::dynPtrCast(parseXMLNode(update)));
     }
     auto code = node->first_node("block");
-    if (code != 0) {
+    if (code != nullptr) {
       loop->setCode(Node<BlockNode>::dynPtrCast(parseXMLNode(code)));
     }
     return loop;
@@ -191,7 +194,7 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     std::vector<std::string> types = split(safeAttr("types"), ' ');
     auto member = Node<MemberNode>::make(ident, TypeList(ALL(types)), boolAttr("static"), getVisibility());
     auto init = node->first_node("expr");
-    if (init != 0) {
+    if (init != nullptr) {
       member->setInit(Node<ExpressionNode>::staticPtrCast(parseXMLNode(init)));
     }
     return member;
@@ -212,5 +215,3 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
 
 XMLParseError::XMLParseError(std::string msg, ErrorData data):
   InternalError("XMLParseError", msg, data) {}
-
-

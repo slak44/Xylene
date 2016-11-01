@@ -1,6 +1,6 @@
 add_executable(release_bin ${COMMON_SOURCES} main.cpp)
 
-target_compile_options(release_bin PRIVATE -O3 -g0)
+target_compile_options(release_bin PRIVATE -O3 -g0 -Wdisabled-optimization)
 target_link_libraries(release_bin ${REQ_LLVM_LIBRARIES})
 
 add_dependencies(release_bin ${COMMON_DEPS})
