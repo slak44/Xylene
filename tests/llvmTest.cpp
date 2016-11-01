@@ -40,7 +40,7 @@ protected:
       visitor->visit();
       if (printIr) visitor->getModule()->dump();
     } catch (InternalError& err) {
-      EXPECT_NO_THROW(throw InternalError(err));
+      EXPECT_NO_THROW(throw err);
       println(err.what());
       visitor->getModule()->dump();
     }

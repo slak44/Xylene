@@ -45,7 +45,7 @@ std::string StaticTypeInfo::toString() const {
 }
 
 DefiniteTypeInfo::DefiniteTypeInfo(TypeList evalValue): TypeInfo(evalValue) {}
-DefiniteTypeInfo::DefiniteTypeInfo(): TypeInfo({}) {}
+DefiniteTypeInfo::DefiniteTypeInfo(): TypeInfo(TypeList {}) {}
 
 std::string DefiniteTypeInfo::toString() const {
   return "DefiniteTypeInfo: " + getTypeNameString();

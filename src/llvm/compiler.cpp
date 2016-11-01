@@ -99,6 +99,7 @@ llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const
           throw Error("SyntaxError", "Function has non-void return type, but no return was found", node->getTrace());
         }
         break;
+      default: break;
     }
   }
   // After functions are done, start inserting in the old block, not in the function
@@ -581,7 +582,7 @@ ValueWrapper::Link CompileVisitor::getPtrForArgument(TypeId::Link argType, Funct
       break;
     }
   }
-  auto argName = std::string("arg_" + argPtr->getName().str());
+  auto argName = "arg_" + argPtr->getName().str();
   // If we already obtained this arg, fetch it and return it
   if (auto val = fun->getValue()->getValueSymbolTable().lookup(argName)) {
     return std::make_shared<ValueWrapper>(val, argType);

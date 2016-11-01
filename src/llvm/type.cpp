@@ -414,7 +414,7 @@ InstanceWrapper::InstanceWrapper(
 
 DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
   TypeData* tyd = PtrUtil<TypeId>::staticPtrCast(currentType)->getTyData();
-  if (static_cast<llvm::StructType*>(tyd->dataType)->isOpaque())
+  if (tyd->dataType->isOpaque())
     throw InternalError("Member was accessed before struct body was added", {
       METADATA_PAIRS,
       {"member name", name},
