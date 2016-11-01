@@ -232,8 +232,8 @@ public:
 #define SET_SIG(linkType, nameOf) void set##nameOf(std::shared_ptr<linkType> newNode);
 /// \see GET_SET_FOR
 #define GET_SET_SIGS(linkType, nameOf) \
-GET_SIG(linkType, nameOf); \
-SET_SIG(linkType, nameOf);
+GET_SIG(linkType, nameOf) \
+SET_SIG(linkType, nameOf)
 
 /**
   \brief ASTNode with fixed children count.

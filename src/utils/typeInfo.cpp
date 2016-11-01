@@ -26,7 +26,7 @@ std::string TypeInfo::getTypeNameString() const {
 
 std::string TypeInfo::toString() const {
   return "TypeInfo: " + getTypeNameString();
-};
+}
 
 bool TypeInfo::operator==(const TypeInfo& rhs) const {
   if (isVoidType != rhs.isVoidType) return false;
@@ -42,14 +42,14 @@ StaticTypeInfo::StaticTypeInfo(const char* type): StaticTypeInfo(std::string(typ
 
 std::string StaticTypeInfo::toString() const {
   return "StaticTypeInfo: " + *std::begin(evalValue);
-};
+}
 
 DefiniteTypeInfo::DefiniteTypeInfo(TypeList evalValue): TypeInfo(evalValue) {}
 DefiniteTypeInfo::DefiniteTypeInfo(): TypeInfo({}) {}
 
 std::string DefiniteTypeInfo::toString() const {
   return "DefiniteTypeInfo: " + getTypeNameString();
-};
+}
 
 FunctionSignature::FunctionSignature(TypeInfo returnType, Arguments arguments): returnType(returnType), arguments(arguments) {}
 
@@ -69,7 +69,7 @@ std::string FunctionSignature::toString() const {
   });
   str += ")";
   return str;
-};
+}
 
 bool FunctionSignature::operator==(const FunctionSignature& rhs) const {
   return returnType == rhs.returnType && arguments == rhs.arguments;

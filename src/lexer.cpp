@@ -25,7 +25,7 @@ LexerBase& LexerBase::tokenize(std::string code, std::string fileName) {
   currentLine = 1;
   processInput();
   return *this;
-};
+}
 
 void Lexer::processInput() {
   for (; !hasFinishedString(); skip(1)) {

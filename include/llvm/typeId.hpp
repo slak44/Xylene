@@ -74,7 +74,7 @@ namespace std {
       return seed;
     }
   };
-};
+}
 
 /**
   \brief Identifies a single type.

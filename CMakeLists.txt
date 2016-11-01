@@ -90,7 +90,7 @@ set(COMMON_SOURCES
   ${PROJECT_SOURCE_DIR}/stdlib/src/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor tclap)
-set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -pedantic")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 find_package(LLVM)
