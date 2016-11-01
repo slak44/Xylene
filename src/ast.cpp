@@ -1,7 +1,7 @@
 #include "ast.hpp"
 
 ASTNode::ASTNode() {}
-ASTNode::~ASTNode() {};
+ASTNode::~ASTNode() {}
 
 void ASTNode::addChild(Link child) {
   child->setParent(shared_from_this());
