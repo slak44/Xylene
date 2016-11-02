@@ -354,12 +354,6 @@ AbstractId::Link ValueWrapper::getCurrentType() const {
   return currentType;
 }
 
-bool ValueWrapper::canBeBooleanValue() const {
-  // TODO: value might be convertible to boolean, check for that as well
-  // TODO: we can pretend this id isn't hardcoded, but it really should be changed
-  return currentType->getId() == 103;
-}
-
 FunctionWrapper::FunctionWrapper(
   llvm::Function* func,
   FunctionSignature sig,

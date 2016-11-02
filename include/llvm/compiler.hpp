@@ -54,9 +54,6 @@ public:
   llvm::Value* getValue() const;
   AbstractId::Link getCurrentType() const;
   void setValue(llvm::Value* newVal, AbstractId::Link newType);
-  
-  /// If the held value is a Boolean or can be converted to one
-  bool canBeBooleanValue() const;
 };
 
 /**
@@ -191,6 +188,8 @@ private:
   void visitMethod(Node<MethodNode>::Link node);
   void visitMember(Node<MemberNode>::Link node);
   
+  /// If the held value is a Boolean or can be converted to one
+  bool canBeBoolean(ValueWrapper::Link) const;
   /**
     \brief Creates a pointer pointing to a specific function's argument
     
