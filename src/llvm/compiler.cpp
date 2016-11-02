@@ -113,6 +113,11 @@ void CompileVisitor::visitExpression(Node<ExpressionNode>::Link node) {
   compileExpression(node);
 }
 
+bool CompileVisitor::canBeBoolean(ValueWrapper::Link val) const {
+  // TODO: value might be convertible to boolean, check for that as well
+  return val->getCurrentType() == booleanTid;
+}
+
 llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti, ASTNode::Link node) {
   if (ti.isVoid()) return llvm::Type::getVoidTy(*context);
   // TODO: do we even allow no type checking?
@@ -364,7 +369,7 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
   bool usesBranchAfter = false;
   llvm::BasicBlock* current = builder->GetInsertBlock();
   ValueWrapper::Link cond = compileExpression(node->getCondition());
-  if (!cond->canBeBooleanValue()) {
+  if (!canBeBoolean(cond)) {
     throw Error("TypeError", "Expected boolean expression in if condition", node->getCondition()->getTrace());
   }
   llvm::BasicBlock* success = compileBlock(node->getSuccessBlock(), "branchSuccess");
@@ -420,7 +425,7 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   auto cond = node->getCondition();
   if (cond != nullptr) {
     auto condValue = compileExpression(cond);
-    if (!condValue->canBeBooleanValue()) {
+    if (!canBeBoolean(condValue)) {
       throw Error("TypeError", "Expected boolean expression in loop condition", cond->getTrace());
     }
     // Go to the loop if true, end the loop otherwise
