@@ -326,7 +326,7 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
       DeclarationWrapper::Link decl = PtrUtil<DeclarationWrapper>::dynPtrCast(operands[0]);
       if (decl == nullptr) throw Error("ReferenceError", "Cannot assign to this value", varIdent->getToken().trace);
       // If the declaration doesn't allow this type, complain
-      if (!isTypeAllowedIn(decl->getTypeList(), operands[1]->getCurrentType())) {
+      if (!decl->isTypeAllowed(operands[1]->getCurrentType())) {
         throw Error("TypeError",
           "Type list of '" + varIdent->getToken().data +
           "' does not contain type '" + operands[1]->getCurrentType()->getName() + "'",

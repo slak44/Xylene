@@ -150,6 +150,7 @@ AbstractId::Link CompileVisitor::typeIdFromInfo(TypeInfo ti, ASTNode::Link node)
 }
 
 ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Link identifier) {
+  auto name = identifier->getToken().data;
   if (identifier->getToken().type != IDENTIFIER)
     throw InternalError("This function takes identifies only", {METADATA_PAIRS});
   // Check if it's an argument to this function, return it
@@ -178,7 +179,7 @@ ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Lin
         {"func sig arg name", sigArg->first}
       });
     }
-    return std::make_shared<ValueWrapper>(
+    if (name == sigArg->first) return std::make_shared<ValueWrapper>(
       &(*arg),
       typeIdFromInfo(sigArg->second, identifier)
     );
@@ -186,7 +187,7 @@ ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Lin
   // Iterate over all the blocks above this identifier
   for (auto p = identifier->findAbove<BlockNode>(); p != nullptr; p = p->findAbove<BlockNode>()) {
     // If we find this ident in any of their variable scopes, return what we found
-    auto it = p->blockScope.find(identifier->getToken().data);
+    auto it = p->blockScope.find(name);
     if (it != p->blockScope.end()) {
       ValueWrapper::Link vr = it->second;
       if (!vr->isInitialized())
@@ -194,7 +195,7 @@ ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Lin
       return vr;
     }
     // If it's a function, return it
-    auto fIt = p->blockFuncs.find(identifier->getToken().data);
+    auto fIt = p->blockFuncs.find(name);
     if (fIt != p->blockFuncs.end()) {
       return fIt->second;
     }
@@ -211,14 +212,14 @@ ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Lin
       type->getTid()
     );
     try {
-      return thisInstance->getMember(identifier->getToken().data);
+      return thisInstance->getMember(name);
     } catch (const Error& err) {
       // getMember throws Error instances only when it can't find the member
       // So this means the identifier we're looking for isn't here
       // Which means that this catch block can be safely ignored
     }
   }
-  throw Error("ReferenceError", "Cannot find '" + identifier->getToken().data + "' in this scope", identifier->getTrace());
+  throw Error("ReferenceError", "Cannot find '" + name + "' in this scope", identifier->getTrace());
 }
 
 ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how) {
@@ -325,13 +326,10 @@ void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
     builder->CreateStore(initValue->getValue(), decl); // TODO only for primitives, move to else block of above comment
   }
   // Add to scope
+  auto id = typeIdFromInfo(node->getTypeInfo(), node);
   auto inserted = enclosingBlock->blockScope.insert({
     node->getIdentifier(),
-    std::make_shared<DeclarationWrapper>(
-      decl,
-      node->hasInit() ? initValue->getCurrentType() : nullptr,
-      typeIdFromInfo(node->getTypeInfo(), node)
-    )
+    std::make_shared<DeclarationWrapper>(decl, id, id)
   });
   // If it failed, it means the decl already exists
   if (!inserted.second) {
