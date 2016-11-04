@@ -206,7 +206,11 @@ private:
     Be careful where and when this gets called, since it inserts IR,
     and it assumes it is already in the right place.
   */
-  ValueWrapper::Link getPtrForArgument(TypeId::Link argType, FunctionWrapper::Link fun, std::size_t which);
+  ValueWrapper::Link getPtrForArgument(
+    TypeId::Link argType,
+    FunctionWrapper::Link fun,
+    std::size_t which
+  );
   /// Gets the llvm:Type* to be allocated for the given type info
   llvm::Type* typeFromInfo(TypeInfo ti, ASTNode::Link node);
   /// Gets an id for the given type info
