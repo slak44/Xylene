@@ -376,7 +376,7 @@ DeclarationWrapper::DeclarationWrapper(
   if (id->storedTypeCount() == 1) {
     // We already assigned the type in the ValueWrapper constructor, just check the
     // user of this class isn't misled
-    if (current != nullptr && current != id) throw InternalError(
+    if (current != id) throw InternalError(
       "Current type must match allowed type",
       {METADATA_PAIRS}
     );
@@ -435,7 +435,7 @@ DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
       "gep_" + name
     );
     auto id = tyd->cv->typeIdFromInfo((*member)->getTypeInfo(), tyd->node);
-    return members[name] = std::make_shared<DeclarationWrapper>(gep, nullptr, id);
+    return members[name] = std::make_shared<DeclarationWrapper>(gep, id, id);
   } else {
     return members[name];
   }

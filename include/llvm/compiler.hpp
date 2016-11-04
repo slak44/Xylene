@@ -72,8 +72,6 @@ public:
   llvm::Function* getValue() const;
 };
 
-// FIXME: look at every single damn user of this stupid class and make sure it
-// optimizes the only-one-type edge case
 /**
   \brief Holds the value pointing to the declared variable, its current type, and its
   list of allowed types
@@ -84,6 +82,7 @@ public:
 private:
   TypeListId::Link tlid = nullptr;
 public:
+  // TODO: consider removing the second parameter
   /**
     \brief Create a DeclarationWrapper
     \param c current type in decl (type of initializer) or nullptr
