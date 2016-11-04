@@ -86,7 +86,7 @@ public:
 */
 class FunctionSignature {
 public:
-  using Arguments = std::map<std::string, DefiniteTypeInfo>;
+  using Arguments = std::vector<std::pair<std::string, DefiniteTypeInfo>>;
 private:
   TypeInfo returnType;
   Arguments arguments;
