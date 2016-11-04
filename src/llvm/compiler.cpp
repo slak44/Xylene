@@ -569,21 +569,30 @@ void CompileVisitor::visitType(Node<TypeNode>::Link node) {
   types.insert(tid);
 }
 
-ValueWrapper::Link CompileVisitor::getPtrForArgument(TypeId::Link argType, FunctionWrapper::Link fun, std::size_t which) {
+ValueWrapper::Link CompileVisitor::getPtrForArgument(
+  TypeId::Link argType,
+  FunctionWrapper::Link fun,
+  std::size_t which
+) {
+  if (argType == nullptr) throw InternalError(
+    "Called too early; move caller inside or after TypeData::finalize",
+    {METADATA_PAIRS}
+  );
   if (which >= fun->getValue()->getArgumentList().size()) {
     throw InternalError("Bad argument index", {
       METADATA_PAIRS,
       {"which index", std::to_string(which)}
     });
   }
-  llvm::Argument* argPtr = nullptr;
   // Obtain desired argument + its type's name
-  auto argIt = fun->getValue()->getArgumentList().begin();
-  for (std::size_t i = 0; i < fun->getValue()->getArgumentList().size(); i++, argIt++) {
+  llvm::Argument* argPtr = nullptr;
+  std::size_t i = 0;
+  for (auto& arg : fun->getValue()->getArgumentList()) {
     if (i == which) {
-      argPtr = &*argIt;
+      argPtr = &arg;
       break;
     }
+    i++;
   }
   auto argName = "arg_" + argPtr->getName().str();
   // If we already obtained this arg, fetch it and return it
@@ -592,8 +601,14 @@ ValueWrapper::Link CompileVisitor::getPtrForArgument(TypeId::Link argType, Funct
   }
   // We can't use the function argument as is, so we create a pointer, and
   // store the arg in it, and return the loaded value.
-  auto structPtrTy = llvm::PointerType::getUnqual(argType->getTyData()->getStructTy());
-  llvm::Value* objValue = builder->CreateAlloca(structPtrTy, nullptr, "argAlloc_" + argPtr->getName());
+  auto structPtrTy = llvm::PointerType::getUnqual(
+    argType->getTyData()->getStructTy()
+  );
+  llvm::Value* objValue = builder->CreateAlloca(
+    structPtrTy,
+    nullptr,
+    "argAlloc_" + argPtr->getName()
+  );
   builder->CreateStore(argPtr, objValue);
   auto value = builder->CreateLoad(structPtrTy, objValue, argName);
   return std::make_shared<ValueWrapper>(value, argType);

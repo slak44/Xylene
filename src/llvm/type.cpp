@@ -1,8 +1,7 @@
 #include "llvm/compiler.hpp"
 #include "llvm/typeId.hpp"
 
-TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k):
-  owner(tyData) {
+TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k): owner(tyData) {
   if (k == STATIC) {
     ty = llvm::FunctionType::get(
       llvm::Type::getVoidTy(*tyData.cv->context),
@@ -44,12 +43,6 @@ TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k):
     tyData.nameFrom("initializer", k == STATIC ? "staticblock" : "normalblock"),
     init->getValue()
   );
-  if (k == NORMAL) {
-    initializerInstance = std::make_shared<InstanceWrapper>(
-      getInitStructArg()->getValue(),
-      tyData.node->getTid()
-    );
-  }
 }
 
 FunctionWrapper::Link TypeData::TypeInitializer::getInit() const {
@@ -94,6 +87,13 @@ void TypeData::TypeInitializer::finalize() {
     init->getValue()->eraseFromParent();
     init = nullptr;
     return;
+  }
+  // If normal init
+  if (init->getValue()->getArgumentList().size() > 0) {
+    initializerInstance = std::make_shared<InstanceWrapper>(
+      getInitStructArg()->getValue(),
+      owner.node->getTid()
+    );
   }
   initExists = true;
   // Remember where we start, so we can return
