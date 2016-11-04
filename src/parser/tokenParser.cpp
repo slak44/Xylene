@@ -295,7 +295,7 @@ FunctionSignature::Arguments FunctionParser::getSigArgs() {
   while (true) {
     expect(IDENTIFIER, "Expected identifier in function arguments");
     TypeList tl = getTypeList();
-    args.insert(std::make_pair(current().data, tl));
+    args.push_back(std::make_pair(current().data, tl));
     skip(); // Skip the argument name
     if (accept(C_SQPAREN_RIGHT)) {
       skip();

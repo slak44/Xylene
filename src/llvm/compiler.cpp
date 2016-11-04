@@ -615,22 +615,29 @@ ValueWrapper::Link CompileVisitor::getPtrForArgument(
 }
 
 void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
-  TypeData* tyData = Node<TypeNode>::staticPtrCast(node->getParent().lock())->getTid()->getTyData();
+  TypeData* tyData = 
+    Node<TypeNode>::staticPtrCast(node->getParent().lock())->getTid()->getTyData();
   auto sig = node->getSignature();
   if (!sig.getReturnType().isVoid()) throw InternalError(
     "Constructor return type not void",
     {METADATA_PAIRS, {"type", tyData->getName()}}
   );
-  std::vector<llvm::Type*> argTypes {llvm::PointerType::getUnqual(tyData->getStructTy())};
+  std::vector<llvm::Type*> argTypes {
+    llvm::PointerType::getUnqual(tyData->getStructTy())
+  };
   std::vector<std::string> argNames {"this"};
   for (std::pair<std::string, DefiniteTypeInfo> p : sig.getArguments()) {
     argTypes.push_back(typeFromInfo(p.second, node));
     argNames.push_back(p.first);
   }
-  auto newArgs = sig.getArguments();
-  newArgs["this"] = StaticTypeInfo(tyData->getName());
+  FunctionSignature::Arguments newArgs = sig.getArguments();
+  newArgs.insert(newArgs.begin(), {"this", StaticTypeInfo(tyData->getName())});
   auto updatedSignature = FunctionSignature(sig.getReturnType(), newArgs);
-  llvm::FunctionType* funType = llvm::FunctionType::get(llvm::Type::getVoidTy(*context), argTypes, false);
+  llvm::FunctionType* funType = llvm::FunctionType::get(
+    llvm::Type::getVoidTy(*context),
+    argTypes,
+    false
+  );
   auto funWrapper = std::make_shared<FunctionWrapper>(
     llvm::Function::Create(
       funType,

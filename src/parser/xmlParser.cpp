@@ -70,7 +70,7 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     for (auto& arg : stringArgs) {
       std::vector<std::string> namePlusTypes = split(arg, ':');
       std::vector<std::string> types = split(namePlusTypes[1], ' ');
-      args.insert(std::make_pair(namePlusTypes[0], TypeList(ALL(types))));
+      args.push_back(std::make_pair(namePlusTypes[0], TypeList(ALL(types))));
     }
     return args;
   };
