@@ -350,21 +350,24 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
       std::vector<llvm::Value*> args {};
       // We skip the first operand because it is the function itself, not an arg
       auto opIt = operands.begin() + 1;
-      auto map = fw->getSignature().getArguments();
-      if (operands.size() - 1 != fw->getSignature().getArguments().size()) {
+      auto arguments = fw->getSignature().getArguments();
+      if (operands.size() - 1 != arguments.size()) {
         throw InternalError(
           "Operand count mismatches func sig argument count",
           {
             METADATA_PAIRS,
             {"ops", std::to_string(operands.size() - 1)},
-            {"args", std::to_string(fw->getSignature().getArguments().size())},
+            {"args", std::to_string(arguments.size())},
           }
         );
       }
-      for (auto it = map.begin(); it != map.end(); ++it, ++opIt) {
-        if (!isTypeAllowedIn(it->second.getEvalTypeList(), (*opIt)->getCurrentType())) {
+      for (auto it = arguments.begin(); it != arguments.end(); ++it, ++opIt) {
+        if (!isTypeAllowedIn(
+            cv->typeIdFromInfo(it->second, node),
+            (*opIt)->getCurrentType())
+          ) {
           throw Error("TypeError",
-            "Function argument '" + it->first + "' type list does not contain type '" +
+            "Function argument '" + it->first + "' has incompatible type with '" +
             (*opIt)->getCurrentType()->getName() + "'",
             trace
           );
