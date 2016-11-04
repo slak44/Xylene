@@ -301,15 +301,12 @@ ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link 
 
 void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
   Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
-  // TODO make sure dynamic vars and user types are boxed
-  TypeList declTypes = node->getTypeInfo().getEvalTypeList();
+  auto id = typeIdFromInfo(node->getTypeInfo(), node);
   llvm::Value* decl;
   // If this variable allows only one type, allocate it immediately
-  if (declTypes.size() == 1) {
+  if (id->storedTypeCount() == 1) {
     llvm::Type* ty = typeFromInfo(node->getTypeInfo(), node);
     decl = builder->CreateAlloca(ty, nullptr, node->getIdentifier());
-  // If this variable has 1+ or dynamic type, allocate a pointer + type data
-  // The actual data will be allocated on initialization
   } else {
     // TODO
     throw InternalError("Not Implemented", {METADATA_PAIRS});
@@ -319,22 +316,20 @@ void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
   if (node->hasInit()) {
     initValue = compileExpression(node->getInit());
     // Check that the type of the initialization is allowed by the declaration
-    if (!isTypeAllowedIn(declTypes, initValue->getCurrentType())) {
+    if (!isTypeAllowedIn(id, initValue->getCurrentType())) {
       throw Error("TypeError", typeMismatchErrorString, node->getTrace());
     }
     // if (allocated->getType() == /* type of boxed stuff */) {/* update type metadata in box and do a store on the actual data */}
     builder->CreateStore(initValue->getValue(), decl); // TODO only for primitives, move to else block of above comment
   }
   // Add to scope
-  auto id = typeIdFromInfo(node->getTypeInfo(), node);
   auto inserted = enclosingBlock->blockScope.insert({
     node->getIdentifier(),
     std::make_shared<DeclarationWrapper>(decl, id, id)
   });
   // If it failed, it means the decl already exists
-  if (!inserted.second) {
-    throw Error("ReferenceError", "Can't have 2 declarations with the same name", node->getTrace());
-  }
+  if (!inserted.second) throw Error("ReferenceError",
+      "Redefinition of " + node->getIdentifier(), node->getTrace());
 }
 
 void CompileVisitor::visitBranch(Node<BranchNode>::Link node) {
@@ -480,7 +475,7 @@ void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
   }
   auto returnedValue = compileExpression(node->getValue());
   // If the returnedValue's type can't be found in the list of possible return types, get mad
-  if (!isTypeAllowedIn(returnType.getEvalTypeList(), returnedValue->getCurrentType())) {
+  if (!isTypeAllowedIn(typeIdFromInfo(returnType, node), returnedValue->getCurrentType())) {
     throw Error("TypeError", funRetTyMismatch, node->getTrace());
   }
   // This makes sure primitives get passed by value

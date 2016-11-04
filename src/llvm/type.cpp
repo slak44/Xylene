@@ -266,7 +266,7 @@ void TypeData::finalize() {
     if (!mb->hasInit()) return;
     normalTi.insertCode([&](TypeInitializer& ref) {
       auto initValue = cv->compileExpression(mb->getInit());
-      if (!isTypeAllowedIn(mb->getTypeInfo().getEvalTypeList(), initValue->getCurrentType())) {
+      if (!isTypeAllowedIn(cv->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
         throw Error("TypeError", "Member initialization does not match its type", mb->getInit()->getTrace());
       }
       auto memberDecl = ref.getInitInstance()->getMember(mb->getName());
@@ -286,7 +286,7 @@ void TypeData::finalize() {
     );
     if (!mb->hasInit()) return;
     auto initValue = cv->compileExpression(mb->getInit());
-    if (!isTypeAllowedIn(mb->getTypeInfo().getEvalTypeList(), initValue->getCurrentType())) {
+    if (!isTypeAllowedIn(cv->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
       throw Error("TypeError", "Static member initialization does not match its type", mb->getInit()->getTrace());
     }
     cv->builder->CreateStore(initValue->getValue(), staticVar);

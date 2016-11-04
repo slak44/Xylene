@@ -108,7 +108,6 @@ public:
   llvm::Type* getAllocaType() const override;
 };
 
-// FIXME tagged union type stored in this thing's basicTy
 /**
   \brief Identifies a list of types.
 */
@@ -136,15 +135,11 @@ public:
 
 // TODO class AliasId: public AbstractId
 
-// TODO: this should be removed or changed, type names mean nothing, must search in
-// block scopes for those types
-/// Utility function for checking if a type is in a TypeList
-inline bool isTypeAllowedIn(TypeList tl, AbstractId::Link type) {
-  return std::find(ALL(tl), type->getName()) != tl.end();
-}
-/// Utility function for checking if a type is in a TypeListId
-inline bool isTypeAllowedIn(TypeListId::Link tl, AbstractId::Link type) {
-  return std::find(ALL(tl->getTypes()), type) != tl->getTypes().end();
+/// Utility function for checking if 2 types are compatible
+inline bool isTypeAllowedIn(AbstractId::Link tl, AbstractId::Link type) {
+  if (tl->storedTypeCount() == 1 || type->storedTypeCount() > 1) return tl == type;
+  auto tlid = PtrUtil<TypeListId>::staticPtrCast(tl);
+  return std::find(ALL(tlid->getTypes()), type) != tlid->getTypes().end();
 }
 
 #endif
