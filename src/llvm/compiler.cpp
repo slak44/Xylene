@@ -301,17 +301,24 @@ ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link 
 
 void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
   Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
-  auto id = typeIdFromInfo(node->getTypeInfo(), node);
   llvm::Value* decl;
   // If this variable allows only one type, allocate it immediately
-  if (id->storedTypeCount() == 1) {
+  if (node->getTypeInfo().getEvalTypeList().size() == 1) {
     llvm::Type* ty = typeFromInfo(node->getTypeInfo(), node);
     decl = builder->CreateAlloca(ty, nullptr, node->getIdentifier());
   } else {
-    // TODO
+    std::unordered_set<AbstractId::Link> types;
+    std::for_each(ALL(node->getTypeInfo().getEvalTypeList()), [&](TypeName name) {
+      types.insert(typeIdFromInfo(StaticTypeInfo(name), node));
+    });
+    enclosingBlock->blockTypes.insert(TypeListId::create(
+      collate(node->getTypeInfo().getEvalTypeList()),
+      types
+    ));
     throw InternalError("Not Implemented", {METADATA_PAIRS});
   }
   // Handle initialization
+  auto id = typeIdFromInfo(node->getTypeInfo(), node);
   ValueWrapper::Link initValue;
   if (node->hasInit()) {
     initValue = compileExpression(node->getInit());
