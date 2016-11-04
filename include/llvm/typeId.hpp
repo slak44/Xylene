@@ -136,6 +136,8 @@ public:
 
 // TODO class AliasId: public AbstractId
 
+// TODO: this should be removed or changed, type names mean nothing, must search in
+// block scopes for those types
 /// Utility function for checking if a type is in a TypeList
 inline bool isTypeAllowedIn(TypeList tl, AbstractId::Link type) {
   return std::find(ALL(tl), type->getName()) != tl.end();

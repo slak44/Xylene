@@ -93,6 +93,16 @@ public:
   DeclarationWrapper(llvm::Value*, AbstractId::Link c, AbstractId::Link allowed);
   
   TypeListId::Link getTypeList() const;
+  
+  /// Utility function for checking if a type is allowed in a DeclarationWrapper
+  bool isTypeAllowed(AbstractId::Link type) {
+    if (type->storedTypeCount() == 1) {
+      if (type != this->getCurrentType()) return false;
+      else return true;
+    } else {
+      return tlid == PtrUtil<TypeListId>::staticPtrCast(type);
+    }
+  }
 };
 
 /**
