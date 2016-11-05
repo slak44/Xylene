@@ -5,6 +5,7 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
   integerType(llvm::IntegerType::get(*context, bitsPerInt)),
   floatType(llvm::Type::getDoubleTy(*context)),
   booleanType(llvm::Type::getInt1Ty(*context)),
+  voidPtrTy(llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8))),
   integerTid(TypeId::createBasic("Integer", integerType)),
   floatTid(TypeId::createBasic("Float", floatType)),
   booleanTid(TypeId::createBasic("Boolean", booleanType)),
@@ -311,10 +312,11 @@ void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
     std::for_each(ALL(node->getTypeInfo().getEvalTypeList()), [&](TypeName name) {
       types.insert(typeIdFromInfo(StaticTypeInfo(name), node));
     });
-    enclosingBlock->blockTypes.insert(TypeListId::create(
+    auto list = TypeListId::create(
       collate(node->getTypeInfo().getEvalTypeList()),
       types
-    ));
+    );
+    enclosingBlock->blockTypes.insert(list);
     throw InternalError("Not Implemented", {METADATA_PAIRS});
   }
   // Handle initialization

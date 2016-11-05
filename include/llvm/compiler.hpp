@@ -140,6 +140,7 @@ private:
   llvm::Type* floatType;
   llvm::IntegerType* booleanType;
   llvm::PointerType* functionType;
+  llvm::PointerType* voidPtrTy;
   
   TypeId::Link integerTid;
   TypeId::Link floatTid;
