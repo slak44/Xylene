@@ -77,8 +77,10 @@ TEST_F(LLVMCompilerTest, Branches) {
 }
 
 TEST_F(LLVMCompilerTest, Declarations) {
-  noThrowOnCompile("data/llvm/primitive.xml");
-  noThrowOnCompile("data/llvm/multiple_declare.xml");
+  noThrowOnCompile("data/llvm/declarations/primitive.xml");
+  noThrowOnCompile("data/llvm/declarations/multiple_declare.xml");
+  EXPECT_THROW(compile("data/llvm/declarations/simple_type_mismatch.xml"), Error);
+  EXPECT_THROW(compile("data/llvm/declarations/multiple_type_mismatch.xml"), Error);
 }
 
 TEST_F(LLVMCompilerTest, Assignment) {
