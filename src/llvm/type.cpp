@@ -477,20 +477,26 @@ TypeList TypeId::storedNames() const {
   return {name};
 }
 
-TypeListId::TypeListId(TypeName name, std::unordered_set<AbstractId::Link> types):
-  // FIXME this nullptr should actually be the tagged union type
-  taggedUnionTy(nullptr), types(types) {
-    this->name = name;
-    if (types.size() <= 1) {
-      throw InternalError(
-        "Trying to make a list of 1 or less elements (use TypeId for 1 element)",
-        {METADATA_PAIRS, {"size", std::to_string(types.size())}}
-      );
-    }
+TypeListId::TypeListId(
+  TypeName name,
+  std::unordered_set<AbstractId::Link> types,
+  llvm::StructType* taggedUnionType
+): taggedUnionType(taggedUnionType), types(types) {
+  this->name = name;
+  if (types.size() <= 1) {
+    throw InternalError(
+      "Trying to make a list of 1 or less elements (use TypeId for 1 element)",
+      {METADATA_PAIRS, {"size", std::to_string(types.size())}}
+    );
   }
+}
   
-TypeListId::Link TypeListId::create(TypeName n, std::unordered_set<AbstractId::Link> v) {
-  return std::make_shared<TypeListId>(TypeListId(n, v));
+TypeListId::Link TypeListId::create(
+  TypeName n,
+  std::unordered_set<AbstractId::Link> v,
+  llvm::StructType* t
+) {
+  return std::make_shared<TypeListId>(TypeListId(n, v, t));
 }
 
 std::unordered_set<AbstractId::Link> TypeListId::getTypes() const {
@@ -506,5 +512,5 @@ TypeList TypeListId::storedNames() const {
 }
 
 llvm::Type* TypeListId::getAllocaType() const {
-  return taggedUnionTy;
+  return taggedUnionType;
 }

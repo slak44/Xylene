@@ -7,6 +7,8 @@
 
 namespace llvm {
   class Type;
+  class Value;
+  class StructType;
 }
 class TypeData;
 
@@ -115,13 +117,13 @@ class TypeListId: public AbstractId {
 public:
   using Link = std::shared_ptr<TypeListId>;
 private:
-  llvm::Type* taggedUnionTy;
+  llvm::StructType* taggedUnionType;
   std::unordered_set<AbstractId::Link> types;
 protected:
-  TypeListId(TypeName, std::unordered_set<AbstractId::Link>);
+  TypeListId(TypeName, std::unordered_set<AbstractId::Link>, llvm::StructType*);
 public:
   /// Create a new type list with a name and some types in it
-  static Link create(TypeName, std::unordered_set<AbstractId::Link>);
+  static Link create(TypeName, std::unordered_set<AbstractId::Link>, llvm::StructType*);
   
   /// \returns list of types in this list
   std::unordered_set<AbstractId::Link> getTypes() const;

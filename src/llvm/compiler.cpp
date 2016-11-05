@@ -8,7 +8,8 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
   voidPtrType(llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8))),
   taggedUnionType(llvm::StructType::create(*context, {
     voidPtrType, // Pointer to data
-    integerType // AbstractId identifier
+    integerType, // TypeListId with allowed types
+    integerType, // TypeId with currently stored type
   })),
   integerTid(TypeId::createBasic("Integer", integerType)),
   floatTid(TypeId::createBasic("Float", floatType)),
@@ -318,9 +319,12 @@ void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
     });
     auto list = TypeListId::create(
       collate(node->getTypeInfo().getEvalTypeList()),
-      types
+      types,
+      taggedUnionType
     );
+    types.insert(list);
     enclosingBlock->blockTypes.insert(list);
+    
     throw InternalError("Not Implemented", {METADATA_PAIRS});
   }
   // Handle initialization
