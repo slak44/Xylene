@@ -1,0 +1,25 @@
+<!--
+Integer, Float nr;
+nr = 1;
+nr = 3.1313;
+nr = 7;
+return nr;
+-->
+<block type="root">
+  <decl ident="nr" types="Integer Float"/>
+  <expr type="Operator" value="Assignment">
+    <expr type="Identifier" value="nr"/>
+    <expr type="Integer" value="1"/>
+  </expr>
+  <expr type="Operator" value="Assignment">
+    <expr type="Identifier" value="nr"/>
+    <expr type="Float" value="3.1313"/>
+  </expr>
+  <expr type="Operator" value="Assignment">
+    <expr type="Identifier" value="nr"/>
+    <expr type="Integer" value="7"/>
+  </expr>
+  <return>
+    <expr type="Identifier" value="nr"/>
+  </return>
+</block>

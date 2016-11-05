@@ -78,6 +78,7 @@ TEST_F(LLVMCompilerTest, Branches) {
 
 TEST_F(LLVMCompilerTest, Declarations) {
   noThrowOnCompile("data/llvm/primitive.xml");
+  noThrowOnCompile("data/llvm/multiple_declare.xml");
 }
 
 TEST_F(LLVMCompilerTest, Assignment) {
