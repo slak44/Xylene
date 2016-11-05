@@ -1,0 +1,11 @@
+<!--
+Integer nr;
+nr = false;
+-->
+<block type="root">
+  <decl ident="nr" types="Integer"/>
+  <expr type="Operator" value="Assignment">
+    <expr type="Identifier" value="nr"/>
+    <expr type="Boolean" value="false"/>
+  </expr>
+</block>

@@ -1,0 +1,16 @@
+<!--
+Integer, Float nr;
+nr = 3.1322;
+nr = true;
+-->
+<block type="root">
+  <decl ident="nr" types="Integer"/>
+  <expr type="Operator" value="Assignment">
+    <expr type="Identifier" value="nr"/>
+    <expr type="Float" value="3.1322"/>
+  </expr>
+  <expr type="Operator" value="Assignment">
+    <expr type="Identifier" value="nr"/>
+    <expr type="Boolean" value="true"/>
+  </expr>
+</block>
