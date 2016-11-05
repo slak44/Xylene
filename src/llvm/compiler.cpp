@@ -5,11 +5,15 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
   integerType(llvm::IntegerType::get(*context, bitsPerInt)),
   floatType(llvm::Type::getDoubleTy(*context)),
   booleanType(llvm::Type::getInt1Ty(*context)),
-  voidPtrTy(llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8))),
+  voidPtrType(llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8))),
+  taggedUnionType(llvm::StructType::create(*context, {
+    voidPtrType, // Pointer to data
+    integerType // AbstractId identifier
+  })),
   integerTid(TypeId::createBasic("Integer", integerType)),
   floatTid(TypeId::createBasic("Float", floatType)),
   booleanTid(TypeId::createBasic("Boolean", booleanType)),
-  functionTid(TypeId::createBasic("Function", nullptr)), // TODO (opaque ptr) OR (i8* + bitcasts everywhere)
+  functionTid(TypeId::createBasic("Function", voidPtrType)), // TODO
   types({
     integerTid,
     floatTid,
