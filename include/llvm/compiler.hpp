@@ -231,6 +231,11 @@ private:
   llvm::BasicBlock* compileBlock(Node<BlockNode>::Link node, const std::string& name);
 };
 
+#ifdef _MSC_VER
+  #define __attribute__
+  #define unused
+#endif
+
 /// Used to generate IR for operators
 class OperatorCodegen {
 friend class CompileVisitor;

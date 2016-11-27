@@ -10,10 +10,16 @@
 #include "util.hpp"
 #include "trace.hpp"
 
-#define GET_ERR_METADATA __FILE__, __PRETTY_FUNCTION__, __LINE__
+#ifdef _MSC_VER
+  #define CURRENT_FUNCTION __FUNCSIG__
+#else
+  #define CURRENT_FUNCTION __PRETTY_FUNCTION__
+#endif
+
+#define GET_ERR_METADATA __FILE__, CURRENT_FUNCTION, __LINE__
 #define ERR_METADATA_TYPES(arg1, arg2, arg3) std::string arg1, std::string arg2, int arg3
 #define METADATA_PAIRS_FROM(file, func, line) {"file", file}, {"function", func}, {"line", std::to_string(line)}
-#define METADATA_PAIRS {"file", __FILE__}, {"function", __PRETTY_FUNCTION__}, {"line", std::to_string(__LINE__)}
+#define METADATA_PAIRS {"file", __FILE__}, {"function", CURRENT_FUNCTION}, {"line", std::to_string(__LINE__)}
 
 /**
   \brief Thrown when there is an issue in the user's code.

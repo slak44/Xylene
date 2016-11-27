@@ -40,7 +40,7 @@ ExternalProject_Add(
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
   BUILD_COMMAND ""
-  PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/stringstream_segfault_hack.patch
+  PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/windows_include_issues.patch
 )
 include_directories(SYSTEM ${TERMCOLOR_PREFIX}/src/termcolor/include)
 
@@ -90,12 +90,18 @@ set(COMMON_SOURCES
   ${PROJECT_SOURCE_DIR}/runtime/src/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor tclap)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -pedantic \
--Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wfloat-equal -Wold-style-cast \
--Wswitch-default -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs \
--Wnoexcept -Woverloaded-virtual -Wredundant-decls -Wstrict-null-sentinel -Wundef \
--Wstrict-overflow=5 -Wuseless-cast -Wzero-as-null-pointer-constant")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+
+if(UNIX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -pedantic \
+    -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wfloat-equal -Wold-style-cast \
+    -Wswitch-default -Winit-self -Wlogical-op -Wmissing-declarations \
+    -Wmissing-include-dirs -Wnoexcept -Woverloaded-virtual -Wredundant-decls \
+    -Wstrict-null-sentinel -Wundef -Wstrict-overflow=5 -Wuseless-cast \
+    -Wzero-as-null-pointer-constant")
+elseif(MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /Wall")
+endif()
 
 find_package(LLVM)
 if(NOT LLVM_FOUND)
