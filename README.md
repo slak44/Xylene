@@ -3,7 +3,7 @@
 A small programming language.
 Documentation: https://slak44.github.io/Xylene/
 
-# Language Syntax
+## Language Syntax
 
 EBNF-ish format of a program:
 ```
@@ -38,8 +38,12 @@ function_call = "(", [ expression, { ",", expression } ], ")" ;
 binary_op = ? see binary operators in operator.hpp ? ;
 prefix_op = ? see prefix operators in operator.hpp ? ;
 postfix_op = ? see postfix operators in operator.hpp ? ;
-terminal = ? see Token's isTerminal method ? ;
-ident = ? see lexer for valid identifiers ? ;
+terminal = integer_literal | float_literal | boolean_literal | string_literal | identifier ;
+integer_literal = ? decimal, binary, octal or hex integer, see Lexer class for details ? ;
+float_literal = ? decimal floating point value, see Lexer class for details ?
+boolean_literal = "true" | "false" ;
+string_literal = ? quotation mark delimited string with backslash escape codes, see Lexer class for details ? ;
+ident = ? see Lexer class for what is an identifier ? ;
 ```
 TODO list:
 - properly define an identifier
@@ -48,4 +52,3 @@ TODO list:
 - try-catch, throw, exceptions
 - modules, import, export
 - typedefs
-- windoze build
