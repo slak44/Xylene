@@ -1,5 +1,7 @@
 var annotated_dup =
 [
+    [ "std", "namespacestd.html", "namespacestd" ],
+    [ "AbstractId", "class_abstract_id.html", "class_abstract_id" ],
     [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "ASTNode", "class_a_s_t_node.html", "class_a_s_t_node" ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", null ],
@@ -49,11 +51,12 @@ var annotated_dup =
     [ "TokenParser", "class_token_parser.html", "class_token_parser" ],
     [ "Trace", "class_trace.html", "class_trace" ],
     [ "TypeData", "class_type_data.html", "class_type_data" ],
+    [ "TypeId", "class_type_id.html", "class_type_id" ],
     [ "TypeInfo", "class_type_info.html", "class_type_info" ],
+    [ "TypeListId", "class_type_list_id.html", "class_type_list_id" ],
     [ "TypeNode", "class_type_node.html", "class_type_node" ],
     [ "TypeParser", "class_type_parser.html", "class_type_parser" ],
     [ "ValueWrapper", "class_value_wrapper.html", "class_value_wrapper" ],
-    [ "VectorHash", "struct_vector_hash.html", "struct_vector_hash" ],
     [ "XMLParseError", "class_x_m_l_parse_error.html", "class_x_m_l_parse_error" ],
     [ "XMLParser", "class_x_m_l_parser.html", "class_x_m_l_parser" ]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Test Lang: BlockNode Class Reference</title>
+<title>Xylene: BlockNode Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Test Lang
+   <div id="projectname">Xylene
    &#160;<span id="projectnumber">pre-release</span>
    </div>
    <div id="projectbrief">A small programming language</div>
@@ -168,6 +168,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8d0c0435024b91a72346453e739bfc2e"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::shared_ptr&lt; <a class="el" href="class_function_wrapper.html">FunctionWrapper</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_block_node.html#a8d0c0435024b91a72346453e739bfc2e">blockFuncs</a> {}</td></tr>
 <tr class="memdesc:a8d0c0435024b91a72346453e739bfc2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps function names to their respective <a class="el" href="class_function_wrapper.html" title="Holds a llvm::Function* and its respective FunctionSignature. ">FunctionWrapper</a>.  <a href="#a8d0c0435024b91a72346453e739bfc2e">More...</a><br /></td></tr>
 <tr class="separator:a8d0c0435024b91a72346453e739bfc2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56bd47e02603f1cd8395411e24ff09d1"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_block_node.html#a56bd47e02603f1cd8395411e24ff09d1">blockTypes</a> {}</td></tr>
+<tr class="memdesc:a56bd47e02603f1cd8395411e24ff09d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of types defined in this block.  <a href="#a56bd47e02603f1cd8395411e24ff09d1">More...</a><br /></td></tr>
+<tr class="separator:a56bd47e02603f1cd8395411e24ff09d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -378,6 +381,22 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Maps identifiers to their declaration (contains current value/type) </p>
+
+</div>
+</div>
+<a id="a56bd47e02603f1cd8395411e24ff09d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56bd47e02603f1cd8395411e24ff09d1">&sect;&nbsp;</a></span>blockTypes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_set&lt;<a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a>&gt; BlockNode::blockTypes {}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>List of types defined in this block. </p>
 
 </div>
 </div>

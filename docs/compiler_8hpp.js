@@ -11,6 +11,5 @@ var compiler_8hpp =
     [ "ConstructorData", "class_constructor_data.html", "class_constructor_data" ],
     [ "TypeData", "class_type_data.html", "class_type_data" ],
     [ "CODEGEN_SIG", "compiler_8hpp.html#a8f95660ba0eb370118cd04a29e65c161", null ],
-    [ "SPECIAL_CODEGEN_SIG", "compiler_8hpp.html#aae0ebaf3b9632f07c1fc5ac8154dc595", null ],
-    [ "TypeName", "compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874", null ]
+    [ "SPECIAL_CODEGEN_SIG", "compiler_8hpp.html#aae0ebaf3b9632f07c1fc5ac8154dc595", null ]
 ];

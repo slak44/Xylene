@@ -1,5 +1,9 @@
 var hierarchy =
 [
+    [ "AbstractId", "class_abstract_id.html", [
+      [ "TypeId", "class_type_id.html", null ],
+      [ "TypeListId", "class_type_list_id.html", null ]
+    ] ],
     [ "AST", "class_a_s_t.html", null ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", [
       [ "CompileVisitor", "class_compile_visitor.html", null ]
@@ -50,6 +54,8 @@ var hierarchy =
       [ "CompileVisitor", "class_compile_visitor.html", null ]
     ] ],
     [ "FunctionSignature", "class_function_signature.html", null ],
+    [ "std::hash< AbstractId >", "structstd_1_1hash_3_01_abstract_id_01_4.html", null ],
+    [ "std::hash< vector< AbstractId::Link > >", "structstd_1_1hash_3_01vector_3_01_abstract_id_1_1_link_01_4_01_4.html", null ],
     [ "Identity", "struct_identity.html", null ],
     [ "LexerBase", "class_lexer_base.html", [
       [ "Lexer", "class_lexer.html", null ]
@@ -95,10 +101,8 @@ var hierarchy =
       ] ]
     ] ],
     [ "ValueWrapper", "class_value_wrapper.html", [
-      [ "DeclarationWrapper", "class_declaration_wrapper.html", [
-        [ "InstanceWrapper", "class_instance_wrapper.html", null ]
-      ] ],
-      [ "FunctionWrapper", "class_function_wrapper.html", null ]
-    ] ],
-    [ "VectorHash< T >", "struct_vector_hash.html", null ]
+      [ "DeclarationWrapper", "class_declaration_wrapper.html", null ],
+      [ "FunctionWrapper", "class_function_wrapper.html", null ],
+      [ "InstanceWrapper", "class_instance_wrapper.html", null ]
+    ] ]
 ];

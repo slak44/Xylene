@@ -10,7 +10,9 @@ var searchData=
   ['transformarrayindex',['transformArrayIndex',['../class_a_s_t_node.html#a99773970b5735a10904ec24c1ba6827f',1,'ASTNode']]],
   ['type',['type',['../class_type_parser.html#a321e4d8f216ba3c5cf9310d6d2dbd8f3',1,'TypeParser']]],
   ['typedata',['TypeData',['../class_type_data.html#a681f6e053d069245b2601d1f09c9ce9b',1,'TypeData::TypeData(llvm::StructType *type, CompileVisitor::Link cv, Node&lt; TypeNode &gt;::Link tyNode)'],['../class_type_data.html#a95d3b9292467f235950d501cf15d0b25',1,'TypeData::TypeData(const TypeData &amp;)=delete']]],
+  ['typeid',['TypeId',['../class_type_id.html#acf33d20f4017b1eca7b165b679fb58e8',1,'TypeId::TypeId(TypeData *tyData)'],['../class_type_id.html#af140701edfacafb3741edda6dc94decd',1,'TypeId::TypeId(TypeName, llvm::Type *)']]],
   ['typeinfo',['TypeInfo',['../class_type_info.html#a5bf8e362b49407d421e2ac78d3c77b99',1,'TypeInfo::TypeInfo(TypeList evalValue)'],['../class_type_info.html#a52bd7e2d13ad15dc9ae5808793663456',1,'TypeInfo::TypeInfo(std::nullptr_t voidType)'],['../class_type_info.html#a5e8f32e1bc0d05a5a234e9630cf002ce',1,'TypeInfo::TypeInfo()']]],
+  ['typelistid',['TypeListId',['../class_type_list_id.html#aa954241f846d1d38bbb31a88e759461a',1,'TypeListId']]],
   ['typenode',['TypeNode',['../class_type_node.html#a0b1e4eeaec30c1af29cdc11879c6c2c1',1,'TypeNode']]],
   ['typeparser',['TypeParser',['../class_type_parser.html#a4128dceb45a4f8d57ba470dc8bce829d',1,'TypeParser']]]
 ];

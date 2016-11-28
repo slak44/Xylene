@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name',['Name',['../class_operator.html#a85d294f744238b2c8733e6d32d4e1c95',1,'Operator']]],
+  ['name',['Name',['../class_operator.html#a85d294f744238b2c8733e6d32d4e1c95',1,'Operator::Name()'],['../class_abstract_id.html#acb2af4e64870306942aa5136eaafd2eb',1,'AbstractId::name()']]],
   ['nextline',['nextLine',['../class_lexer_base.html#a0ca8b4b6e955ff4691efe03e01e4b46f',1,'LexerBase']]],
   ['node',['Node',['../struct_node.html',1,'']]],
   ['node_3c_20blocknode_20_3e',['Node&lt; BlockNode &gt;',['../struct_node.html',1,'']]],

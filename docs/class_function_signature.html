@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Test Lang: FunctionSignature Class Reference</title>
+<title>Xylene: FunctionSignature Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Test Lang
+   <div id="projectname">Xylene
    &#160;<span id="projectnumber">pre-release</span>
    </div>
    <div id="projectbrief">A small programming language</div>
@@ -97,16 +97,16 @@ $(document).ready(function(){initNavTree('class_function_signature.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a70dd84f70fd00eebbcad0083578e44d4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">Arguments</a> = std::map&lt; std::string, <a class="el" href="class_definite_type_info.html">DefiniteTypeInfo</a> &gt;</td></tr>
-<tr class="separator:a70dd84f70fd00eebbcad0083578e44d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a054d7d3e5ab1d15a8636d5b6d0f75f2b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a054d7d3e5ab1d15a8636d5b6d0f75f2b">Arguments</a> = std::vector&lt; std::pair&lt; std::string, <a class="el" href="class_definite_type_info.html">DefiniteTypeInfo</a> &gt;&gt;</td></tr>
+<tr class="separator:a054d7d3e5ab1d15a8636d5b6d0f75f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2c847612c0fbe45d18a846b5d846d975"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a2c847612c0fbe45d18a846b5d846d975">FunctionSignature</a> (<a class="el" href="class_type_info.html">TypeInfo</a> returnType, <a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">Arguments</a> arguments)</td></tr>
+<tr class="memitem:a2c847612c0fbe45d18a846b5d846d975"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a2c847612c0fbe45d18a846b5d846d975">FunctionSignature</a> (<a class="el" href="class_type_info.html">TypeInfo</a> returnType, <a class="el" href="class_function_signature.html#a054d7d3e5ab1d15a8636d5b6d0f75f2b">Arguments</a> arguments)</td></tr>
 <tr class="separator:a2c847612c0fbe45d18a846b5d846d975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6da0f59b03b28055a942b1d4ffc12b63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_type_info.html">TypeInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a6da0f59b03b28055a942b1d4ffc12b63">getReturnType</a> () const</td></tr>
 <tr class="separator:a6da0f59b03b28055a942b1d4ffc12b63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5590cba6df75fed55219caae2cc4a358"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">Arguments</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a5590cba6df75fed55219caae2cc4a358">getArguments</a> () const</td></tr>
+<tr class="memitem:a5590cba6df75fed55219caae2cc4a358"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_function_signature.html#a054d7d3e5ab1d15a8636d5b6d0f75f2b">Arguments</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a5590cba6df75fed55219caae2cc4a358">getArguments</a> () const</td></tr>
 <tr class="separator:a5590cba6df75fed55219caae2cc4a358"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cd5e8129edd430276649e555fe11566"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_signature.html#a3cd5e8129edd430276649e555fe11566">toString</a> () const</td></tr>
 <tr class="separator:a3cd5e8129edd430276649e555fe11566"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,14 +118,14 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Signature for a function. Stores return type and argument types. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a70dd84f70fd00eebbcad0083578e44d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70dd84f70fd00eebbcad0083578e44d4">&sect;&nbsp;</a></span>Arguments</h2>
+<a id="a054d7d3e5ab1d15a8636d5b6d0f75f2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a054d7d3e5ab1d15a8636d5b6d0f75f2b">&sect;&nbsp;</a></span>Arguments</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">FunctionSignature::Arguments</a> =  std::map&lt;std::string, <a class="el" href="class_definite_type_info.html">DefiniteTypeInfo</a>&gt;</td>
+          <td class="memname">using <a class="el" href="class_function_signature.html#a054d7d3e5ab1d15a8636d5b6d0f75f2b">FunctionSignature::Arguments</a> =  std::vector&lt;std::pair&lt;std::string, <a class="el" href="class_definite_type_info.html">DefiniteTypeInfo</a>&gt;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -148,7 +148,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">Arguments</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_function_signature.html#a054d7d3e5ab1d15a8636d5b6d0f75f2b">Arguments</a>&#160;</td>
           <td class="paramname"><em>arguments</em>&#160;</td>
         </tr>
         <tr>
@@ -169,7 +169,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_function_signature.html#a70dd84f70fd00eebbcad0083578e44d4">FunctionSignature::Arguments</a> FunctionSignature::getArguments </td>
+          <td class="memname"><a class="el" href="class_function_signature.html#a054d7d3e5ab1d15a8636d5b6d0f75f2b">FunctionSignature::Arguments</a> FunctionSignature::getArguments </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

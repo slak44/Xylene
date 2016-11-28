@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['id',['id',['../class_abstract_id.html#a189c973200e60c73480a874b9cc887b9',1,'AbstractId']]],
   ['identifier',['IDENTIFIER',['../token_type_8hpp.html#a8018471f2360fb38f6f733b4b8a73a1ba84f8ae2490f9e4bd2321fd21f4b0e807',1,'tokenType.hpp']]],
   ['identity',['Identity',['../struct_identity.html',1,'']]],
   ['idx',['idx',['../class_token.html#ac34bb1683e74707f37a97f91ba0bdcc8',1,'Token']]],
@@ -9,7 +10,7 @@ var searchData=
   ['index',['Index',['../class_operator.html#a8e12a033a6d61da802b2133206d35b23',1,'Operator']]],
   ['infix',['INFIX',['../operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a26ec03728fe7587ebb517811960c1b4e',1,'operator.hpp']]],
   ['input',['input',['../class_token_base_parser.html#adf55aaaa20206a95f487399403f4f4ae',1,'TokenBaseParser']]],
-  ['instancewrapper',['InstanceWrapper',['../class_instance_wrapper.html',1,'InstanceWrapper'],['../class_compile_visitor.html#aca1123bf97aa0cefedfb90514eb32a5d',1,'CompileVisitor::InstanceWrapper()'],['../class_type_data.html#aca1123bf97aa0cefedfb90514eb32a5d',1,'TypeData::InstanceWrapper()'],['../class_instance_wrapper.html#ac12bd252b10e610421bce5a94c0f4578',1,'InstanceWrapper::InstanceWrapper()']]],
+  ['instancewrapper',['InstanceWrapper',['../class_instance_wrapper.html',1,'InstanceWrapper'],['../class_compile_visitor.html#aca1123bf97aa0cefedfb90514eb32a5d',1,'CompileVisitor::InstanceWrapper()'],['../class_type_data.html#aca1123bf97aa0cefedfb90514eb32a5d',1,'TypeData::InstanceWrapper()'],['../class_instance_wrapper.html#adf11e64b5eaa88f36275df84fedd4bf4',1,'InstanceWrapper::InstanceWrapper()']]],
   ['int64',['int64',['../util_8hpp.html#ab0e5976e1a4967e9b13e68b5f271bb44',1,'util.hpp']]],
   ['internal_5ferror',['INTERNAL_ERROR',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3aa6160da3d147c897d800efe3a69c941e',1,'main.cpp']]],
   ['internalerror',['InternalError',['../class_internal_error.html',1,'InternalError'],['../class_internal_error.html#accf8495bf6917b7685a69c390c69a91c',1,'InternalError::InternalError(std::string errorName, std::string msg, const ErrorData &amp;data)'],['../class_internal_error.html#a18662d967c3c5b3b18b9c11f1a75e28f',1,'InternalError::InternalError(std::string msg, const ErrorData &amp;data)']]],
@@ -25,6 +26,8 @@ var searchData=
   ['issametype',['isSameType',['../struct_node.html#a52d9868b8dafbee40ccef233599cb488',1,'Node::isSameType()'],['../struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52',1,'PtrUtil::isSameType()']]],
   ['isstatic',['isStatic',['../class_method_node.html#a0083577364f55051c295812df7c61c7a',1,'MethodNode::isStatic()'],['../class_member_node.html#a35c2f2f87ae5153354f874973a1f3a02',1,'MemberNode::isStatic()']]],
   ['isterminal',['isTerminal',['../class_token.html#a3c2359de673ad5e2f28d833ed0cf9bc8',1,'Token']]],
+  ['istypeallowed',['isTypeAllowed',['../class_declaration_wrapper.html#a8869f7fe7a54b6bad7e2370a86c01ad6',1,'DeclarationWrapper']]],
+  ['istypeallowedin',['isTypeAllowedIn',['../type_id_8hpp.html#a702520d91997b405258f1b2948a67c7d',1,'typeId.hpp']]],
   ['isvoid',['isVoid',['../class_type_info.html#a987f4b8315b7725e0aa4125140620b91',1,'TypeInfo']]],
   ['isvoidtype',['isVoidType',['../class_type_info.html#af33e28d1bbcd60bdc3e7d9406f775657',1,'TypeInfo']]]
 ];
