@@ -5,6 +5,7 @@ add_executable(tests_bin
   lexerTest.cpp
   parserTest.cpp
   llvmTest.cpp
+  e2e.cpp
 )
 
 set(TEST_DATA ${PROJECT_SOURCE_DIR}/tests/data)

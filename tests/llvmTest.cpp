@@ -47,14 +47,17 @@ protected:
   }
   
   inline ProgramResult compileAndRun(fs::path xmlFilePath) {
-    std::string stdout;
+    std::string stdout, stderr;
     auto printIrSwitch = printIr ? " --ir" : "";
     Process self(std::string(FULL_PROGRAM_PATH) + " --xml -f " + absoluteXmlPath(xmlFilePath) + printIrSwitch, "",
     [&stdout](const char* bytes, std::size_t) {
       stdout = bytes;
+    },
+    [&stderr](const char* bytes, std::size_t) {
+      stderr = bytes;
     });
     auto exitCode = self.get_exit_status();
-    return {exitCode, stdout};
+    return {exitCode, stdout, stderr};
   }
 };
 
@@ -92,7 +95,7 @@ TEST_F(LLVMCompilerTest, Functions) {
   noThrowOnCompile("data/llvm/functions/function.xml");
   noThrowOnCompile("data/llvm/functions/no_args.xml");
   noThrowOnCompile("data/llvm/functions/void_ret.xml");
-  EXPECT_EQ(compileAndRun("data/llvm/functions/foreign.xml"), ProgramResult({0, "A"}));
+  EXPECT_EQ(compileAndRun("data/llvm/functions/foreign.xml"), ProgramResult({0, "A", ""}));
 }
 
 TEST_F(LLVMCompilerTest, UserTypes) {

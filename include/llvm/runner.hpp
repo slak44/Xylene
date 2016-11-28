@@ -8,12 +8,13 @@
 #include <llvm/ExecutionEngine/MCJIT.h>
 #include <llvm/Object/ObjectFile.h>
 #include <llvm/Support/TargetSelect.h>
+#include <tuple>
 
 #include "standard.hpp"
 #include "llvm/compiler.hpp"
 
-/// exit code + stdout
-using ProgramResult = std::pair<int, std::string>;
+/// exit code + stdout + stderr
+using ProgramResult = std::tuple<int, std::string, std::string>;
 
 /**
   \brief Takes a CompileVisitor and executes the module it parsed.

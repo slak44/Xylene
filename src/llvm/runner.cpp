@@ -37,5 +37,5 @@ ProgramResult Runner::runAndCapture() {
   int exitCode = run();
   // Stop capturing stdout
   std::freopen("/dev/tty", "a", stdout);
-  return {exitCode, buf};
+  return {exitCode, buf, ""};
 }

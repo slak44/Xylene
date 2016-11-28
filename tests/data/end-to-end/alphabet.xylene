@@ -1,0 +1,5 @@
+foreign function putchar [Integer char];
+
+for Integer i = 0; i < 26; i++ do
+  putchar(65 + i);
+end
