@@ -1,7 +1,7 @@
-# Test Lang
+# Xylene
 
 A small programming language.
-Documentation: https://slak44.github.io/test-lang/
+Documentation: https://slak44.github.io/Xylene/
 
 # Language Syntax
 
