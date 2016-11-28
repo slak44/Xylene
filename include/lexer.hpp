@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <cctype>
 
 #include "utils/util.hpp"
 #include "utils/trace.hpp"
