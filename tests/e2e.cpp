@@ -31,6 +31,6 @@ protected:
 TEST_F(E2ETest, PrintAlphabet) {
   EXPECT_EQ(
     compileAndRun("data/end-to-end/alphabet.xylene"),
-    ProgramResult({0, "abcdefghijklmnoprqstuvxyz", ""})
+    ProgramResult({0, "abcdefghijklmnopqrstuvwxyz", ""})
   );
 }
