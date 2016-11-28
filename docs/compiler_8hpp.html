@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Test Lang: lg/include/llvm/compiler.hpp File Reference</title>
+<title>Xylene: lg/include/llvm/compiler.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Test Lang
+   <div id="projectname">Xylene
    &#160;<span id="projectnumber">pre-release</span>
    </div>
    <div id="projectbrief">A small programming language</div>
@@ -83,8 +83,7 @@ $(document).ready(function(){initNavTree('compiler_8hpp.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">compiler.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -108,24 +107,27 @@ $(document).ready(function(){initNavTree('compiler_8hpp.html','');});
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;stack&gt;</code><br />
+<code>#include &lt;unordered_set&gt;</code><br />
 <code>#include &quot;<a class="el" href="util_8hpp_source.html">utils/util.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="error_8hpp_source.html">utils/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ast_8hpp_source.html">ast.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="operator_8hpp_source.html">operator.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="type_id_8hpp_source.html">llvm/typeId.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for compiler.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="compiler_8hpp__incl.png" border="0" usemap="#lg_2include_2llvm_2compiler_8hpp" alt=""/></div>
 <map name="lg_2include_2llvm_2compiler_8hpp" id="lg_2include_2llvm_2compiler_8hpp">
-<area shape="rect" id="node21" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="3147,468,3239,495"/>
-<area shape="rect" id="node30" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="3428,319,3528,345"/>
-<area shape="rect" id="node35" href="ast_8hpp.html" title="ast.hpp" alt="" coords="2966,87,3030,114"/>
-<area shape="rect" id="node39" href="operator_8hpp.html" title="operator.hpp" alt="" coords="3432,244,3524,271"/>
-<area shape="rect" id="node27" href="suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="3256,543,3439,569"/>
-<area shape="rect" id="node34" href="trace_8hpp.html" title="trace.hpp" alt="" coords="2962,393,3037,420"/>
-<area shape="rect" id="node37" href="type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="3013,244,3135,271"/>
-<area shape="rect" id="node38" href="token_8hpp.html" title="token.hpp" alt="" coords="3347,169,3425,196"/>
-<area shape="rect" id="node41" href="token_type_8hpp.html" title="tokenType.hpp" alt="" coords="3689,244,3795,271"/>
+<area shape="rect" id="node22" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="3589,468,3681,495"/>
+<area shape="rect" id="node30" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="3105,319,3205,345"/>
+<area shape="rect" id="node35" href="ast_8hpp.html" title="ast.hpp" alt="" coords="3675,87,3739,114"/>
+<area shape="rect" id="node39" href="operator_8hpp.html" title="operator.hpp" alt="" coords="2760,244,2852,271"/>
+<area shape="rect" id="node42" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="3926,393,4035,420"/>
+<area shape="rect" id="node27" href="suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="3541,543,3724,569"/>
+<area shape="rect" id="node34" href="trace_8hpp.html" title="trace.hpp" alt="" coords="3219,393,3294,420"/>
+<area shape="rect" id="node37" href="type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="3577,244,3699,271"/>
+<area shape="rect" id="node38" href="token_8hpp.html" title="token.hpp" alt="" coords="3292,169,3371,196"/>
+<area shape="rect" id="node41" href="token_type_8hpp.html" title="tokenType.hpp" alt="" coords="3369,244,3475,271"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -156,7 +158,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the value pointing to the declared variable, its current type, and its list of allowed types.  <a href="class_declaration_wrapper.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_wrapper.html">InstanceWrapper</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores data about an instance of a type.  <a href="class_instance_wrapper.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores an instance of a user type.  <a href="class_instance_wrapper.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_compile_visitor.html">CompileVisitor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each <a class="el" href="class_compile_visitor.html" title="Each CompileVisitor creates a llvm::Module from an AST. ">CompileVisitor</a> creates a llvm::Module from an <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a>.  <a href="class_compile_visitor.html#details">More...</a><br /></td></tr>
@@ -185,11 +187,6 @@ Macros</h2></td></tr>
 <tr class="memitem:aae0ebaf3b9632f07c1fc5ac8154dc595"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8hpp.html#aae0ebaf3b9632f07c1fc5ac8154dc595">SPECIAL_CODEGEN_SIG</a></td></tr>
 <tr class="memdesc:aae0ebaf3b9632f07c1fc5ac8154dc595"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signature for a lambda representing a SpecialCodegenFunction.  <a href="#aae0ebaf3b9632f07c1fc5ac8154dc595">More...</a><br /></td></tr>
 <tr class="separator:aae0ebaf3b9632f07c1fc5ac8154dc595"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a0d2baf641f4048e8787ce12c21bd1874"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> = std::string</td></tr>
-<tr class="separator:a0d2baf641f4048e8787ce12c21bd1874"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a8f95660ba0eb370118cd04a29e65c161"></a>
@@ -203,7 +200,7 @@ Typedefs</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(\</div><div class="line">    __attribute__((unused)) std::vector&lt;<a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link&gt;&amp; operands,\</div><div class="line">    __attribute__((unused)) std::vector&lt;<a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link&gt;&amp; rawOperands,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_trace.html">Trace</a> trace\</div><div class="line">  ) -&gt; <a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link</div><div class="ttc" id="class_trace_html"><div class="ttname"><a href="class_trace.html">Trace</a></div><div class="ttdoc">Stores debug information. </div><div class="ttdef"><b>Definition:</b> trace.hpp:42</div></div>
+<b>Value:</b><div class="fragment"><div class="line">(\</div><div class="line">    __attribute__((unused)) ValueList operands,\</div><div class="line">    __attribute__((unused)) ValueList rawOperands,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_trace.html">Trace</a> trace\</div><div class="line">  ) -&gt; <a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link</div><div class="ttc" id="class_trace_html"><div class="ttname"><a href="class_trace.html">Trace</a></div><div class="ttdoc">Stores debug information. </div><div class="ttdef"><b>Definition:</b> trace.hpp:42</div></div>
 <div class="ttc" id="class_value_wrapper_html"><div class="ttname"><a href="class_value_wrapper.html">ValueWrapper</a></div><div class="ttdoc">Holds a llvm::Value* and the type it currently carries. </div><div class="ttdef"><b>Definition:</b> compiler.hpp:36</div></div>
 </div><!-- fragment -->
 <p>Signature for a lambda representing a CodegenFunction. </p>
@@ -221,26 +218,11 @@ Typedefs</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(\</div><div class="line">    std::vector&lt;ValueWrapper::Link&gt;&amp; operands,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_a_s_t_node.html">ASTNode</a>::Link node,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_trace.html">Trace</a> trace\</div><div class="line">  ) -&gt; <a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link</div><div class="ttc" id="class_a_s_t_node_html"><div class="ttname"><a href="class_a_s_t_node.html">ASTNode</a></div><div class="ttdoc">A node in an AST. </div><div class="ttdef"><b>Definition:</b> ast.hpp:59</div></div>
+<b>Value:</b><div class="fragment"><div class="line">(\</div><div class="line">    ValueList operands,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_a_s_t_node.html">ASTNode</a>::Link node,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_trace.html">Trace</a> trace\</div><div class="line">  ) -&gt; <a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link</div><div class="ttc" id="class_a_s_t_node_html"><div class="ttname"><a href="class_a_s_t_node.html">ASTNode</a></div><div class="ttdoc">A node in an AST. </div><div class="ttdef"><b>Definition:</b> ast.hpp:61</div></div>
 <div class="ttc" id="class_trace_html"><div class="ttname"><a href="class_trace.html">Trace</a></div><div class="ttdoc">Stores debug information. </div><div class="ttdef"><b>Definition:</b> trace.hpp:42</div></div>
 <div class="ttc" id="class_value_wrapper_html"><div class="ttname"><a href="class_value_wrapper.html">ValueWrapper</a></div><div class="ttdoc">Holds a llvm::Value* and the type it currently carries. </div><div class="ttdef"><b>Definition:</b> compiler.hpp:36</div></div>
 </div><!-- fragment -->
 <p>Signature for a lambda representing a SpecialCodegenFunction. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a0d2baf641f4048e8787ce12c21bd1874"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d2baf641f4048e8787ce12c21bd1874">&sect;&nbsp;</a></span>TypeName</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> =  std::string</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>

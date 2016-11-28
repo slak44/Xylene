@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Test Lang: OperatorCodegen Class Reference</title>
+<title>Xylene: OperatorCodegen Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Test Lang
+   <div id="projectname">Xylene
    &#160;<span id="projectnumber">pre-release</span>
    </div>
    <div id="projectbrief">A small programming language</div>
@@ -98,27 +98,29 @@ $(document).ready(function(){initNavTree('class_operator_codegen.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:abe7c90064046a60e134ad6a4768fba32"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#abe7c90064046a60e134ad6a4768fba32">CodegenFunction</a> = std::function&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>(std::vector&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a> &gt; &amp;, std::vector&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a> &gt; &amp;, <a class="el" href="class_trace.html">Trace</a>)&gt;</td></tr>
-<tr class="memdesc:abe7c90064046a60e134ad6a4768fba32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates IR using provided arguments.  <a href="#abe7c90064046a60e134ad6a4768fba32">More...</a><br /></td></tr>
-<tr class="separator:abe7c90064046a60e134ad6a4768fba32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cc29af51da5de3820e363e76a9512a7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a2cc29af51da5de3820e363e76a9512a7">SpecialCodegenFunction</a> = std::function&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>(std::vector&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a> &gt; &amp;, <a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a>, <a class="el" href="class_trace.html">Trace</a>)&gt;</td></tr>
-<tr class="memdesc:a2cc29af51da5de3820e363e76a9512a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates IR using provided arguments.  <a href="#a2cc29af51da5de3820e363e76a9512a7">More...</a><br /></td></tr>
-<tr class="separator:a2cc29af51da5de3820e363e76a9512a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74a06e97807382ef59b92356e9cfe637"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a74a06e97807382ef59b92356e9cfe637">TypeMap</a> = std::unordered_map&lt; std::vector&lt; <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> &gt;, <a class="el" href="class_operator_codegen.html#abe7c90064046a60e134ad6a4768fba32">CodegenFunction</a>, <a class="el" href="struct_vector_hash.html">VectorHash</a>&lt; <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> &gt;&gt;</td></tr>
-<tr class="memdesc:a74a06e97807382ef59b92356e9cfe637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps operand types to a func that generates code from them.  <a href="#a74a06e97807382ef59b92356e9cfe637">More...</a><br /></td></tr>
-<tr class="separator:a74a06e97807382ef59b92356e9cfe637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39fa5378d12f9e452e4298c09707f101"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a> = std::vector&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a> &gt;</td></tr>
+<tr class="separator:a39fa5378d12f9e452e4298c09707f101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc210f22c08d3c5525ca6ebfdbec149e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#afc210f22c08d3c5525ca6ebfdbec149e">CodegenFunction</a> = std::function&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>(<a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a>, <a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a>, <a class="el" href="class_trace.html">Trace</a>)&gt;</td></tr>
+<tr class="memdesc:afc210f22c08d3c5525ca6ebfdbec149e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates IR using provided arguments.  <a href="#afc210f22c08d3c5525ca6ebfdbec149e">More...</a><br /></td></tr>
+<tr class="separator:afc210f22c08d3c5525ca6ebfdbec149e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a122dc9bf944d0f1b042a94d31886da65"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a122dc9bf944d0f1b042a94d31886da65">SpecialCodegenFunction</a> = std::function&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>(<a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a>, <a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a>, <a class="el" href="class_trace.html">Trace</a>)&gt;</td></tr>
+<tr class="memdesc:a122dc9bf944d0f1b042a94d31886da65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates IR using provided arguments.  <a href="#a122dc9bf944d0f1b042a94d31886da65">More...</a><br /></td></tr>
+<tr class="separator:a122dc9bf944d0f1b042a94d31886da65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dc7bec43400e548dbf34e85544dcb2c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a4dc7bec43400e548dbf34e85544dcb2c">TypeMap</a> = std::unordered_map&lt; std::vector&lt; <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> &gt;, <a class="el" href="class_operator_codegen.html#afc210f22c08d3c5525ca6ebfdbec149e">CodegenFunction</a> &gt;</td></tr>
+<tr class="memdesc:a4dc7bec43400e548dbf34e85544dcb2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps operand types to a func that generates code from them.  <a href="#a4dc7bec43400e548dbf34e85544dcb2c">More...</a><br /></td></tr>
+<tr class="separator:a4dc7bec43400e548dbf34e85544dcb2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1de7c11e604a5db575f23aeef4f33966"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a1de7c11e604a5db575f23aeef4f33966">findAndRunFun</a> (<a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_expression_node.html">ExpressionNode</a> &gt;::Link node, std::vector&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a> &gt; &amp;operands)</td></tr>
-<tr class="memdesc:a1de7c11e604a5db575f23aeef4f33966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search for a CodegenFunction everywhere, and run it.  <a href="#a1de7c11e604a5db575f23aeef4f33966">More...</a><br /></td></tr>
-<tr class="separator:a1de7c11e604a5db575f23aeef4f33966"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9954427f990cd19046044e542b2f9dd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator_codegen.html#a2cc29af51da5de3820e363e76a9512a7">SpecialCodegenFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a9954427f990cd19046044e542b2f9dd9">getSpecialFun</a> (<a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_expression_node.html">ExpressionNode</a> &gt;::Link node) noexcept</td></tr>
+<tr class="memitem:a5d6e1115af9fe7c537b506ffc515382d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a5d6e1115af9fe7c537b506ffc515382d">findAndRunFun</a> (<a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_expression_node.html">ExpressionNode</a> &gt;::Link node, <a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a> operands)</td></tr>
+<tr class="memdesc:a5d6e1115af9fe7c537b506ffc515382d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search for a CodegenFunction everywhere, and run it.  <a href="#a5d6e1115af9fe7c537b506ffc515382d">More...</a><br /></td></tr>
+<tr class="separator:a5d6e1115af9fe7c537b506ffc515382d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9954427f990cd19046044e542b2f9dd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator_codegen.html#a122dc9bf944d0f1b042a94d31886da65">SpecialCodegenFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a9954427f990cd19046044e542b2f9dd9">getSpecialFun</a> (<a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_expression_node.html">ExpressionNode</a> &gt;::Link node) noexcept</td></tr>
 <tr class="memdesc:a9954427f990cd19046044e542b2f9dd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search for a CodegenFunction in the specialCodegenMap.  <a href="#a9954427f990cd19046044e542b2f9dd9">More...</a><br /></td></tr>
 <tr class="separator:a9954427f990cd19046044e542b2f9dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99179b5eeac3c614d74f649a53e4012a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator_codegen.html#abe7c90064046a60e134ad6a4768fba32">CodegenFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a99179b5eeac3c614d74f649a53e4012a">getNormalFun</a> (<a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_expression_node.html">ExpressionNode</a> &gt;::Link node, const std::vector&lt; <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> &gt; &amp;types)</td></tr>
-<tr class="memdesc:a99179b5eeac3c614d74f649a53e4012a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search for a CodegenFunction in the codegenMap.  <a href="#a99179b5eeac3c614d74f649a53e4012a">More...</a><br /></td></tr>
-<tr class="separator:a99179b5eeac3c614d74f649a53e4012a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ddeb1fc935c44997d6ef4638bfee048"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator_codegen.html#afc210f22c08d3c5525ca6ebfdbec149e">CodegenFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html#a6ddeb1fc935c44997d6ef4638bfee048">getNormalFun</a> (<a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_expression_node.html">ExpressionNode</a> &gt;::Link node, std::vector&lt; <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> &gt; types)</td></tr>
+<tr class="memdesc:a6ddeb1fc935c44997d6ef4638bfee048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search for a CodegenFunction in the codegenMap.  <a href="#a6ddeb1fc935c44997d6ef4638bfee048">More...</a><br /></td></tr>
+<tr class="separator:a6ddeb1fc935c44997d6ef4638bfee048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -128,14 +130,14 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Used to generate IR for operators. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="abe7c90064046a60e134ad6a4768fba32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe7c90064046a60e134ad6a4768fba32">&sect;&nbsp;</a></span>CodegenFunction</h2>
+<a id="afc210f22c08d3c5525ca6ebfdbec149e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc210f22c08d3c5525ca6ebfdbec149e">&sect;&nbsp;</a></span>CodegenFunction</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="class_operator_codegen.html#abe7c90064046a60e134ad6a4768fba32">OperatorCodegen::CodegenFunction</a> =  std::function&lt;<a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>(std::vector&lt;<a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>&gt;&amp;, std::vector&lt;<a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>&gt;&amp;, <a class="el" href="class_trace.html">Trace</a>)&gt;</td>
+          <td class="memname">using <a class="el" href="class_operator_codegen.html#afc210f22c08d3c5525ca6ebfdbec149e">OperatorCodegen::CodegenFunction</a> =  std::function&lt;<a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>(<a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a>, <a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a>, <a class="el" href="class_trace.html">Trace</a>)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -144,14 +146,14 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a2cc29af51da5de3820e363e76a9512a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cc29af51da5de3820e363e76a9512a7">&sect;&nbsp;</a></span>SpecialCodegenFunction</h2>
+<a id="a122dc9bf944d0f1b042a94d31886da65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a122dc9bf944d0f1b042a94d31886da65">&sect;&nbsp;</a></span>SpecialCodegenFunction</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="class_operator_codegen.html#a2cc29af51da5de3820e363e76a9512a7">OperatorCodegen::SpecialCodegenFunction</a> =  std::function&lt;<a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>(std::vector&lt;<a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>&gt;&amp;, <a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a>, <a class="el" href="class_trace.html">Trace</a>)&gt;</td>
+          <td class="memname">using <a class="el" href="class_operator_codegen.html#a122dc9bf944d0f1b042a94d31886da65">OperatorCodegen::SpecialCodegenFunction</a> =  std::function&lt;<a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>(<a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a>, <a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a>, <a class="el" href="class_trace.html">Trace</a>)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -160,14 +162,14 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a74a06e97807382ef59b92356e9cfe637"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74a06e97807382ef59b92356e9cfe637">&sect;&nbsp;</a></span>TypeMap</h2>
+<a id="a4dc7bec43400e548dbf34e85544dcb2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dc7bec43400e548dbf34e85544dcb2c">&sect;&nbsp;</a></span>TypeMap</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="class_operator_codegen.html#a74a06e97807382ef59b92356e9cfe637">OperatorCodegen::TypeMap</a> =  std::unordered_map&lt;std::vector&lt;<a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>&gt;, <a class="el" href="class_operator_codegen.html#abe7c90064046a60e134ad6a4768fba32">CodegenFunction</a>, <a class="el" href="struct_vector_hash.html">VectorHash</a>&lt;<a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>&gt;&gt;</td>
+          <td class="memname">using <a class="el" href="class_operator_codegen.html#a4dc7bec43400e548dbf34e85544dcb2c">OperatorCodegen::TypeMap</a> =  std::unordered_map&lt;std::vector&lt;<a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a>&gt;, <a class="el" href="class_operator_codegen.html#afc210f22c08d3c5525ca6ebfdbec149e">CodegenFunction</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -176,9 +178,23 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a39fa5378d12f9e452e4298c09707f101"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39fa5378d12f9e452e4298c09707f101">&sect;&nbsp;</a></span>ValueList</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">OperatorCodegen::ValueList</a> =  std::vector&lt;<a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1de7c11e604a5db575f23aeef4f33966"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1de7c11e604a5db575f23aeef4f33966">&sect;&nbsp;</a></span>findAndRunFun()</h2>
+<a id="a5d6e1115af9fe7c537b506ffc515382d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d6e1115af9fe7c537b506ffc515382d">&sect;&nbsp;</a></span>findAndRunFun()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -192,7 +208,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">ValueWrapper::Link</a> &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101">ValueList</a>&#160;</td>
           <td class="paramname"><em>operands</em>&#160;</td>
         </tr>
         <tr>
@@ -207,14 +223,14 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a99179b5eeac3c614d74f649a53e4012a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99179b5eeac3c614d74f649a53e4012a">&sect;&nbsp;</a></span>getNormalFun()</h2>
+<a id="a6ddeb1fc935c44997d6ef4638bfee048"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ddeb1fc935c44997d6ef4638bfee048">&sect;&nbsp;</a></span>getNormalFun()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_operator_codegen.html#abe7c90064046a60e134ad6a4768fba32">OperatorCodegen::CodegenFunction</a> OperatorCodegen::getNormalFun </td>
+          <td class="memname"><a class="el" href="class_operator_codegen.html#afc210f22c08d3c5525ca6ebfdbec149e">OperatorCodegen::CodegenFunction</a> OperatorCodegen::getNormalFun </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_expression_node.html">ExpressionNode</a> &gt;::Link&#160;</td>
           <td class="paramname"><em>node</em>, </td>
@@ -222,7 +238,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> &gt;&#160;</td>
           <td class="paramname"><em>types</em>&#160;</td>
         </tr>
         <tr>
@@ -247,7 +263,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_operator_codegen.html#a2cc29af51da5de3820e363e76a9512a7">OperatorCodegen::SpecialCodegenFunction</a> OperatorCodegen::getSpecialFun </td>
+          <td class="memname"><a class="el" href="class_operator_codegen.html#a122dc9bf944d0f1b042a94d31886da65">OperatorCodegen::SpecialCodegenFunction</a> OperatorCodegen::getSpecialFun </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_node.html">Node</a>&lt; <a class="el" href="class_expression_node.html">ExpressionNode</a> &gt;::Link&#160;</td>
           <td class="paramname"><em>node</em></td><td>)</td>

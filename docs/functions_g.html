@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Test Lang: Class Members</title>
+<title>Xylene: Class Members</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Test Lang
+   <div id="projectname">Xylene
    &#160;<span id="projectnumber">pre-release</span>
    </div>
    <div id="projectbrief">A small programming language</div>
@@ -85,7 +85,10 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 
 <h3><a id="index_g"></a>- g -</h3><ul>
 <li>getAllocaType()
-: <a class="el" href="class_member_metadata.html#a1ccd8c566efbfed8491b9d7d56853bd2">MemberMetadata</a>
+: <a class="el" href="class_abstract_id.html#aa95fd3763b5904499ca879d64cb9bf22">AbstractId</a>
+, <a class="el" href="class_member_metadata.html#a1ccd8c566efbfed8491b9d7d56853bd2">MemberMetadata</a>
+, <a class="el" href="class_type_id.html#a3d8bbe3e2f195fe7795b67b0db8cbc44">TypeId</a>
+, <a class="el" href="class_type_list_id.html#a984cb1030dff70f2016bf651e35ce7b5">TypeListId</a>
 </li>
 <li>getAllocaTypes()
 : <a class="el" href="class_type_data.html#a3914d23bacac64683f5f0bd1839f6045">TypeData</a>
@@ -118,8 +121,8 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 <li>getCurrentPosition()
 : <a class="el" href="class_lexer_base.html#a66689c386e6abef8f27dcf89ec205c4b">LexerBase</a>
 </li>
-<li>getCurrentTypeName()
-: <a class="el" href="class_value_wrapper.html#a5f37eabb97865a0e00e816cd570665dd">ValueWrapper</a>
+<li>getCurrentType()
+: <a class="el" href="class_value_wrapper.html#ac0d03efab6cbb024968a9420ee4d6eeb">ValueWrapper</a>
 </li>
 <li>getEnd()
 : <a class="el" href="class_range.html#aaf8a912ccd27392a33f88e359a94c87f">Range</a>
@@ -144,6 +147,9 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 : <a class="el" href="class_constructor_data.html#ac07124b8c67557b72dccb10471537569">ConstructorData</a>
 , <a class="el" href="class_method_data.html#ac309c8188bfecab2b6f452a0c36b3789">MethodData</a>
 </li>
+<li>getId()
+: <a class="el" href="class_abstract_id.html#a494d08d1cec644b22d322579a9da1120">AbstractId</a>
+</li>
 <li>getIdentifier()
 : <a class="el" href="class_declaration_node.html#a26f92b5080a8e3fe8ea5263ced9bcdea">DeclarationNode</a>
 , <a class="el" href="class_function_node.html#a9da85b3cdf1946136d5d13b685404f63">FunctionNode</a>
@@ -162,14 +168,18 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 : <a class="el" href="class_compile_visitor.html#a601600fb39065907844c3794af895e9f">CompileVisitor</a>
 </li>
 <li>getName()
-: <a class="el" href="class_member_metadata.html#a72e9af31f6109791b3ff1e1d0ae02d4d">MemberMetadata</a>
+: <a class="el" href="class_abstract_id.html#a149484c28ebb3e3c6d6768f6ccb12a59">AbstractId</a>
+, <a class="el" href="class_member_metadata.html#a72e9af31f6109791b3ff1e1d0ae02d4d">MemberMetadata</a>
 , <a class="el" href="class_method_data.html#a4b44d76a9e0169cca7f5118d9463e81f">MethodData</a>
 , <a class="el" href="class_operator.html#aca9c2a96d29d0d69873faad75dd498ee">Operator</a>
 , <a class="el" href="class_type_data.html#ac16b0d2c8f4444049614a006a4a234b7">TypeData</a>
 , <a class="el" href="class_type_node.html#a88caa6c9db47ce814f51c54a31ef6c52">TypeNode</a>
 </li>
+<li>getNode()
+: <a class="el" href="class_member_metadata.html#a68b34751812c43a33cfe24315d9c1a6e">MemberMetadata</a>
+</li>
 <li>getNormalFun()
-: <a class="el" href="class_operator_codegen.html#a99179b5eeac3c614d74f649a53e4012a">OperatorCodegen</a>
+: <a class="el" href="class_operator_codegen.html#a6ddeb1fc935c44997d6ef4638bfee048">OperatorCodegen</a>
 </li>
 <li>getOperator()
 : <a class="el" href="class_token.html#a5cfa3df47dca6390af993e00b7f41851">Token</a>
@@ -215,6 +225,9 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 <li>getStructTy()
 : <a class="el" href="class_type_data.html#adbc35bbacf44205a57333047781f8ac3">TypeData</a>
 </li>
+<li>getTid()
+: <a class="el" href="class_type_node.html#a1fc028dc512af81e3aff2e25def6ed42">TypeNode</a>
+</li>
 <li>getToken()
 : <a class="el" href="class_expression_node.html#ad7db896b94030ce813ddf907ba61f55c">ExpressionNode</a>
 </li>
@@ -234,7 +247,7 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 : <a class="el" href="class_base_parser.html#a1f2ffa44f94e880f8d50c628bb7c90b8">BaseParser</a>
 </li>
 <li>getTyData()
-: <a class="el" href="class_type_node.html#afde5505f8a429f408ec628b3cb3c3f3f">TypeNode</a>
+: <a class="el" href="class_type_id.html#a4774345f8675fa5cc95de26c2e611b15">TypeId</a>
 </li>
 <li>getType()
 : <a class="el" href="class_block_node.html#a52fa59ddac9fa4b416fb111eb711b09e">BlockNode</a>
@@ -244,11 +257,14 @@ $(document).ready(function(){initNavTree('functions_g.html','');});
 , <a class="el" href="class_member_metadata.html#a43d63f5fcc90b7061b86f9afae89e69d">MemberMetadata</a>
 </li>
 <li>getTypeList()
-: <a class="el" href="class_declaration_wrapper.html#a6017241d56ebe8078b348187d6b78b1d">DeclarationWrapper</a>
+: <a class="el" href="class_declaration_wrapper.html#a349c7673545e30d9b0ba9f607065a120">DeclarationWrapper</a>
 , <a class="el" href="class_function_parser.html#a98f3acdd5752c48973f3a246ef7edc37">FunctionParser</a>
 </li>
 <li>getTypeNameString()
 : <a class="el" href="class_type_info.html#a152fb89ecc5fd81aa5a3184db0f9172c">TypeInfo</a>
+</li>
+<li>getTypes()
+: <a class="el" href="class_type_list_id.html#ace39c01d156e3a198a42382b45c4a027">TypeListId</a>
 </li>
 <li>getValue()
 : <a class="el" href="class_function_wrapper.html#a8996dded92ffac63722a362e559ff286">FunctionWrapper</a>

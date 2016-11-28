@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Test Lang: lg/include/utils/error.hpp File Reference</title>
+<title>Xylene: lg/include/utils/error.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Test Lang
+   <div id="projectname">Xylene
    &#160;<span id="projectnumber">pre-release</span>
    </div>
    <div id="projectbrief">A small programming language</div>
@@ -103,7 +103,7 @@ Include dependency graph for error.hpp:</div>
 <map name="lg_2include_2utils_2error_8hpp" id="lg_2include_2utils_2error_8hpp">
 <area shape="rect" id="node7" href="util_8hpp.html" title="util.hpp" alt="" coords="267,155,329,181"/>
 <area shape="rect" id="node16" href="trace_8hpp.html" title="trace.hpp" alt="" coords="261,80,335,107"/>
-<area shape="rect" id="node13" href="suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="640,229,823,256"/>
+<area shape="rect" id="node13" href="suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="701,229,884,256"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -153,13 +153,15 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a0780ab664b1fab9a826a9c325eab6f03"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a0780ab664b1fab9a826a9c325eab6f03">GET_ERR_METADATA</a>&#160;&#160;&#160;__FILE__, __PRETTY_FUNCTION__, __LINE__</td></tr>
+<tr class="memitem:a84662874cf763c9001e3913fe20b3785"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a84662874cf763c9001e3913fe20b3785">CURRENT_FUNCTION</a>&#160;&#160;&#160;__PRETTY_FUNCTION__</td></tr>
+<tr class="separator:a84662874cf763c9001e3913fe20b3785"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0780ab664b1fab9a826a9c325eab6f03"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a0780ab664b1fab9a826a9c325eab6f03">GET_ERR_METADATA</a>&#160;&#160;&#160;__FILE__, <a class="el" href="error_8hpp.html#a84662874cf763c9001e3913fe20b3785">CURRENT_FUNCTION</a>, __LINE__</td></tr>
 <tr class="separator:a0780ab664b1fab9a826a9c325eab6f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a573a9582bf14167c9a5b0449e5fd9d5d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a573a9582bf14167c9a5b0449e5fd9d5d">ERR_METADATA_TYPES</a>(arg1,  arg2,  arg3)&#160;&#160;&#160;std::string arg1, std::string arg2, int arg3</td></tr>
 <tr class="separator:a573a9582bf14167c9a5b0449e5fd9d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94309cb990c3e44ede503b615a163439"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a94309cb990c3e44ede503b615a163439">METADATA_PAIRS_FROM</a>(file,  func,  line)&#160;&#160;&#160;{&quot;file&quot;, file}, {&quot;function&quot;, func}, {&quot;line&quot;, std::to_string(line)}</td></tr>
 <tr class="separator:a94309cb990c3e44ede503b615a163439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fec56baad5b8b1701cfc19d2d1c2f8e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a1fec56baad5b8b1701cfc19d2d1c2f8e">METADATA_PAIRS</a>&#160;&#160;&#160;{&quot;file&quot;, __FILE__}, {&quot;function&quot;, __PRETTY_FUNCTION__}, {&quot;line&quot;, std::to_string(__LINE__)}</td></tr>
+<tr class="memitem:a1fec56baad5b8b1701cfc19d2d1c2f8e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a1fec56baad5b8b1701cfc19d2d1c2f8e">METADATA_PAIRS</a>&#160;&#160;&#160;{&quot;file&quot;, __FILE__}, {&quot;function&quot;, CURRENT_FUNCTION}, {&quot;line&quot;, std::to_string(__LINE__)}</td></tr>
 <tr class="separator:a1fec56baad5b8b1701cfc19d2d1c2f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -169,6 +171,20 @@ Typedefs</h2></td></tr>
 <tr class="separator:a18ad73221b586aadca1c9ba59417f99d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a84662874cf763c9001e3913fe20b3785"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84662874cf763c9001e3913fe20b3785">&sect;&nbsp;</a></span>CURRENT_FUNCTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CURRENT_FUNCTION&#160;&#160;&#160;__PRETTY_FUNCTION__</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a573a9582bf14167c9a5b0449e5fd9d5d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a573a9582bf14167c9a5b0449e5fd9d5d">&sect;&nbsp;</a></span>ERR_METADATA_TYPES</h2>
 
@@ -210,7 +226,7 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define GET_ERR_METADATA&#160;&#160;&#160;__FILE__, __PRETTY_FUNCTION__, __LINE__</td>
+          <td class="memname">#define GET_ERR_METADATA&#160;&#160;&#160;__FILE__, <a class="el" href="error_8hpp.html#a84662874cf763c9001e3913fe20b3785">CURRENT_FUNCTION</a>, __LINE__</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -224,7 +240,7 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define METADATA_PAIRS&#160;&#160;&#160;{&quot;file&quot;, __FILE__}, {&quot;function&quot;, __PRETTY_FUNCTION__}, {&quot;line&quot;, std::to_string(__LINE__)}</td>
+          <td class="memname">#define METADATA_PAIRS&#160;&#160;&#160;{&quot;file&quot;, __FILE__}, {&quot;function&quot;, CURRENT_FUNCTION}, {&quot;line&quot;, std::to_string(__LINE__)}</td>
         </tr>
       </table>
 </div><div class="memdoc">

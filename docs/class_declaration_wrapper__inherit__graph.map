@@ -1,4 +1,3 @@
 <map id="DeclarationWrapper" name="DeclarationWrapper">
-<area shape="rect" id="node3" href="$class_instance_wrapper.html" title="Stores data about an instance of a type. " alt="" coords="13,155,133,181"/>
 <area shape="rect" id="node2" href="$class_value_wrapper.html" title="Holds a llvm::Value* and the type it currently carries. " alt="" coords="21,5,124,32"/>
 </map>

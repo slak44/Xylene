@@ -1,6 +1,7 @@
 var class_declaration_wrapper =
 [
     [ "Link", "class_declaration_wrapper.html#ade064fa0c7d136ae83fbb84ead2ca399", null ],
-    [ "DeclarationWrapper", "class_declaration_wrapper.html#ab4d3a5d425a2264bf9a389195d40b0e0", null ],
-    [ "getTypeList", "class_declaration_wrapper.html#a6017241d56ebe8078b348187d6b78b1d", null ]
+    [ "DeclarationWrapper", "class_declaration_wrapper.html#aac8ed599a8142c1088cdf4fe9e85e55c", null ],
+    [ "getTypeList", "class_declaration_wrapper.html#a349c7673545e30d9b0ba9f607065a120", null ],
+    [ "isTypeAllowed", "class_declaration_wrapper.html#a8869f7fe7a54b6bad7e2370a86c01ad6", null ]
 ];

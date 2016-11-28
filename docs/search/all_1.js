@@ -12,7 +12,8 @@ var searchData=
   ['blockparser',['BlockParser',['../class_block_parser.html',1,'BlockParser'],['../class_block_parser.html#a9828145732b4644db2413ae66454d90a',1,'BlockParser::BlockParser()']]],
   ['blockscope',['blockScope',['../class_block_node.html#a3ec7a2ac6a3d6b3a3cc7cc2cdb431875',1,'BlockNode']]],
   ['blocktype',['BlockType',['../ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3',1,'ast.hpp']]],
-  ['boolval',['boolVal',['../codegen_8cpp.html#ac5f77bc8f08a860c23d86223fe68124d',1,'codegen.cpp']]],
+  ['blocktypes',['blockTypes',['../class_block_node.html#a56bd47e02603f1cd8395411e24ff09d1',1,'BlockNode']]],
+  ['boolval',['boolVal',['../codegen_8cpp.html#a479a242fa8de7516e4c2f380e80863e0',1,'codegen.cpp']]],
   ['branchnode',['BranchNode',['../class_branch_node.html',1,'BranchNode'],['../class_branch_node.html#aff288ed3cc7177c03614a0895f00534f',1,'BranchNode::BranchNode()']]],
   ['breakloopnode',['BreakLoopNode',['../class_break_loop_node.html',1,'BreakLoopNode'],['../class_break_loop_node.html#a6fb3cc9197dd0dc1fdefdd26609e6f4e',1,'BreakLoopNode::BreakLoopNode()']]]
 ];

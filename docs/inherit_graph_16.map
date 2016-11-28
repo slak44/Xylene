@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$struct_ptr_util.html" title="PtrUtil\&lt; MemberNode \&gt;" alt="" coords="5,5,159,32"/>
-<area shape="rect" id="node2" href="$struct_node.html" title="Node\&lt; MemberNode \&gt;" alt="" coords="207,5,356,32"/>
+<area shape="rect" id="node1" href="$struct_ptr_util.html" title="PtrUtil\&lt; ConstructorNode \&gt;" alt="" coords="5,5,177,32"/>
+<area shape="rect" id="node2" href="$struct_node.html" title="Node\&lt; ConstructorNode \&gt;" alt="" coords="225,5,393,32"/>
 </map>

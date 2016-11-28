@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Test Lang: InstanceWrapper Class Reference</title>
+<title>Xylene: InstanceWrapper Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Test Lang
+   <div id="projectname">Xylene
    &#160;<span id="projectnumber">pre-release</span>
    </div>
    <div id="projectbrief">A small programming language</div>
@@ -90,7 +90,7 @@ $(document).ready(function(){initNavTree('class_instance_wrapper.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Stores data about an instance of a type.  
+<p>Stores an instance of a user type.  
  <a href="class_instance_wrapper.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="compiler_8hpp_source.html">compiler.hpp</a>&gt;</code></p>
@@ -99,8 +99,7 @@ Inheritance diagram for InstanceWrapper:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_instance_wrapper__inherit__graph.png" border="0" usemap="#_instance_wrapper_inherit__map" alt="Inheritance graph"/></div>
 <map name="_instance_wrapper_inherit__map" id="_instance_wrapper_inherit__map">
-<area shape="rect" id="node2" href="class_declaration_wrapper.html" title="Holds the value pointing to the declared variable, its current type, and its list of allowed types..." alt="" coords="5,80,140,107"/>
-<area shape="rect" id="node3" href="class_value_wrapper.html" title="Holds a llvm::Value* and the type it currently carries. " alt="" coords="21,5,124,32"/>
+<area shape="rect" id="node2" href="class_value_wrapper.html" title="Holds a llvm::Value* and the type it currently carries. " alt="" coords="14,5,117,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -108,8 +107,7 @@ Collaboration diagram for InstanceWrapper:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_instance_wrapper__coll__graph.png" border="0" usemap="#_instance_wrapper_coll__map" alt="Collaboration graph"/></div>
 <map name="_instance_wrapper_coll__map" id="_instance_wrapper_coll__map">
-<area shape="rect" id="node2" href="class_declaration_wrapper.html" title="Holds the value pointing to the declared variable, its current type, and its list of allowed types..." alt="" coords="5,80,140,107"/>
-<area shape="rect" id="node3" href="class_value_wrapper.html" title="Holds a llvm::Value* and the type it currently carries. " alt="" coords="21,5,124,32"/>
+<area shape="rect" id="node2" href="class_value_wrapper.html" title="Holds a llvm::Value* and the type it currently carries. " alt="" coords="14,5,117,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -117,33 +115,22 @@ Collaboration diagram for InstanceWrapper:</div>
 Public Types</h2></td></tr>
 <tr class="memitem:a75efb586897d21dbdb35401f96b6f23d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_wrapper.html#a75efb586897d21dbdb35401f96b6f23d">Link</a> = std::shared_ptr&lt; <a class="el" href="class_instance_wrapper.html">InstanceWrapper</a> &gt;</td></tr>
 <tr class="separator:a75efb586897d21dbdb35401f96b6f23d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_types_class_declaration_wrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_types_class_declaration_wrapper')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="class_declaration_wrapper.html">DeclarationWrapper</a></td></tr>
-<tr class="memitem:ade064fa0c7d136ae83fbb84ead2ca399 inherit pub_types_class_declaration_wrapper"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_declaration_wrapper.html#ade064fa0c7d136ae83fbb84ead2ca399">Link</a> = std::shared_ptr&lt; <a class="el" href="class_declaration_wrapper.html">DeclarationWrapper</a> &gt;</td></tr>
-<tr class="separator:ade064fa0c7d136ae83fbb84ead2ca399 inherit pub_types_class_declaration_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_class_value_wrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_types_class_value_wrapper')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="class_value_wrapper.html">ValueWrapper</a></td></tr>
 <tr class="memitem:af8376ad2826e52866d1acfda0fa2e702 inherit pub_types_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702">Link</a> = std::shared_ptr&lt; <a class="el" href="class_value_wrapper.html">ValueWrapper</a> &gt;</td></tr>
 <tr class="separator:af8376ad2826e52866d1acfda0fa2e702 inherit pub_types_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac12bd252b10e610421bce5a94c0f4578"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_wrapper.html#ac12bd252b10e610421bce5a94c0f4578">InstanceWrapper</a> (llvm::Value *instance, <a class="el" href="util_8hpp.html#ab5d06be6c670b1b15d59910ef706886c">TypeList</a> tl, <a class="el" href="class_type_data.html">TypeData</a> *tyData)</td></tr>
-<tr class="separator:ac12bd252b10e610421bce5a94c0f4578"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c69fdca553456afe3a4a7e5e37d52e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_wrapper.html#a6c69fdca553456afe3a4a7e5e37d52e5">changeTypeOfInstance</a> (<a class="el" href="class_type_data.html">TypeData</a> *newType)</td></tr>
-<tr class="memdesc:a6c69fdca553456afe3a4a7e5e37d52e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the type of this instance (when assigning another type)  <a href="#a6c69fdca553456afe3a4a7e5e37d52e5">More...</a><br /></td></tr>
-<tr class="separator:a6c69fdca553456afe3a4a7e5e37d52e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf11e64b5eaa88f36275df84fedd4bf4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_wrapper.html#adf11e64b5eaa88f36275df84fedd4bf4">InstanceWrapper</a> (llvm::Value *, <a class="el" href="class_type_id.html#a7b89d4c0ee53a7b293f9721c432b76ab">TypeId::Link</a> current)</td></tr>
+<tr class="separator:adf11e64b5eaa88f36275df84fedd4bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a825121feafc92f7bfb5cd4a09d07584d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_declaration_wrapper.html#ade064fa0c7d136ae83fbb84ead2ca399">DeclarationWrapper::Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_wrapper.html#a825121feafc92f7bfb5cd4a09d07584d">getMember</a> (std::string name)</td></tr>
 <tr class="memdesc:a825121feafc92f7bfb5cd4a09d07584d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the member with the specified name.  <a href="#a825121feafc92f7bfb5cd4a09d07584d">More...</a><br /></td></tr>
 <tr class="separator:a825121feafc92f7bfb5cd4a09d07584d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_declaration_wrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_declaration_wrapper')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_declaration_wrapper.html">DeclarationWrapper</a></td></tr>
-<tr class="memitem:ab4d3a5d425a2264bf9a389195d40b0e0 inherit pub_methods_class_declaration_wrapper"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_declaration_wrapper.html#ab4d3a5d425a2264bf9a389195d40b0e0">DeclarationWrapper</a> (llvm::Value *decl, <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> current, <a class="el" href="util_8hpp.html#ab5d06be6c670b1b15d59910ef706886c">TypeList</a> tl)</td></tr>
-<tr class="separator:ab4d3a5d425a2264bf9a389195d40b0e0 inherit pub_methods_class_declaration_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6017241d56ebe8078b348187d6b78b1d inherit pub_methods_class_declaration_wrapper"><td class="memItemLeft" align="right" valign="top"><a class="el" href="util_8hpp.html#ab5d06be6c670b1b15d59910ef706886c">TypeList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_declaration_wrapper.html#a6017241d56ebe8078b348187d6b78b1d">getTypeList</a> () const</td></tr>
-<tr class="separator:a6017241d56ebe8078b348187d6b78b1d inherit pub_methods_class_declaration_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_value_wrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_value_wrapper')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_value_wrapper.html">ValueWrapper</a></td></tr>
-<tr class="memitem:a61330b8f922b6e239c8c6ca14a903748 inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a61330b8f922b6e239c8c6ca14a903748">ValueWrapper</a> (llvm::Value *value, <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> name)</td></tr>
-<tr class="separator:a61330b8f922b6e239c8c6ca14a903748 inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7c4678fa8e3b3da0b2326c723179ddf inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#aa7c4678fa8e3b3da0b2326c723179ddf">ValueWrapper</a> (std::pair&lt; llvm::Value *, <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> &gt; pair)</td></tr>
-<tr class="separator:aa7c4678fa8e3b3da0b2326c723179ddf inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78bfd50db316003488bb5bf9a6d2dc7e inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a78bfd50db316003488bb5bf9a6d2dc7e">ValueWrapper</a> (llvm::Value *value, <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> tid)</td></tr>
+<tr class="separator:a78bfd50db316003488bb5bf9a6d2dc7e inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38c9b62a07e6ed139f507be9c3ec74ad inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a38c9b62a07e6ed139f507be9c3ec74ad">ValueWrapper</a> (std::pair&lt; llvm::Value *, <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> &gt; pair)</td></tr>
+<tr class="separator:a38c9b62a07e6ed139f507be9c3ec74ad inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1097c096e606caa2682d898e9a44ec21 inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a1097c096e606caa2682d898e9a44ec21">~ValueWrapper</a> ()</td></tr>
 <tr class="separator:a1097c096e606caa2682d898e9a44ec21 inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6813d22e1a7245e8373c0dd51fdcf2bf inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a6813d22e1a7245e8373c0dd51fdcf2bf">isInitialized</a> () const</td></tr>
@@ -154,25 +141,21 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a955003547faeb4cb09afd1b4c57dfaba inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a967fde9f08a0aceb5c15c317f0a2522b inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a967fde9f08a0aceb5c15c317f0a2522b">getValue</a> () const</td></tr>
 <tr class="separator:a967fde9f08a0aceb5c15c317f0a2522b inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f37eabb97865a0e00e816cd570665dd inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top"><a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a5f37eabb97865a0e00e816cd570665dd">getCurrentTypeName</a> () const</td></tr>
-<tr class="separator:a5f37eabb97865a0e00e816cd570665dd inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4714863df729098b0e5e5c82da0cbfc inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#ab4714863df729098b0e5e5c82da0cbfc">setValue</a> (llvm::Value *newVal, <a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a> newType)</td></tr>
-<tr class="separator:ab4714863df729098b0e5e5c82da0cbfc inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8248f0adceb92c0bbbdc08a1ae9344a9 inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a8248f0adceb92c0bbbdc08a1ae9344a9">canBeBooleanValue</a> () const</td></tr>
-<tr class="memdesc:a8248f0adceb92c0bbbdc08a1ae9344a9 inherit pub_methods_class_value_wrapper"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the held value is a Boolean or can be converted to one.  <a href="class_value_wrapper.html#a8248f0adceb92c0bbbdc08a1ae9344a9">More...</a><br /></td></tr>
-<tr class="separator:a8248f0adceb92c0bbbdc08a1ae9344a9 inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d03efab6cbb024968a9420ee4d6eeb inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#ac0d03efab6cbb024968a9420ee4d6eeb">getCurrentType</a> () const</td></tr>
+<tr class="separator:ac0d03efab6cbb024968a9420ee4d6eeb inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795f429f58d302b09c18de1eb4e7d05b inherit pub_methods_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a795f429f58d302b09c18de1eb4e7d05b">setValue</a> (llvm::Value *newVal, <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> newType)</td></tr>
+<tr class="separator:a795f429f58d302b09c18de1eb4e7d05b inherit pub_methods_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_value_wrapper"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_value_wrapper')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_value_wrapper.html">ValueWrapper</a></td></tr>
 <tr class="memitem:afcd4fd19764a7ad73318a9a7f2116eb7 inherit pro_attribs_class_value_wrapper"><td class="memItemLeft" align="right" valign="top">llvm::Value *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#afcd4fd19764a7ad73318a9a7f2116eb7">llvmValue</a></td></tr>
 <tr class="separator:afcd4fd19764a7ad73318a9a7f2116eb7 inherit pro_attribs_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a118fc1e27b34795b0eac23d057a68c39 inherit pro_attribs_class_value_wrapper"><td class="memItemLeft" align="right" valign="top"><a class="el" href="compiler_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#a118fc1e27b34795b0eac23d057a68c39">currentType</a></td></tr>
-<tr class="separator:a118fc1e27b34795b0eac23d057a68c39 inherit pro_attribs_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd3fdf1ed44ca3f64618952d237cdfb7 inherit pro_attribs_class_value_wrapper"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html#afd3fdf1ed44ca3f64618952d237cdfb7">currentType</a></td></tr>
+<tr class="separator:afd3fdf1ed44ca3f64618952d237cdfb7 inherit pro_attribs_class_value_wrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Stores data about an instance of a type. </p>
-<p>This is still a <a class="el" href="class_declaration_wrapper.html" title="Holds the value pointing to the declared variable, its current type, and its list of allowed types...">DeclarationWrapper</a>: the type whose instace is being held can be changed if it is allowed by the TypeList. </p>
+<div class="textblock"><p>Stores an instance of a user type. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a75efb586897d21dbdb35401f96b6f23d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75efb586897d21dbdb35401f96b6f23d">&sect;&nbsp;</a></span>Link</h2>
@@ -189,8 +172,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac12bd252b10e610421bce5a94c0f4578"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac12bd252b10e610421bce5a94c0f4578">&sect;&nbsp;</a></span>InstanceWrapper()</h2>
+<a id="adf11e64b5eaa88f36275df84fedd4bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf11e64b5eaa88f36275df84fedd4bf4">&sect;&nbsp;</a></span>InstanceWrapper()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,14 +187,8 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="util_8hpp.html#ab5d06be6c670b1b15d59910ef706886c">TypeList</a>&#160;</td>
-          <td class="paramname"><em>tl</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_type_data.html">TypeData</a> *&#160;</td>
-          <td class="paramname"><em>tyData</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_type_id.html#a7b89d4c0ee53a7b293f9721c432b76ab">TypeId::Link</a>&#160;</td>
+          <td class="paramname"><em>current</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -224,26 +201,6 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6c69fdca553456afe3a4a7e5e37d52e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c69fdca553456afe3a4a7e5e37d52e5">&sect;&nbsp;</a></span>changeTypeOfInstance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void InstanceWrapper::changeTypeOfInstance </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_type_data.html">TypeData</a> *&#160;</td>
-          <td class="paramname"><em>newType</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Changes the type of this instance (when assigning another type) </p>
-
-</div>
-</div>
 <a id="a825121feafc92f7bfb5cd4a09d07584d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a825121feafc92f7bfb5cd4a09d07584d">&sect;&nbsp;</a></span>getMember()</h2>
 
