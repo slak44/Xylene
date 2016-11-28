@@ -80,14 +80,9 @@ int main(int argc, const char* argv[]) {
     if (doNotRun.getValue()) return NORMAL_EXIT;
     
     CompileVisitor::Link v = CompileVisitor::create("Command Line Module", *ast);
-    try {
-      v->visit();
-      if (printIR.getValue()) v->getModule()->dump();
-    } catch (const InternalError& err) {
-      if (printIR.getValue()) v->getModule()->dump();
-      throw err;
-    }
-    
+    v->visit();
+    if (printIR.getValue()) v->getModule()->dump();
+        
     if (runner.getValue() == "llvm-lli") {
       return Runner(v).run();
     } else if (runner.getValue() == "llvm-llc") {
