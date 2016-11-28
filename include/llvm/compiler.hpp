@@ -233,8 +233,7 @@ private:
 };
 
 #ifdef _MSC_VER
-  #define __attribute__
-  #define unused
+  #define __attribute__(attr)
 #endif
 
 /// Used to generate IR for operators
