@@ -11,6 +11,7 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
     integerType, // TypeListId with allowed types
     integerType, // TypeId with currently stored type
   })),
+  voidTid(TypeId::createBasic("Void", llvm::Type::getVoidTy(*context))),
   integerTid(TypeId::createBasic("Integer", integerType)),
   floatTid(TypeId::createBasic("Float", floatType)),
   booleanTid(TypeId::createBasic("Boolean", booleanType)),
@@ -264,8 +265,8 @@ ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link 
       operands.push_back(compileExpression(node->at(0), AS_POINTER));
       // Compute arguments and add them too
       auto lastNode = node->at(1);
-      // If it's not an operator, it means this func call only has one argument
-      if (!lastNode->getToken().isOperator()) {
+      // If it's not an comma, it means this func call only has one argument
+      if (!(lastNode->getToken().isOperator() && lastNode->getToken().hasOperatorSymbol(","))) {
         operands.push_back(compileExpression(lastNode, AS_VALUE));
       // Only go through args if it isn't a no-op, because that means we have no args
       } else if (operatorNameFrom(lastNode->getToken().idx) != "No-op") {

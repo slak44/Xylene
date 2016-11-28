@@ -143,6 +143,7 @@ private:
   llvm::PointerType* voidPtrType;
   llvm::StructType* taggedUnionType;
   
+  TypeId::Link voidTid;
   TypeId::Link integerTid;
   TypeId::Link floatTid;
   TypeId::Link booleanTid;

@@ -13,6 +13,12 @@ static ValueWrapper::Link loadIfPointer(std::unique_ptr<llvm::IRBuilder<>>& buil
 }
 
 ValueWrapper::Link OperatorCodegen::findAndRunFun(Node<ExpressionNode>::Link node, ValueList operands) {
+  // We don't take too kindly to void types around here...
+  if (std::find_if(ALL(operands), [&](auto op) {
+    return op->getCurrentType() == cv->voidTid;
+  }) != operands.end()) {
+    throw Error("TypeError", "Void cannot be used in expressions", node->getToken().trace);
+  }
   // Check if it's a special case
   SpecialCodegenFunction func = getSpecialFun(node);
   if (func != nullptr) return func(operands, node, node->getToken().trace);
@@ -374,6 +380,9 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
         }
         args.push_back((*opIt)->getValue());
       }
+      AbstractId::Link ret;
+      if (fw->getSignature().getReturnType().isVoid()) ret = cv->voidTid;
+      else ret = cv->typeIdFromInfo(fw->getSignature().getReturnType(), node);
       // TODO: use invoke instead of call in the future, it has exception handling and stuff
       return std::make_shared<ValueWrapper>(
         cv->builder->CreateCall(
@@ -381,7 +390,7 @@ OperatorCodegen::OperatorCodegen(CompileVisitor::Link cv):
           args,
           fw->getValue()->getReturnType()->isVoidTy() ? "" : "call"
         ),
-        cv->typeIdFromInfo(fw->getSignature().getReturnType(), node)
+        ret
       );
     }}
   }) {}
