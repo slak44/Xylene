@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.6.1)
-project(test-lang)
+project(Xylene)
 
 subdirs(src tests)
 

@@ -21,7 +21,7 @@ enum ExitCodes: int {
 
 int main(int argc, const char* argv[]) {
   try {
-    TCLAP::CmdLine cmd("test-lang", ' ', "pre-release");
+    TCLAP::CmdLine cmd("Xylene", ' ', "pre-release");
     
     TCLAP::SwitchArg asXML("", "xml", "Read file using the XML parser", cmd);
     
