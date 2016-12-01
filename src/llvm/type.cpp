@@ -58,6 +58,7 @@ bool TypeData::TypeInitializer::exists() const {
 }
 
 ValueWrapper::Link TypeData::TypeInitializer::getInitStructArg() const {
+  // TODO: make this a class member!!!!!!!!
   static ValueWrapper::Link thisObject = nullptr;
   // This is only done once per initializer, since we only need a pointer and
   // we can keep returning that one pointer
