@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.12"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Xylene: lg/src/operator.cpp File Reference</title>
+<title>Xylene: xylene/src/operator.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ $(document).ready(function(){initNavTree('operator_8cpp.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">operator.cpp File Reference</div>  </div>
 </div><!--header-->
@@ -91,131 +91,71 @@ $(document).ready(function(){initNavTree('operator_8cpp.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for operator.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="operator_8cpp__incl.png" border="0" usemap="#lg_2src_2operator_8cpp" alt=""/></div>
-<map name="lg_2src_2operator_8cpp" id="lg_2src_2operator_8cpp">
-<area shape="rect" id="node2" href="operator_8hpp.html" title="operator.hpp" alt="" coords="361,80,453,107"/>
-<area shape="rect" id="node6" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="443,304,535,331"/>
-<area shape="rect" id="node15" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="568,155,668,181"/>
-<area shape="rect" id="node12" href="suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="189,379,372,405"/>
-<area shape="rect" id="node19" href="trace_8hpp.html" title="trace.hpp" alt="" coords="543,229,618,256"/>
+<div class="center"><img src="operator_8cpp__incl.png" border="0" usemap="#xylene_2src_2operator_8cpp" alt=""/></div>
+<map name="xylene_2src_2operator_8cpp" id="xylene_2src_2operator_8cpp">
+<area shape="rect" id="node2" href="operator_8hpp.html" title="operator.hpp" alt="" coords="220,80,312,107"/>
+<area shape="rect" id="node6" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="361,304,453,331"/>
+<area shape="rect" id="node14" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="525,155,625,181"/>
+<area shape="rect" id="node11" href="suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="316,379,499,405"/>
+<area shape="rect" id="node18" href="trace_8hpp.html" title="trace.hpp" alt="" coords="609,229,683,256"/>
 </map>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a062e396f6ed3b6f674db98ab2352696e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8cpp.html#a062e396f6ed3b6f674db98ab2352696e">getOperatorCharacters</a> ()</td></tr>
-<tr class="memdesc:a062e396f6ed3b6f674db98ab2352696e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vector of all chars used in <a class="el" href="class_operator.html" title="Class that represents an operator. ">Operator</a> symbols.  <a href="#a062e396f6ed3b6f674db98ab2352696e">More...</a><br /></td></tr>
-<tr class="separator:a062e396f6ed3b6f674db98ab2352696e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4507c164e65803670d831b4c32d709c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8cpp.html#aa4507c164e65803670d831b4c32d709c">getConstructCharacters</a> ()</td></tr>
-<tr class="memdesc:aa4507c164e65803670d831b4c32d709c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vector of all chars used in constructs. This is effectively a constant.  <a href="#aa4507c164e65803670d831b4c32d709c">More...</a><br /></td></tr>
-<tr class="separator:aa4507c164e65803670d831b4c32d709c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5419a897edd525dead7c16d93fff9bf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_operator.html">Operator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8cpp.html#ac5419a897edd525dead7c16d93fff9bf">operatorFrom</a> (const <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a> &amp;name)</td></tr>
-<tr class="memdesc:ac5419a897edd525dead7c16d93fff9bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an <a class="el" href="class_operator.html" title="Class that represents an operator. ">Operator</a> using its <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95" title="Convenience names from the operatorNameMap below. ">Operator::Name</a>.  <a href="#ac5419a897edd525dead7c16d93fff9bf">More...</a><br /></td></tr>
-<tr class="separator:ac5419a897edd525dead7c16d93fff9bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5435c4fa8a1fc3d9de077c4caee2df1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8cpp.html#ad5435c4fa8a1fc3d9de077c4caee2df1">operatorNameFrom</a> (<a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23">Operator::Index</a> index)</td></tr>
-<tr class="memdesc:ad5435c4fa8a1fc3d9de077c4caee2df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95" title="Convenience names from the operatorNameMap below. ">Operator::Name</a> using its <a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23" title="Where in the operatorList below it is. ">Operator::Index</a>.  <a href="#ad5435c4fa8a1fc3d9de077c4caee2df1">More...</a><br /></td></tr>
-<tr class="separator:ad5435c4fa8a1fc3d9de077c4caee2df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1250a03bef85a5cf3ec1db7956cdedc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23">Operator::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8cpp.html#a1250a03bef85a5cf3ec1db7956cdedc3">operatorIndexFrom</a> (const <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a> &amp;name)</td></tr>
-<tr class="memdesc:a1250a03bef85a5cf3ec1db7956cdedc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an <a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23" title="Where in the operatorList below it is. ">Operator::Index</a> using its <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95" title="Convenience names from the operatorNameMap below. ">Operator::Name</a>.  <a href="#a1250a03bef85a5cf3ec1db7956cdedc3">More...</a><br /></td></tr>
-<tr class="separator:a1250a03bef85a5cf3ec1db7956cdedc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:adf720f491e114ae641399390ee9675ef"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="class_operator.html#aaded9de4bdc094d32d1ca306a482489c">Operator::RequireReferenceList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8cpp.html#adf720f491e114ae641399390ee9675ef">assignmentList</a> {true, false}</td></tr>
+<tr class="memdesc:adf720f491e114ae641399390ee9675ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment requires that the first operand is mutable.  <a href="#adf720f491e114ae641399390ee9675ef">More...</a><br /></td></tr>
+<tr class="separator:adf720f491e114ae641399390ee9675ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafd2c7791584b838215873533da9c27b"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="class_operator.html#aaded9de4bdc094d32d1ca306a482489c">Operator::RequireReferenceList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="operator_8cpp.html#aafd2c7791584b838215873533da9c27b">unaryOps</a> {true}</td></tr>
+<tr class="memdesc:aafd2c7791584b838215873533da9c27b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some unary operators (eg ++) mutate their operand.  <a href="#aafd2c7791584b838215873533da9c27b">More...</a><br /></td></tr>
+<tr class="separator:aafd2c7791584b838215873533da9c27b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="aa4507c164e65803670d831b4c32d709c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4507c164e65803670d831b4c32d709c">&sect;&nbsp;</a></span>getConstructCharacters()</h2>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="adf720f491e114ae641399390ee9675ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf720f491e114ae641399390ee9675ef">&sect;&nbsp;</a></span>assignmentList</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;char&gt; getConstructCharacters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname">const <a class="el" href="class_operator.html#aaded9de4bdc094d32d1ca306a482489c">Operator::RequireReferenceList</a> assignmentList {true, false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Gets a vector of all chars used in constructs. This is effectively a constant. </p>
+<p>Assignment requires that the first operand is mutable. </p>
 
 </div>
 </div>
-<a id="a062e396f6ed3b6f674db98ab2352696e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a062e396f6ed3b6f674db98ab2352696e">&sect;&nbsp;</a></span>getOperatorCharacters()</h2>
+<a id="aafd2c7791584b838215873533da9c27b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafd2c7791584b838215873533da9c27b">&sect;&nbsp;</a></span>unaryOps</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;char&gt; getOperatorCharacters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname">const <a class="el" href="class_operator.html#aaded9de4bdc094d32d1ca306a482489c">Operator::RequireReferenceList</a> unaryOps {true}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Gets a vector of all chars used in <a class="el" href="class_operator.html" title="Class that represents an operator. ">Operator</a> symbols. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741" title="The symbol used for the operator, eg &#39;+&#39;, &#39;=&#39;, &#39;&amp;&amp;&#39;. ">Operator::Symbol</a> </dd></dl>
-
-</div>
-</div>
-<a id="ac5419a897edd525dead7c16d93fff9bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5419a897edd525dead7c16d93fff9bf">&sect;&nbsp;</a></span>operatorFrom()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="class_operator.html">Operator</a>&amp; operatorFrom </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a> &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets an <a class="el" href="class_operator.html" title="Class that represents an operator. ">Operator</a> using its <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95" title="Convenience names from the operatorNameMap below. ">Operator::Name</a>. </p>
-
-</div>
-</div>
-<a id="a1250a03bef85a5cf3ec1db7956cdedc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1250a03bef85a5cf3ec1db7956cdedc3">&sect;&nbsp;</a></span>operatorIndexFrom()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23">Operator::Index</a> operatorIndexFrom </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a> &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets an <a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23" title="Where in the operatorList below it is. ">Operator::Index</a> using its <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95" title="Convenience names from the operatorNameMap below. ">Operator::Name</a>. </p>
-
-</div>
-</div>
-<a id="ad5435c4fa8a1fc3d9de077c4caee2df1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5435c4fa8a1fc3d9de077c4caee2df1">&sect;&nbsp;</a></span>operatorNameFrom()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a> operatorNameFrom </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23">Operator::Index</a>&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets an <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95" title="Convenience names from the operatorNameMap below. ">Operator::Name</a> using its <a class="el" href="class_operator.html#a8e12a033a6d61da802b2133206d35b23" title="Where in the operatorList below it is. ">Operator::Index</a>. </p>
+<p>Some unary operators (eg ++) mutate their operand. </p>
 
 </div>
 </div>
@@ -224,7 +164,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_7122151c7af8fde8aa600fecb43c8e35.html">lg</a></li><li class="navelem"><a class="el" href="dir_b5d6630a36a5437c9ee223913104b574.html">src</a></li><li class="navelem"><a class="el" href="operator_8cpp.html">operator.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_1032d83f59cabe747931fa3a7443b9ae.html">xylene</a></li><li class="navelem"><a class="el" href="dir_c4b85b0a1efb9e210510eb938b8e7206.html">src</a></li><li class="navelem"><a class="el" href="operator_8cpp.html">operator.cpp</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>

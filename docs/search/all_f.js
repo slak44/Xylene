@@ -2,6 +2,7 @@ var searchData=
 [
   ['range',['Range',['../class_range.html',1,'Range'],['../class_range.html#ac1185af966638d36ef4bd5d9d9e575eb',1,'Range::Range(Position start, Position end)'],['../class_range.html#a83d413a2a13ee81afef4b3efc9a04fe8',1,'Range::Range(Position where, uint charCount)']]],
   ['readme_2emd',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['reflist',['refList',['../class_operator.html#a85acc184fe752e4e4c1d36e963e01321',1,'Operator']]],
   ['removechild',['removeChild',['../class_a_s_t_node.html#a70582ca8da7ae01d14d990ec1f7a5ec1',1,'ASTNode']]],
   ['requirereferencelist',['RequireReferenceList',['../class_operator.html#aaded9de4bdc094d32d1ca306a482489c',1,'Operator']]],
   ['result_5ftype',['result_type',['../structstd_1_1hash_3_01_abstract_id_01_4.html#a483e232637c3309ea2c587700da42422',1,'std::hash&lt; AbstractId &gt;::result_type()'],['../structstd_1_1hash_3_01vector_3_01_abstract_id_1_1_link_01_4_01_4.html#ae98b7411a69eeba93999f51119737d75',1,'std::hash&lt; vector&lt; AbstractId::Link &gt; &gt;::result_type()']]],

@@ -6,6 +6,6 @@ var class_operator_codegen =
     [ "ValueList", "class_operator_codegen.html#a39fa5378d12f9e452e4298c09707f101", null ],
     [ "findAndRunFun", "class_operator_codegen.html#a5d6e1115af9fe7c537b506ffc515382d", null ],
     [ "getNormalFun", "class_operator_codegen.html#a6ddeb1fc935c44997d6ef4638bfee048", null ],
-    [ "getSpecialFun", "class_operator_codegen.html#a9954427f990cd19046044e542b2f9dd9", null ],
+    [ "getSpecialFun", "class_operator_codegen.html#a88389f4e2ac3166c123617c845e55224", null ],
     [ "CompileVisitor", "class_operator_codegen.html#aab5b74f1d9d6e64220877768218823a2", null ]
 ];

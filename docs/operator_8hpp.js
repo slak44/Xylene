@@ -16,14 +16,5 @@ var operator_8hpp =
       [ "PREFIX", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0ab0960c67f412468bf9857089c2d27809", null ],
       [ "POSTFIX", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8423fa5c736337e2bb8e0838515c05f1", null ],
       [ "CIRCUMFIX", "operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a8e331a7dd413ca9b66770a0544f6b0dd", null ]
-    ] ],
-    [ "getConstructCharacters", "operator_8hpp.html#aa4507c164e65803670d831b4c32d709c", null ],
-    [ "getOperatorCharacters", "operator_8hpp.html#a062e396f6ed3b6f674db98ab2352696e", null ],
-    [ "operatorFrom", "operator_8hpp.html#ac5419a897edd525dead7c16d93fff9bf", null ],
-    [ "operatorIndexFrom", "operator_8hpp.html#a1250a03bef85a5cf3ec1db7956cdedc3", null ],
-    [ "operatorNameFrom", "operator_8hpp.html#ad5435c4fa8a1fc3d9de077c4caee2df1", null ],
-    [ "assignmentList", "operator_8hpp.html#adf720f491e114ae641399390ee9675ef", null ],
-    [ "operatorList", "operator_8hpp.html#ac3ec2c3b68509d68af3e7d48bf335560", null ],
-    [ "operatorNameMap", "operator_8hpp.html#a786fcc12a0457a4ccbd7215569cfd81a", null ],
-    [ "unaryOps", "operator_8hpp.html#aafd2c7791584b838215873533da9c27b", null ]
+    ] ]
 ];

@@ -1,8 +1,8 @@
-<map id="lg/include/token.hpp" name="lg/include/token.hpp">
-<area shape="rect" id="node3" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="261,304,353,331"/>
-<area shape="rect" id="node13" href="$trace_8hpp.html" title="utils/trace.hpp" alt="" coords="65,229,169,256"/>
-<area shape="rect" id="node15" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="521,155,621,181"/>
-<area shape="rect" id="node19" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="407,80,499,107"/>
-<area shape="rect" id="node21" href="$token_type_8hpp.html" title="tokenType.hpp" alt="" coords="637,80,743,107"/>
-<area shape="rect" id="node10" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="327,379,509,405"/>
+<map id="xylene/include/token.hpp" name="xylene/include/token.hpp">
+<area shape="rect" id="node3" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="229,304,321,331"/>
+<area shape="rect" id="node13" href="$trace_8hpp.html" title="utils/trace.hpp" alt="" coords="841,229,945,256"/>
+<area shape="rect" id="node15" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="637,155,737,181"/>
+<area shape="rect" id="node19" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="247,80,339,107"/>
+<area shape="rect" id="node20" href="$token_type_8hpp.html" title="tokenType.hpp" alt="" coords="954,80,1061,107"/>
+<area shape="rect" id="node10" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="408,379,591,405"/>
 </map>

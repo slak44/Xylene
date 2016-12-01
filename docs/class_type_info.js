@@ -1,5 +1,7 @@
 var class_type_info =
 [
+    [ "TypeInfo", "class_type_info.html#a0861de9df206d4c04be6901110c954af", null ],
+    [ "TypeInfo", "class_type_info.html#aa2356a1ee45ea50847cbb366367ffd33", null ],
     [ "TypeInfo", "class_type_info.html#a5bf8e362b49407d421e2ac78d3c77b99", null ],
     [ "TypeInfo", "class_type_info.html#a52bd7e2d13ad15dc9ae5808793663456", null ],
     [ "TypeInfo", "class_type_info.html#a5e8f32e1bc0d05a5a234e9630cf002ce", null ],

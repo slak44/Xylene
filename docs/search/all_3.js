@@ -9,5 +9,6 @@ var searchData=
   ['defaulttrace',['defaultTrace',['../trace_8hpp.html#acd22607a9f573fad8be6faf2400571aa',1,'trace.hpp']]],
   ['definitetypeinfo',['DefiniteTypeInfo',['../class_definite_type_info.html',1,'DefiniteTypeInfo'],['../class_definite_type_info.html#ac060a546dce5d346047e283ac4080322',1,'DefiniteTypeInfo::DefiniteTypeInfo(TypeList evalValue)'],['../class_definite_type_info.html#adc7f001bed08fae019135385526d0d43',1,'DefiniteTypeInfo::DefiniteTypeInfo()'],['../class_definite_type_info.html#aa9d059b74c668302a41d6f227efbbee0',1,'DefiniteTypeInfo::DefiniteTypeInfo(std::nullptr_t voidType)=delete']]],
   ['deprecated_20list',['Deprecated List',['../deprecated.html',1,'']]],
+  ['descname',['descName',['../class_operator.html#a965d7d5be31caf2cc06db9e95652d29a',1,'Operator']]],
   ['dynptrcast',['dynPtrCast',['../struct_node.html#acb32bba381610f5a9a559ee089c61c27',1,'Node::dynPtrCast()'],['../struct_ptr_util.html#ac4d0a5ec217bf2771f420e8c8e3bfc74',1,'PtrUtil::dynPtrCast()']]]
 ];

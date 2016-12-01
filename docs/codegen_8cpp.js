@@ -11,5 +11,6 @@ var codegen_8cpp =
     [ "CmpPred", "codegen_8cpp.html#ac8107e81fa0d66e3c3b5903745ef92b2", null ],
     [ "boolVal", "codegen_8cpp.html#a479a242fa8de7516e4c2f380e80863e0", null ],
     [ "getOne", "codegen_8cpp.html#aa4ec08fdba76af5f24d1016fc567cdf2", null ],
-    [ "loadIfPointer", "codegen_8cpp.html#a9077bfc05d41cbf631acb7c2b3b4d150", null ]
+    [ "loadIfPointer", "codegen_8cpp.html#a9077bfc05d41cbf631acb7c2b3b4d150", null ],
+    [ "safeOpName", "codegen_8cpp.html#a34c6053c4ab1544701660206bf7bbb47", null ]
 ];

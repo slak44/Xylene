@@ -107,6 +107,12 @@ Inheritance diagram for TypeInfo:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a0861de9df206d4c04be6901110c954af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_info.html#a0861de9df206d4c04be6901110c954af">TypeInfo</a> (<a class="el" href="util_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>)</td></tr>
+<tr class="memdesc:a0861de9df206d4c04be6901110c954af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store only one type. Convenience constructor.  <a href="#a0861de9df206d4c04be6901110c954af">More...</a><br /></td></tr>
+<tr class="separator:a0861de9df206d4c04be6901110c954af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2356a1ee45ea50847cbb366367ffd33"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_info.html#aa2356a1ee45ea50847cbb366367ffd33">TypeInfo</a> (const char *)</td></tr>
+<tr class="memdesc:aa2356a1ee45ea50847cbb366367ffd33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store only one type. Convenience constructor.  <a href="#aa2356a1ee45ea50847cbb366367ffd33">More...</a><br /></td></tr>
+<tr class="separator:aa2356a1ee45ea50847cbb366367ffd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bf8e362b49407d421e2ac78d3c77b99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_info.html#a5bf8e362b49407d421e2ac78d3c77b99">TypeInfo</a> (<a class="el" href="util_8hpp.html#a94523410a1b1e99b5b060be55c93b281">TypeList</a> <a class="el" href="class_type_info.html#a4f85454f1feae1bcfb37cd55d78f9127">evalValue</a>)</td></tr>
 <tr class="memdesc:a5bf8e362b49407d421e2ac78d3c77b99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store a list of types. If list is empty, the type is dynamic.  <a href="#a5bf8e362b49407d421e2ac78d3c77b99">More...</a><br /></td></tr>
 <tr class="separator:a5bf8e362b49407d421e2ac78d3c77b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,8 +157,48 @@ Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Stores info about the type of something. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a0861de9df206d4c04be6901110c954af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0861de9df206d4c04be6901110c954af">&sect;&nbsp;</a></span>TypeInfo() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TypeInfo::TypeInfo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="util_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874">TypeName</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Store only one type. Convenience constructor. </p>
+
+</div>
+</div>
+<a id="aa2356a1ee45ea50847cbb366367ffd33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2356a1ee45ea50847cbb366367ffd33">&sect;&nbsp;</a></span>TypeInfo() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TypeInfo::TypeInfo </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Store only one type. Convenience constructor. </p>
+
+</div>
+</div>
 <a id="a5bf8e362b49407d421e2ac78d3c77b99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bf8e362b49407d421e2ac78d3c77b99">&sect;&nbsp;</a></span>TypeInfo() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bf8e362b49407d421e2ac78d3c77b99">&sect;&nbsp;</a></span>TypeInfo() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,7 +218,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a52bd7e2d13ad15dc9ae5808793663456"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52bd7e2d13ad15dc9ae5808793663456">&sect;&nbsp;</a></span>TypeInfo() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a52bd7e2d13ad15dc9ae5808793663456">&sect;&nbsp;</a></span>TypeInfo() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -192,7 +238,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a5e8f32e1bc0d05a5a234e9630cf002ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e8f32e1bc0d05a5a234e9630cf002ce">&sect;&nbsp;</a></span>TypeInfo() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e8f32e1bc0d05a5a234e9630cf002ce">&sect;&nbsp;</a></span>TypeInfo() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -444,8 +490,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>lg/include/utils/<a class="el" href="type_info_8hpp_source.html">typeInfo.hpp</a></li>
-<li>lg/src/utils/<a class="el" href="type_info_8cpp.html">typeInfo.cpp</a></li>
+<li>xylene/include/utils/<a class="el" href="type_info_8hpp_source.html">typeInfo.hpp</a></li>
+<li>xylene/src/utils/<a class="el" href="type_info_8cpp.html">typeInfo.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['safeopname',['safeOpName',['../codegen_8cpp.html#a34c6053c4ab1544701660206bf7bbb47',1,'codegen.cpp']]],
   ['setexitblock',['setExitBlock',['../class_loop_node.html#a7df3425a064b85d73d23f13dfcbec969',1,'LoopNode']]],
   ['setparent',['setParent',['../class_a_s_t_node.html#a7e7102508b2aa3f914531681bd450816',1,'ASTNode']]],
   ['settid',['setTid',['../class_type_node.html#a70e3fb4a805a8903d8fdf3144a8bcc76',1,'TypeNode']]],
