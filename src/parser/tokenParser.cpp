@@ -330,7 +330,7 @@ Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
   // Has return type
   if (accept(K_FAT_ARROW)) {
     skip();
-    returnType = std::make_unique<TypeInfo>(TypeInfo(getTypeList()));
+    returnType = std::make_unique<TypeInfo>(getTypeList());
   }
   auto func = Node<FunctionNode>::make(ident, FunctionSignature(returnType == nullptr ? nullptr : *returnType, args), isForeign);
   func->setTrace(trace);

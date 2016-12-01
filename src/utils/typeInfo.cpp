@@ -1,5 +1,7 @@
 #include "utils/typeInfo.hpp"
 
+TypeInfo::TypeInfo(TypeName type): evalValue(TypeList({type})) {}
+TypeInfo::TypeInfo(const char* type): TypeInfo(std::string(type)) {}
 TypeInfo::TypeInfo(TypeList evalValue): evalValue(evalValue) {}
 TypeInfo::TypeInfo(std::nullptr_t voidType): isVoidType(true) {UNUSED(voidType);}
 TypeInfo::TypeInfo(): evalValue({}) {}

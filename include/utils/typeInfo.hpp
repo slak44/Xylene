@@ -22,6 +22,12 @@ protected:
   }
 public:
   /**
+    \brief Store only one type. Convenience constructor.
+  */
+  TypeInfo(TypeName);
+  /// \copydoc TypeInfo(TypeName)
+  TypeInfo(const char*);
+  /**
     \brief Store a list of types. If list is empty, the type is dynamic.
   */
   TypeInfo(TypeList evalValue);

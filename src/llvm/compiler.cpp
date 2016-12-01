@@ -28,7 +28,7 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
   llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
   functionStack.push(std::make_shared<FunctionWrapper>(
     llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module),
-    FunctionSignature(TypeInfo({"Integer"}), {}),
+    FunctionSignature("Integer", {}),
     functionTid
   ));
   entryPoint = functionStack.top();
@@ -480,7 +480,7 @@ void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
   // Maybe link in "abort" and terminate the program with that,
   // and keep this wonderful hack for tests, so it doesn't terminate the test executable
   // if (func == nullptr) throw Error("SyntaxError", "Found return statement outside of function", node->getTrace());
-  if (func == nullptr) func = Node<FunctionNode>::make(FunctionSignature(TypeInfo({"Integer"}), {}));
+  if (func == nullptr) func = Node<FunctionNode>::make(FunctionSignature("Integer", {}));
   
   // If the sig and the value don't agree whether or not this is void, it means type mismatch
   // (yes, the ^ is xor)

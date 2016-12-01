@@ -191,7 +191,7 @@ bool FunctionNode::isAnon() const {
 }
 
 ConstructorNode::ConstructorNode(FunctionSignature::Arguments args, Visibility vis, bool isForeign):
-  FunctionNode("constructor", FunctionSignature(TypeInfo(nullptr), args), isForeign), vis(vis) {
+  FunctionNode("constructor", FunctionSignature(nullptr, args), isForeign), vis(vis) {
   if (vis == INVALID) throw InternalError("Invalid visibility", {METADATA_PAIRS});
 }
   
