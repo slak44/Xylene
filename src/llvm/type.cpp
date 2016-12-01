@@ -265,7 +265,7 @@ std::string TypeData::getName() const {
 void TypeData::finalize() {
   std::for_each(ALL(members), [&](MemberMetadata::Link mb) {
     if (!mb->hasInit()) return;
-    normalTi.insertCode([&](TypeInitializer& ref) {
+    normalTi.insertCode([=](TypeInitializer& ref) {
       auto initValue = cv->compileExpression(mb->getInit());
       if (!isTypeAllowedIn(cv->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
         throw Error("TypeError", "Member initialization does not match its type", mb->getInit()->getTrace());
