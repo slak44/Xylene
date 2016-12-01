@@ -70,9 +70,9 @@ Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAs
       // If the root of the parenthesised expression is a comma, then this is a tree of arguments, so func call
       (expr->getToken().isOperator() && expr->getToken().hasOperatorSymbol(","))
     ) {
-      auto callOpExpr = Node<ExpressionNode>::make(Token(OPERATOR, operatorIndexFrom("Call"), current().trace));
+      auto callOpExpr = Node<ExpressionNode>::make(Token(OPERATOR, Operator::find("Call"), current().trace));
       // If expr is nullptr, use a no-op
-      callOpExpr->addChild(expr != nullptr ? expr : Node<ExpressionNode>::make(Token(OPERATOR, operatorIndexFrom("No-op"), current().trace)));
+      callOpExpr->addChild(expr != nullptr ? expr : Node<ExpressionNode>::make(Token(OPERATOR, Operator::find("No-op"), current().trace)));
       expr = callOpExpr;
     }
     skip(); // Skip ")"

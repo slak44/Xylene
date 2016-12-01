@@ -1,7 +1,21 @@
 #include "operator.hpp"
 
-Operator::Operator(Operator::Name name, int precedence, Associativity associativity, Arity arity, Fixity fixity, RequireReferenceList refList):
-  name(name), precedence(precedence), associativity(associativity), arity(arity), fixity(fixity), refList(refList) {
+Operator::Operator(
+  Operator::Symbol name,
+  int precedence,
+  Operator::Name descName,
+  Associativity associativity,
+  Arity arity,
+  Fixity fixity,
+  RequireReferenceList refList
+):
+  name(name),
+  precedence(precedence),
+  descName(descName),
+  associativity(associativity),
+  arity(arity),
+  fixity(fixity),
+  refList(refList) {
   if (arity == UNARY && fixity == INFIX) {
     throw InternalError("There are no unary infix operators", {METADATA_PAIRS});
   }
@@ -9,6 +23,7 @@ Operator::Operator(Operator::Name name, int precedence, Associativity associativ
   
 Operator::Symbol Operator::getName() const {return name;}
 int Operator::getPrecedence() const {return precedence;}
+Operator::Name Operator::getDescName() const {return descName;}
 Associativity Operator::getAssociativity() const {return associativity;}
 Arity Operator::getArity() const {return arity;}
 Fixity Operator::getFixity() const {return fixity;}
@@ -17,6 +32,7 @@ Operator::RequireReferenceList Operator::getRefList() const {return refList;}
 bool Operator::operator==(const Operator& rhs) const {
   return name == rhs.name &&
     precedence == rhs.precedence &&
+    descName == rhs.descName &&
     associativity == rhs.associativity &&
     arity == rhs.arity &&
     fixity == rhs.fixity &&
@@ -26,37 +42,90 @@ bool Operator::operator!=(const Operator& rhs) const {
   return !operator==(rhs);
 }
 
-std::vector<char> getOperatorCharacters() {
-  static std::vector<char> chars {};
-  if (chars.size() == 0) {
-    std::string mashed = std::accumulate(operatorList.begin(), operatorList.end(), std::string {},
-    [](const std::string& previous, const Operator& op) {
-      return previous + op.getName();
-    });
-    std::sort(mashed.begin(), mashed.end());
-    mashed.erase(std::unique(mashed.begin(), mashed.end()), mashed.end());
-    for (auto c : mashed) chars.push_back(c);
+/// Assignment requires that the first operand is mutable
+static const Operator::RequireReferenceList assignmentList {true, false};
+/// Some unary operators (eg ++) mutate their operand
+static const Operator::RequireReferenceList unaryOps {true};
+
+const std::vector<Operator> Operator::list {
+  Operator("==", 7, "Equality"),
+  Operator("!=", 7, "Inequality"),
+  
+  Operator("=", 1, "Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("+=", 1, "+Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("-=", 1, "-Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("*=", 1, "*Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("/=", 1, "/Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("%=", 1, "%Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("<<=", 1, "<<Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator(">>=", 1, ">>Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("&=", 1, "&Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("^=", 1, "^Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("|=", 1, "|Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  
+  Operator(">>", 9, "Bitshift >>"),
+  Operator("<<", 9, "Bitshift <<"),
+  
+  Operator("<=", 8, "Less or equal"),
+  Operator("<", 8, "Less"),
+  Operator(">=", 8, "Greater or equal"),
+  Operator(">", 8, "Greater"),
+  
+  Operator("--", 13, "Postfix --", ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
+  Operator("++", 13, "Postfix ++", ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
+  
+  Operator(".", 13, "Member access", ASSOCIATE_FROM_LEFT, BINARY, INFIX, {true, false}),
+  
+  Operator("--", 12, "Prefix --", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
+  Operator("++", 12, "Prefix ++", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
+  Operator("-", 12, "Unary -", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  Operator("+", 12, "Unary +", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  Operator("~", 12, "Bitwise NOT", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  Operator("!", 12, "Logical NOT", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  
+  Operator("*", 11, "Multiply"),
+  Operator("/", 11, "Divide"),
+  Operator("%", 11, "Modulo"),
+  
+  Operator("+", 10, "Add"),
+  Operator("-", 10, "Substract"),
+  
+  Operator("&&", 3, "Logical AND"),
+  Operator("||", 2, "Logical OR"),
+  
+  Operator("&", 6, "Bitwise AND"),
+  Operator("^", 5, "Bitwise XOR"),
+  Operator("|", 4, "Bitwise OR"),
+  
+  Operator(",", 0, "Comma"),
+  
+  // These don't get matched by the lexer as operators, their symbols get matched as
+  // constructs. The expressions using those are created in the parser
+  Operator("[]", 13, "Subscript", ASSOCIATE_FROM_LEFT, BINARY, CIRCUMFIX, {true, false}),
+  // Call op will contain name of function + argument tree with commas
+  Operator("()", 13, "Call", ASSOCIATE_FROM_LEFT, BINARY, POSTFIX, {true}),
+  Operator("?:", 1, "Conditional", ASSOCIATE_FROM_LEFT, TERNARY, CIRCUMFIX),
+  Operator(" ", 0, "No-op", ASSOCIATE_FROM_LEFT, NULLARY)
+};
+
+const std::unordered_set<char> Operator::operatorCharacters = std::accumulate(
+  ALL(Operator::list),
+  std::unordered_set<char> {},
+  [](std::unordered_set<char>& previous, const Operator op) {
+    for (char c : op.getName()) previous.insert(c);
+    return previous;
   }
-  return chars;
-}
+);
 
-std::vector<char> getConstructCharacters() {
-  const static std::vector<char> chars {' ', '\n', '\0', '(', ')', '[', ']', '?', ';', ':'};
-  return chars;
-}
-
-const Operator& operatorFrom(const Operator::Name& name) {
-  return operatorList[operatorNameMap.at(name)];
-}
-
-Operator::Name operatorNameFrom(Operator::Index index) {
-  auto it = std::find_if(ALL(operatorNameMap), [=](auto mapPair) {
-    return mapPair.second == index;
+Operator::Index Operator::find(Operator::Name descName) {
+  Operator::Index idx = -1;
+  auto it = std::find_if(ALL(Operator::list), [&](auto op) {
+    idx++;
+    return op.getDescName() == descName;
   });
-  if (it == operatorNameMap.end()) throw InternalError("No such operator index", {METADATA_PAIRS, {"index", std::to_string(index)}});
-  return it->first;
-}
-
-Operator::Index operatorIndexFrom(const Operator::Name& name) {
-  return operatorNameMap.at(name);
+  if (it == Operator::list.end()) throw InternalError("No such operator", {
+    METADATA_PAIRS,
+    {"offending Operator::Name", descName}
+  });
+  return idx;
 }

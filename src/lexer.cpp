@@ -65,8 +65,8 @@ void Lexer::processInput() {
       continue;
     }
     // Check for operators
-    auto operatorIt = operatorList.end();
-    for (auto op = operatorList.begin(); op != operatorList.end(); ++op) {
+    auto operatorIt = Operator::list.end();
+    for (auto op = Operator::list.begin(); op != Operator::list.end(); ++op) {
       bool doesNameMatch = current(op->getName().length()) == op->getName();
       if (!doesNameMatch) continue;
       Fixity type;
@@ -82,16 +82,16 @@ void Lexer::processInput() {
         break;
       }
       // Refine the search using the fixity information
-      operatorIt = std::find_if(ALL(operatorList), [=](const Operator& currentOp) {
+      operatorIt = std::find_if(ALL(Operator::list), [=](const Operator& currentOp) {
         if (op->getName() == currentOp.getName() && currentOp.getFixity() == type) return true;
         return false;
       });
       break;
     }
-    if (operatorIt != operatorList.end()) {
+    if (operatorIt != Operator::list.end()) {
       Position operatorStart = getCurrentPosition();
       skip(operatorIt->getName().length());
-      addToken(Token(OPERATOR, operatorIt - operatorList.begin(), Trace(getFileName(), getRangeToHere(operatorStart))));
+      addToken(Token(OPERATOR, operatorIt - Operator::list.begin(), Trace(getFileName(), getRangeToHere(operatorStart))));
       noIncrement();
       continue;
     }

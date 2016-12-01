@@ -214,8 +214,11 @@ inline std::string Lexer::getQuotedString() {
 }
 
 inline bool Lexer::isIdentifierChar() const {
-  bool isOperatorChar = contains(getOperatorCharacters(), current());
-  bool isConstructChar = contains(getConstructCharacters(), current());
+  bool isOperatorChar =
+    Operator::operatorCharacters.find(current()) != Operator::operatorCharacters.end();
+  bool isConstructChar = contains({
+    ' ', '\n', '\0', '(', ')', '[', ']', '?', ';', ':'
+  }, current());
   return !isOperatorChar && !isConstructChar;
 }
 

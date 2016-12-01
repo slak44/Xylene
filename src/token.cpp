@@ -6,7 +6,7 @@ Token::Token(TokenType type, Trace trace): type(type), trace(trace) {}
 
 const Operator& Token::getOperator() const {
   operatorCheck(GET_ERR_METADATA);
-  return operatorList[idx];
+  return Operator::list[idx];
 }
 
 bool Token::hasArity(Arity arity) const {

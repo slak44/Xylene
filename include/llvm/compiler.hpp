@@ -273,7 +273,7 @@ public:
   /// Search for a CodegenFunction everywhere, and run it
   ValueWrapper::Link findAndRunFun(Node<ExpressionNode>::Link node, ValueList operands);
   /// Search for a CodegenFunction in the specialCodegenMap
-  SpecialCodegenFunction getSpecialFun(Node<ExpressionNode>::Link node) noexcept;
+  SpecialCodegenFunction getSpecialFun(Node<ExpressionNode>::Link node);
   /// Search for a CodegenFunction in the codegenMap
   CodegenFunction getNormalFun(Node<ExpressionNode>::Link node, std::vector<AbstractId::Link> types);
 };

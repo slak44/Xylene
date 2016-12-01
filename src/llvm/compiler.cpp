@@ -269,7 +269,7 @@ ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link 
       if (!(lastNode->getToken().isOperator() && lastNode->getToken().hasOperatorSymbol(","))) {
         operands.push_back(compileExpression(lastNode, AS_VALUE));
       // Only go through args if it isn't a no-op, because that means we have no args
-      } else if (operatorNameFrom(lastNode->getToken().idx) != "No-op") {
+      } else if (lastNode->getToken().getOperator().getDescName() != "No-op") {
         while (lastNode->at(1)->getToken().hasOperatorSymbol(",")) {
           // TODO might need to change these AS_VALUE for complex objects
           operands.push_back(compileExpression(lastNode->at(0), AS_VALUE));

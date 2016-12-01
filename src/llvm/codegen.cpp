@@ -36,8 +36,18 @@ ValueWrapper::Link OperatorCodegen::findAndRunFun(Node<ExpressionNode>::Link nod
   return getNormalFun(node, operandTypes)(processedOperands, operands, node->getToken().trace);
 }
 
-OperatorCodegen::SpecialCodegenFunction OperatorCodegen::getSpecialFun(Node<ExpressionNode>::Link node) noexcept {
-  const Operator::Name& toFind = operatorNameFrom(node->getToken().idx);
+static inline Operator::Name safeOpName(Node<ExpressionNode>::Link node) {
+  if (node->getToken().type != OPERATOR) {
+    throw InternalError("Only accepts operators", {
+      METADATA_PAIRS,
+      {"problem token", node->getToken().toString()}
+    });
+  }
+  return node->getToken().getOperator().getDescName();
+}
+
+OperatorCodegen::SpecialCodegenFunction OperatorCodegen::getSpecialFun(Node<ExpressionNode>::Link node) {
+  Operator::Name toFind = safeOpName(node);
   auto it = specialCodegenMap.find(toFind);
   if (it != specialCodegenMap.end()) return it->second;
   else return nullptr;
@@ -47,7 +57,7 @@ OperatorCodegen::CodegenFunction OperatorCodegen::getNormalFun(
   Node<ExpressionNode>::Link node,
   std::vector<AbstractId::Link> types
 ) {
-  const Operator::Name& toFind = operatorNameFrom(node->getToken().idx);
+  Operator::Name toFind = safeOpName(node);
   auto opMapIt = codegenMap.find(toFind);
   if (opMapIt == codegenMap.end()) {
     throw InternalError("No such operator", {
