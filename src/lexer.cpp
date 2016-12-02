@@ -67,13 +67,13 @@ void Lexer::processInput() {
     // Check for operators
     auto operatorIt = Operator::list.end();
     for (auto op = Operator::list.begin(); op != Operator::list.end(); ++op) {
-      bool doesNameMatch = current(op->getName().length()) == op->getName();
+      bool doesNameMatch = current(op->getSymbol().length()) == op->getSymbol();
       if (!doesNameMatch) continue;
       Fixity type;
-      if (op->getName() == "++" || op->getName() == "--") {
+      if (op->hasSymbol("++") || op->hasSymbol("--")) {
         // Figure out if it's postfix or prefix
         type = determineFixity(PREFIX, POSTFIX, PREFIX);
-      } else if (op->getName() == "+" || op->getName() == "-") {
+      } else if (op->hasSymbol("+") || op->hasSymbol("-")) {
         // Figure out if it's postfix or infix
         type = determineFixity(PREFIX, INFIX, PREFIX);
       } else {
@@ -83,14 +83,14 @@ void Lexer::processInput() {
       }
       // Refine the search using the fixity information
       operatorIt = std::find_if(ALL(Operator::list), [=](const Operator& currentOp) {
-        if (op->getName() == currentOp.getName() && currentOp.getFixity() == type) return true;
+        if (op->hasSymbol(currentOp.getSymbol()) && currentOp.getFixity() == type) return true;
         return false;
       });
       break;
     }
     if (operatorIt != Operator::list.end()) {
       Position operatorStart = getCurrentPosition();
-      skip(operatorIt->getName().length());
+      skip(operatorIt->getSymbol().length());
       addToken(Token(OPERATOR, operatorIt - Operator::list.begin(), Trace(getFileName(), getRangeToHere(operatorStart))));
       noIncrement();
       continue;

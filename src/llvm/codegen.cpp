@@ -43,7 +43,7 @@ static inline Operator::Name safeOpName(Node<ExpressionNode>::Link node) {
       {"problem token", node->getToken().toString()}
     });
   }
-  return node->getToken().getOperator().getDescName();
+  return node->getToken().op().getName();
 }
 
 OperatorCodegen::SpecialCodegenFunction OperatorCodegen::getSpecialFun(Node<ExpressionNode>::Link node) {

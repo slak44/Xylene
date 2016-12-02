@@ -4,7 +4,7 @@ bool TokenBaseParser::expect(TokenType tok, std::string errorMessage) {
   if (accept(tok)) {
     return true;
   } else {
-    auto currentData = current().isOperator() ? current().getOperator().getName() : current().data;
+    auto currentData = current().isOp() ? current().op().getSymbol() : current().data;
     throw Error("SyntaxError", errorMessage + " (found: " + currentData + ")", current().trace);
   }
 }
@@ -68,11 +68,14 @@ Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAs
       // If it's a terminal, it's a function call with 1 arg
       expr->getToken().isTerminal() ||
       // If the root of the parenthesised expression is a comma, then this is a tree of arguments, so func call
-      (expr->getToken().isOperator() && expr->getToken().hasOperatorSymbol(","))
+      (expr->getToken().isOp() && expr->getToken().op().hasSymbol(","))
     ) {
-      auto callOpExpr = Node<ExpressionNode>::make(Token(OPERATOR, Operator::find("Call"), current().trace));
+      auto callOpExpr = Node<ExpressionNode>::make(
+        Token(OPERATOR, Operator::find("Call"), current().trace)
+      );
       // If expr is nullptr, use a no-op
-      callOpExpr->addChild(expr != nullptr ? expr : Node<ExpressionNode>::make(Token(OPERATOR, Operator::find("No-op"), current().trace)));
+      callOpExpr->addChild(expr != nullptr ? expr :
+        Node<ExpressionNode>::make(Token(OPERATOR, Operator::find("No-op"), current().trace)));
       expr = callOpExpr;
     }
     skip(); // Skip ")"
@@ -104,12 +107,12 @@ Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAs
     auto terminalAndPostfix = parseExpressionPrimary();
     // Postfix ops must get in front if at least one exists
     if (
-      terminalAndPostfix->getToken().isOperator() && // Check that there is a postfix op, not a terminal
-      lastNode->getToken().getPrecedence() < terminalAndPostfix->getToken().getPrecedence()
+      terminalAndPostfix->getToken().isOp() && // Check that there is a postfix op, not a terminal
+      lastNode->getToken().op().getPrec() < terminalAndPostfix->getToken().op().getPrec()
     ) {
       auto lastPostfix = terminalAndPostfix;
       // Go down the tree and find the last postfix
-      while (lastPostfix->getToken().isOperator() && lastPostfix->getToken().hasFixity(POSTFIX)) {
+      while (lastPostfix->getToken().isOp() && lastPostfix->getToken().op().hasFixity(POSTFIX)) {
         lastPostfix = lastPostfix->at(0);
       }
       // This loop iterates one too many times, and finds the terminal
@@ -150,7 +153,7 @@ Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>
     auto isCallable =
       tt == IDENTIFIER ||
       tt == C_PAREN_RIGHT ||
-      (tt == OPERATOR && lhs->getToken().hasFixity(POSTFIX));
+      (tt == OPERATOR && lhs->getToken().op().hasFixity(POSTFIX));
     if (accept(C_PAREN_LEFT) && isCallable) {
       auto fCall = parseExpressionPrimary(true);
       auto args = fCall->removeChild(0);
@@ -163,21 +166,21 @@ Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>
       tok = current();
     }
   }
-  while (tok.hasArity(BINARY) && tok.getPrecedence() >= minPrecedence) {
+  while (tok.op().hasArity(BINARY) && tok.op().getPrec() >= minPrecedence) {
     auto tokExpr = Node<ExpressionNode>::make(tok);
     tokExpr->setTrace(tok.trace);
     tokExpr->addChild(lhs);
     skip();
     auto rhs = parseExpressionPrimary();
     tok = current();
-    while (tok.isOperator() && tok.hasArity(BINARY) &&
+    while (tok.isOp() && tok.op().hasArity(BINARY) &&
       (
-        tok.getPrecedence() <= tokExpr->getToken().getPrecedence() ||
-        (tok.getPrecedence() == tokExpr->getToken().getPrecedence() && tok.hasAssociativity(ASSOCIATE_FROM_RIGHT))
+        tok.op().getPrec() <= tokExpr->getToken().op().getPrec() ||
+        (tok.op().getPrec() == tokExpr->getToken().op().getPrec() && tok.op().hasAsoc(ASSOCIATE_FROM_RIGHT))
       )
     ) {
       tokExpr->addChild(rhs);
-      tokExpr = expressionImpl(tokExpr, tok.getPrecedence());
+      tokExpr = expressionImpl(tokExpr, tok.op().getPrec());
       rhs = nullptr;
       tok = current();
     }

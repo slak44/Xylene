@@ -48,11 +48,11 @@ public:
   using RequireReferenceList = std::vector<bool>;
 private:
   /// \copydoc Symbol
-  Symbol name;
+  Symbol symbol;
   /// Operator precedence in expressions
   int precedence;
   /// \copydoc Name
-  Name descName;
+  Name name;
   /// \copydoc Associativity
   Associativity associativity;
   /// \copydoc Arity
@@ -64,22 +64,29 @@ private:
   
   /// Creates an operator. Only the Name, Symbol and precedence are mandatory.
   Operator(
-    Symbol name,
+    Symbol symbol,
     int precedence,
-    Name descName,
+    Name name,
     Associativity associativity = ASSOCIATE_FROM_LEFT,
     Arity arity = BINARY,
     Fixity fixity = INFIX,
     RequireReferenceList refList = {false, false, false}
   );
 public:
-  Symbol getName() const;
-  int getPrecedence() const;
-  Name getDescName() const;
+  Symbol getSymbol() const;
+  int getPrec() const;
+  Name getName() const;
   Associativity getAssociativity() const;
   Arity getArity() const;
   Fixity getFixity() const;
   RequireReferenceList getRefList() const;
+  
+  bool hasSymbol(Symbol) const;
+  bool hasPrec(int) const;
+  bool hasName(Name) const;
+  bool hasAsoc(Associativity) const;
+  bool hasArity(Arity) const;
+  bool hasFixity(Fixity) const;
   
   bool operator==(const Operator& rhs) const;
   bool operator!=(const Operator& rhs) const;
@@ -94,7 +101,7 @@ public:
   static const std::unordered_set<char> operatorCharacters;
   
   /// Find an Operator::Index from an Operator::Name
-  static Operator::Index find(Name descName);
+  static Operator::Index find(Name name);
 };
 
 #endif

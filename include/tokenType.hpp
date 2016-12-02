@@ -11,9 +11,9 @@
 /**
   \brief Possible types for Token.
   
-  L: literal\n
-  K: keyword (2+ chars)\n
-  C: construct (1 char)
+  - L: literal
+  - K: keyword (2+ chars)
+  - C: construct (1 char)
 */
 enum TokenType: int {
   L_INTEGER = 100, L_FLOAT, L_BOOLEAN, L_STRING,

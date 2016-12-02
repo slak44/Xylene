@@ -225,10 +225,10 @@ inline bool Lexer::isIdentifierChar() const {
 inline Fixity Lexer::determineFixity(Fixity afterBinaryOrPrefix, Fixity afterIdentOrParen, Fixity otherCases) const {
   if (getTokenCount() == 0) return otherCases;
   Fixity type;
-  if (peekBehind().isOperator() && (peekBehind().hasArity(BINARY) || peekBehind().hasFixity(PREFIX))) {
+  if (peekBehind().isOp() && (peekBehind().op().hasArity(BINARY) || peekBehind().op().hasFixity(PREFIX))) {
     // If the thing before this op is a binary op or a prefix unary, it means this must be a prefix unary
     type = afterBinaryOrPrefix;
-  } else if (peekBehind().isTerminal() || peekBehind().type == C_PAREN_RIGHT || (peekBehind().isOperator() && peekBehind().hasFixity(POSTFIX))) {
+  } else if (peekBehind().isTerminal() || peekBehind().type == C_PAREN_RIGHT || (peekBehind().isOp() && peekBehind().op().hasFixity(POSTFIX))) {
     // If the thing before was an identifier/paren (or the postfix op attached to an ident), then this must be a postfix unary or a binary infix
     type = afterIdentOrParen;
   } else {

@@ -37,13 +37,13 @@ protected:
   }
   /// Accept a Operator::Symbol
   inline bool accept(Operator::Symbol operatorSymbol) {
-    if (!current().isOperator()) return false;
-    if (current().hasOperatorSymbol(operatorSymbol)) return true;
+    if (!current().isOp()) return false;
+    if (current().op().hasSymbol(operatorSymbol)) return true;
     return false;
   }
   /// Accept a Fixity
   inline bool accept(Fixity fixity) {
-    return current().isOperator() && current().hasFixity(fixity);
+    return current().isOp() && current().op().hasFixity(fixity);
   }
   /// Accept only terminals
   inline bool acceptTerminal() {

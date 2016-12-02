@@ -256,21 +256,21 @@ ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link 
         {"token", tok.toString()}
       });
     };
-  } else if (tok.isOperator()) {
+  } else if (tok.isOp()) {
     std::vector<ValueWrapper::Link> operands {};
     // Do some magic for function calls
-    if (tok.hasOperatorSymbol("()")) {
+    if (tok.op().hasSymbol("()")) {
       // First arg to calls is the thing being called
       // Should be a pointer
       operands.push_back(compileExpression(node->at(0), AS_POINTER));
       // Compute arguments and add them too
       auto lastNode = node->at(1);
       // If it's not an comma, it means this func call only has one argument
-      if (!(lastNode->getToken().isOperator() && lastNode->getToken().hasOperatorSymbol(","))) {
+      if (!(lastNode->getToken().isOp() && lastNode->getToken().op().hasSymbol(","))) {
         operands.push_back(compileExpression(lastNode, AS_VALUE));
       // Only go through args if it isn't a no-op, because that means we have no args
-      } else if (lastNode->getToken().getOperator().getDescName() != "No-op") {
-        while (lastNode->at(1)->getToken().hasOperatorSymbol(",")) {
+      } else if (!lastNode->getToken().op().hasName("No-op")) {
+        while (lastNode->at(1)->getToken().op().hasSymbol(",")) {
           // TODO might need to change these AS_VALUE for complex objects
           operands.push_back(compileExpression(lastNode->at(0), AS_VALUE));
           lastNode = lastNode->at(1);
@@ -283,12 +283,12 @@ ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link 
       // Recursively compute all the operands
       std::size_t idx = 0;
       for (auto& child : node->getChildren()) {
-        bool requirePointer = tok.getOperator().getRefList()[idx];
+        bool requirePointer = tok.op().getRefList()[idx];
         operands.push_back(compileExpression(Node<ExpressionNode>::staticPtrCast(child), requirePointer ? AS_POINTER : AS_VALUE));
         idx++;
       }
       // Make sure we have the correct amount of operands
-      if (static_cast<int>(operands.size()) != tok.getOperator().getArity()) {
+      if (static_cast<int>(operands.size()) != tok.op().getArity()) {
         throw InternalError("Operand count does not match operator arity", {
           METADATA_PAIRS,
           {"operator token", tok.toString()},

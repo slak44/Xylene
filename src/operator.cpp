@@ -1,17 +1,17 @@
 #include "operator.hpp"
 
 Operator::Operator(
-  Operator::Symbol name,
+  Operator::Symbol symbol,
   int precedence,
-  Operator::Name descName,
+  Operator::Name name,
   Associativity associativity,
   Arity arity,
   Fixity fixity,
   RequireReferenceList refList
 ):
-  name(name),
+  symbol(symbol),
   precedence(precedence),
-  descName(descName),
+  name(name),
   associativity(associativity),
   arity(arity),
   fixity(fixity),
@@ -21,18 +21,25 @@ Operator::Operator(
   }
 }
   
-Operator::Symbol Operator::getName() const {return name;}
-int Operator::getPrecedence() const {return precedence;}
-Operator::Name Operator::getDescName() const {return descName;}
+Operator::Symbol Operator::getSymbol() const {return symbol;}
+int Operator::getPrec() const {return precedence;}
+Operator::Name Operator::getName() const {return name;}
 Associativity Operator::getAssociativity() const {return associativity;}
 Arity Operator::getArity() const {return arity;}
 Fixity Operator::getFixity() const {return fixity;}
 Operator::RequireReferenceList Operator::getRefList() const {return refList;}
 
+bool Operator::hasSymbol(Operator::Symbol s) const {return s == symbol;}
+bool Operator::hasPrec(int p) const {return p == precedence;}
+bool Operator::hasName(Operator::Name n) const {return n == name;}
+bool Operator::hasAsoc(Associativity a) const {return a == associativity;}
+bool Operator::hasArity(Arity a) const {return a == arity;}
+bool Operator::hasFixity(Fixity f) const {return f == fixity;}
+
 bool Operator::operator==(const Operator& rhs) const {
-  return name == rhs.name &&
+  return symbol == rhs.symbol &&
     precedence == rhs.precedence &&
-    descName == rhs.descName &&
+    name == rhs.name &&
     associativity == rhs.associativity &&
     arity == rhs.arity &&
     fixity == rhs.fixity &&
@@ -112,20 +119,20 @@ const std::unordered_set<char> Operator::operatorCharacters = std::accumulate(
   ALL(Operator::list),
   std::unordered_set<char> {},
   [](std::unordered_set<char>& previous, const Operator op) {
-    for (char c : op.getName()) previous.insert(c);
+    for (char c : op.getSymbol()) previous.insert(c);
     return previous;
   }
 );
 
-Operator::Index Operator::find(Operator::Name descName) {
+Operator::Index Operator::find(Operator::Name name) {
   Operator::Index idx = -1;
   auto it = std::find_if(ALL(Operator::list), [&](auto op) {
     idx++;
-    return op.getDescName() == descName;
+    return op.getName() == name;
   });
   if (it == Operator::list.end()) throw InternalError("No such operator", {
     METADATA_PAIRS,
-    {"offending Operator::Name", descName}
+    {"offending Operator::Name", name}
   });
   return idx;
 }
