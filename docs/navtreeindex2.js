@@ -1,13 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"functions_f.html":[2,3,0,5],
-"functions_func.html":[2,3,1,0],
-"functions_func.html":[2,3,1],
-"functions_func_0x7e.html":[2,3,1,19],
-"functions_func_b.html":[2,3,1,1],
-"functions_func_c.html":[2,3,1,2],
-"functions_func_d.html":[2,3,1,3],
-"functions_func_e.html":[2,3,1,4],
 "functions_func_f.html":[2,3,1,5],
 "functions_func_g.html":[2,3,1,6],
 "functions_func_h.html":[2,3,1,7],
@@ -61,8 +53,8 @@ var NAVTREEINDEX2 =
 "main_8cpp.html#ac0f2228420376f4db7e1274f2b41667c":[3,0,0,1,6,1],
 "namespacellvm.html":[1,0,0],
 "namespaces.html":[1,0],
-"namespacestd.html":[2,0,0],
 "namespacestd.html":[1,0,1],
+"namespacestd.html":[2,0,0],
 "operator_8cpp.html":[3,0,0,1,7],
 "operator_8cpp.html#aafd2c7791584b838215873533da9c27b":[3,0,0,1,7,1],
 "operator_8cpp.html#adf720f491e114ae641399390ee9675ef":[3,0,0,1,7,0],

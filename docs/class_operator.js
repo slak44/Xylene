@@ -1,10 +1,9 @@
 var class_operator =
 [
-    [ "Index", "class_operator.html#a8e12a033a6d61da802b2133206d35b23", null ],
+    [ "Index", "class_operator.html#a0e02c7147b4a46e028625a4f2b96088c", null ],
     [ "Name", "class_operator.html#a85d294f744238b2c8733e6d32d4e1c95", null ],
     [ "RequireReferenceList", "class_operator.html#aaded9de4bdc094d32d1ca306a482489c", null ],
     [ "Symbol", "class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741", null ],
-    [ "Operator", "class_operator.html#aa9999a923b5b606cf3baa4f2f6472afb", null ],
     [ "find", "class_operator.html#a1ae0e3518cb4b4626ebe177c484465bc", null ],
     [ "getArity", "class_operator.html#ab2e36f46e829a028d2d9fe5419515f18", null ],
     [ "getAssociativity", "class_operator.html#a7692ea6a52f4f162bb42e8997b94f873", null ],
@@ -15,13 +14,6 @@ var class_operator =
     [ "getRefList", "class_operator.html#acb885468b42ad72c9ef57d49bdc912e6", null ],
     [ "operator!=", "class_operator.html#ae62a340a177216fca15fd991a46eeff9", null ],
     [ "operator==", "class_operator.html#aa937f8f789d8fd580c051c5017f353a6", null ],
-    [ "arity", "class_operator.html#a4442c7d0e09fb91b3f25285734dd8d36", null ],
-    [ "associativity", "class_operator.html#af62dfe99730e363c175eb322eded0361", null ],
-    [ "descName", "class_operator.html#a965d7d5be31caf2cc06db9e95652d29a", null ],
-    [ "fixity", "class_operator.html#aba11b5bc50e7267015e3feae06e72152", null ],
     [ "list", "class_operator.html#ac1654c957ce69f0dcdf612a59c9dac4b", null ],
-    [ "name", "class_operator.html#a05755ba75601233e08d6a3920e2c0e56", null ],
-    [ "operatorCharacters", "class_operator.html#ad322355c70bad355baa04e7e58bfeb37", null ],
-    [ "precedence", "class_operator.html#aa4ed8b193e03bd96ccb98bf96a84d7d8", null ],
-    [ "refList", "class_operator.html#a85acc184fe752e4e4c1d36e963e01321", null ]
+    [ "operatorCharacters", "class_operator.html#ad322355c70bad355baa04e7e58bfeb37", null ]
 ];
