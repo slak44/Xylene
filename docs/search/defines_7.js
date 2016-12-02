@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['set_5ffor',['SET_FOR',['../ast_8cpp.html#a9f2db2cf3bd1860db9cf4f8e8974e1db',1,'ast.cpp']]],
-  ['set_5fsig',['SET_SIG',['../ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639',1,'ast.hpp']]],
-  ['special_5fcodegen_5fsig',['SPECIAL_CODEGEN_SIG',['../compiler_8hpp.html#aae0ebaf3b9632f07c1fc5ac8154dc595',1,'compiler.hpp']]]
+  ['unary_5fno_5fop',['UNARY_NO_OP',['../codegen_8cpp.html#a5d36075e548e7156b291f3b5cd4007f0',1,'codegen.cpp']]],
+  ['unused',['UNUSED',['../util_8hpp.html#aea1d71af1a30c261dbd16745c82e94ba',1,'util.hpp']]]
 ];

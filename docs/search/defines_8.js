@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['unary_5fno_5fop',['UNARY_NO_OP',['../codegen_8cpp.html#a5d36075e548e7156b291f3b5cd4007f0',1,'codegen.cpp']]],
-  ['unused',['UNUSED',['../util_8hpp.html#aea1d71af1a30c261dbd16745c82e94ba',1,'util.hpp']]]
+  ['visitor_5fvisit_5fimpl_5ffor',['VISITOR_VISIT_IMPL_FOR',['../ast_8overrides_8cpp.html#a3450fe18e7d2d50d74986704d30545a0',1,'ast.overrides.cpp']]]
 ];

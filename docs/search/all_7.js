@@ -1,12 +1,14 @@
 var searchData=
 [
-  ['hasarity',['hasArity',['../class_token.html#ae42e5cd26864081a145f9e26ae2e03ae',1,'Token']]],
-  ['hasassociativity',['hasAssociativity',['../class_token.html#ac04ac964e0458bd2bba681306e07f298',1,'Token']]],
+  ['hasarity',['hasArity',['../class_operator.html#a45b936a36f3212cad9b5d8be9c3ec86c',1,'Operator']]],
+  ['hasasoc',['hasAsoc',['../class_operator.html#a3329336da79042a7fc3b44b156ad0b8d',1,'Operator']]],
   ['hasfinishedstring',['hasFinishedString',['../class_lexer_base.html#a43715ccd1b10942a7d435eec4eef5d55',1,'LexerBase']]],
-  ['hasfixity',['hasFixity',['../class_token.html#a82c8afd0c9944ab2a438529c8c9d8a00',1,'Token']]],
+  ['hasfixity',['hasFixity',['../class_operator.html#ad1c38e218fb6e6a90c521b419d163827',1,'Operator']]],
   ['hash_3c_20abstractid_20_3e',['hash&lt; AbstractId &gt;',['../structstd_1_1hash_3_01_abstract_id_01_4.html',1,'std']]],
   ['hash_3c_20vector_3c_20abstractid_3a_3alink_20_3e_20_3e',['hash&lt; vector&lt; AbstractId::Link &gt; &gt;',['../structstd_1_1hash_3_01vector_3_01_abstract_id_1_1_link_01_4_01_4.html',1,'std']]],
   ['hasinit',['hasInit',['../class_declaration_node.html#a0ce6bb31aa46b9183f1fe2914ed2b677',1,'DeclarationNode::hasInit()'],['../class_member_metadata.html#a241e2d6fbd25850f967cd9802b80e728',1,'MemberMetadata::hasInit()']]],
-  ['hasoperatorsymbol',['hasOperatorSymbol',['../class_token.html#ad6d1c2377566f9fb920e066fc3fe23c7',1,'Token']]],
-  ['haspointervalue',['hasPointerValue',['../class_value_wrapper.html#a955003547faeb4cb09afd1b4c57dfaba',1,'ValueWrapper']]]
+  ['hasname',['hasName',['../class_operator.html#aa06e7216734b5d4982e122c5475d292b',1,'Operator']]],
+  ['haspointervalue',['hasPointerValue',['../class_value_wrapper.html#a955003547faeb4cb09afd1b4c57dfaba',1,'ValueWrapper']]],
+  ['hasprec',['hasPrec',['../class_operator.html#a3c39cf9c90629cfbe121da8ebc342b14',1,'Operator']]],
+  ['hassymbol',['hasSymbol',['../class_operator.html#a985a2b25021fec03739df1489a72f44c',1,'Operator']]]
 ];

@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "std", "namespacestd.html", "namespacestd" ],
+    [ "TT", "namespace_t_t.html", "namespace_t_t" ],
     [ "AbstractId", "class_abstract_id.html", "class_abstract_id" ],
     [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "ASTNode", "class_a_s_t_node.html", "class_a_s_t_node" ],
@@ -49,6 +50,7 @@ var annotated_dup =
     [ "Token", "class_token.html", "class_token" ],
     [ "TokenBaseParser", "class_token_base_parser.html", "class_token_base_parser" ],
     [ "TokenParser", "class_token_parser.html", "class_token_parser" ],
+    [ "TokenType", "class_token_type.html", "class_token_type" ],
     [ "Trace", "class_trace.html", "class_trace" ],
     [ "TypeData", "class_type_data.html", "class_type_data" ],
     [ "TypeId", "class_type_id.html", "class_type_id" ],

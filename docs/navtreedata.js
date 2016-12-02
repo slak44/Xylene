@@ -3,7 +3,12 @@ var NAVTREE =
   [ "Xylene", "index.html", [
     [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ]
+      [ "Namespace List", "namespaces.html", "namespaces" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ]
+      ] ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
@@ -36,7 +41,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "class_member_node.html#a8e162858ef0f1e274ae4064cebb7378b",
-"functions_func_f.html"
+"functions_b.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

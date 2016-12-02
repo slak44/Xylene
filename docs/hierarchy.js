@@ -93,6 +93,11 @@ var hierarchy =
       ] ]
     ] ],
     [ "Token", "class_token.html", null ],
+    [ "TokenType", "class_token_type.html", [
+      [ "TT::Construct", "class_t_t_1_1_construct.html", null ],
+      [ "TT::Keyword", "class_t_t_1_1_keyword.html", null ],
+      [ "TT::Literal", "class_t_t_1_1_literal.html", null ]
+    ] ],
     [ "Trace", "class_trace.html", null ],
     [ "TypeData", "class_type_data.html", null ],
     [ "TypeInfo", "class_type_info.html", [

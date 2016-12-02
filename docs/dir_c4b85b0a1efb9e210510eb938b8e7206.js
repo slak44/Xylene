@@ -8,6 +8,5 @@ var dir_c4b85b0a1efb9e210510eb938b8e7206 =
     [ "lexer.cpp", "lexer_8cpp.html", null ],
     [ "main.cpp", "main_8cpp.html", "main_8cpp" ],
     [ "operator.cpp", "operator_8cpp.html", "operator_8cpp" ],
-    [ "token.cpp", "token_8cpp.html", null ],
-    [ "tokenType.cpp", "token_type_8cpp.html", "token_type_8cpp" ]
+    [ "token.cpp", "token_8cpp.html", null ]
 ];

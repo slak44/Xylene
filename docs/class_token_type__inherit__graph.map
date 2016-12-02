@@ -1,0 +1,5 @@
+<map id="TokenType" name="TokenType">
+<area shape="rect" id="node2" href="$class_t_t_1_1_construct.html" title="TT::Construct" alt="" coords="5,80,104,107"/>
+<area shape="rect" id="node3" href="$class_t_t_1_1_keyword.html" title="TT::Keyword" alt="" coords="128,80,221,107"/>
+<area shape="rect" id="node4" href="$class_t_t_1_1_literal.html" title="TT::Literal" alt="" coords="246,80,325,107"/>
+</map>

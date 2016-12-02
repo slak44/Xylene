@@ -3,6 +3,7 @@ var util_8hpp =
     [ "PtrUtil", "struct_ptr_util.html", "struct_ptr_util" ],
     [ "Identity", "struct_identity.html", "struct_identity" ],
     [ "ALL", "util_8hpp.html#a0fde0af84d5566911a450db1a8acb728", null ],
+    [ "CURRENT_FUNCTION", "util_8hpp.html#a84662874cf763c9001e3913fe20b3785", null ],
     [ "UNUSED", "util_8hpp.html#aea1d71af1a30c261dbd16745c82e94ba", null ],
     [ "int64", "util_8hpp.html#ab0e5976e1a4967e9b13e68b5f271bb44", null ],
     [ "TypeList", "util_8hpp.html#a94523410a1b1e99b5b060be55c93b281", null ],

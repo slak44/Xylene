@@ -114,12 +114,12 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aca9c2a96d29d0d69873faad75dd498ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#aca9c2a96d29d0d69873faad75dd498ee">getName</a> () const</td></tr>
-<tr class="separator:aca9c2a96d29d0d69873faad75dd498ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bf4433403eec430733cc1e4180a4de5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a1bf4433403eec430733cc1e4180a4de5">getPrecedence</a> () const</td></tr>
-<tr class="separator:a1bf4433403eec430733cc1e4180a4de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb4400d6707a7f9507ea12c05a9b043c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#abb4400d6707a7f9507ea12c05a9b043c">getDescName</a> () const</td></tr>
-<tr class="separator:abb4400d6707a7f9507ea12c05a9b043c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf8d6c860f5c2eb006989d430c146954"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#abf8d6c860f5c2eb006989d430c146954">getSymbol</a> () const</td></tr>
+<tr class="separator:abf8d6c860f5c2eb006989d430c146954"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63dd7282975d599bed843992eb5a5d36"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a63dd7282975d599bed843992eb5a5d36">getPrec</a> () const</td></tr>
+<tr class="separator:a63dd7282975d599bed843992eb5a5d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cdb81874b8097a1d39eacbffb399c72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Name</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a1cdb81874b8097a1d39eacbffb399c72">getName</a> () const</td></tr>
+<tr class="separator:a1cdb81874b8097a1d39eacbffb399c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7692ea6a52f4f162bb42e8997b94f873"><td class="memItemLeft" align="right" valign="top"><a class="el" href="operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2">Associativity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a7692ea6a52f4f162bb42e8997b94f873">getAssociativity</a> () const</td></tr>
 <tr class="separator:a7692ea6a52f4f162bb42e8997b94f873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2e36f46e829a028d2d9fe5419515f18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8">Arity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#ab2e36f46e829a028d2d9fe5419515f18">getArity</a> () const</td></tr>
@@ -128,6 +128,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2b538c469e24dfae84c2c34734b5dccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb885468b42ad72c9ef57d49bdc912e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_operator.html#aaded9de4bdc094d32d1ca306a482489c">RequireReferenceList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#acb885468b42ad72c9ef57d49bdc912e6">getRefList</a> () const</td></tr>
 <tr class="separator:acb885468b42ad72c9ef57d49bdc912e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a985a2b25021fec03739df1489a72f44c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a985a2b25021fec03739df1489a72f44c">hasSymbol</a> (<a class="el" href="class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741">Symbol</a>) const</td></tr>
+<tr class="separator:a985a2b25021fec03739df1489a72f44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c39cf9c90629cfbe121da8ebc342b14"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a3c39cf9c90629cfbe121da8ebc342b14">hasPrec</a> (int) const</td></tr>
+<tr class="separator:a3c39cf9c90629cfbe121da8ebc342b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa06e7216734b5d4982e122c5475d292b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#aa06e7216734b5d4982e122c5475d292b">hasName</a> (<a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Name</a>) const</td></tr>
+<tr class="separator:aa06e7216734b5d4982e122c5475d292b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3329336da79042a7fc3b44b156ad0b8d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a3329336da79042a7fc3b44b156ad0b8d">hasAsoc</a> (<a class="el" href="operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2">Associativity</a>) const</td></tr>
+<tr class="separator:a3329336da79042a7fc3b44b156ad0b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45b936a36f3212cad9b5d8be9c3ec86c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a45b936a36f3212cad9b5d8be9c3ec86c">hasArity</a> (<a class="el" href="operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8">Arity</a>) const</td></tr>
+<tr class="separator:a45b936a36f3212cad9b5d8be9c3ec86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1c38e218fb6e6a90c521b419d163827"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#ad1c38e218fb6e6a90c521b419d163827">hasFixity</a> (<a class="el" href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0">Fixity</a>) const</td></tr>
+<tr class="separator:ad1c38e218fb6e6a90c521b419d163827"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa937f8f789d8fd580c051c5017f353a6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#aa937f8f789d8fd580c051c5017f353a6">operator==</a> (const <a class="el" href="class_operator.html">Operator</a> &amp;rhs) const</td></tr>
 <tr class="separator:aa937f8f789d8fd580c051c5017f353a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae62a340a177216fca15fd991a46eeff9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#ae62a340a177216fca15fd991a46eeff9">operator!=</a> (const <a class="el" href="class_operator.html">Operator</a> &amp;rhs) const</td></tr>
@@ -135,9 +147,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1ae0e3518cb4b4626ebe177c484465bc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_operator.html#a0e02c7147b4a46e028625a4f2b96088c">Operator::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#a1ae0e3518cb4b4626ebe177c484465bc">find</a> (<a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Name</a> descName)</td></tr>
-<tr class="memdesc:a1ae0e3518cb4b4626ebe177c484465bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find an <a class="el" href="class_operator.html#a0e02c7147b4a46e028625a4f2b96088c" title="Where in the Operator::list below it is. ">Operator::Index</a> from an <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95" title="Descriptive name for the operator, eg &#39;Equality&#39;, &#39;Logical AND&#39;. ">Operator::Name</a>.  <a href="#a1ae0e3518cb4b4626ebe177c484465bc">More...</a><br /></td></tr>
-<tr class="separator:a1ae0e3518cb4b4626ebe177c484465bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af37658b8781e9960dbef40df72e63644"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_operator.html#a0e02c7147b4a46e028625a4f2b96088c">Operator::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator.html#af37658b8781e9960dbef40df72e63644">find</a> (<a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Name</a> name)</td></tr>
+<tr class="memdesc:af37658b8781e9960dbef40df72e63644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find an <a class="el" href="class_operator.html#a0e02c7147b4a46e028625a4f2b96088c" title="Where in the Operator::list below it is. ">Operator::Index</a> from an <a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95" title="Descriptive name for the operator, eg &#39;Equality&#39;, &#39;Logical AND&#39;. ">Operator::Name</a>.  <a href="#af37658b8781e9960dbef40df72e63644">More...</a><br /></td></tr>
+<tr class="separator:af37658b8781e9960dbef40df72e63644"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -217,8 +229,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1ae0e3518cb4b4626ebe177c484465bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ae0e3518cb4b4626ebe177c484465bc">&sect;&nbsp;</a></span>find()</h2>
+<a id="af37658b8781e9960dbef40df72e63644"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af37658b8781e9960dbef40df72e63644">&sect;&nbsp;</a></span>find()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,7 +242,7 @@ Static Public Attributes</h2></td></tr>
           <td class="memname"><a class="el" href="class_operator.html#a0e02c7147b4a46e028625a4f2b96088c">Operator::Index</a> Operator::find </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>&#160;</td>
-          <td class="paramname"><em>descName</em></td><td>)</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -279,23 +291,6 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abb4400d6707a7f9507ea12c05a9b043c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb4400d6707a7f9507ea12c05a9b043c">&sect;&nbsp;</a></span>getDescName()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a> Operator::getDescName </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a2b538c469e24dfae84c2c34734b5dccf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b538c469e24dfae84c2c34734b5dccf">&sect;&nbsp;</a></span>getFixity()</h2>
 
@@ -313,14 +308,14 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aca9c2a96d29d0d69873faad75dd498ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca9c2a96d29d0d69873faad75dd498ee">&sect;&nbsp;</a></span>getName()</h2>
+<a id="a1cdb81874b8097a1d39eacbffb399c72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cdb81874b8097a1d39eacbffb399c72">&sect;&nbsp;</a></span>getName()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741">Operator::Symbol</a> Operator::getName </td>
+          <td class="memname"><a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a> Operator::getName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -330,14 +325,14 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1bf4433403eec430733cc1e4180a4de5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1bf4433403eec430733cc1e4180a4de5">&sect;&nbsp;</a></span>getPrecedence()</h2>
+<a id="a63dd7282975d599bed843992eb5a5d36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63dd7282975d599bed843992eb5a5d36">&sect;&nbsp;</a></span>getPrec()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Operator::getPrecedence </td>
+          <td class="memname">int Operator::getPrec </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -357,6 +352,131 @@ Static Public Attributes</h2></td></tr>
           <td class="memname"><a class="el" href="class_operator.html#aaded9de4bdc094d32d1ca306a482489c">Operator::RequireReferenceList</a> Operator::getRefList </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abf8d6c860f5c2eb006989d430c146954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf8d6c860f5c2eb006989d430c146954">&sect;&nbsp;</a></span>getSymbol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741">Operator::Symbol</a> Operator::getSymbol </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a45b936a36f3212cad9b5d8be9c3ec86c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45b936a36f3212cad9b5d8be9c3ec86c">&sect;&nbsp;</a></span>hasArity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Operator::hasArity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8">Arity</a>&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3329336da79042a7fc3b44b156ad0b8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3329336da79042a7fc3b44b156ad0b8d">&sect;&nbsp;</a></span>hasAsoc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Operator::hasAsoc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2">Associativity</a>&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad1c38e218fb6e6a90c521b419d163827"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1c38e218fb6e6a90c521b419d163827">&sect;&nbsp;</a></span>hasFixity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Operator::hasFixity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="operator_8hpp.html#af19b770f6e2116426144b702159f3bb0">Fixity</a>&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa06e7216734b5d4982e122c5475d292b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa06e7216734b5d4982e122c5475d292b">&sect;&nbsp;</a></span>hasName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Operator::hasName </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_operator.html#a85d294f744238b2c8733e6d32d4e1c95">Operator::Name</a>&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3c39cf9c90629cfbe121da8ebc342b14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c39cf9c90629cfbe121da8ebc342b14">&sect;&nbsp;</a></span>hasPrec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Operator::hasPrec </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a985a2b25021fec03739df1489a72f44c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a985a2b25021fec03739df1489a72f44c">&sect;&nbsp;</a></span>hasSymbol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Operator::hasSymbol </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741">Operator::Symbol</a>&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -445,7 +565,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= std::accumulate(</div><div class="line">  <a class="code" href="util_8hpp.html#a0fde0af84d5566911a450db1a8acb728">ALL</a>(<a class="code" href="class_operator.html#ac1654c957ce69f0dcdf612a59c9dac4b">Operator::list</a>),</div><div class="line">  std::unordered_set&lt;char&gt; {},</div><div class="line">  [](std::unordered_set&lt;char&gt;&amp; previous, <span class="keyword">const</span> <a class="code" href="class_operator.html">Operator</a> op) {</div><div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">char</span> c : op.getName()) previous.insert(c);</div><div class="line">    <span class="keywordflow">return</span> previous;</div><div class="line">  }</div><div class="line">)</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= std::accumulate(</div><div class="line">  <a class="code" href="util_8hpp.html#a0fde0af84d5566911a450db1a8acb728">ALL</a>(<a class="code" href="class_operator.html#ac1654c957ce69f0dcdf612a59c9dac4b">Operator::list</a>),</div><div class="line">  std::unordered_set&lt;char&gt; {},</div><div class="line">  [](std::unordered_set&lt;char&gt;&amp; previous, <span class="keyword">const</span> <a class="code" href="class_operator.html">Operator</a> op) {</div><div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">char</span> c : op.getSymbol()) previous.insert(c);</div><div class="line">    <span class="keywordflow">return</span> previous;</div><div class="line">  }</div><div class="line">)</div></div><!-- fragment -->
 <p>Set of characters used in <a class="el" href="class_operator.html#ad87abb2b9a5871fc7e0f92e2215c0741" title="The symbol used for the operator, eg &#39;+&#39;, &#39;=&#39;, &#39;&amp;&amp;&#39;. ">Operator::Symbol</a>. </p>
 
 </div>

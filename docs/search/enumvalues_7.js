@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['normal_5fexit',['NORMAL_EXIT',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3a818c410bbe87e2485ff7cb62512fb00d',1,'main.cpp']]],
-  ['nullary',['NULLARY',['../operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8a74742057ec9d5653bb9423647e73e1cb',1,'operator.hpp']]]
+  ['root_5fblock',['ROOT_BLOCK',['../ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3aa3d088be57c279faf7fca688a4e2e602',1,'ast.hpp']]]
 ];
