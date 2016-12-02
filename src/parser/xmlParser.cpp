@@ -109,10 +109,10 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     if (val != nullptr) retNode->setValue(Node<ExpressionNode>::dynPtrCast(parseXMLNode(val)));
     return retNode;
   } else if (name == "expr") {
-    TokenType tokenType = getTokenTypeByName(requiredAttr("type"));
+    TokenType tokenType = TT::findByPrettyName(requiredAttr("type"));
     std::string data = requiredAttr("value");
     std::unique_ptr<Token> content;
-    if (tokenType == OPERATOR) {
+    if (tokenType == TT::OPERATOR) {
       content = std::make_unique<Token>(tokenType, Operator::find(data), defaultTrace);
     } else {
       content = std::make_unique<Token>(tokenType, data, defaultTrace);

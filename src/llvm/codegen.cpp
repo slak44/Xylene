@@ -37,7 +37,7 @@ ValueWrapper::Link OperatorCodegen::findAndRunFun(Node<ExpressionNode>::Link nod
 }
 
 static inline Operator::Name safeOpName(Node<ExpressionNode>::Link node) {
-  if (node->getToken().type != OPERATOR) {
+  if (node->getToken().type != TT::OPERATOR) {
     throw InternalError("Only accepts operators", {
       METADATA_PAIRS,
       {"problem token", node->getToken().toString()}

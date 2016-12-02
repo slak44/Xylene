@@ -49,18 +49,18 @@ void Lexer::processInput() {
     if (current() == '"') {
       Position start = getCurrentPosition();
       skip(1); // Skip the quote
-      addToken(Token(L_STRING, getQuotedString(), Trace(getFileName(), getRangeToHere(start))));
+      addToken(Token(TT::STRING, getQuotedString(), Trace(getFileName(), getRangeToHere(start))));
       continue;
     }
     // Check for constructs
-    TokenType construct = findConstruct();
-    if (construct != UNPROCESSED) {
+    TokenType construct = TT::findConstruct(current());
+    if (construct != TT::UNPROCESSED) {
       addToken(Token(construct, current(1), Trace(getFileName(), Range(getCurrentPosition(), 1))));
       continue;
     }
     // Check for fat arrows
     if (current(2) == "=>") {
-      addToken(Token(K_FAT_ARROW, "=>", Trace(getFileName(), Range(getCurrentPosition(), 2))));
+      addToken(Token(TT::FAT_ARROW, "=>", Trace(getFileName(), Range(getCurrentPosition(), 2))));
       skip(2);
       continue;
     }
@@ -91,7 +91,7 @@ void Lexer::processInput() {
     if (operatorIt != Operator::list.end()) {
       Position operatorStart = getCurrentPosition();
       skip(operatorIt->getSymbol().length());
-      addToken(Token(OPERATOR, operatorIt - Operator::list.begin(), Trace(getFileName(), getRangeToHere(operatorStart))));
+      addToken(Token(TT::OPERATOR, operatorIt - Operator::list.begin(), Trace(getFileName(), getRangeToHere(operatorStart))));
       noIncrement();
       continue;
     }
@@ -108,19 +108,18 @@ void Lexer::processInput() {
     if (str.length() == 0) continue;
     // Check for boolean literals
     if (str == "true" || str == "false") {
-      addToken(Token(L_BOOLEAN, str, Trace(getFileName(), getRangeToHere(identStart))));
+      addToken(Token(TT::BOOLEAN, str, Trace(getFileName(), getRangeToHere(identStart))));
       continue;
     }
     // Check for keywords
-    try {
-      TokenType type = keywordsMap.at(str);
-      addToken(Token(type, str, Trace(getFileName(), getRangeToHere(identStart))));
-      continue;
-    } catch (std::out_of_range &oor) {
-      // This means it's not a keyword, so it must be an identifier
-      addToken(Token(IDENTIFIER, str, Trace(getFileName(), getRangeToHere(identStart))));
+    TokenType keyword = TT::findKeyword(str);
+    if (keyword != TT::UNPROCESSED) {
+      addToken(Token(keyword, str, Trace(getFileName(), getRangeToHere(identStart))));
       continue;
     }
+    
+    // Must be an identifier
+    addToken(Token(TT::IDENTIFIER, str, Trace(getFileName(), getRangeToHere(identStart))));
   }
-  addToken(Token(FILE_END, "", Trace(getFileName(), Range(getCurrentPosition(), 1))));
+  addToken(Token(TT::FILE_END, Trace(getFileName(), Range(getCurrentPosition(), 1))));
 }

@@ -4,12 +4,28 @@
 #include <vector>
 #include <string>
 #include <cctype>
+#include <unordered_map>
 
 #include "utils/util.hpp"
 #include "utils/trace.hpp"
 #include "utils/error.hpp"
 #include "operator.hpp"
 #include "token.hpp"
+
+/// Maps the second character in an escape sequence (eg the 'n' in \\n) to the actual escaped code.
+const std::unordered_map<char, char> singleCharEscapeSeqences {
+  {'a', '\a'},
+  {'b', '\b'},
+  {'f', '\f'},
+  {'n', '\n'},
+  {'r', '\r'},
+  {'t', '\t'},
+  {'v', '\v'},
+  {'\\', '\\'},
+  {'\'', '\''},
+  {'"', '\"'},
+  {'?', '\?'},
+};
 
 /**
   \brief Base of Lexer. Maintains all of its state, and provides convenience methods for manipulating it
@@ -116,8 +132,6 @@ public:
 */
 class Lexer: public LexerBase {
 private:
-  /// Utility function
-  inline TokenType findConstruct() const;
   /// \copydoc findConstruct
   inline bool isOctalDigit(char c) const;
   /// \copydoc findConstruct
@@ -150,15 +164,6 @@ inline void Lexer::handleMultiLineComments() {
       skip(1); // Skip characters one by one until we hit the end of the comment
     }
     skip(2); // Skip "*/"
-  }
-}
-
-inline TokenType Lexer::findConstruct() const {
-  try {
-    return constructMap.at(current());
-  } catch (std::out_of_range& oor) {
-    // Is not a construct
-    return UNPROCESSED;
   }
 }
 
@@ -228,7 +233,7 @@ inline Fixity Lexer::determineFixity(Fixity afterBinaryOrPrefix, Fixity afterIde
   if (peekBehind().isOp() && (peekBehind().op().hasArity(BINARY) || peekBehind().op().hasFixity(PREFIX))) {
     // If the thing before this op is a binary op or a prefix unary, it means this must be a prefix unary
     type = afterBinaryOrPrefix;
-  } else if (peekBehind().isTerminal() || peekBehind().type == C_PAREN_RIGHT || (peekBehind().isOp() && peekBehind().op().hasFixity(POSTFIX))) {
+  } else if (peekBehind().isTerminal() || peekBehind().type == TT::PAREN_RIGHT || (peekBehind().isOp() && peekBehind().op().hasFixity(POSTFIX))) {
     // If the thing before was an identifier/paren (or the postfix op attached to an ident), then this must be a postfix unary or a binary infix
     type = afterIdentOrParen;
   } else {
@@ -282,7 +287,7 @@ inline Token Lexer::getNumberToken(uint radix) {
   if (number.back() == '.') throw Error("SyntaxError", "Malformed float, missing digits after decimal point", Trace(getFileName(), getRangeToHere(start)));
   if (radix != 10 && isFloat) throw Error("SyntaxError", "Floating point numbers must be used with base 10 numbers", Trace(getFileName(), getRangeToHere(start)));
   if (radix != 10) number = std::to_string(std::stoll(number, nullptr, radix));
-  return Token(isFloat ? L_FLOAT : L_INTEGER, number, Trace(getFileName(), getRangeToHere(start)));
+  return Token(isFloat ? TT::FLOAT : TT::INTEGER, number, Trace(getFileName(), getRangeToHere(start)));
 }
 
 #endif

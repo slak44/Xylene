@@ -76,7 +76,6 @@ set(COMMON_SOURCES
   ${SRC_DIR}/utils/error.cpp
   ${SRC_DIR}/utils/typeInfo.cpp
   ${SRC_DIR}/operator.cpp
-  ${SRC_DIR}/tokenType.cpp
   ${SRC_DIR}/token.cpp
   ${SRC_DIR}/lexer.cpp
   ${SRC_DIR}/ast.cpp

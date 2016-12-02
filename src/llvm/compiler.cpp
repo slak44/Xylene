@@ -158,7 +158,7 @@ AbstractId::Link CompileVisitor::typeIdFromInfo(TypeInfo ti, ASTNode::Link node)
 
 ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Link identifier) {
   auto name = identifier->getToken().data;
-  if (identifier->getToken().type != IDENTIFIER)
+  if (identifier->getToken().type != TT::IDENTIFIER)
     throw InternalError("This function takes identifies only", {METADATA_PAIRS});
   // Check if it's an argument to this function, return it
   // TODO might have to load it
@@ -231,26 +231,26 @@ ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Lin
 
 ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how) {
   Token tok = node->getToken();
-  if (how == AS_POINTER && tok.type != IDENTIFIER && tok.type != OPERATOR)
+  if (how == AS_POINTER && tok.type != TT::IDENTIFIER && tok.type != TT::OPERATOR)
     throw Error("ReferenceError", "Operator requires a mutable type", tok.trace);
   if (tok.isTerminal()) {
     switch (tok.type) {
-      case L_INTEGER: return std::make_shared<ValueWrapper>(
+      case TT::INTEGER: return std::make_shared<ValueWrapper>(
         llvm::ConstantInt::getSigned(integerType, std::stoll(tok.data)),
         integerTid
       );
-      case L_FLOAT: return std::make_shared<ValueWrapper>(
+      case TT::FLOAT: return std::make_shared<ValueWrapper>(
         llvm::ConstantFP::get(floatType, tok.data),
         floatTid
       );
-      case L_STRING: throw InternalError("Not Implemented", {METADATA_PAIRS});
-      case L_BOOLEAN: {
+      case TT::STRING: throw InternalError("Not Implemented", {METADATA_PAIRS});
+      case TT::BOOLEAN: {
         auto b = tok.data == "true" ?
           llvm::ConstantInt::getTrue(booleanType) :
           llvm::ConstantInt::getFalse(booleanType);
         return std::make_shared<ValueWrapper>(b, booleanTid);
       }
-      case IDENTIFIER: return valueFromIdentifier(node);
+      case TT::IDENTIFIER: return valueFromIdentifier(node);
       default: throw InternalError("Unhandled terminal symbol in switch case", {
         METADATA_PAIRS,
         {"token", tok.toString()}

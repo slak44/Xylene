@@ -82,12 +82,12 @@ BlockType BlockNode::getType() const {
 
 ExpressionNode::ExpressionNode(Token token): tok(token) {
   switch (tok.type) {
-    case IDENTIFIER:
-    case OPERATOR:
-    case L_INTEGER:
-    case L_FLOAT:
-    case L_STRING:
-    case L_BOOLEAN:
+    case TT::IDENTIFIER:
+    case TT::OPERATOR:
+    case TT::INTEGER:
+    case TT::FLOAT:
+    case TT::STRING:
+    case TT::BOOLEAN:
       break;
     default: throw InternalError("Trying to add unsupported token to ExpressionNode", {METADATA_PAIRS, {"token", token.toString()}});
   }

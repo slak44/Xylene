@@ -176,7 +176,7 @@ public:
 */
 class ExpressionNode: public ASTNode {
 private:
-  Token tok = Token(UNPROCESSED, defaultTrace);
+  Token tok = Token(TT::UNPROCESSED, defaultTrace);
 public:
   ExpressionNode(Token token);
   
@@ -419,9 +419,9 @@ enum Visibility {
 */
 inline Visibility fromToken(Token t) {
   return
-    t.type == K_PRIVATE ? PRIVATE :
-    t.type == K_PROTECT ? PROTECTED :
-    t.type == K_PUBLIC ? PUBLIC :
+    t.type == TT::PRIVATE ? PRIVATE :
+    t.type == TT::PROTECT ? PROTECTED :
+    t.type == TT::PUBLIC ? PUBLIC :
       INVALID;
 }
 

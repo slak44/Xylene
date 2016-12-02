@@ -10,7 +10,7 @@ bool TokenBaseParser::expect(TokenType tok, std::string errorMessage) {
 }
 
 void TokenBaseParser::expectSemi() {
-  expect(C_SEMI, "Expected semicolon");
+  expect(TT::SEMI, "Expected semicolon");
   skip();
 }
 
@@ -56,10 +56,10 @@ Node<ExpressionNode>::Link ExpressionParser::parsePostfix(Node<ExpressionNode>::
 Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAsFuncCall = false) {
   if (acceptEndOfExpression()) return nullptr; // Empty expression
   Node<ExpressionNode>::Link expr;
-  if (accept(C_PAREN_LEFT)) {
+  if (accept(TT::PAREN_LEFT)) {
     skip();
     expr = expression(false);
-    expect(C_PAREN_RIGHT, "Mismatched parenthesis");
+    expect(TT::PAREN_RIGHT, "Mismatched parenthesis");
     if (
       // Something higher up the chain has higher level info forcing this parse path
       parenAsFuncCall ||
@@ -71,11 +71,11 @@ Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAs
       (expr->getToken().isOp() && expr->getToken().op().hasSymbol(","))
     ) {
       auto callOpExpr = Node<ExpressionNode>::make(
-        Token(OPERATOR, Operator::find("Call"), current().trace)
+        Token(TT::OPERATOR, Operator::find("Call"), current().trace)
       );
       // If expr is nullptr, use a no-op
       callOpExpr->addChild(expr != nullptr ? expr :
-        Node<ExpressionNode>::make(Token(OPERATOR, Operator::find("No-op"), current().trace)));
+        Node<ExpressionNode>::make(Token(TT::OPERATOR, Operator::find("No-op"), current().trace)));
       expr = callOpExpr;
     }
     skip(); // Skip ")"
@@ -85,7 +85,7 @@ Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAs
     expr = exprFromCurrent();
     skip();
     // Function call
-    if (expr->getToken().type == IDENTIFIER && accept(C_PAREN_LEFT)) {
+    if (expr->getToken().type == TT::IDENTIFIER && accept(TT::PAREN_LEFT)) {
       auto call = parseExpressionPrimary(true);
       // The expr being called must be the first operand of the call operator
       // So remove the arguments, add expr, then put the arguments back in
@@ -151,10 +151,10 @@ Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>
     // IDENTIFIER, C_PAREN_RIGHT, postfix ops
     // before a paren, it's a function call
     auto isCallable =
-      tt == IDENTIFIER ||
-      tt == C_PAREN_RIGHT ||
-      (tt == OPERATOR && lhs->getToken().op().hasFixity(POSTFIX));
-    if (accept(C_PAREN_LEFT) && isCallable) {
+      tt == TT::IDENTIFIER ||
+      tt == TT::PAREN_RIGHT ||
+      (tt == TT::OPERATOR && lhs->getToken().op().hasFixity(POSTFIX));
+    if (accept(TT::PAREN_LEFT) && isCallable) {
       auto fCall = parseExpressionPrimary(true);
       auto args = fCall->removeChild(0);
       fCall->addChild(lhs);
@@ -227,20 +227,20 @@ Node<DeclarationNode>::Link DeclarationParser::declarationFromTypes(TypeList typ
 }
 
 Node<DeclarationNode>::Link DeclarationParser::declaration(bool throwIfEmpty) {
-  if (accept(C_SEMI)) {
+  if (accept(TT::SEMI)) {
     if (throwIfEmpty) throw InternalError("Empty declaration", {METADATA_PAIRS});
     else return nullptr;
   }
-  if (accept(K_DEFINE)) {
+  if (accept(TT::DEFINE)) {
     skip();
     // Dynamic variable declaration
-    expect(IDENTIFIER, "Unexpected token after define keyword");
+    expect(TT::IDENTIFIER, "Unexpected token after define keyword");
     return declarationFromTypes({});
-  } else if (accept(IDENTIFIER)) {
+  } else if (accept(TT::IDENTIFIER)) {
     auto ident = current().data;
     skip();
     // Single-type declaration
-    if (accept(IDENTIFIER)) {
+    if (accept(TT::IDENTIFIER)) {
       return declarationFromTypes({ident});
     }
     // Multi-type declaration
@@ -248,11 +248,11 @@ Node<DeclarationNode>::Link DeclarationParser::declaration(bool throwIfEmpty) {
       TypeList types = {ident};
       do {
         skip();
-        expect(IDENTIFIER, "Expected identifier in type list");
+        expect(TT::IDENTIFIER, "Expected identifier in type list");
         types.insert(current().data);
         skip();
       } while (accept(","));
-      expect(IDENTIFIER);
+      expect(TT::IDENTIFIER);
       return declarationFromTypes(types);
     }
   }
@@ -265,14 +265,14 @@ Node<BranchNode>::Link IfStatementParser::ifStatement() {
   branch->setCondition(expression());
   branch->setSuccessBlock(block(IF_BLOCK));
   skip(-1); // Go back to the block termination token
-  if (accept(K_ELSE)) {
+  if (accept(TT::ELSE)) {
     skip();
     // Else-if structure
-    if (accept(K_IF)) {
+    if (accept(TT::IF)) {
       skip();
       branch->setFailiureBlock(ifStatement());
     // Simple else block
-    } else if (accept(K_DO)) {
+    } else if (accept(TT::DO)) {
       branch->setFailiureBlock(block(CODE_BLOCK));
     } else {
       throw Error("SyntaxError", "Else must be followed by a block or an if statement", current().trace);
@@ -286,7 +286,7 @@ TypeList FunctionParser::getTypeList() {
   skip(-1); // Counter the comma skip below for the first iteration
   do {
     skip(1); // Skips the comma
-    expect(IDENTIFIER, "Expected identifier in type list");
+    expect(TT::IDENTIFIER, "Expected identifier in type list");
     types.insert(current().data);
     skip();
   } while (accept(","));
@@ -296,11 +296,11 @@ TypeList FunctionParser::getTypeList() {
 FunctionSignature::Arguments FunctionParser::getSigArgs() {
   FunctionSignature::Arguments args;
   while (true) {
-    expect(IDENTIFIER, "Expected identifier in function arguments");
+    expect(TT::IDENTIFIER, "Expected identifier in function arguments");
     TypeList tl = getTypeList();
     args.push_back(std::make_pair(current().data, tl));
     skip(); // Skip the argument name
-    if (accept(C_SQPAREN_RIGHT)) {
+    if (accept(TT::SQPAREN_RIGHT)) {
       skip();
       break;
     }
@@ -320,18 +320,18 @@ Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
   FunctionSignature::Arguments args {};
   std::unique_ptr<TypeInfo> returnType;
   // Is not anon func
-  if (accept(IDENTIFIER)) {
+  if (accept(TT::IDENTIFIER)) {
     ident = current().data;
     skip();
   }
   if (isForeign && ident.empty()) throw Error("SyntaxError", "Foreign functions can't be anonymous", trace);
   // Has arguments
-  if (accept(C_SQPAREN_LEFT)) {
+  if (accept(TT::SQPAREN_LEFT)) {
     skip();
     args = getSigArgs();
   }
   // Has return type
-  if (accept(K_FAT_ARROW)) {
+  if (accept(TT::FAT_ARROW)) {
     skip();
     returnType = std::make_unique<TypeInfo>(getTypeList());
   }
@@ -349,7 +349,7 @@ Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis, bool isForei
   skip(); // Skip "constructor"
   FunctionSignature::Arguments args {};
   // Has arguments
-  if (accept(C_SQPAREN_LEFT)) {
+  if (accept(TT::SQPAREN_LEFT)) {
     skip();
     args = getSigArgs();
   }
@@ -387,22 +387,22 @@ Node<MemberNode>::Link TypeParser::member(Visibility vis, bool isStatic) {
 
 Node<TypeNode>::Link TypeParser::type() {
   skip(); // Skip "type"
-  expect(IDENTIFIER, "Expected identifier after 'type' token");
+  expect(TT::IDENTIFIER, "Expected identifier after 'type' token");
   Node<TypeNode>::Link tn;
   Token identTok = current();
   skip();
-  if (accept(K_INHERITS)) {
+  if (accept(TT::INHERITS)) {
     skip();
-    if (accept(K_FROM)) skip(); // Having "from" after "inherits" is optional
+    if (accept(TT::FROM)) skip(); // Having "from" after "inherits" is optional
     tn = Node<TypeNode>::make(identTok.data, getTypeList());
   } else {
     tn = Node<TypeNode>::make(identTok.data);
   }
   tn->setTrace(identTok.trace);
-  expect(K_DO, "Expected type body");
+  expect(TT::DO, "Expected type body");
   skip();
-  while (!accept(K_END)) {
-    if (accept(FILE_END)) {
+  while (!accept(TT::END)) {
+    if (accept(TT::FILE_END)) {
       skip(-1); // Go back to get a prettier trace
       throw Error("SyntaxError", "Type body is not closed by 'end'", current().trace);
     }
@@ -410,11 +410,11 @@ Node<TypeNode>::Link TypeParser::type() {
     bool isForeign = false;
     Visibility visibility = INVALID;
     // Expect to see a visibility_specifier or static or foreign
-    while (accept(K_PUBLIC) || accept(K_PRIVATE) || accept(K_PROTECT) || accept(K_STATIC) || accept(K_FOREIGN)) {
-      if (accept(K_STATIC)) {
+    while (accept(TT::PUBLIC) || accept(TT::PRIVATE) || accept(TT::PROTECT) || accept(TT::STATIC) || accept(TT::FOREIGN)) {
+      if (accept(TT::STATIC)) {
         if (isStatic == true) throw Error("SyntaxError", "Cannot specify 'static' more than once", current().trace);
         isStatic = true;
-      } else if (accept(K_FOREIGN)) {
+      } else if (accept(TT::FOREIGN)) {
         if (isForeign == true) throw Error("SyntaxError", "Cannot specify 'foreign' more than once", current().trace);
         isForeign = true;
       } else {
@@ -424,10 +424,10 @@ Node<TypeNode>::Link TypeParser::type() {
       skip();
     }
     // Handle things that go in the body
-    if (accept(K_CONSTR)) {
+    if (accept(TT::CONSTR)) {
       if (isStatic) throw Error("SyntaxError", "Constructors can't be static", current().trace);
       tn->addChild(constructor(visibility, isForeign));
-    } else if (accept(K_METHOD)) {
+    } else if (accept(TT::METHOD)) {
       if (visibility == INVALID) throw Error("SyntaxError", "Methods require a visibility specifier", current().trace);
       tn->addChild(method(visibility, isStatic, isForeign));
     } else {
@@ -440,12 +440,12 @@ Node<TypeNode>::Link TypeParser::type() {
 }
 
 ASTNode::Link StatementParser::statement() {
-  if (accept(K_TYPE)) {
+  if (accept(TT::TYPE)) {
     return type();
-  } else if (accept(K_IF)) {
+  } else if (accept(TT::IF)) {
     skip();
     return ifStatement();
-  } else if (accept(K_FOR)) {
+  } else if (accept(TT::FOR)) {
     auto loop = Node<LoopNode>::make();
     loop->setTrace(current().trace);
     skip(); // Skip "for"
@@ -456,22 +456,22 @@ ASTNode::Link StatementParser::statement() {
     loop->setUpdate(expression(false));
     loop->setCode(block(CODE_BLOCK));
     return loop;
-  } if (accept(K_WHILE)) {
+  } if (accept(TT::WHILE)) {
     skip(); // Skip "while"
     auto loop = Node<LoopNode>::make();
     loop->setTrace(current().trace);
     loop->setCondition(expression());
     loop->setCode(block(CODE_BLOCK));
     return loop;
-  } else if (accept(K_DO)) {
+  } else if (accept(TT::DO)) {
     return block(CODE_BLOCK);
-  } else if (accept(K_DEFINE)) {
+  } else if (accept(TT::DEFINE)) {
     auto decl = declaration();
     expectSemi();
     return decl;
-  } else if (accept(IDENTIFIER)) {
+  } else if (accept(TT::IDENTIFIER)) {
     skip();
-    if (accept(IDENTIFIER) || accept(",")) {
+    if (accept(TT::IDENTIFIER) || accept(",")) {
       skip(-1); // Go back to the prev identifier
       auto decl = declaration();
       expectSemi();
@@ -482,12 +482,12 @@ ASTNode::Link StatementParser::statement() {
       expectSemi();
       return e;
     }
-  } else if (accept(K_BREAK)) {
+  } else if (accept(TT::BREAK)) {
     skip();
     return Node<BreakLoopNode>::make();
-  } else if (accept(K_CONTINUE)) {
+  } else if (accept(TT::CONTINUE)) {
     throw InternalError("Unimplemented", {METADATA_PAIRS, {"token", "loop continue"}});
-  } else if (accept(K_RETURN)) {
+  } else if (accept(TT::RETURN)) {
     auto trace = current().trace;
     skip(); // Skip "return"
     auto retValue = expression(false);
@@ -496,9 +496,9 @@ ASTNode::Link StatementParser::statement() {
     retNode->setTrace(trace);
     if (retValue != nullptr) retNode->setValue(retValue);
     return retNode;
-  } else if (accept(K_FUNCTION)) {
+  } else if (accept(TT::FUNCTION)) {
     return function();
-  } else if (accept(K_FOREIGN)) {
+  } else if (accept(TT::FOREIGN)) {
     return function(true);
   } else {
     auto e = expression();
@@ -509,14 +509,14 @@ ASTNode::Link StatementParser::statement() {
 
 Node<BlockNode>::Link BlockParser::block(BlockType type) {
   if (type != ROOT_BLOCK) {
-    expect(K_DO, "Expected code block");
+    expect(TT::DO, "Expected code block");
     skip();
   }
   Node<BlockNode>::Link block = Node<BlockNode>::make(type);
   block->setTrace(current().trace);
-  while (!accept(K_END)) {
-    if (type == IF_BLOCK && accept(K_ELSE)) break;
-    if (type == ROOT_BLOCK && accept(FILE_END)) break;
+  while (!accept(TT::END)) {
+    if (type == IF_BLOCK && accept(TT::ELSE)) break;
+    if (type == ROOT_BLOCK && accept(TT::FILE_END)) break;
     block->addChild(stp->statement());
   }
   skip(); // Skip block end

@@ -51,7 +51,7 @@ protected:
   }
   /// Accept anything that ends an expression
   inline bool acceptEndOfExpression() {
-    return accept(C_SEMI) || accept(C_PAREN_RIGHT) || accept(FILE_END) || accept(K_DO);
+    return accept(TT::SEMI) || accept(TT::PAREN_RIGHT) || accept(TT::FILE_END) || accept(TT::DO);
   }
   /// Expect certain tokens to appear (throw otherwise)
   bool expect(TokenType tok, std::string errorMessage = "Unexpected symbol");
