@@ -11,6 +11,14 @@
 
 #include "utils/suppressWarnings.hpp"
 
+#ifdef _MSC_VER
+  #undef FILE_END
+  #define __attribute__(attr)
+  #define CURRENT_FUNCTION __FUNCSIG__
+#else
+  #define CURRENT_FUNCTION __PRETTY_FUNCTION__
+#endif
+
 #define UNUSED(expr) (void)(expr)
 #define ALL(container) std::begin(container), std::end(container)
 

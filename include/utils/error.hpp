@@ -10,12 +10,6 @@
 #include "util.hpp"
 #include "trace.hpp"
 
-#ifdef _MSC_VER
-  #define CURRENT_FUNCTION __FUNCSIG__
-#else
-  #define CURRENT_FUNCTION __PRETTY_FUNCTION__
-#endif
-
 #define METADATA_PAIRS {"file", __FILE__}, {"function", CURRENT_FUNCTION}, {"line", std::to_string(__LINE__)}
 
 /**
