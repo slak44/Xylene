@@ -5,7 +5,7 @@
 #include <string>
 
 #include "llvm/typeId.hpp"
-#include "io.hpp"
+#include "runtime/io.hpp"
 
 extern "C" {
   struct Value {

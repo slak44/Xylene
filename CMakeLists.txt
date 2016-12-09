@@ -86,7 +86,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/llvm/runner.cpp
   ${SRC_DIR}/llvm/codegen.cpp
   ${SRC_DIR}/llvm/type.cpp
-  ${PROJECT_SOURCE_DIR}/runtime/src/io.cpp
+  ${SRC_DIR}/runtime/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor tclap)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
@@ -116,7 +116,6 @@ llvm_map_components_to_libnames(
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/runtime/include)
 
 add_custom_target(clean-all)
 
