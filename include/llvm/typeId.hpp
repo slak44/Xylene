@@ -10,7 +10,9 @@ namespace llvm {
   class Value;
   class StructType;
 }
-class TypeData;
+class TypeData; 
+
+using UniqueIdentifier = int;
 
 /**
   \brief An abstract identifier with a name and a unique id.

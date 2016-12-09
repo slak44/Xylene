@@ -46,6 +46,12 @@ string_literal = ? quotation mark delimited string with backslash escape codes, 
 ident = ? see Lexer class for what is an identifier ? ;
 ```
 TODO list:
+- name mangling
+  - multiple module linker name conflicts
+  - multiple scope name conflicts
+- sneak stuff into the grammar that allows operating on the concrete type of a value
+  - get type name as string (function `typeOf(variable)` or unary operator `typeof variable`?)
+  - get value as type by type name, throw error if the stored type isn't what the programmer expects (this is clearly a language construct)
 - properly define an identifier
 - for loop multiple declarations & multiple update expressions
 - inheritance
