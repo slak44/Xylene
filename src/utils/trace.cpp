@@ -15,6 +15,7 @@ std::string Range::toString() const noexcept {
 }
 
 Trace::Trace(std::string file, Range location): file(file), location(location) {}
+Trace::Trace(std::nullptr_t): isNullTrace(true), location(Range(Position(0, 0), 0)) {}
 
 const Range Trace::getRange() const noexcept {
   return location;
@@ -25,5 +26,6 @@ const std::string& Trace::getFileName() const noexcept {
 }
 
 std::string Trace::toString() const noexcept {
-  return "found " + location.toString() + " in " + file;
+  if (isNullTrace) return "";
+  else return "found " + location.toString() + " in " + file;
 }

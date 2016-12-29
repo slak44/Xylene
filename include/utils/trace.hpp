@@ -41,11 +41,13 @@ public:
 */
 class Trace {
 private:
+  bool isNullTrace = false;
   std::string file;
   Range location;
   // std::stack<?FunctionData?> stack; TODO
 public:
   Trace(std::string file, Range location);
+  Trace(std::nullptr_t);
   
   const Range getRange() const noexcept;
   const std::string& getFileName() const noexcept;
