@@ -26,16 +26,3 @@ Runner::Runner(CompileVisitor::Link v): v(v) {
 int Runner::run() {
   return engine->runFunctionAsMain(v->getEntryPoint(), {}, {});
 }
-
-ProgramResult Runner::runAndCapture() {
-  // Capture stdout
-  char buf[8192];
-  std::fflush(stdout);
-  std::freopen("/dev/null", "a", stdout);
-  std::setbuf(stdout, buf);
-  // Run program
-  int exitCode = run();
-  // Stop capturing stdout
-  std::freopen("/dev/tty", "a", stdout);
-  return {exitCode, buf, ""};
-}
