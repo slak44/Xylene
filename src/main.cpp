@@ -32,14 +32,16 @@ int main(int argc, const char* argv[]) {
     TCLAP::SwitchArg doNotParse("", "no-parse", "Don't parse the token list", cmd);
     TCLAP::SwitchArg doNotRun("", "no-run", "Don't execute the AST", cmd);
     
-    std::vector<std::string> runnerValues {"llvm-lli", "llvm-llc"};
+    std::vector<std::string> runnerValues {"interpret", "compile"};
     TCLAP::ValuesConstraint<std::string> runnerConstraint(runnerValues);
     TCLAP::ValueArg<std::string> runner("r", "runner", "How to run this code", false,
-      "llvm-lli", &runnerConstraint, cmd, nullptr);
+      "interpret", &runnerConstraint, cmd, nullptr);
     
     TCLAP::ValueArg<std::string> code("e", "eval", "Code to evaluate", false,
       std::string(), "string", cmd, nullptr);
     TCLAP::ValueArg<std::string> filePath("f", "file", "Load code from this file",
+      false, std::string(), "path", cmd, nullptr);
+    TCLAP::ValueArg<std::string> outPath("o", "output", "Write exe to this file",
       false, std::string(), "path", cmd, nullptr);
     cmd.parse(argc, argv);
     
@@ -83,11 +85,13 @@ int main(int argc, const char* argv[]) {
     v->visit();
     if (printIR.getValue()) v->getModule()->dump();
         
-    if (runner.getValue() == "llvm-lli") {
+    if (runner.getValue() == "interpret") {
       return Runner(v).run();
-    } else if (runner.getValue() == "llvm-llc") {
-      println("Not yet implemented!");
-      // TODO
+    } else if (runner.getValue() == "compile") {
+      // TODO: rearrange this somehow, right now the module is compiled twice
+      Compiler cp(filePath.getValue(), outPath.getValue());
+      cp.compile();
+      return NORMAL_EXIT;
     }
   } catch (const TCLAP::ExitException& arg) {
     return CLI_ERROR;
