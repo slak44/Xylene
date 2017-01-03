@@ -18,7 +18,7 @@ target_compile_options(tests_bin PRIVATE
   -DDATA_PARENT_DIR=\"$<TARGET_FILE_DIR:tests_bin>\"
   -O0 -g3
 )
-target_link_libraries(tests_bin ${REQ_LLVM_LIBRARIES} stdc++fs pthread gtest libtiny-process-library.a)
+target_link_libraries(tests_bin ${COMMON_LINK_LIBS} pthread gtest libtiny-process-library.a)
 
 # Copy the folder with test data to the executable
 add_custom_command(TARGET tests_bin POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${TEST_DATA} $<TARGET_FILE_DIR:tests_bin>/data)

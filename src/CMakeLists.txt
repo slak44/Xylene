@@ -9,8 +9,8 @@ elseif(MSVC)
   target_compile_options(debug_bin PRIVATE /DCRASH_ON_INTERNAL_ERROR )
 endif()
 
-target_link_libraries(release_bin ${REQ_LLVM_LIBRARIES})
-target_link_libraries(debug_bin ${REQ_LLVM_LIBRARIES})
+target_link_libraries(release_bin ${COMMON_LINK_LIBS})
+target_link_libraries(debug_bin ${COMMON_LINK_LIBS})
 
 add_dependencies(release_bin ${COMMON_DEPS})
 add_dependencies(debug_bin ${COMMON_DEPS})

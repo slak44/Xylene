@@ -110,6 +110,8 @@ include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
 llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES all)
 
+set(COMMON_LINK_LIBS ${REQ_LLVM_LIBRARIES} stdc++fs)
+
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
