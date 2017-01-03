@@ -1,16 +1,14 @@
 #ifndef RUNNER_HPP
 #define RUNNER_HPP
 
-#include <llvm/IR/Module.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/Interpreter.h>
 #include <llvm/ExecutionEngine/MCJIT.h>
 #include <llvm/Object/ObjectFile.h>
-#include <llvm/Support/TargetSelect.h>
 #include <tuple>
 
-#include "standard.hpp"
+#include "runtime/standard.hpp"
 #include "llvm/compiler.hpp"
 
 /// exit code + stdout + stderr
