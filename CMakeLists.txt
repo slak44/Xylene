@@ -108,7 +108,27 @@ if(NOT LLVM_FOUND)
 endif()
 include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
-llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES all)
+llvm_map_components_to_libnames(
+  REQ_LLVM_LIBRARIES
+  aarch64 aarch64asmparser aarch64asmprinter aarch64codegen aarch64desc aarch64disassembler aarch64info aarch64utils
+  amdgpu amdgpuasmparser amdgpuasmprinter amdgpucodegen amdgpudesc amdgpudisassembler amdgpuinfo amdgpuutils
+  arm armasmparser armasmprinter armcodegen armdesc armdisassembler arminfo
+  bpf bpfasmprinter bpfcodegen bpfdesc bpfinfo
+  hexagon hexagonasmparser hexagoncodegen hexagondesc hexagondisassembler hexagoninfo
+  mips mipsasmparser mipsasmprinter mipscodegen mipsdesc mipsdisassembler mipsinfo
+  msp430 msp430asmprinter msp430codegen msp430desc msp430info
+  nvptx nvptxasmprinter nvptxcodegen nvptxdesc nvptxinfo
+  powerpc powerpcasmparser powerpcasmprinter powerpccodegen powerpcdesc powerpcdisassembler powerpcinfo
+  sparc sparcasmparser sparcasmprinter sparccodegen sparcdesc sparcdisassembler sparcinfo
+  systemz systemzasmparser systemzasmprinter systemzcodegen systemzdesc systemzdisassembler systemzinfo
+  x86 x86asmparser x86asmprinter x86codegen x86desc x86disassembler x86info x86utils
+  xcore xcoreasmprinter xcorecodegen xcoredesc xcoredisassembler xcoreinfo
+  
+  analysis asmparser asmprinter bitreader bitwriter codegen core coverage debuginfocodeview debuginfodwarf debuginfopdb
+  executionengine globalisel instcombine instrumentation interpreter ipo irreader libdriver lineeditor linker lto
+  mc mcdisassembler mcjit mcparser mirparser native nativecodegen objcarcopts object objectyaml option orcjit passes
+  profiledata runtimedyld scalaropts selectiondag support symbolize tablegen target transformutils vectorize
+)
 
 set(COMMON_LINK_LIBS ${REQ_LLVM_LIBRARIES} stdc++fs)
 
