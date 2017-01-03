@@ -1,4 +1,10 @@
 <map id="xylene/include/parser/tokenParser.hpp" name="xylene/include/parser/tokenParser.hpp">
-<area shape="rect" id="node2" href="$main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="5,95,144,121"/>
-<area shape="rect" id="node3" href="$token_parser_8cpp.html" title="xylene/src/parser/tokenParser.cpp" alt="" coords="168,95,387,121"/>
+<area shape="rect" id="node2" href="$main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="5,273,144,300"/>
+<area shape="rect" id="node3" href="$token_parser_8cpp.html" title="xylene/src/parser/tokenParser.cpp" alt="" coords="84,102,303,129"/>
+<area shape="rect" id="node4" href="$compiler_8hpp.html" title="xylene/include/llvm\l/compiler.hpp" alt="" coords="338,95,470,136"/>
+<area shape="rect" id="node5" href="$codegen_8cpp.html" title="xylene/src/llvm/codegen.cpp" alt="" coords="112,191,299,218"/>
+<area shape="rect" id="node6" href="$compiler_8cpp.html" title="xylene/src/llvm/compiler.cpp" alt="" coords="323,191,509,218"/>
+<area shape="rect" id="node7" href="$type_8cpp.html" title="xylene/src/llvm/type.cpp" alt="" coords="533,191,696,218"/>
+<area shape="rect" id="node8" href="$runner_8hpp.html" title="xylene/include/llvm\l/runner.hpp" alt="" coords="721,184,853,225"/>
+<area shape="rect" id="node9" href="$runner_8cpp.html" title="xylene/src/llvm/runner.cpp" alt="" coords="700,273,873,300"/>
 </map>

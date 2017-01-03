@@ -5,6 +5,7 @@ var searchData=
   ['acceptterminal',['acceptTerminal',['../class_token_base_parser.html#a361d5d44a718fb3d074d0cf09d9f6030',1,'TokenBaseParser']]],
   ['addchild',['addChild',['../class_a_s_t_node.html#a1ccee2f28eacfef347a853a0e081ac94',1,'ASTNode::addChild()'],['../class_type_node.html#a226b3321e40bb3c54934185e610ee3b2',1,'TypeNode::addChild()'],['../class_no_more_children_node.html#a987d2dedde5cdabab2ee220477ac66f6',1,'NoMoreChildrenNode::addChild()']]],
   ['addconstructor',['addConstructor',['../class_type_data.html#a284f19017a4d64ec51817b668f239695',1,'TypeData']]],
+  ['addmainfunction',['addMainFunction',['../class_module_compiler.html#a60d6a16615275e8bd2919c6114147113',1,'ModuleCompiler']]],
   ['addmember',['addMember',['../class_type_data.html#ad3e669e4e3491df2819f07dcaad68f47',1,'TypeData']]],
   ['addmethod',['addMethod',['../class_type_data.html#ab237016f15371481ceda263c39d29e3d',1,'TypeData']]],
   ['addtoken',['addToken',['../class_lexer_base.html#aa4776a92d2d07ae428fe62fb0296c2e6',1,'LexerBase']]],

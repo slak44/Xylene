@@ -7,5 +7,5 @@ var class_operator_codegen =
     [ "findAndRunFun", "class_operator_codegen.html#a5d6e1115af9fe7c537b506ffc515382d", null ],
     [ "getNormalFun", "class_operator_codegen.html#a6ddeb1fc935c44997d6ef4638bfee048", null ],
     [ "getSpecialFun", "class_operator_codegen.html#a88389f4e2ac3166c123617c845e55224", null ],
-    [ "CompileVisitor", "class_operator_codegen.html#aab5b74f1d9d6e64220877768218823a2", null ]
+    [ "ModuleCompiler", "class_operator_codegen.html#a75084bbd17ad41e609d2db3359127fdd", null ]
 ];

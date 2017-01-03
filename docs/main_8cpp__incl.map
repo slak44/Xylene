@@ -1,17 +1,16 @@
 <map id="xylene/src/main.cpp" name="xylene/src/main.cpp">
-<area shape="rect" id="node6" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="3134,617,3226,644"/>
-<area shape="rect" id="node15" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="3565,468,3665,495"/>
-<area shape="rect" id="node21" href="$lexer_8hpp.html" title="lexer.hpp" alt="" coords="3212,237,3284,263"/>
-<area shape="rect" id="node26" href="$token_parser_8hpp.html" title="parser/tokenParser.hpp" alt="" coords="3421,80,3576,107"/>
-<area shape="rect" id="node31" href="$xml_parser_8hpp.html" title="parser/xmlParser.hpp" alt="" coords="4050,80,4193,107"/>
-<area shape="rect" id="node34" href="$compiler_8hpp.html" title="llvm/compiler.hpp" alt="" coords="1835,155,1957,181"/>
-<area shape="rect" id="node50" href="$runner_8hpp.html" title="llvm/runner.hpp" alt="" coords="1841,80,1951,107"/>
-<area shape="rect" id="node13" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="3243,692,3426,719"/>
-<area shape="rect" id="node19" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="2949,543,3024,569"/>
-<area shape="rect" id="node24" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="3187,393,3279,420"/>
-<area shape="rect" id="node25" href="$token_8hpp.html" title="token.hpp" alt="" coords="3562,319,3641,345"/>
-<area shape="rect" id="node27" href="$base_parser_8hpp.html" title="parser/baseParser.hpp" alt="" coords="3714,155,3865,181"/>
-<area shape="rect" id="node28" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="3647,237,3711,263"/>
-<area shape="rect" id="node29" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="4013,393,4136,420"/>
-<area shape="rect" id="node30" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="2715,543,2824,569"/>
+<area shape="rect" id="node6" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="1325,767,1417,793"/>
+<area shape="rect" id="node15" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="1339,617,1439,644"/>
+<area shape="rect" id="node20" href="$lexer_8hpp.html" title="lexer.hpp" alt="" coords="3495,393,3567,420"/>
+<area shape="rect" id="node25" href="$token_parser_8hpp.html" title="parser/tokenParser.hpp" alt="" coords="699,237,853,263"/>
+<area shape="rect" id="node29" href="$xml_parser_8hpp.html" title="parser/xmlParser.hpp" alt="" coords="481,237,623,263"/>
+<area shape="rect" id="node32" href="$compiler_8hpp.html" title="llvm/compiler.hpp" alt="" coords="2135,155,2257,181"/>
+<area shape="rect" id="node50" href="$runner_8hpp.html" title="llvm/runner.hpp" alt="" coords="1209,80,1319,107"/>
+<area shape="rect" id="node13" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="1357,841,1539,868"/>
+<area shape="rect" id="node19" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="1732,692,1807,719"/>
+<area shape="rect" id="node23" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="3222,543,3314,569"/>
+<area shape="rect" id="node24" href="$token_8hpp.html" title="token.hpp" alt="" coords="1254,468,1333,495"/>
+<area shape="rect" id="node26" href="$base_parser_8hpp.html" title="parser/baseParser.hpp" alt="" coords="919,319,1070,345"/>
+<area shape="rect" id="node27" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="953,393,1017,420"/>
+<area shape="rect" id="node28" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="817,543,940,569"/>
 </map>

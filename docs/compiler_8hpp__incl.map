@@ -1,11 +1,12 @@
 <map id="xylene/include/llvm/compiler.hpp" name="xylene/include/llvm/compiler.hpp">
-<area shape="rect" id="node23" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="3129,483,3221,509"/>
-<area shape="rect" id="node31" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="3352,333,3452,360"/>
-<area shape="rect" id="node36" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="3045,102,3109,129"/>
-<area shape="rect" id="node40" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="3787,259,3879,285"/>
-<area shape="rect" id="node41" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="2727,408,2837,435"/>
-<area shape="rect" id="node28" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="3239,557,3421,584"/>
-<area shape="rect" id="node35" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="3063,408,3138,435"/>
-<area shape="rect" id="node38" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="3903,259,4026,285"/>
-<area shape="rect" id="node39" href="$token_8hpp.html" title="token.hpp" alt="" coords="3139,184,3217,211"/>
+<area shape="rect" id="node33" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="4921,483,5013,509"/>
+<area shape="rect" id="node39" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="4739,333,4839,360"/>
+<area shape="rect" id="node44" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="5423,184,5487,211"/>
+<area shape="rect" id="node47" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="5637,408,5746,435"/>
+<area shape="rect" id="node48" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="4659,259,4751,285"/>
+<area shape="rect" id="node49" href="$lexer_8hpp.html" title="lexer.hpp" alt="" coords="4483,184,4555,211"/>
+<area shape="rect" id="node50" href="$token_parser_8hpp.html" title="parser/tokenParser.hpp" alt="" coords="4630,102,4785,129"/>
+<area shape="rect" id="node38" href="$suppress_warnings_8hpp.html" title="utils/suppressWarnings.hpp" alt="" coords="4876,557,5059,584"/>
+<area shape="rect" id="node43" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="5133,408,5207,435"/>
+<area shape="rect" id="node46" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="5022,259,5145,285"/>
 </map>

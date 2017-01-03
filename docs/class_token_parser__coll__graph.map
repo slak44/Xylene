@@ -1,11 +1,11 @@
 <map id="TokenParser" name="TokenParser">
-<area shape="rect" id="node2" href="$class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="112,81,231,108"/>
+<area shape="rect" id="node2" href="$class_statement_parser.html" title="Provides the statement method for parsing an a statement. " alt="" coords="135,81,253,108"/>
 <area shape="rect" id="node7" href="$class_block_parser.html" title="Provides the block method for parsing a block. " alt="" coords="185,171,275,197"/>
 <area shape="rect" id="node3" href="$class_if_statement_parser.html" title="Provides the ifStatement method for parsing an if statement. " alt="" coords="308,247,435,273"/>
 <area shape="rect" id="node4" href="$class_expression_parser.html" title="Provides the expression method for parsing an expression. " alt="" coords="351,171,472,197"/>
 <area shape="rect" id="node10" href="$class_declaration_parser.html" title="Provides the declaration method for parsing a declaration. " alt="" coords="459,247,583,273"/>
-<area shape="rect" id="node5" href="$class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="321,81,443,108"/>
-<area shape="rect" id="node6" href="$class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="338,5,426,32"/>
+<area shape="rect" id="node5" href="$class_token_base_parser.html" title="Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="313,81,435,108"/>
+<area shape="rect" id="node6" href="$class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="330,5,418,32"/>
 <area shape="rect" id="node9" href="$class_function_parser.html" title="Provides the function method for parsing a function definition. " alt="" coords="176,247,284,273"/>
 <area shape="rect" id="node8" href="$class_type_parser.html" title="Provides the type method for parsing a type definition. " alt="" coords="187,323,273,349"/>
 </map>

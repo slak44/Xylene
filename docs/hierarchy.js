@@ -6,7 +6,7 @@ var hierarchy =
     ] ],
     [ "AST", "class_a_s_t.html", null ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", [
-      [ "CompileVisitor", "class_compile_visitor.html", null ]
+      [ "ModuleCompiler", "class_module_compiler.html", null ]
     ] ],
     [ "BaseParser", "class_base_parser.html", [
       [ "TokenBaseParser", "class_token_base_parser.html", [
@@ -31,6 +31,7 @@ var hierarchy =
       ] ],
       [ "XMLParser", "class_x_m_l_parser.html", null ]
     ] ],
+    [ "Compiler", "class_compiler.html", null ],
     [ "ConstructorData", "class_constructor_data.html", null ],
     [ "enable_shared_from_this", null, [
       [ "ASTNode", "class_a_s_t_node.html", [
@@ -51,7 +52,7 @@ var hierarchy =
         ] ],
         [ "TypeNode", "class_type_node.html", null ]
       ] ],
-      [ "CompileVisitor", "class_compile_visitor.html", null ]
+      [ "ModuleCompiler", "class_module_compiler.html", null ]
     ] ],
     [ "FunctionSignature", "class_function_signature.html", null ],
     [ "std::hash< AbstractId >", "structstd_1_1hash_3_01_abstract_id_01_4.html", null ],
@@ -65,13 +66,13 @@ var hierarchy =
     [ "Operator", "class_operator.html", null ],
     [ "OperatorCodegen", "class_operator_codegen.html", null ],
     [ "Position", "struct_position.html", null ],
+    [ "ProgramData", "class_program_data.html", null ],
     [ "PtrUtil< T >", "struct_ptr_util.html", [
       [ "Node< T, std::enable_if< std::is_base_of< ASTNode, T >::value >::type * >", "struct_node.html", null ]
     ] ],
     [ "PtrUtil< BlockNode >", "struct_ptr_util.html", [
       [ "Node< BlockNode >", "struct_node.html", null ]
     ] ],
-    [ "PtrUtil< CompileVisitor >", "struct_ptr_util.html", null ],
     [ "PtrUtil< ConstructorNode >", "struct_ptr_util.html", [
       [ "Node< ConstructorNode >", "struct_node.html", null ]
     ] ],
@@ -81,6 +82,7 @@ var hierarchy =
     [ "PtrUtil< MethodNode >", "struct_ptr_util.html", [
       [ "Node< MethodNode >", "struct_node.html", null ]
     ] ],
+    [ "PtrUtil< ModuleCompiler >", "struct_ptr_util.html", null ],
     [ "PtrUtil< TypeNode >", "struct_ptr_util.html", [
       [ "Node< TypeNode >", "struct_node.html", null ]
     ] ],
@@ -105,6 +107,7 @@ var hierarchy =
         [ "StaticTypeInfo", "class_static_type_info.html", null ]
       ] ]
     ] ],
+    [ "Value", "struct_value.html", null ],
     [ "ValueWrapper", "class_value_wrapper.html", [
       [ "DeclarationWrapper", "class_declaration_wrapper.html", null ],
       [ "FunctionWrapper", "class_function_wrapper.html", null ],

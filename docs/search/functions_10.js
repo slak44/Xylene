@@ -5,6 +5,5 @@ var searchData=
   ['return',['RETURN',['../namespace_t_t.html#a81a5b942712caa89f6e6c908299768f3',1,'TT']]],
   ['returnnode',['ReturnNode',['../class_return_node.html#a1e79c04a4e82c37af4aafa39be12b3ba',1,'ReturnNode']]],
   ['run',['run',['../class_runner.html#a8b3dd8871c4a2a5c38b6053db6213c20',1,'Runner']]],
-  ['runandcapture',['runAndCapture',['../class_runner.html#a8e7239d135646df27ee2014f5d604374',1,'Runner']]],
-  ['runner',['Runner',['../class_runner.html#ac61fd306bd325de63b6e342297f9793b',1,'Runner']]]
+  ['runner',['Runner',['../class_runner.html#ad9734a6847124636d72f6ec196694929',1,'Runner']]]
 ];

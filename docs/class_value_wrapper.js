@@ -9,7 +9,7 @@ var class_value_wrapper =
     [ "hasPointerValue", "class_value_wrapper.html#a955003547faeb4cb09afd1b4c57dfaba", null ],
     [ "isInitialized", "class_value_wrapper.html#a6813d22e1a7245e8373c0dd51fdcf2bf", null ],
     [ "setValue", "class_value_wrapper.html#a795f429f58d302b09c18de1eb4e7d05b", null ],
-    [ "CompileVisitor", "class_value_wrapper.html#aab5b74f1d9d6e64220877768218823a2", null ],
+    [ "ModuleCompiler", "class_value_wrapper.html#a75084bbd17ad41e609d2db3359127fdd", null ],
     [ "currentType", "class_value_wrapper.html#afd3fdf1ed44ca3f64618952d237cdfb7", null ],
     [ "llvmValue", "class_value_wrapper.html#afcd4fd19764a7ad73318a9a7f2116eb7", null ]
 ];

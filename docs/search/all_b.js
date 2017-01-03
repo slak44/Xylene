@@ -8,5 +8,7 @@ var searchData=
   ['metadata_5fpairs',['METADATA_PAIRS',['../error_8hpp.html#a1fec56baad5b8b1701cfc19d2d1c2f8e',1,'error.hpp']]],
   ['method',['METHOD',['../namespace_t_t.html#a7cddfd3d76ac97fc1e7758e8f50b06ce',1,'TT']]],
   ['methoddata',['MethodData',['../class_method_data.html',1,'MethodData'],['../class_method_data.html#ad6d31edf7c4ca7bbac839c45ed9d0ceb',1,'MethodData::MethodData()']]],
-  ['methodnode',['MethodNode',['../class_method_node.html',1,'MethodNode'],['../class_method_node.html#ae69fc1c82b01e8b1b7bfc17318015943',1,'MethodNode::MethodNode()']]]
+  ['methodnode',['MethodNode',['../class_method_node.html',1,'MethodNode'],['../class_method_node.html#ae69fc1c82b01e8b1b7bfc17318015943',1,'MethodNode::MethodNode()']]],
+  ['modulecompiler',['ModuleCompiler',['../class_module_compiler.html',1,'ModuleCompiler'],['../class_value_wrapper.html#a75084bbd17ad41e609d2db3359127fdd',1,'ValueWrapper::ModuleCompiler()'],['../class_compiler.html#a75084bbd17ad41e609d2db3359127fdd',1,'Compiler::ModuleCompiler()'],['../class_operator_codegen.html#a75084bbd17ad41e609d2db3359127fdd',1,'OperatorCodegen::ModuleCompiler()']]],
+  ['modules',['modules',['../class_program_data.html#ab39a431889c6bb50161014ef7d299e35',1,'ProgramData']]]
 ];

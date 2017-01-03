@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('type_id_8hpp.html','');});
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">typeId.hpp File Reference</div>  </div>
@@ -106,21 +107,22 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="type_id_8hpp__dep__incl.png" border="0" usemap="#xylene_2include_2llvm_2type_id_8hppdep" alt=""/></div>
 <map name="xylene_2include_2llvm_2type_id_8hppdep" id="xylene_2include_2llvm_2type_id_8hppdep">
-<area shape="rect" id="node2" href="type_8cpp.html" title="xylene/src/llvm/type.cpp" alt="" coords="5,266,168,293"/>
-<area shape="rect" id="node3" href="ast_8hpp.html" title="xylene/include/ast.hpp" alt="" coords="766,95,917,121"/>
-<area shape="rect" id="node6" href="compiler_8hpp.html" title="xylene/include/llvm\l/compiler.hpp" alt="" coords="455,169,587,211"/>
-<area shape="rect" id="node4" href="ast_8cpp.html" title="xylene/src/ast.cpp" alt="" coords="939,177,1067,203"/>
-<area shape="rect" id="node5" href="ast_8overrides_8cpp.html" title="xylene/src/ast.overrides.cpp" alt="" coords="1091,177,1274,203"/>
-<area shape="rect" id="node12" href="base_parser_8hpp.html" title="xylene/include/parser\l/baseParser.hpp" alt="" coords="769,169,914,211"/>
-<area shape="rect" id="node13" href="token_parser_8hpp.html" title="xylene/include/parser\l/tokenParser.hpp" alt="" coords="1026,259,1171,300"/>
-<area shape="rect" id="node15" href="xml_parser_8hpp.html" title="xylene/include/parser\l/xmlParser.hpp" alt="" coords="822,259,967,300"/>
-<area shape="rect" id="node7" href="codegen_8cpp.html" title="xylene/src/llvm/codegen.cpp" alt="" coords="611,266,797,293"/>
-<area shape="rect" id="node8" href="compiler_8cpp.html" title="xylene/src/llvm/compiler.cpp" alt="" coords="192,266,379,293"/>
-<area shape="rect" id="node9" href="main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="592,348,731,375"/>
-<area shape="rect" id="node10" href="runner_8hpp.html" title="xylene/include/llvm\l/runner.hpp" alt="" coords="403,259,535,300"/>
-<area shape="rect" id="node11" href="runner_8cpp.html" title="xylene/src/llvm/runner.cpp" alt="" coords="383,348,556,375"/>
-<area shape="rect" id="node14" href="token_parser_8cpp.html" title="xylene/src/parser/tokenParser.cpp" alt="" coords="1011,348,1229,375"/>
-<area shape="rect" id="node16" href="xml_parser_8cpp.html" title="xylene/src/parser/xmlParser.cpp" alt="" coords="779,348,986,375"/>
+<area shape="rect" id="node2" href="type_8cpp.html" title="xylene/src/llvm/type.cpp" alt="" coords="860,459,1023,486"/>
+<area shape="rect" id="node3" href="ast_8hpp.html" title="xylene/include/ast.hpp" alt="" coords="414,102,565,129"/>
+<area shape="rect" id="node6" href="compiler_8hpp.html" title="xylene/include/llvm\l/compiler.hpp" alt="" coords="659,363,791,404"/>
+<area shape="rect" id="node17" href="standard_8hpp.html" title="xylene/include/runtime\l/standard.hpp" alt="" coords="947,95,1099,136"/>
+<area shape="rect" id="node4" href="ast_8cpp.html" title="xylene/src/ast.cpp" alt="" coords="5,191,133,218"/>
+<area shape="rect" id="node5" href="ast_8overrides_8cpp.html" title="xylene/src/ast.overrides.cpp" alt="" coords="158,191,341,218"/>
+<area shape="rect" id="node12" href="base_parser_8hpp.html" title="xylene/include/parser\l/baseParser.hpp" alt="" coords="417,184,562,225"/>
+<area shape="rect" id="node13" href="token_parser_8hpp.html" title="xylene/include/parser\l/tokenParser.hpp" alt="" coords="447,273,593,315"/>
+<area shape="rect" id="node15" href="xml_parser_8hpp.html" title="xylene/include/parser\l/xmlParser.hpp" alt="" coords="245,273,390,315"/>
+<area shape="rect" id="node7" href="codegen_8cpp.html" title="xylene/src/llvm/codegen.cpp" alt="" coords="649,459,836,486"/>
+<area shape="rect" id="node8" href="compiler_8cpp.html" title="xylene/src/llvm/compiler.cpp" alt="" coords="439,459,625,486"/>
+<area shape="rect" id="node9" href="main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="307,541,445,568"/>
+<area shape="rect" id="node10" href="runner_8hpp.html" title="xylene/include/llvm\l/runner.hpp" alt="" coords="1047,452,1179,493"/>
+<area shape="rect" id="node11" href="runner_8cpp.html" title="xylene/src/llvm/runner.cpp" alt="" coords="1027,541,1200,568"/>
+<area shape="rect" id="node14" href="token_parser_8cpp.html" title="xylene/src/parser/tokenParser.cpp" alt="" coords="411,370,629,397"/>
+<area shape="rect" id="node16" href="xml_parser_8cpp.html" title="xylene/src/parser/xmlParser.cpp" alt="" coords="55,370,262,397"/>
 </map>
 </div>
 </div>
@@ -150,12 +152,32 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacestd"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestd.html">std</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ab62eef244eb0fc10c18da6c4d6537348"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_id_8hpp.html#ab62eef244eb0fc10c18da6c4d6537348">UniqueIdentifier</a> = int</td></tr>
+<tr class="separator:ab62eef244eb0fc10c18da6c4d6537348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a702520d91997b405258f1b2948a67c7d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_id_8hpp.html#a702520d91997b405258f1b2948a67c7d">isTypeAllowedIn</a> (<a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> tl, <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> type)</td></tr>
 <tr class="memdesc:a702520d91997b405258f1b2948a67c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility function for checking if 2 types are compatible.  <a href="#a702520d91997b405258f1b2948a67c7d">More...</a><br /></td></tr>
 <tr class="separator:a702520d91997b405258f1b2948a67c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ab62eef244eb0fc10c18da6c4d6537348"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab62eef244eb0fc10c18da6c4d6537348">&sect;&nbsp;</a></span>UniqueIdentifier</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="type_id_8hpp.html#ab62eef244eb0fc10c18da6c4d6537348">UniqueIdentifier</a> =  int</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a702520d91997b405258f1b2948a67c7d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a702520d91997b405258f1b2948a67c7d">&sect;&nbsp;</a></span>isTypeAllowedIn()</h2>

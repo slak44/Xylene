@@ -1,4 +1,10 @@
 <map id="xylene/include/lexer.hpp" name="xylene/include/lexer.hpp">
-<area shape="rect" id="node2" href="$lexer_8cpp.html" title="xylene/src/lexer.cpp" alt="" coords="5,80,141,107"/>
-<area shape="rect" id="node3" href="$main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="165,80,304,107"/>
+<area shape="rect" id="node2" href="$lexer_8cpp.html" title="xylene/src/lexer.cpp" alt="" coords="5,87,141,114"/>
+<area shape="rect" id="node3" href="$main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="160,259,299,285"/>
+<area shape="rect" id="node4" href="$compiler_8hpp.html" title="xylene/include/llvm\l/compiler.hpp" alt="" coords="399,80,531,121"/>
+<area shape="rect" id="node5" href="$codegen_8cpp.html" title="xylene/src/llvm/codegen.cpp" alt="" coords="267,177,453,203"/>
+<area shape="rect" id="node6" href="$compiler_8cpp.html" title="xylene/src/llvm/compiler.cpp" alt="" coords="477,177,664,203"/>
+<area shape="rect" id="node7" href="$type_8cpp.html" title="xylene/src/llvm/type.cpp" alt="" coords="688,177,851,203"/>
+<area shape="rect" id="node8" href="$runner_8hpp.html" title="xylene/include/llvm\l/runner.hpp" alt="" coords="875,169,1007,211"/>
+<area shape="rect" id="node9" href="$runner_8cpp.html" title="xylene/src/llvm/runner.cpp" alt="" coords="855,259,1028,285"/>
 </map>
