@@ -3,8 +3,9 @@
 
 #include <llvm/ADT/APFloat.h>
 #include <llvm/ADT/STLExtras.h>
-#include <llvm/IR/BasicBlock.h>
+#include <llvm/ADT/Triple.h>
 #include <llvm/Transforms/Utils/BasicBlockUtils.h>
+#include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
@@ -15,19 +16,32 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/IR/CFG.h>
+#include "llvm/IR/LegacyPassManager.h"
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/raw_os_ostream.h>
+#include "llvm/Support/FileSystem.h"
+#include "llvm/Support/Host.h"
+#include "llvm/Support/TargetRegistry.h"
+#include "llvm/Support/TargetSelect.h"
+#include "llvm/Target/TargetMachine.h"
+#include "llvm/Target/TargetOptions.h"
 #include <string>
 #include <vector>
 #include <stack>
 #include <unordered_set>
 #include <unordered_map>
+#include <fstream>
+#include <experimental/filesystem>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 #include "ast.hpp"
 #include "operator.hpp"
+#include "lexer.hpp"
+#include "parser/tokenParser.hpp"
 #include "llvm/typeId.hpp"
+
+namespace fs = std::experimental::filesystem;
 
 class OperatorCodegen;
 
@@ -121,6 +135,13 @@ public:
   DeclarationWrapper::Link getMember(std::string name);
 };
 
+class ProgramData {
+public:
+  using TypeSet = std::unordered_set<AbstractId::Link>;
+  std::unordered_set<AbstractId::Link> types;
+  std::vector<llvm::Module*> modules;
+};
+
 /**
   \brief Each CompileVisitor creates a llvm::Module from an AST.
 */
@@ -149,15 +170,15 @@ private:
   TypeId::Link floatTid;
   TypeId::Link booleanTid;
   TypeId::Link functionTid;
-    
-  /// Complete type list
-  std::unordered_set<AbstractId::Link> types;
+
+  /// Pointer to global type set
+  std::unique_ptr<ProgramData::TypeSet> types;
 
   std::unique_ptr<llvm::IRBuilder<>> builder; ///< Used to construct llvm instructions
   llvm::Module* module; ///< The module that is being created
   FunctionWrapper::Link entryPoint; ///< Entry point for module
   std::stack<FunctionWrapper::Link> functionStack; ///< Current function stack. Not a call stack
-  AST ast; ///< Source AST
+  std::unique_ptr<AST> ast; ///< Source AST
   
   /// Used for throwing consistent type mismatch errors
   static const std::string typeMismatchErrorString;
@@ -165,9 +186,17 @@ private:
   /// Instance of OperatorCodegen
   std::unique_ptr<OperatorCodegen> codegen;
 
+  // TODO: eventually this and its create() should be dropped
   /// Use the static factory \link create \endlink
-  CompileVisitor(std::string moduleName, AST ast);
+  CompileVisitor(std::string moduleName, AST& ast);
+  
+  /// This constructor expects the caller to initialize members manually
+  CompileVisitor();
+  
+  /// Impl detail
+  void init(std::string moduleName, AST& ast);
 public:
+  // TODO: should be removed along with its constructor
   /**
     \brief Create a CompileVisitor.
     
@@ -175,13 +204,25 @@ public:
     requires a shared_ptr to already exist before being used.
     This method guarantees that at least one such pointer exists.
     It also handles creation of the OperatorCodegen, since that also requires a
-    shared_ptr of this.
+    shared_ptr of this. Calls addMainFunction.
   */
-  static Link create(std::string moduleName, AST ast);
-  
+  static Link create(std::string moduleName, AST);
   /**
-    \brief Compile the AST. Call this before trying to retrieve the module.
+    Create a CompileVisitor.
+    
+    This is a static factory because std::enable_shared_from_this<CompileVisitor>
+    requires a shared_ptr to already exist before being used.
+    This method guarantees that at least one such pointer exists.
+    It also handles creation of the OperatorCodegen, since that also requires a
+    shared_ptr of this. 
+    \param t reference to a globally shared set of types
   */
+  static Link create(ProgramData::TypeSet& t, std::string moduleName, AST);
+  
+  /// Add a main function and set it as the entry point for this module
+  void addMainFunction();
+  
+  /// Compile the AST. Call this before trying to retrieve the module.
   void visit();
   
   llvm::Module* getModule() const;
@@ -231,6 +272,44 @@ private:
   void compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding = nullptr);
   /// Implementation detail of visitBlock
   llvm::BasicBlock* compileBlock(Node<BlockNode>::Link node, const std::string& name);
+};
+
+/**
+  \brief Compiles an entire program.
+  
+  LLVM modules should be nothing more than implementation details to this, but the
+  linker might care about them.
+*/
+class Compiler final {
+friend class CompileVisitor;
+  // TODO: this things is gonna build a dependency graph
+  // then look for all the referenced files
+  // figure out if we can get some parallel compilation going on
+  // it'll make sure every import/export is handled correctly
+  // then hand over the compiled modules to the linker
+  // send over the precompiled runtime as well
+  // and pull out an executable
+  
+  // TODO: figure out how the interpreter's gonna work
+  // might need to have some shared code with this one
+  
+  // TODO: handle cyclic dependencies in that graph
+  
+  // TODO: add more compile options, opt level, opt passes, linker, etc.
+private:
+  fs::path rootScript;
+  fs::path output;
+  
+  ProgramData pd;
+public:
+  Compiler(fs::path rootScript, fs::path output);
+  
+  // This might be expensive to copy, so don't
+  Compiler(const Compiler&) = delete; /// No copy-constructor
+  Compiler& operator=(const Compiler&) = delete; /// No copy-assignment
+  
+  void compile();
+  fs::path getOutputPath() const;
 };
 
 /// Used to generate IR for operators

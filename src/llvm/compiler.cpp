@@ -1,30 +1,97 @@
 #include "llvm/compiler.hpp"
 
-CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
-  context(new llvm::LLVMContext()),
-  integerType(llvm::IntegerType::get(*context, bitsPerInt)),
-  floatType(llvm::Type::getDoubleTy(*context)),
-  booleanType(llvm::Type::getInt1Ty(*context)),
-  voidPtrType(llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8))),
-  taggedUnionType(llvm::StructType::create(*context, {
+Compiler::Compiler(fs::path rootScript, fs::path output):
+  rootScript(rootScript),
+  output(output) {
+}
+
+void Compiler::compile() {
+  std::ifstream file(rootScript);
+  std::stringstream buffer;
+  buffer << file.rdbuf();
+  auto lx = Lexer();
+  lx.tokenize(buffer.str(), rootScript);
+  auto cv = CompileVisitor::create(
+    pd.types,
+    "temp_module_name",
+    TokenParser().parse(lx.getTokens()).getTree()
+  );
+  cv->addMainFunction();
+  cv->visit();
+  
+  auto m = cv->getModule();
+  
+  using namespace llvm;
+  InitializeAllTargetInfos();
+  InitializeAllTargets();
+  InitializeAllTargetMCs();
+  InitializeAllAsmParsers();
+  InitializeAllAsmPrinters();
+  
+  auto targetTriple = sys::getDefaultTargetTriple();
+  
+  std::string error;
+  auto target = TargetRegistry::lookupTarget(targetTriple, error);
+
+  if (!target) {
+    throw InternalError("No target: " + error, {METADATA_PAIRS});
+  }
+  
+  auto cpu = "generic";
+  auto features = "";
+
+  TargetOptions opt;
+  auto relocModel = Optional<Reloc::Model>();
+  auto targetMachine =
+    target->createTargetMachine(targetTriple, cpu, features, opt, relocModel);
+  
+  m->setDataLayout(targetMachine->createDataLayout());
+  m->setTargetTriple(targetTriple);
+
+  std::error_code ec;
+  raw_fd_ostream dest(output.native(), ec, sys::fs::OpenFlags(0));
+
+  if (ec) {
+    throw InternalError("File open: " + ec.message(), {METADATA_PAIRS});
+  }
+  
+  legacy::PassManager pass;
+  auto fileType = TargetMachine::CGFT_ObjectFile;
+
+  if (targetMachine->addPassesToEmitFile(pass, dest, fileType)) {
+    throw InternalError("TargetMachine can't emit a file of this type", {METADATA_PAIRS});
+  }
+
+  pass.run(*m);
+  dest.flush();
+}
+
+fs::path Compiler::getOutputPath() const {
+  return output;
+}
+
+void CompileVisitor::init(std::string moduleName, AST& ast) {
+  context = new llvm::LLVMContext();
+  integerType = llvm::IntegerType::get(*context, bitsPerInt);
+  floatType = llvm::Type::getDoubleTy(*context);
+  booleanType = llvm::Type::getInt1Ty(*context);
+  voidPtrType = llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8));
+  taggedUnionType = llvm::StructType::create(*context, {
     voidPtrType, // Pointer to data
     integerType, // TypeListId with allowed types
     integerType, // TypeId with currently stored type
-  })),
-  voidTid(TypeId::createBasic("Void", llvm::Type::getVoidTy(*context))),
-  integerTid(TypeId::createBasic("Integer", integerType)),
-  floatTid(TypeId::createBasic("Float", floatType)),
-  booleanTid(TypeId::createBasic("Boolean", booleanType)),
-  functionTid(TypeId::createBasic("Function", voidPtrType)), // TODO
-  types({
-    integerTid,
-    floatTid,
-    booleanTid,
-    functionTid
-  }),
-  builder(std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context))),
-  module(new llvm::Module(moduleName, *context)),
-  ast(ast) {
+  });
+  voidTid = TypeId::createBasic("Void", llvm::Type::getVoidTy(*context));
+  integerTid = TypeId::createBasic("Integer", integerType);
+  floatTid = TypeId::createBasic("Float", floatType);
+  booleanTid = TypeId::createBasic("Boolean", booleanType);
+  functionTid = TypeId::createBasic("Function", voidPtrType); // TODO
+  builder = std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context));
+  module = new llvm::Module(moduleName, *context);
+  this->ast = std::make_unique<AST>(ast);
+}
+
+void CompileVisitor::addMainFunction() {
   llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
   functionStack.push(std::make_shared<FunctionWrapper>(
     llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module),
@@ -32,8 +99,23 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST ast):
     functionTid
   ));
   entryPoint = functionStack.top();
+}
+
+CompileVisitor::CompileVisitor() {}
+
+CompileVisitor::CompileVisitor(std::string moduleName, AST& ast) {
+  init(moduleName, ast);
+  types = std::make_unique<ProgramData::TypeSet>(
+    ProgramData::TypeSet {
+      integerTid,
+      floatTid,
+      booleanTid,
+      functionTid
+    }
+  );
+  addMainFunction();
   // Insert basic types in root block
-  ast.getRoot()->blockTypes = types;
+  ast.getRoot()->blockTypes = *types;
 }
 
 CompileVisitor::Link CompileVisitor::create(std::string moduleName, AST ast) {
@@ -42,10 +124,25 @@ CompileVisitor::Link CompileVisitor::create(std::string moduleName, AST ast) {
   return thisThing;
 }
 
+CompileVisitor::Link CompileVisitor::create(ProgramData::TypeSet& types, std::string moduleName, AST ast) {
+  auto thisThing = std::make_shared<CompileVisitor>(CompileVisitor());
+  thisThing->init(moduleName, ast);
+  thisThing->addMainFunction(); // TODO this is not always going to be the case
+  thisThing->types = std::make_unique<ProgramData::TypeSet>(types);
+  thisThing->ast->getRoot()->blockTypes = {
+    thisThing->integerTid,
+    thisThing->floatTid,
+    thisThing->booleanTid,
+    thisThing->functionTid
+  };
+  thisThing->codegen = std::make_unique<OperatorCodegen>(OperatorCodegen(thisThing));
+  return thisThing;
+}
+
 const std::string CompileVisitor::typeMismatchErrorString = "No operation available for given operands";
   
 void CompileVisitor::visit() {
-  ast.getRoot()->visit(shared_from_this());
+  ast->getRoot()->visit(shared_from_this());
   // If the current block, which is the one that exits from main, has no terminator, add one
   if (!builder->GetInsertBlock()->getTerminator()) {
     builder->CreateRet(llvm::ConstantInt::get(integerType, 0));
@@ -581,7 +678,7 @@ void CompileVisitor::visitType(Node<TypeNode>::Link node) {
   // We already checked for redefinitions above, so we know it's safe to insert
   Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
   enclosingBlock->blockTypes.insert(tid);
-  types.insert(tid);
+  types->insert(tid);
 }
 
 ValueWrapper::Link CompileVisitor::getPtrForArgument(
