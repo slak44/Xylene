@@ -11,15 +11,15 @@ void Compiler::compile() {
   buffer << file.rdbuf();
   auto lx = Lexer();
   lx.tokenize(buffer.str(), rootScript);
-  auto cv = CompileVisitor::create(
+  auto mc = ModuleCompiler::create(
     pd.types,
     "temp_module_name",
     TokenParser().parse(lx.getTokens()).getTree()
   );
-  cv->addMainFunction();
-  cv->visit();
+  mc->addMainFunction();
+  mc->visit();
   
-  auto m = cv->getModule();
+  auto m = mc->getModule();
   
   using namespace llvm;
   InitializeAllTargetInfos();
@@ -70,7 +70,7 @@ fs::path Compiler::getOutputPath() const {
   return output;
 }
 
-void CompileVisitor::init(std::string moduleName, AST& ast) {
+void ModuleCompiler::init(std::string moduleName, AST& ast) {
   context = new llvm::LLVMContext();
   integerType = llvm::IntegerType::get(*context, bitsPerInt);
   floatType = llvm::Type::getDoubleTy(*context);
@@ -91,7 +91,7 @@ void CompileVisitor::init(std::string moduleName, AST& ast) {
   this->ast = std::make_unique<AST>(ast);
 }
 
-void CompileVisitor::addMainFunction() {
+void ModuleCompiler::addMainFunction() {
   llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
   functionStack.push(std::make_shared<FunctionWrapper>(
     llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module),
@@ -101,9 +101,9 @@ void CompileVisitor::addMainFunction() {
   entryPoint = functionStack.top();
 }
 
-CompileVisitor::CompileVisitor() {}
+ModuleCompiler::ModuleCompiler() {}
 
-CompileVisitor::CompileVisitor(std::string moduleName, AST& ast) {
+ModuleCompiler::ModuleCompiler(std::string moduleName, AST& ast) {
   init(moduleName, ast);
   types = std::make_unique<ProgramData::TypeSet>(
     ProgramData::TypeSet {
@@ -118,14 +118,14 @@ CompileVisitor::CompileVisitor(std::string moduleName, AST& ast) {
   ast.getRoot()->blockTypes = *types;
 }
 
-CompileVisitor::Link CompileVisitor::create(std::string moduleName, AST ast) {
-  auto thisThing = std::make_shared<CompileVisitor>(CompileVisitor(moduleName, ast));
+ModuleCompiler::Link ModuleCompiler::create(std::string moduleName, AST ast) {
+  auto thisThing = std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast));
   thisThing->codegen = std::make_unique<OperatorCodegen>(OperatorCodegen(thisThing));
   return thisThing;
 }
 
-CompileVisitor::Link CompileVisitor::create(ProgramData::TypeSet& types, std::string moduleName, AST ast) {
-  auto thisThing = std::make_shared<CompileVisitor>(CompileVisitor());
+ModuleCompiler::Link ModuleCompiler::create(ProgramData::TypeSet& types, std::string moduleName, AST ast) {
+  auto thisThing = std::make_shared<ModuleCompiler>(ModuleCompiler());
   thisThing->init(moduleName, ast);
   thisThing->addMainFunction(); // TODO this is not always going to be the case
   thisThing->types = std::make_unique<ProgramData::TypeSet>(types);
@@ -139,9 +139,9 @@ CompileVisitor::Link CompileVisitor::create(ProgramData::TypeSet& types, std::st
   return thisThing;
 }
 
-const std::string CompileVisitor::typeMismatchErrorString = "No operation available for given operands";
+const std::string ModuleCompiler::typeMismatchErrorString = "No operation available for given operands";
   
-void CompileVisitor::visit() {
+void ModuleCompiler::visit() {
   ast->getRoot()->visit(shared_from_this());
   // If the current block, which is the one that exits from main, has no terminator, add one
   if (!builder->GetInsertBlock()->getTerminator()) {
@@ -158,19 +158,19 @@ void CompileVisitor::visit() {
   }
 }
 
-llvm::Module* CompileVisitor::getModule() const {
+llvm::Module* ModuleCompiler::getModule() const {
   return module;
 }
 
-llvm::Function* CompileVisitor::getEntryPoint() const {
+llvm::Function* ModuleCompiler::getEntryPoint() const {
   return entryPoint->getValue();
 }
 
-void CompileVisitor::visitBlock(Node<BlockNode>::Link node) {
+void ModuleCompiler::visitBlock(Node<BlockNode>::Link node) {
   compileBlock(node, "block");
 }
 
-llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const std::string& name) {
+llvm::BasicBlock* ModuleCompiler::compileBlock(Node<BlockNode>::Link node, const std::string& name) {
   llvm::BasicBlock* oldBlock = builder->GetInsertBlock();
   llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(*context, name, functionStack.top()->getValue());
   builder->SetInsertPoint(newBlock);
@@ -213,16 +213,16 @@ llvm::BasicBlock* CompileVisitor::compileBlock(Node<BlockNode>::Link node, const
   return newBlock;
 }
 
-void CompileVisitor::visitExpression(Node<ExpressionNode>::Link node) {
+void ModuleCompiler::visitExpression(Node<ExpressionNode>::Link node) {
   compileExpression(node);
 }
 
-bool CompileVisitor::canBeBoolean(ValueWrapper::Link val) const {
+bool ModuleCompiler::canBeBoolean(ValueWrapper::Link val) const {
   // TODO: value might be convertible to boolean, check for that as well
   return val->getCurrentType() == booleanTid;
 }
 
-llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti, ASTNode::Link node) {
+llvm::Type* ModuleCompiler::typeFromInfo(TypeInfo ti, ASTNode::Link node) {
   if (ti.isVoid()) return llvm::Type::getVoidTy(*context);
   // TODO: do we even allow no type checking?
   if (ti.isDynamic()) throw InternalError("Not Implemented", {METADATA_PAIRS});
@@ -230,7 +230,7 @@ llvm::Type* CompileVisitor::typeFromInfo(TypeInfo ti, ASTNode::Link node) {
   return ty->getAllocaType();
 }
 
-AbstractId::Link CompileVisitor::typeIdFromInfo(TypeInfo ti, ASTNode::Link node) {
+AbstractId::Link ModuleCompiler::typeIdFromInfo(TypeInfo ti, ASTNode::Link node) {
   AbstractId::Link id = nullptr;
   ASTNode::Link defBlock = node->findAbove([&](ASTNode::Link n) {
     auto b = Node<BlockNode>::dynPtrCast(n);
@@ -253,7 +253,7 @@ AbstractId::Link CompileVisitor::typeIdFromInfo(TypeInfo ti, ASTNode::Link node)
   return id;
 }
 
-ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Link identifier) {
+ValueWrapper::Link ModuleCompiler::valueFromIdentifier(Node<ExpressionNode>::Link identifier) {
   auto name = identifier->getToken().data;
   if (identifier->getToken().type != TT::IDENTIFIER)
     throw InternalError("This function takes identifies only", {METADATA_PAIRS});
@@ -326,7 +326,7 @@ ValueWrapper::Link CompileVisitor::valueFromIdentifier(Node<ExpressionNode>::Lin
   throw Error("ReferenceError", "Cannot find '" + name + "' in this scope", identifier->getTrace());
 }
 
-ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how) {
+ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how) {
   Token tok = node->getToken();
   if (how == AS_POINTER && tok.type != TT::IDENTIFIER && tok.type != TT::OPERATOR)
     throw Error("ReferenceError", "Operator requires a mutable type", tok.trace);
@@ -403,7 +403,7 @@ ValueWrapper::Link CompileVisitor::compileExpression(Node<ExpressionNode>::Link 
   }
 }
 
-void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
+void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
   llvm::Value* decl;
   // If this variable allows only one type, allocate it immediately
@@ -447,12 +447,12 @@ void CompileVisitor::visitDeclaration(Node<DeclarationNode>::Link node) {
       "Redefinition of " + node->getIdentifier(), node->getTrace());
 }
 
-void CompileVisitor::visitBranch(Node<BranchNode>::Link node) {
+void ModuleCompiler::visitBranch(Node<BranchNode>::Link node) {
   compileBranch(node);
 }
 
 // The BasicBlock surrounding is the block where control returns after dealing with branches, only specified for recursive case
-void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding) {
+void ModuleCompiler::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock* surrounding) {
   const auto handleBranchExit = [&](llvm::BasicBlock* continueCurrent, llvm::BasicBlock* success, bool usesBranchAfter) -> void {
     // Unless the block already goes somewhere else
     // Jump back to continueCurrent after the branch is done, to execute the rest of the block
@@ -518,7 +518,7 @@ void CompileVisitor::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
   }
 }
 
-void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
+void ModuleCompiler::visitLoop(Node<LoopNode>::Link node) {
   auto init = node->getInit();
   if (init != nullptr) this->visitDeclaration(init);
   // Make the block where we go after we're done with the loopBlock
@@ -559,7 +559,7 @@ void CompileVisitor::visitLoop(Node<LoopNode>::Link node) {
   builder->SetInsertPoint(loopAfter);
 }
 
-void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
+void ModuleCompiler::visitBreakLoop(Node<BreakLoopNode>::Link node) {
   auto parentLoopNode = node->findAbove([](ASTNode::Link n) {
     if (Node<LoopNode>::dynPtrCast(n) != nullptr) return true;
     return false;
@@ -569,7 +569,7 @@ void CompileVisitor::visitBreakLoop(Node<BreakLoopNode>::Link node) {
   builder->CreateBr(exitBlock);
 }
 
-void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
+void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   static const auto funRetTyMismatch = "Function return type does not match return value";
   auto func = node->findAbove<FunctionNode>();
   // TODO: for now, don't strictly enforce this. Instead, these returns will exit from the main llvm func.
@@ -611,7 +611,7 @@ void CompileVisitor::visitReturn(Node<ReturnNode>::Link node) {
   builder->CreateRet(returnedValue->getValue());
 }
 
-void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
+void ModuleCompiler::visitFunction(Node<FunctionNode>::Link node) {
   // TODO anon functions
   const FunctionSignature& sig = node->getSignature();
   std::vector<llvm::Type*> argTypes {};
@@ -647,7 +647,7 @@ void CompileVisitor::visitFunction(Node<FunctionNode>::Link node) {
   functionStack.pop();
 }
 
-void CompileVisitor::visitType(Node<TypeNode>::Link node) {
+void ModuleCompiler::visitType(Node<TypeNode>::Link node) {
   auto structTy = module->getTypeByName(node->getName());
   // If it's already defined, get the block where it is stored
   ASTNode::Link defBlock = node->findAbove([=](ASTNode::Link n) {
@@ -681,7 +681,7 @@ void CompileVisitor::visitType(Node<TypeNode>::Link node) {
   types->insert(tid);
 }
 
-ValueWrapper::Link CompileVisitor::getPtrForArgument(
+ValueWrapper::Link ModuleCompiler::getPtrForArgument(
   TypeId::Link argType,
   FunctionWrapper::Link fun,
   std::size_t which
@@ -726,7 +726,7 @@ ValueWrapper::Link CompileVisitor::getPtrForArgument(
   return std::make_shared<ValueWrapper>(value, argType);
 }
 
-void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
+void ModuleCompiler::visitConstructor(Node<ConstructorNode>::Link node) {
   TypeData* tyData = 
     Node<TypeNode>::staticPtrCast(node->getParent().lock())->getTid()->getTyData();
   auto sig = node->getSignature();
@@ -768,7 +768,7 @@ void CompileVisitor::visitConstructor(Node<ConstructorNode>::Link node) {
   tyData->addConstructor(ConstructorData(node, funWrapper));
 }
 
-void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
+void ModuleCompiler::visitMethod(Node<MethodNode>::Link node) {
   TypeData* tyData = Node<TypeNode>::staticPtrCast(node->getParent().lock())->getTid()->getTyData();
   auto sig = node->getSignature();
   std::vector<llvm::Type*> argTypes {};
@@ -812,7 +812,7 @@ void CompileVisitor::visitMethod(Node<MethodNode>::Link node) {
   tyData->addMethod(MethodData(node, node->getIdentifier(), funWrapper), node->isStatic());
 }
 
-void CompileVisitor::visitMember(Node<MemberNode>::Link node) {
+void ModuleCompiler::visitMember(Node<MemberNode>::Link node) {
   auto tyNode = Node<TypeNode>::staticPtrCast(node->getParent().lock());
   const auto& tyData = tyNode->getTid()->getTyData();
   // This method also makes sure the members are initialized when appropriate

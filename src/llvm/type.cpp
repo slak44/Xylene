@@ -4,7 +4,7 @@
 TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k): owner(tyData) {
   if (k == STATIC) {
     ty = llvm::FunctionType::get(
-      llvm::Type::getVoidTy(*tyData.cv->context),
+      llvm::Type::getVoidTy(*tyData.mc->context),
       {},
       false
     );
@@ -13,14 +13,14 @@ TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k): owner(tyDa
         ty,
         llvm::GlobalValue::InternalLinkage,
         tyData.nameFrom("initializer", "static"),
-        tyData.cv->module
+        tyData.mc->module
       ),
       FunctionSignature(nullptr, {}),
-      tyData.cv->functionTid
+      tyData.mc->functionTid
     );
   } else {
     ty = llvm::FunctionType::get(
-      llvm::Type::getVoidTy(*tyData.cv->context),
+      llvm::Type::getVoidTy(*tyData.mc->context),
       {llvm::PointerType::get(tyData.dataType, 0)},
       false
     );
@@ -29,17 +29,17 @@ TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k): owner(tyDa
         ty,
         llvm::GlobalValue::InternalLinkage,
         tyData.nameFrom("initializer", "normal"),
-        tyData.cv->module
+        tyData.mc->module
       ),
       FunctionSignature(nullptr, {
         {"this", StaticTypeInfo(tyData.node->getName())}
       }),
-      owner.cv->functionTid
+      owner.mc->functionTid
     );
     init->getValue()->getArgumentList().begin()->setName("this");
   }
   initBlock = llvm::BasicBlock::Create(
-    *tyData.cv->context,
+    *tyData.mc->context,
     tyData.nameFrom("initializer", k == STATIC ? "staticblock" : "normalblock"),
     init->getValue()
   );
@@ -64,15 +64,15 @@ ValueWrapper::Link TypeData::TypeInitializer::getInitStructArg() const {
   // we can keep returning that one pointer
   if (thisObject == nullptr) {
     // Remember where we begin
-    auto startingPosition = owner.cv->builder->GetInsertBlock();
+    auto startingPosition = owner.mc->builder->GetInsertBlock();
     // Enter initializer
-    owner.cv->functionStack.push(init);
-    owner.cv->builder->SetInsertPoint(initBlock);
+    owner.mc->functionStack.push(init);
+    owner.mc->builder->SetInsertPoint(initBlock);
     // Actually get the argument
-    thisObject = owner.cv->getPtrForArgument(owner.node->getTid(), init, 0);
+    thisObject = owner.mc->getPtrForArgument(owner.node->getTid(), init, 0);
     // Exit initializer
-    owner.cv->functionStack.pop();
-    owner.cv->builder->SetInsertPoint(startingPosition);
+    owner.mc->functionStack.pop();
+    owner.mc->builder->SetInsertPoint(startingPosition);
   }
   return thisObject;
 }
@@ -98,19 +98,19 @@ void TypeData::TypeInitializer::finalize() {
   }
   initExists = true;
   // Remember where we start, so we can return
-  auto currentBlock = owner.cv->builder->GetInsertBlock();
+  auto currentBlock = owner.mc->builder->GetInsertBlock();
   // Enter initializer
-  owner.cv->functionStack.push(init);
-  owner.cv->builder->SetInsertPoint(initBlock);
+  owner.mc->functionStack.push(init);
+  owner.mc->builder->SetInsertPoint(initBlock);
   // Run all the codegen functions
   std::for_each(ALL(initsToAdd), [=](std::function<void(TypeInitializer&)> codegenFunc) {
     codegenFunc(*this);
   });
   // Return nothing
-  owner.cv->builder->CreateRetVoid();
+  owner.mc->builder->CreateRetVoid();
   // Exit initializer
-  owner.cv->functionStack.pop();
-  owner.cv->builder->SetInsertPoint(currentBlock);
+  owner.mc->functionStack.pop();
+  owner.mc->builder->SetInsertPoint(currentBlock);
 }
 
 MemberMetadata::MemberMetadata(Node<MemberNode>::Link mem, llvm::Type* toAllocate):
@@ -190,8 +190,8 @@ bool ConstructorData::isForeign() const {
   return constr->isForeign();
 }
 
-TypeData::TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNode>::Link tyNode):
-  cv(cv),
+TypeData::TypeData(llvm::StructType* type, ModuleCompiler::Link mc, Node<TypeNode>::Link tyNode):
+  mc(mc),
   node(tyNode),
   dataType(type),
   staticTi(*this, TypeInitializer::Kind::STATIC),
@@ -266,63 +266,63 @@ void TypeData::finalize() {
   std::for_each(ALL(members), [&](MemberMetadata::Link mb) {
     if (!mb->hasInit()) return;
     normalTi.insertCode([=](TypeInitializer& ref) {
-      auto initValue = cv->compileExpression(mb->getInit());
-      if (!isTypeAllowedIn(cv->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
+      auto initValue = mc->compileExpression(mb->getInit());
+      if (!isTypeAllowedIn(mc->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
         throw Error("TypeError", "Member initialization does not match its type", mb->getInit()->getTrace());
       }
       auto memberDecl = ref.getInitInstance()->getMember(mb->getName());
-      cv->builder->CreateStore(initValue->getValue(), memberDecl->getValue());
+      mc->builder->CreateStore(initValue->getValue(), memberDecl->getValue());
       memberDecl->setValue(memberDecl->getValue(), initValue->getCurrentType());
     });
   });
   normalTi.finalize();
   std::for_each(ALL(staticMembers), [&](MemberMetadata::Link mb) {
     llvm::GlobalVariable* staticVar = new llvm::GlobalVariable(
-      *cv->module,
-      cv->typeFromInfo(mb->getTypeInfo(), mb->getNode()),
+      *mc->module,
+      mc->typeFromInfo(mb->getTypeInfo(), mb->getNode()),
       false,
       llvm::GlobalValue::InternalLinkage,
       nullptr,
       nameFrom("static_member", mb->getName())
     );
     if (!mb->hasInit()) return;
-    auto initValue = cv->compileExpression(mb->getInit());
-    if (!isTypeAllowedIn(cv->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
+    auto initValue = mc->compileExpression(mb->getInit());
+    if (!isTypeAllowedIn(mc->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
       throw Error("TypeError", "Static member initialization does not match its type", mb->getInit()->getTrace());
     }
-    cv->builder->CreateStore(initValue->getValue(), staticVar);
+    mc->builder->CreateStore(initValue->getValue(), staticVar);
   });
   staticTi.finalize();
   for (auto method : methods) {
     if (!method->isForeign()) {
-      cv->functionStack.push(method->getFunction());
-      cv->compileBlock(method->getCodeBlock(), "method_" + method->getName() + "_entryBlock");
-      cv->functionStack.pop();
+      mc->functionStack.push(method->getFunction());
+      mc->compileBlock(method->getCodeBlock(), "method_" + method->getName() + "_entryBlock");
+      mc->functionStack.pop();
     }
   }
   for (auto constr : constructors) {
     if (!constr->isForeign()) {
-      auto oldBlock = cv->builder->GetInsertBlock();
+      auto oldBlock = mc->builder->GetInsertBlock();
       if (staticTi.exists()) {
-        cv->functionStack.push(cv->entryPoint);
-        cv->builder->SetInsertPoint(&cv->entryPoint->getValue()->front());
-        cv->builder->CreateCall(staticTi.getInit()->getValue());
-        cv->functionStack.pop();
+        mc->functionStack.push(mc->entryPoint);
+        mc->builder->SetInsertPoint(&mc->entryPoint->getValue()->front());
+        mc->builder->CreateCall(staticTi.getInit()->getValue());
+        mc->functionStack.pop();
       }
-      cv->functionStack.push(constr->getFunction());
-      auto newBlock = llvm::BasicBlock::Create(*cv->context, "constrEntryBlock", cv->functionStack.top()->getValue());
-      cv->builder->SetInsertPoint(newBlock);
-      auto thisPtrRef = cv->getPtrForArgument(node->getTid(), constr->getFunction(), 0);
+      mc->functionStack.push(constr->getFunction());
+      auto newBlock = llvm::BasicBlock::Create(*mc->context, "constrEntryBlock", mc->functionStack.top()->getValue());
+      mc->builder->SetInsertPoint(newBlock);
+      auto thisPtrRef = mc->getPtrForArgument(node->getTid(), constr->getFunction(), 0);
       if (normalTi.exists()) {
-        cv->builder->CreateCall(
+        mc->builder->CreateCall(
           normalTi.getInit()->getValue(),
           {thisPtrRef->getValue()}
         );
       }
-      for (auto& child : constr->getCodeBlock()->getChildren()) child->visit(cv);
-      cv->builder->CreateRetVoid();
-      cv->functionStack.pop();
-      cv->builder->SetInsertPoint(oldBlock);
+      for (auto& child : constr->getCodeBlock()->getChildren()) child->visit(mc);
+      mc->builder->CreateRetVoid();
+      mc->functionStack.pop();
+      mc->builder->SetInsertPoint(oldBlock);
     }
   }
   finalized = true;
@@ -429,13 +429,13 @@ DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
   auto declMember = members.find(name);
   if (declMember == members.end()) {
     // Add it if it isn't there
-    auto gep = tyd->cv->builder->CreateStructGEP(
+    auto gep = tyd->mc->builder->CreateStructGEP(
       tyd->dataType,
       this->getValue(),
       idx,
       "gep_" + name
     );
-    auto id = tyd->cv->typeIdFromInfo((*member)->getTypeInfo(), tyd->node);
+    auto id = tyd->mc->typeIdFromInfo((*member)->getTypeInfo(), tyd->node);
     return members[name] = std::make_shared<DeclarationWrapper>(gep, id, id);
   } else {
     return members[name];

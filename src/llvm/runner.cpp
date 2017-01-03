@@ -1,6 +1,6 @@
 #include "llvm/runner.hpp"
 
-Runner::Runner(CompileVisitor::Link v): v(v) {
+Runner::Runner(ModuleCompiler::Link v): v(v) {
   llvm::InitializeNativeTarget();
   llvm::InitializeNativeTargetAsmPrinter();
   llvm::InitializeNativeTargetAsmParser();

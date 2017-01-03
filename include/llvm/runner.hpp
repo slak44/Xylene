@@ -15,14 +15,14 @@
 using ProgramResult = std::tuple<int, std::string, std::string>;
 
 /**
-  \brief Takes a CompileVisitor and executes the module it parsed.
+  \brief Takes a ModuleCompiler and executes the module it parsed.
 */
 class Runner {
 private:
   llvm::ExecutionEngine* engine;
-  CompileVisitor::Link v;
+  ModuleCompiler::Link v;
 public:
-  Runner(CompileVisitor::Link v);
+  Runner(ModuleCompiler::Link v);
   /// \return exit code of executed program
   int run();
 };

@@ -25,9 +25,9 @@ protected:
     return rapidxml::file<>(absoluteXmlPath(path).c_str());
   }
   
-  inline CompileVisitor::Link compile(fs::path xmlFilePath) {
+  inline ModuleCompiler::Link compile(fs::path xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
-    CompileVisitor::Link visitor = CompileVisitor::create(xmlFilePath, xpx.getTree());
+    ModuleCompiler::Link visitor = ModuleCompiler::create(xmlFilePath, xpx.getTree());
     visitor->visit();
     if (printIr) visitor->getModule()->dump();
     return visitor;
@@ -35,7 +35,7 @@ protected:
   
   inline void noThrowOnCompile(fs::path xmlFilePath) {
     xpx.parse(xmlFile(xmlFilePath));
-    CompileVisitor::Link visitor = CompileVisitor::create(xmlFilePath, xpx.getTree());
+    ModuleCompiler::Link visitor = ModuleCompiler::create(xmlFilePath, xpx.getTree());
     try {
       visitor->visit();
       if (printIr) visitor->getModule()->dump();

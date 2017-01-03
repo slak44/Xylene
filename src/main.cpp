@@ -81,7 +81,7 @@ int main(int argc, const char* argv[]) {
     if (printAST.getValue()) ast->print();
     if (doNotRun.getValue()) return NORMAL_EXIT;
     
-    CompileVisitor::Link v = CompileVisitor::create("Command Line Module", *ast);
+    ModuleCompiler::Link v = ModuleCompiler::create("Command Line Module", *ast);
     v->visit();
     if (printIR.getValue()) v->getModule()->dump();
         

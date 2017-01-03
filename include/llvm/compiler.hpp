@@ -49,7 +49,7 @@ class OperatorCodegen;
   \brief Holds a llvm::Value* and the type it currently carries
 */
 class ValueWrapper {
-friend class CompileVisitor;
+friend class ModuleCompiler;
 public:
   using Link = std::shared_ptr<ValueWrapper>;
 protected:
@@ -143,15 +143,15 @@ public:
 };
 
 /**
-  \brief Each CompileVisitor creates a llvm::Module from an AST.
+  \brief Each ModuleCompiler creates a llvm::Module from an AST.
 */
-class CompileVisitor: public ASTVisitor, public std::enable_shared_from_this<CompileVisitor> {
+class ModuleCompiler: public ASTVisitor, public std::enable_shared_from_this<ModuleCompiler> {
 friend class TypeData;
 friend class TypeInitializer;
 friend class InstanceWrapper;
 friend class OperatorCodegen;
 public:
-  using Link = PtrUtil<CompileVisitor>::Link;
+  using Link = PtrUtil<ModuleCompiler>::Link;
 private:
   /// LLVM Context for this visitor
   llvm::LLVMContext* context;
@@ -188,19 +188,19 @@ private:
 
   // TODO: eventually this and its create() should be dropped
   /// Use the static factory \link create \endlink
-  CompileVisitor(std::string moduleName, AST& ast);
+  ModuleCompiler(std::string moduleName, AST& ast);
   
   /// This constructor expects the caller to initialize members manually
-  CompileVisitor();
+  ModuleCompiler();
   
   /// Impl detail
   void init(std::string moduleName, AST& ast);
 public:
   // TODO: should be removed along with its constructor
   /**
-    \brief Create a CompileVisitor.
+    \brief Create a ModuleCompiler.
     
-    This is a static factory because std::enable_shared_from_this<CompileVisitor>
+    This is a static factory because std::enable_shared_from_this<ModuleCompiler>
     requires a shared_ptr to already exist before being used.
     This method guarantees that at least one such pointer exists.
     It also handles creation of the OperatorCodegen, since that also requires a
@@ -208,9 +208,9 @@ public:
   */
   static Link create(std::string moduleName, AST);
   /**
-    Create a CompileVisitor.
+    Create a ModuleCompiler.
     
-    This is a static factory because std::enable_shared_from_this<CompileVisitor>
+    This is a static factory because std::enable_shared_from_this<ModuleCompiler>
     requires a shared_ptr to already exist before being used.
     This method guarantees that at least one such pointer exists.
     It also handles creation of the OperatorCodegen, since that also requires a
@@ -281,7 +281,7 @@ private:
   linker might care about them.
 */
 class Compiler final {
-friend class CompileVisitor;
+friend class ModuleCompiler;
   // TODO: this things is gonna build a dependency graph
   // then look for all the referenced files
   // figure out if we can get some parallel compilation going on
@@ -314,7 +314,7 @@ public:
 
 /// Used to generate IR for operators
 class OperatorCodegen {
-friend class CompileVisitor;
+friend class ModuleCompiler;
 public:
   using ValueList = std::vector<ValueWrapper::Link>;
   /// Signature for a lambda representing a CodegenFunction
@@ -336,15 +336,15 @@ public:
   /// Maps operand types to a func that generates code from them
   using TypeMap = std::unordered_map<std::vector<AbstractId::Link>, CodegenFunction>;
 private:
-  CompileVisitor::Link cv;
+  ModuleCompiler::Link mc;
   
   /// All operands are values; pointers are loaded
   std::unordered_map<Operator::Name, TypeMap> codegenMap;
   /// Operands are not processed
   std::unordered_map<Operator::Name, SpecialCodegenFunction> specialCodegenMap;
   
-  /// Only CompileVisitor can construct this
-  OperatorCodegen(CompileVisitor::Link cv);
+  /// Only ModuleCompiler can construct this
+  OperatorCodegen(ModuleCompiler::Link mc);
 public:
   /// Search for a CodegenFunction everywhere, and run it
   ValueWrapper::Link findAndRunFun(Node<ExpressionNode>::Link node, ValueList operands);
@@ -475,8 +475,8 @@ private:
     bool exists() const;
   };
   
-  /// Pointer to the owning CompileVisitor
-  CompileVisitor::Link cv;
+  /// Pointer to the owning ModuleCompiler
+  ModuleCompiler::Link mc;
   /// Pointer to the TypeNode where this type was defined
   Node<TypeNode>::Link node;
   /// llvm::Type of the llvm struct for this type
@@ -506,7 +506,7 @@ public:
   /**
     \brief Create a TypeData
   */
-  TypeData(llvm::StructType* type, CompileVisitor::Link cv, Node<TypeNode>::Link tyNode);
+  TypeData(llvm::StructType* type, ModuleCompiler::Link mc, Node<TypeNode>::Link tyNode);
   inline ~TypeData() {}
   
   /// Disallow copy constructor
