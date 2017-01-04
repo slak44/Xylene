@@ -2,6 +2,7 @@ add_executable(release_bin ${COMMON_SOURCES} main.cpp)
 add_executable(debug_bin ${COMMON_SOURCES} main.cpp)
 add_library(runtime_lib STATIC
   ${SRC_DIR}/utils/util.cpp
+  ${SRC_DIR}/runtime/runtime.cpp
   ${SRC_DIR}/runtime/io.cpp
 )
 

@@ -8,7 +8,7 @@
 #include <llvm/Object/ObjectFile.h>
 #include <tuple>
 
-#include "runtime/standard.hpp"
+#include "runtime/runtime.hpp"
 #include "llvm/compiler.hpp"
 
 /// exit code + stdout + stderr
