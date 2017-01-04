@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
+#include <algorithm>
+#include <numeric>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"

@@ -2,6 +2,7 @@
 #define TRACE_HPP
 
 #include <stack>
+#include <algorithm>
 
 #include "utils/util.hpp"
 

@@ -7,9 +7,8 @@
 #include <vector>
 #include <unordered_set>
 #include <memory>
+#include <algorithm>
 #include <functional>
-
-#include "utils/suppressWarnings.hpp"
 
 #ifdef _MSC_VER
   #undef FILE_END

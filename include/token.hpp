@@ -2,6 +2,7 @@
 #define TOKEN_HPP
 
 #include <string>
+#include <algorithm>
 
 #include "utils/util.hpp"
 #include "utils/trace.hpp"
