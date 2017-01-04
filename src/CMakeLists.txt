@@ -1,5 +1,9 @@
 add_executable(release_bin ${COMMON_SOURCES} main.cpp)
 add_executable(debug_bin ${COMMON_SOURCES} main.cpp)
+add_library(runtime_lib STATIC
+  ${SRC_DIR}/utils/util.cpp
+  ${SRC_DIR}/runtime/io.cpp
+)
 
 if(UNIX)
   target_compile_options(release_bin PRIVATE -O3 -g0 -Wdisabled-optimization)
