@@ -127,7 +127,6 @@ ModuleCompiler::Link ModuleCompiler::create(std::string moduleName, AST ast) {
 ModuleCompiler::Link ModuleCompiler::create(ProgramData::TypeSet& types, std::string moduleName, AST ast) {
   auto thisThing = std::make_shared<ModuleCompiler>(ModuleCompiler());
   thisThing->init(moduleName, ast);
-  thisThing->addMainFunction(); // TODO this is not always going to be the case
   thisThing->types = std::make_unique<ProgramData::TypeSet>(types);
   thisThing->ast->getRoot()->blockTypes = {
     thisThing->integerTid,
