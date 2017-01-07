@@ -32,7 +32,6 @@ var searchData=
   ['issametype',['isSameType',['../struct_node.html#a52d9868b8dafbee40ccef233599cb488',1,'Node::isSameType()'],['../struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52',1,'PtrUtil::isSameType()']]],
   ['isstatic',['isStatic',['../class_method_node.html#a0083577364f55051c295812df7c61c7a',1,'MethodNode::isStatic()'],['../class_member_node.html#a35c2f2f87ae5153354f874973a1f3a02',1,'MemberNode::isStatic()']]],
   ['isterminal',['isTerminal',['../class_token.html#a3c2359de673ad5e2f28d833ed0cf9bc8',1,'Token']]],
-  ['istypeallowed',['isTypeAllowed',['../class_declaration_wrapper.html#a8869f7fe7a54b6bad7e2370a86c01ad6',1,'DeclarationWrapper']]],
   ['istypeallowedin',['isTypeAllowedIn',['../type_id_8hpp.html#a702520d91997b405258f1b2948a67c7d',1,'typeId.hpp']]],
   ['isvoid',['isVoid',['../class_type_info.html#a987f4b8315b7725e0aa4125140620b91',1,'TypeInfo']]],
   ['isvoidtype',['isVoidType',['../class_type_info.html#af33e28d1bbcd60bdc3e7d9406f775657',1,'TypeInfo']]]

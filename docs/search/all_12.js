@@ -15,7 +15,7 @@ var searchData=
   ['tokenparser_2ehpp',['tokenParser.hpp',['../token_parser_8hpp.html',1,'']]],
   ['tokentype',['TokenType',['../class_token_type.html',1,'TokenType'],['../class_token_type.html#a4468799e28718190e87830ab3c8756f8',1,'TokenType::TokenType()']]],
   ['tostring',['toString',['../class_token_type.html#af7562f92b2355d19f9ba3d8963dfb2fa',1,'TokenType::toString()'],['../class_token.html#a6f1c3f5f607e9b576b4202b108f13c60',1,'Token::toString()'],['../struct_position.html#a898d96dc168c02365de0966e6797b18f',1,'Position::toString()'],['../class_range.html#a57ff942e8e698081cbf119f48e218a59',1,'Range::toString()'],['../class_trace.html#ac36c7d3d9c505dd8a96641654479beee',1,'Trace::toString()'],['../class_type_info.html#a207ff23756bb92e5491eabe29e560f89',1,'TypeInfo::toString()'],['../class_definite_type_info.html#a30a4b436c9338247b324ae9894e4691a',1,'DefiniteTypeInfo::toString()'],['../class_static_type_info.html#ad61cff9ab797d1cc1476ccf105beff4e',1,'StaticTypeInfo::toString()'],['../class_function_signature.html#a3cd5e8129edd430276649e555fe11566',1,'FunctionSignature::toString()']]],
-  ['trace',['Trace',['../class_trace.html',1,'Trace'],['../class_trace.html#aa93f0325777bb0a7d357a87732a4b942',1,'Trace::Trace(std::string file, Range location)'],['../class_trace.html#aa8b76a39c587e32999db40f92e457782',1,'Trace::Trace(std::nullptr_t)'],['../class_a_s_t_node.html#a47a7fd44581057ba3d60e7b908630c7d',1,'ASTNode::trace()'],['../class_token.html#a74883fe52d2eb1226d988567def96633',1,'Token::trace()']]],
+  ['trace',['Trace',['../class_trace.html',1,'Trace'],['../class_a_s_t_node.html#a47a7fd44581057ba3d60e7b908630c7d',1,'ASTNode::trace()'],['../class_token.html#a74883fe52d2eb1226d988567def96633',1,'Token::trace()'],['../class_trace.html#aa93f0325777bb0a7d357a87732a4b942',1,'Trace::Trace(std::string file, Range location)'],['../class_trace.html#aa8b76a39c587e32999db40f92e457782',1,'Trace::Trace(std::nullptr_t)']]],
   ['trace_2ecpp',['trace.cpp',['../trace_8cpp.html',1,'']]],
   ['trace_2ehpp',['trace.hpp',['../trace_8hpp.html',1,'']]],
   ['transformarrayindex',['transformArrayIndex',['../class_a_s_t_node.html#a99773970b5735a10904ec24c1ba6827f',1,'ASTNode']]],
@@ -37,7 +37,7 @@ var searchData=
   ['typemap',['TypeMap',['../class_operator_codegen.html#a4dc7bec43400e548dbf34e85544dcb2c',1,'OperatorCodegen']]],
   ['typename',['TypeName',['../util_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874',1,'util.hpp']]],
   ['typenode',['TypeNode',['../class_type_node.html',1,'TypeNode'],['../class_type_node.html#a0b1e4eeaec30c1af29cdc11879c6c2c1',1,'TypeNode::TypeNode()']]],
-  ['typeof',['typeOf',['../standard_8hpp.html#ae74a33c133d18a9fdbfed1d3746214ff',1,'standard.hpp']]],
+  ['typeof',['typeOf',['../runtime_8hpp.html#ae74a33c133d18a9fdbfed1d3746214ff',1,'runtime.hpp']]],
   ['typeparser',['TypeParser',['../class_type_parser.html',1,'TypeParser'],['../class_type_parser.html#a4128dceb45a4f8d57ba470dc8bce829d',1,'TypeParser::TypeParser()']]],
   ['types',['types',['../class_program_data.html#a4c97853fa616779b1eb8caffedb1155a',1,'ProgramData']]],
   ['typeset',['TypeSet',['../class_program_data.html#a155ae87fa3fda8bc5eb647711ace44c4',1,'ProgramData']]]

@@ -4,7 +4,7 @@ var searchData=
   ['declaration',['declaration',['../class_declaration_parser.html#a902a80f9398f330f1ad40e5c684fbd79',1,'DeclarationParser']]],
   ['declarationnode',['DeclarationNode',['../class_declaration_node.html',1,'DeclarationNode'],['../class_declaration_node.html#a4fefbdacb611532375580cb81281c8da',1,'DeclarationNode::DeclarationNode()']]],
   ['declarationparser',['DeclarationParser',['../class_declaration_parser.html',1,'DeclarationParser'],['../class_declaration_parser.html#a04f81f567b7a2643bcb46a26bee9c0dc',1,'DeclarationParser::DeclarationParser()']]],
-  ['declarationwrapper',['DeclarationWrapper',['../class_declaration_wrapper.html',1,'DeclarationWrapper'],['../class_declaration_wrapper.html#aac8ed599a8142c1088cdf4fe9e85e55c',1,'DeclarationWrapper::DeclarationWrapper()']]],
+  ['declarationwrapper',['DeclarationWrapper',['../class_declaration_wrapper.html',1,'DeclarationWrapper'],['../class_declaration_wrapper.html#a2dfc5f9b384348e1518d84fbe61ab992',1,'DeclarationWrapper::DeclarationWrapper()']]],
   ['defaultcollatecombine',['defaultCollateCombine',['../util_8hpp.html#aa2630c504d4a53cf7fcfe4d3b73d3916',1,'util.hpp']]],
   ['defaulttrace',['defaultTrace',['../trace_8hpp.html#acd22607a9f573fad8be6faf2400571aa',1,'trace.hpp']]],
   ['define',['DEFINE',['../namespace_t_t.html#ad8a298b2d7b5cd49e659ddd1bf592a00',1,'TT']]],

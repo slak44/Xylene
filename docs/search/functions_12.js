@@ -18,6 +18,6 @@ var searchData=
   ['typeinfo',['TypeInfo',['../class_type_info.html#a0861de9df206d4c04be6901110c954af',1,'TypeInfo::TypeInfo(TypeName)'],['../class_type_info.html#aa2356a1ee45ea50847cbb366367ffd33',1,'TypeInfo::TypeInfo(const char *)'],['../class_type_info.html#a5bf8e362b49407d421e2ac78d3c77b99',1,'TypeInfo::TypeInfo(TypeList evalValue)'],['../class_type_info.html#a52bd7e2d13ad15dc9ae5808793663456',1,'TypeInfo::TypeInfo(std::nullptr_t voidType)'],['../class_type_info.html#a5e8f32e1bc0d05a5a234e9630cf002ce',1,'TypeInfo::TypeInfo()']]],
   ['typelistid',['TypeListId',['../class_type_list_id.html#aa954241f846d1d38bbb31a88e759461a',1,'TypeListId']]],
   ['typenode',['TypeNode',['../class_type_node.html#a0b1e4eeaec30c1af29cdc11879c6c2c1',1,'TypeNode']]],
-  ['typeof',['typeOf',['../standard_8hpp.html#ae74a33c133d18a9fdbfed1d3746214ff',1,'standard.hpp']]],
+  ['typeof',['typeOf',['../runtime_8hpp.html#ae74a33c133d18a9fdbfed1d3746214ff',1,'runtime.hpp']]],
   ['typeparser',['TypeParser',['../class_type_parser.html#a4128dceb45a4f8d57ba470dc8bce829d',1,'TypeParser']]]
 ];
