@@ -2,6 +2,7 @@
 #include <llvm/IR/Module.h>
 #include <fstream>
 #include <sstream>
+#include <chrono>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
@@ -19,7 +20,28 @@ enum ExitCodes: int {
   INTERNAL_ERROR = 3 ///< Unrecoverable error in this program, almost always a bug
 };
 
+int notReallyMain(int argc, const char* argv[]);
+
 int main(int argc, const char* argv[]) {
+  #ifdef XYLENE_MEASURE_TIME
+  auto begin = std::chrono::steady_clock::now();
+  #endif
+  
+  int exitCode = notReallyMain(argc, argv);
+  
+  #ifdef XYLENE_MEASURE_TIME
+  auto end = std::chrono::steady_clock::now();
+  println(
+    "Time diff:",
+    std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count(),
+    "μs"
+  );
+  #endif
+
+  return exitCode;
+}
+
+int notReallyMain(int argc, const char* argv[]) {
   try {
     TCLAP::CmdLine cmd("Xylene", ' ', "pre-release");
     
