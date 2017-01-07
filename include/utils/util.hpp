@@ -76,16 +76,9 @@ void print(T thing, Args... args) {
 /// Print multiple things (with spaces in-between) to stdout with a trailing newline
 template<typename T, typename... Args>
 void println(T thing, Args... args) {
-  if (sizeof...(args) == 1) {
-    print(thing);
-    print(" ");
-    print(args...);
-    std::cout << std::endl;
-    return;
-  }
   print(thing);
   print(" ");
-  print(args...);
+  println(args...);
 }
 
 /// Checks if the vector has the item in it
