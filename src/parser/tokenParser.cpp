@@ -1,19 +1,5 @@
 #include "parser/tokenParser.hpp"
 
-bool TokenBaseParser::expect(TokenType tok, std::string errorMessage) {
-  if (accept(tok)) {
-    return true;
-  } else {
-    auto currentData = current().isOp() ? current().op().getSymbol() : current().data;
-    throw Error("SyntaxError", errorMessage + " (found: " + currentData + ")", current().trace);
-  }
-}
-
-void TokenBaseParser::expectSemi() {
-  expect(TT::SEMI, "Expected semicolon");
-  skip();
-}
-
 TokenParser& TokenParser::parse(std::vector<Token> input) {
   this->input = input;
   this->pos = 0;
@@ -21,20 +7,13 @@ TokenParser& TokenParser::parse(std::vector<Token> input) {
   return *this;
 }
 
-BlockParser::BlockParser(StatementParser* stp): stp(stp) {}
-IfStatementParser::IfStatementParser(StatementParser* stp): BlockParser(stp) {}
-FunctionParser::FunctionParser(StatementParser* stp): BlockParser(stp) {}
-TypeParser::TypeParser(StatementParser* stp): BlockParser(stp), FunctionParser(stp) {}
-StatementParser::StatementParser(): BlockParser(this), IfStatementParser(this), FunctionParser(this), TypeParser(this) {}
-TokenParser::TokenParser(): BlockParser(this), IfStatementParser(this), FunctionParser(this), TypeParser(this) {}
-
-Node<ExpressionNode>::Link ExpressionParser::exprFromCurrent() {
+Node<ExpressionNode>::Link TokenParser::exprFromCurrent() {
   auto e = Node<ExpressionNode>::make(current());
   e->setTrace(current().trace);
   return e;
 }
 
-Node<ExpressionNode>::Link ExpressionParser::parsePostfix(Node<ExpressionNode>::Link terminal) {
+Node<ExpressionNode>::Link TokenParser::parsePostfix(Node<ExpressionNode>::Link terminal) {
   Node<ExpressionNode>::Link expr;
   // Check if there are any postfix operators around
   if (accept(POSTFIX)) {
@@ -53,7 +32,7 @@ Node<ExpressionNode>::Link ExpressionParser::parsePostfix(Node<ExpressionNode>::
   return expr;
 }
 
-Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAsFuncCall = false) {
+Node<ExpressionNode>::Link TokenParser::parseExpressionPrimary(bool parenAsFuncCall = false) {
   if (acceptEndOfExpression()) return nullptr; // Empty expression
   Node<ExpressionNode>::Link expr;
   if (accept(TT::PAREN_LEFT)) {
@@ -137,7 +116,7 @@ Node<ExpressionNode>::Link ExpressionParser::parseExpressionPrimary(bool parenAs
   }
 }
 
-Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>::Link lhs, int minPrecedence) {
+Node<ExpressionNode>::Link TokenParser::expressionImpl(Node<ExpressionNode>::Link lhs, int minPrecedence) {
   Node<ExpressionNode>::Link base = nullptr;
   
   Node<ExpressionNode>::Link lastExpr = nullptr;
@@ -148,7 +127,7 @@ Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>
     auto tt = current().type;
     skip(1);
     // If we have any of:
-    // IDENTIFIER, C_PAREN_RIGHT, postfix ops
+    // TT::IDENTIFIER, TT::PAREN_RIGHT, postfix ops
     // before a paren, it's a function call
     auto isCallable =
       tt == TT::IDENTIFIER ||
@@ -201,7 +180,7 @@ Node<ExpressionNode>::Link ExpressionParser::expressionImpl(Node<ExpressionNode>
   return base;
 }
 
-Node<ExpressionNode>::Link ExpressionParser::expression(bool throwIfEmpty) {
+Node<ExpressionNode>::Link TokenParser::expression(bool throwIfEmpty) {
   auto primary = parseExpressionPrimary();
   if (primary == nullptr) {
     if (throwIfEmpty) throw InternalError("Empty expression", {
@@ -213,7 +192,7 @@ Node<ExpressionNode>::Link ExpressionParser::expression(bool throwIfEmpty) {
   return expressionImpl(primary, 0);
 }
 
-Node<DeclarationNode>::Link DeclarationParser::declarationFromTypes(TypeList typeList) {
+Node<DeclarationNode>::Link TokenParser::declarationFromTypes(TypeList typeList) {
   Token identToken = current();
   skip();
   auto decl = Node<DeclarationNode>::make(identToken.data, typeList);
@@ -226,7 +205,7 @@ Node<DeclarationNode>::Link DeclarationParser::declarationFromTypes(TypeList typ
   return decl;
 }
 
-Node<DeclarationNode>::Link DeclarationParser::declaration(bool throwIfEmpty) {
+Node<DeclarationNode>::Link TokenParser::declaration(bool throwIfEmpty) {
   if (accept(TT::SEMI)) {
     if (throwIfEmpty) throw InternalError("Empty declaration", {METADATA_PAIRS});
     else return nullptr;
@@ -259,7 +238,7 @@ Node<DeclarationNode>::Link DeclarationParser::declaration(bool throwIfEmpty) {
   throw Error("SyntaxError", "Invalid declaration", current().trace);
 }
 
-Node<BranchNode>::Link IfStatementParser::ifStatement() {
+Node<BranchNode>::Link TokenParser::ifStatement() {
   auto branch = Node<BranchNode>::make();
   branch->setTrace(current().trace);
   branch->setCondition(expression());
@@ -281,7 +260,7 @@ Node<BranchNode>::Link IfStatementParser::ifStatement() {
   return branch;
 }
 
-TypeList FunctionParser::getTypeList() {
+TypeList TokenParser::getTypeList() {
   TypeList types = {};
   skip(-1); // Counter the comma skip below for the first iteration
   do {
@@ -293,7 +272,7 @@ TypeList FunctionParser::getTypeList() {
   return types;
 }
 
-FunctionSignature::Arguments FunctionParser::getSigArgs() {
+FunctionSignature::Arguments TokenParser::getSigArgs() {
   FunctionSignature::Arguments args;
   while (true) {
     expect(TT::IDENTIFIER, "Expected identifier in function arguments");
@@ -312,7 +291,7 @@ FunctionSignature::Arguments FunctionParser::getSigArgs() {
   return args;
 }
 
-Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
+Node<FunctionNode>::Link TokenParser::function(bool isForeign) {
   if (isForeign) skip(); // Skip "foreign"
   Trace trace = current().trace;
   skip(); // Skip "function" or "method"
@@ -344,7 +323,7 @@ Node<FunctionNode>::Link FunctionParser::function(bool isForeign) {
   return func;
 }
 
-Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis, bool isForeign) {
+Node<ConstructorNode>::Link TokenParser::constructor(Visibility vis, bool isForeign) {
   Trace constrTrace = current().trace;
   skip(); // Skip "constructor"
   FunctionSignature::Arguments args {};
@@ -363,7 +342,7 @@ Node<ConstructorNode>::Link TypeParser::constructor(Visibility vis, bool isForei
   return constr;
 }
 
-Node<MethodNode>::Link TypeParser::method(Visibility vis, bool isStatic, bool isForeign) {
+Node<MethodNode>::Link TokenParser::method(Visibility vis, bool isStatic, bool isForeign) {
   Trace methTrace = current().trace;
   auto parsedAsFunc = function(isForeign);
   auto methNode = Node<MethodNode>::make(parsedAsFunc->getIdentifier(), parsedAsFunc->getSignature(), vis, isStatic);
@@ -376,7 +355,7 @@ Node<MethodNode>::Link TypeParser::method(Visibility vis, bool isStatic, bool is
   return methNode;
 }
 
-Node<MemberNode>::Link TypeParser::member(Visibility vis, bool isStatic) {
+Node<MemberNode>::Link TokenParser::member(Visibility vis, bool isStatic) {
   Trace mbTrace = current().trace;
   auto parsedAsDecl = declaration();
   auto mbNode = Node<MemberNode>::make(parsedAsDecl->getIdentifier(), parsedAsDecl->getTypeInfo().getEvalTypeList(), isStatic, vis == INVALID ? PRIVATE : vis);
@@ -385,7 +364,7 @@ Node<MemberNode>::Link TypeParser::member(Visibility vis, bool isStatic) {
   return mbNode;
 }
 
-Node<TypeNode>::Link TypeParser::type() {
+Node<TypeNode>::Link TokenParser::type() {
   skip(); // Skip "type"
   expect(TT::IDENTIFIER, "Expected identifier after 'type' token");
   Node<TypeNode>::Link tn;
@@ -439,7 +418,7 @@ Node<TypeNode>::Link TypeParser::type() {
   return tn;
 }
 
-ASTNode::Link StatementParser::statement() {
+ASTNode::Link TokenParser::statement() {
   if (accept(TT::TYPE)) {
     return type();
   } else if (accept(TT::IF)) {
@@ -507,7 +486,7 @@ ASTNode::Link StatementParser::statement() {
   }
 }
 
-Node<BlockNode>::Link BlockParser::block(BlockType type) {
+Node<BlockNode>::Link TokenParser::block(BlockType type) {
   if (type != ROOT_BLOCK) {
     expect(TT::DO, "Expected code block");
     skip();
@@ -517,7 +496,7 @@ Node<BlockNode>::Link BlockParser::block(BlockType type) {
   while (!accept(TT::END)) {
     if (type == IF_BLOCK && accept(TT::ELSE)) break;
     if (type == ROOT_BLOCK && accept(TT::FILE_END)) break;
-    block->addChild(stp->statement());
+    block->addChild(statement());
   }
   skip(); // Skip block end
   return block;

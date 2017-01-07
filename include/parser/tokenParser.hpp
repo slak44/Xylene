@@ -13,15 +13,12 @@
 #include "operator.hpp"
 
 /**
-  \brief Base of TokenParser. Maintains all of its state, and provides convenience methods for manipulating it.
+  \brief Parses a list of tokens, and produces an AST.
 */
-class TokenBaseParser: public BaseParser {
-protected:
+class TokenParser: public BaseParser {
+private:
   std::vector<Token> input;
-  uint64 pos = 0;
-  
-  TokenBaseParser() {}
-  virtual ~TokenBaseParser() = 0;
+  std::size_t pos = 0;
   
   /// Get token at current position
   inline Token current() {
@@ -54,20 +51,22 @@ protected:
     return accept(TT::SEMI) || accept(TT::PAREN_RIGHT) || accept(TT::FILE_END) || accept(TT::DO);
   }
   /// Expect certain tokens to appear (throw otherwise)
-  bool expect(TokenType tok, std::string errorMessage = "Unexpected symbol");
+  inline bool expect(TokenType tok, std::string errorMessage = "Unexpected symbol") {
+    if (accept(tok)) {
+      return true;
+    } else {
+      auto currentData = current().isOp() ? current().op().getSymbol() : current().data;
+      throw Error("SyntaxError", errorMessage + " (found: " + currentData + ")", current().trace);
+    }
+  }
   /// Expect a semicolon \see expect
-  void expectSemi();
-};
-
-inline TokenBaseParser::~TokenBaseParser() {}
-
-/**
-  \brief Provides the \link expression \endlink method for parsing an expression.
-*/
-class ExpressionParser: virtual public TokenBaseParser {
-protected:
-  ExpressionParser() {}
-private:
+  inline void expectSemi() {
+    expect(TT::SEMI, "Expected semicolon");
+    skip();
+  }
+  
+  // Expressions
+  
   /// Creates an ExpressionNode from the current Token
   Node<ExpressionNode>::Link exprFromCurrent();
   /// Parse postfix ops in primaries
@@ -80,72 +79,37 @@ private:
     \returns an ExpressionNode, or nullptr if the expression is empty (terminates immediately)
   */
   Node<ExpressionNode>::Link parseExpressionPrimary(bool parenAsFuncCall);
-  /**
-    \brief Implementation detail of expression
-    
-    This method exists to allow recursion.
-  */
+  /// Implementation detail of expression, only exists to allow recursion.
   Node<ExpressionNode>::Link expressionImpl(Node<ExpressionNode>::Link lhs, int minPrecedence);
-public:
   /**
     \brief Parse an expression starting at the current token
     \param throwIfEmpty throws an error on empty expressions; if set to false, empty expressions return nullptr
   */
   Node<ExpressionNode>::Link expression(bool throwIfEmpty = true);
-};
-
-/**
-  \brief Provides the \link declaration \endlink method for parsing a declaration.
   
-  Depends on ExpressionParser for expression parsing.
-*/
-class DeclarationParser: virtual public ExpressionParser {
-protected:
-  DeclarationParser() {}
-private:
+  // Declarations
+  
   /// Creates a DeclarationNode from a list of types, handles initialization if available
   Node<DeclarationNode>::Link declarationFromTypes(TypeList typeList);
-public:
   /**
     \brief Parse a declaration starting at the current token
     \param throwIfEmpty throws an error on empty declarations; if set to false, empty declarations return nullptr
   */
   Node<DeclarationNode>::Link declaration(bool throwIfEmpty = true);
-};
 
-class StatementParser;
+  // Blocks
 
-/**
-  \brief Provides the \link block \endlink method for parsing a block.
-  
-  Depends on StatementParser for parsing individual statements.
-*/
-class BlockParser: virtual public TokenBaseParser {
-protected:
-  /// Storing this pointer avoids circular inheritance between BlockParser and StatementParser
-  StatementParser* stp;
-  /// \copydoc stp
-  BlockParser(StatementParser* stp);
-public:
   /**
     \brief Parse a block, depending on its type
     
-    Normal code blocks are enclosed in K_DO/K_END.
+    Normal code blocks are enclosed in 'do'/'end'.
     Root blocks aren't expected to be enclosed, and instead they end at the file end.
-    If blocks can also be ended with K_ELSE besides K_END.
+    If blocks can also be ended with 'else' besides 'end'.
   */
   Node<BlockNode>::Link block(BlockType type);
-};
-
-/**
-  \brief Provides the \link function \endlink method for parsing a function definition.
   
-  Depends on BlockParser for block parsing.
-*/
-class FunctionParser: virtual public BlockParser {
-protected:
-  /// \copydoc BlockNode::BlockNode(StatementParser*)
-  FunctionParser(StatementParser* stp);
+  // Functions
+  
   /// Get a type list from current pos
   TypeList getTypeList();
   /**
@@ -153,80 +117,38 @@ protected:
     \returns an instance of FunctionSignature::Arguments
   */
   FunctionSignature::Arguments getSigArgs();
-public:
   /**
     \brief Parse a function starting at the current token
     \param isForeign if true, treat this as an external function declaration
   */
   Node<FunctionNode>::Link function(bool isForeign = false);
-};
 
-/**
-  \brief Provides the \link ifStatement \endlink method for parsing an if statement.
+  // If statements
   
-  Depends on ExpressionParser for parsing expressions.
-  Depends on BlockParser for parsing blocks.
-*/
-class IfStatementParser: virtual public ExpressionParser, virtual public BlockParser {
-protected:
-  /// \copydoc BlockNode::BlockNode(StatementParser*)
-  IfStatementParser(StatementParser* stp);
-public:
   /**
     \brief Parse an if statement starting at the current token
     
-    This function assumes K_IF has been skipped.
+    This function assumes the 'if' keyword has been skipped.
   */
   Node<BranchNode>::Link ifStatement();
-};
-
-/**
-  \brief Provides the \link type \endlink method for parsing a type definition.
   
-  Depends on FunctionParser for parsing constructors and methods.
-  Depends on DeclarationParser for parsing member definitions.
-*/
-
-class TypeParser: virtual public FunctionParser, virtual public DeclarationParser {
-protected:
-  TypeParser(StatementParser* stp);
-private:
-  Node<ConstructorNode>::Link constructor(Visibility vis, bool isForeign);
-  Node<MethodNode>::Link method(Visibility vis, bool isStatic, bool isForeign);
-  Node<MemberNode>::Link member(Visibility vis, bool isStatic);
-public:
+  // Type definitions
+  
+  Node<ConstructorNode>::Link constructor(Visibility, bool isForeign);
+  Node<MethodNode>::Link method(Visibility, bool isStatic, bool isForeign);
+  Node<MemberNode>::Link member(Visibility, bool isStatic);
   Node<TypeNode>::Link type();
-};
 
-/**
-  \brief Provides the \link statement \endlink method for parsing an a statement.
-  
-  Depends on ExpressionParser for parsing expressions.
-  Depends on IfStatementParser for parsing if statements.
-  Depends on BlockParser for parsing blocks.
-  Depends on DeclarationParser for parsing declarations.
-  Depends on FunctionParser for parsing function definitions.
-  Depends on TypeParser for parsing type definitions.
-*/
-class StatementParser: virtual public IfStatementParser, virtual public TypeParser {
-protected:
-  /// \see BlockNode::BlockNode(StatementParser*)
-  StatementParser();
-public:
+  // Statements
+
   /**
     \brief Parse a statement
-    
     \returns whatever node was parsed
   */
   ASTNode::Link statement();
-};
 
-/**
-  \brief Parses a list of tokens, and produces an AST.
-*/
-class TokenParser: public StatementParser {
-public:
-  TokenParser();
+public:  
+  inline TokenParser() {}
   
   /**
     \brief Call this method to actually do the parsing before using getTree
