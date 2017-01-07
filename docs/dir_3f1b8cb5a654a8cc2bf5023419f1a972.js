@@ -4,14 +4,6 @@ var dir_3f1b8cb5a654a8cc2bf5023419f1a972 =
       [ "BaseParser", "class_base_parser.html", "class_base_parser" ]
     ] ],
     [ "tokenParser.hpp", "token_parser_8hpp.html", [
-      [ "TokenBaseParser", "class_token_base_parser.html", "class_token_base_parser" ],
-      [ "ExpressionParser", "class_expression_parser.html", "class_expression_parser" ],
-      [ "DeclarationParser", "class_declaration_parser.html", "class_declaration_parser" ],
-      [ "BlockParser", "class_block_parser.html", "class_block_parser" ],
-      [ "FunctionParser", "class_function_parser.html", "class_function_parser" ],
-      [ "IfStatementParser", "class_if_statement_parser.html", "class_if_statement_parser" ],
-      [ "TypeParser", "class_type_parser.html", "class_type_parser" ],
-      [ "StatementParser", "class_statement_parser.html", "class_statement_parser" ],
       [ "TokenParser", "class_token_parser.html", "class_token_parser" ]
     ] ],
     [ "xmlParser.hpp", "xml_parser_8hpp.html", [

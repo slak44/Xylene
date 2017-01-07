@@ -3,7 +3,6 @@ var searchData=
   ['throw',['THROW',['../namespace_t_t.html#abef62731cff6592876141b038deb3231',1,'TT']]],
   ['throwifvoid',['throwIfVoid',['../class_type_info.html#ac1b095e12a7144674d33b04270d9bb75',1,'TypeInfo']]],
   ['token',['Token',['../class_token.html#ab012e46d9985c9b636715d74c0d35f7b',1,'Token::Token(TokenType type, std::string data, Trace trace)'],['../class_token.html#aad2fec2bf78203f581eb86e00cb54bfd',1,'Token::Token(TokenType type, Operator::Index idx, Trace trace)'],['../class_token.html#a3c5fec977a46a214d0f91e897d3e8044',1,'Token::Token(TokenType type, Trace trace)']]],
-  ['tokenbaseparser',['TokenBaseParser',['../class_token_base_parser.html#aeb2960328a49ee4496a84888d0e59492',1,'TokenBaseParser']]],
   ['tokenize',['tokenize',['../class_lexer_base.html#a21c194f845c6ab535ad38ac26b47d8c7',1,'LexerBase']]],
   ['tokenparser',['TokenParser',['../class_token_parser.html#a9a86a30db107b9e033fdbef60963f7f7',1,'TokenParser']]],
   ['tokentype',['TokenType',['../class_token_type.html#a4468799e28718190e87830ab3c8756f8',1,'TokenType']]],
@@ -12,12 +11,11 @@ var searchData=
   ['transformarrayindex',['transformArrayIndex',['../class_a_s_t_node.html#a99773970b5735a10904ec24c1ba6827f',1,'ASTNode']]],
   ['try',['TRY',['../namespace_t_t.html#a5083d346aaf46df8a315ac59e0437cf0',1,'TT']]],
   ['two_5fpoint',['TWO_POINT',['../namespace_t_t.html#a9e62d67f7134d4934d63aac9990b5cbc',1,'TT']]],
-  ['type',['type',['../class_type_parser.html#a321e4d8f216ba3c5cf9310d6d2dbd8f3',1,'TypeParser::type()'],['../namespace_t_t.html#a759b5a2a0f323dcc8eb38ec4b8286533',1,'TT::TYPE()']]],
+  ['type',['TYPE',['../namespace_t_t.html#a759b5a2a0f323dcc8eb38ec4b8286533',1,'TT']]],
   ['typedata',['TypeData',['../class_type_data.html#ade50ffca762786d884cc714d6b696e15',1,'TypeData::TypeData(llvm::StructType *type, ModuleCompiler::Link mc, Node&lt; TypeNode &gt;::Link tyNode)'],['../class_type_data.html#a95d3b9292467f235950d501cf15d0b25',1,'TypeData::TypeData(const TypeData &amp;)=delete']]],
   ['typeid',['TypeId',['../class_type_id.html#acf33d20f4017b1eca7b165b679fb58e8',1,'TypeId::TypeId(TypeData *tyData)'],['../class_type_id.html#af140701edfacafb3741edda6dc94decd',1,'TypeId::TypeId(TypeName, llvm::Type *)']]],
   ['typeinfo',['TypeInfo',['../class_type_info.html#a0861de9df206d4c04be6901110c954af',1,'TypeInfo::TypeInfo(TypeName)'],['../class_type_info.html#aa2356a1ee45ea50847cbb366367ffd33',1,'TypeInfo::TypeInfo(const char *)'],['../class_type_info.html#a5bf8e362b49407d421e2ac78d3c77b99',1,'TypeInfo::TypeInfo(TypeList evalValue)'],['../class_type_info.html#a52bd7e2d13ad15dc9ae5808793663456',1,'TypeInfo::TypeInfo(std::nullptr_t voidType)'],['../class_type_info.html#a5e8f32e1bc0d05a5a234e9630cf002ce',1,'TypeInfo::TypeInfo()']]],
   ['typelistid',['TypeListId',['../class_type_list_id.html#aa954241f846d1d38bbb31a88e759461a',1,'TypeListId']]],
   ['typenode',['TypeNode',['../class_type_node.html#a0b1e4eeaec30c1af29cdc11879c6c2c1',1,'TypeNode']]],
-  ['typeof',['typeOf',['../runtime_8hpp.html#ae74a33c133d18a9fdbfed1d3746214ff',1,'runtime.hpp']]],
-  ['typeparser',['TypeParser',['../class_type_parser.html#a4128dceb45a4f8d57ba470dc8bce829d',1,'TypeParser']]]
+  ['typeof',['typeOf',['../runtime_8hpp.html#ae74a33c133d18a9fdbfed1d3746214ff',1,'runtime.hpp']]]
 ];

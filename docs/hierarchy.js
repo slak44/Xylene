@@ -9,26 +9,7 @@ var hierarchy =
       [ "ModuleCompiler", "class_module_compiler.html", null ]
     ] ],
     [ "BaseParser", "class_base_parser.html", [
-      [ "TokenBaseParser", "class_token_base_parser.html", [
-        [ "BlockParser", "class_block_parser.html", [
-          [ "FunctionParser", "class_function_parser.html", [
-            [ "TypeParser", "class_type_parser.html", [
-              [ "StatementParser", "class_statement_parser.html", [
-                [ "TokenParser", "class_token_parser.html", null ]
-              ] ]
-            ] ]
-          ] ],
-          [ "IfStatementParser", "class_if_statement_parser.html", [
-            [ "StatementParser", "class_statement_parser.html", null ]
-          ] ]
-        ] ],
-        [ "ExpressionParser", "class_expression_parser.html", [
-          [ "DeclarationParser", "class_declaration_parser.html", [
-            [ "TypeParser", "class_type_parser.html", null ]
-          ] ],
-          [ "IfStatementParser", "class_if_statement_parser.html", null ]
-        ] ]
-      ] ],
+      [ "TokenParser", "class_token_parser.html", null ],
       [ "XMLParser", "class_x_m_l_parser.html", null ]
     ] ],
     [ "Compiler", "class_compiler.html", null ],

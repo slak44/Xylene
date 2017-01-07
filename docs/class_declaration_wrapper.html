@@ -121,9 +121,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2dfc5f9b384348e1518d84fbe61ab992"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_declaration_wrapper.html#a2dfc5f9b384348e1518d84fbe61ab992">DeclarationWrapper</a> (llvm::Value *, <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> allowed)</td></tr>
-<tr class="memdesc:a2dfc5f9b384348e1518d84fbe61ab992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="class_declaration_wrapper.html" title="Holds the value pointing to the declared variable, its current type, and its list of allowed types...">DeclarationWrapper</a>.  <a href="#a2dfc5f9b384348e1518d84fbe61ab992">More...</a><br /></td></tr>
-<tr class="separator:a2dfc5f9b384348e1518d84fbe61ab992"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cd88f5718e0cbf1a59db90610b5bd38"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_declaration_wrapper.html#a8cd88f5718e0cbf1a59db90610b5bd38">DeclarationWrapper</a> (llvm::Value *decl, <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> allowed)</td></tr>
+<tr class="memdesc:a8cd88f5718e0cbf1a59db90610b5bd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="class_declaration_wrapper.html" title="Holds the value pointing to the declared variable, its current type, and its list of allowed types...">DeclarationWrapper</a>.  <a href="#a8cd88f5718e0cbf1a59db90610b5bd38">More...</a><br /></td></tr>
+<tr class="separator:a8cd88f5718e0cbf1a59db90610b5bd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a349c7673545e30d9b0ba9f607065a120"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_type_list_id.html#a9a3ece7475ae948077c4c23aa74618dc">TypeListId::Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_declaration_wrapper.html#a349c7673545e30d9b0ba9f607065a120">getTypeList</a> () const</td></tr>
 <tr class="separator:a349c7673545e30d9b0ba9f607065a120"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_value_wrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_value_wrapper')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_value_wrapper.html">ValueWrapper</a></td></tr>
@@ -172,8 +172,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2dfc5f9b384348e1518d84fbe61ab992"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dfc5f9b384348e1518d84fbe61ab992">&sect;&nbsp;</a></span>DeclarationWrapper()</h2>
+<a id="a8cd88f5718e0cbf1a59db90610b5bd38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cd88f5718e0cbf1a59db90610b5bd38">&sect;&nbsp;</a></span>DeclarationWrapper()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,6 +201,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Create a <a class="el" href="class_declaration_wrapper.html" title="Holds the value pointing to the declared variable, its current type, and its list of allowed types...">DeclarationWrapper</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">decl</td><td>an AllocaInst </td></tr>
     <tr><td class="paramname">allowed</td><td>either a <a class="el" href="class_type_list_id.html" title="Identifies a list of types. ">TypeListId</a> or a <a class="el" href="class_type_id.html" title="Identifies a single type. ">TypeId</a> of what is allowed to be assigned to this </td></tr>
   </table>
   </dd>

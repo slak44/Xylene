@@ -2,8 +2,6 @@ var searchData=
 [
   ['identifier',['IDENTIFIER',['../namespace_t_t.html#a1cd22d3803bc055ec10fff80a12178c7',1,'TT']]],
   ['if',['IF',['../namespace_t_t.html#a03e7eafdf83d8904909df90142764b50',1,'TT']]],
-  ['ifstatement',['ifStatement',['../class_if_statement_parser.html#aeed9bbeeacbe305f5c987308f46d5106',1,'IfStatementParser']]],
-  ['ifstatementparser',['IfStatementParser',['../class_if_statement_parser.html#adf41a9f88f2d912dbe801c3144b003fb',1,'IfStatementParser']]],
   ['import',['IMPORT',['../namespace_t_t.html#aa11b241521315fb4cb9edde71e173d3e',1,'TT']]],
   ['inherits',['INHERITS',['../namespace_t_t.html#a7eac467353867552d5d72b8f8fc9f61b',1,'TT']]],
   ['instancewrapper',['InstanceWrapper',['../class_instance_wrapper.html#adf11e64b5eaa88f36275df84fedd4bf4',1,'InstanceWrapper']]],

@@ -140,6 +140,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abe40f4bf6631f3a0c927eafef3a577af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal that this type is completely built, and can be instantiated.  <a href="#abe40f4bf6631f3a0c927eafef3a577af">More...</a><br /></td></tr>
 <tr class="separator:abe40f4bf6631f3a0c927eafef3a577af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad88f0f530be32647d5aa16551fb95e2d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html#ad88f0f530be32647d5aa16551fb95e2d">isReady</a> () const</td></tr>
+<tr class="memdesc:ad88f0f530be32647d5aa16551fb95e2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal that this type is completely built, and can be instantiated.  <a href="#ad88f0f530be32647d5aa16551fb95e2d">More...</a><br /></td></tr>
 <tr class="separator:ad88f0f530be32647d5aa16551fb95e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -455,7 +456,13 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p></p>
+<p>Signal that this type is completely built, and can be instantiated. </p>
+<p>This does a couple things:</p><ul>
+<li>Adds codegen functions to initializers</li>
+<li>Finalizes both initializers</li>
+<li>Adds the bodies of non-static, non-foreign methods</li>
+<li>Adds the bodies of non-foreign constructors </li>
+</ul>
 
 </div>
 </div>
