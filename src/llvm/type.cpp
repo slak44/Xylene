@@ -371,29 +371,10 @@ llvm::Function* FunctionWrapper::getValue() const {
 
 DeclarationWrapper::DeclarationWrapper(
   llvm::Value* decl,
-  AbstractId::Link current,
   AbstractId::Link id
-): ValueWrapper(decl, current) {
-  if (id->storedTypeCount() == 1) {
-    // We already assigned the type in the ValueWrapper constructor, just check the
-    // user of this class isn't misled
-    if (current != id) throw InternalError(
-      "Current type must match allowed type",
-      {METADATA_PAIRS}
-    );
-  } else if (id->storedTypeCount() > 1) {
-    tlid = PtrUtil<TypeListId>::staticPtrCast(id);
-  } else {
-    // Should never hit this code path
-    throw InternalError("Unhandled AbstractId derivative", {METADATA_PAIRS});
-  }
-}
+): ValueWrapper(decl, id), tlid(PtrUtil<TypeListId>::staticPtrCast(id)) {}
 
 TypeListId::Link DeclarationWrapper::getTypeList() const {
-  if (tlid == nullptr) throw InternalError(
-    "This decl only has one type, use getCurrentType to get it",
-    {METADATA_PAIRS}
-  );
   return tlid;
 }
 
@@ -436,7 +417,7 @@ DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
       "gep_" + name
     );
     auto id = tyd->mc->typeIdFromInfo((*member)->getTypeInfo(), tyd->node);
-    return members[name] = std::make_shared<DeclarationWrapper>(gep, id, id);
+    return members[name] = std::make_shared<DeclarationWrapper>(gep, id);
   } else {
     return members[name];
   }

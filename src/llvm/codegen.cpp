@@ -342,15 +342,20 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
       DeclarationWrapper::Link decl = PtrUtil<DeclarationWrapper>::dynPtrCast(operands[0]);
       if (decl == nullptr) throw Error("ReferenceError", "Cannot assign to this value", varIdent->getToken().trace);
       // If the declaration doesn't allow this type, complain
-      if (!decl->isTypeAllowed(operands[1]->getCurrentType())) {
+      if (!isTypeAllowedIn(decl->getTypeList(), operands[1]->getCurrentType())) {
         throw Error("TypeError",
           "Type list of '" + varIdent->getToken().data +
           "' does not contain type '" + operands[1]->getCurrentType()->getName() + "'",
           varIdent->getToken().trace
         );
       }
-      // Store into the variable
-      mc->builder->CreateStore(operands[1]->getValue(), operands[0]->getValue());
+      if (decl->getTypeList()->storedTypeCount() > 1) {
+        // TODO: Look where the data is, and store there
+        throw InternalError("Not Implemented", {METADATA_PAIRS});
+      } else {
+        // Store into the variable
+        mc->builder->CreateStore(operands[1]->getValue(), operands[0]->getValue());
+      }
       // The value of the decl will remain the pointer to the var in memory,
       // The type is changed to the newly assigned one
       decl->setValue(decl->getValue(), operands[1]->getCurrentType());

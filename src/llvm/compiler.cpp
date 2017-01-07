@@ -80,7 +80,7 @@ void ModuleCompiler::init(std::string moduleName, AST& ast) {
     voidPtrType, // Pointer to data
     integerType, // TypeListId with allowed types
     integerType, // TypeId with currently stored type
-  });
+  }, "tagged_union");
   voidTid = TypeId::createBasic("Void", llvm::Type::getVoidTy(*context));
   integerTid = TypeId::createBasic("Integer", integerType);
   floatTid = TypeId::createBasic("Float", floatType);
@@ -436,7 +436,7 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
     decl = builder->CreateAlloca(taggedUnionType, nullptr, node->getIdentifier());
   }
   auto id = typeIdFromInfo(node->getTypeInfo(), node);
-  auto declWrap = std::make_shared<DeclarationWrapper>(decl, id, id);
+  auto declWrap = std::make_shared<DeclarationWrapper>(decl, id);
   
   // Add to scope
   auto inserted =
