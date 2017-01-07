@@ -297,8 +297,8 @@ public:
   
   Has 3 children:
     - Condition - ExpressionNode
-    - SuccessBlock - BlockNode - if Condition is true, run this
-    - FailiureBlock - BlockNode or BranchNode - if Condition if false, run this
+    - SuccessBlock - BlockNode
+    - FailiureBlock - BlockNode or BranchNode
 */
 class BranchNode: public NoMoreChildrenNode {
 public:
@@ -324,7 +324,7 @@ public:
     - Update - ExpressionNode
     - Code - BlockNode
   Example on a for loop:
-  for (Init, Condition, Update) Code
+  for Init; Condition; Update Code
 */
 class LoopNode: public NoMoreChildrenNode {
 private:
