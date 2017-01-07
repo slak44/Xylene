@@ -99,10 +99,11 @@ private:
 public:
   /**
     \brief Create a DeclarationWrapper
+    \param decl an AllocaInst
     \param allowed either a TypeListId or a TypeId of what is allowed to be assigned
     to this
   */
-  DeclarationWrapper(llvm::Value*, AbstractId::Link allowed);
+  DeclarationWrapper(llvm::Value* decl, AbstractId::Link allowed);
   
   TypeListId::Link getTypeList() const;
 };
@@ -535,7 +536,7 @@ public:
     - Adds the bodies of non-foreign constructors
   */
   void finalize();
-  /// \copydoc finalized
+  /// \copydoc finalize
   bool isReady() const;
 };
 
