@@ -402,6 +402,18 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
   }
 }
 
+ValueWrapper::Link ModuleCompiler::insertRuntimeTypeCheck(
+  DeclarationWrapper::Link target,
+  ValueWrapper::Link newValue
+) {
+  auto res = builder->CreateCall(
+    module->getFunction("checkTypeCompat"),
+    {target->getValue(), newValue->getValue()},
+    "iscompatible"
+  );
+  return std::make_shared<ValueWrapper>(res, booleanTid);
+}
+
 void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
   llvm::Value* decl;
@@ -421,29 +433,32 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
     );
     types.insert(list);
     enclosingBlock->blockTypes.insert(list);
-    
-    throw InternalError("Not Implemented", {METADATA_PAIRS});
+    decl = builder->CreateAlloca(taggedUnionType, nullptr, node->getIdentifier());
   }
-  // Handle initialization
   auto id = typeIdFromInfo(node->getTypeInfo(), node);
-  ValueWrapper::Link initValue;
-  if (node->hasInit()) {
-    initValue = compileExpression(node->getInit());
-    // Check that the type of the initialization is allowed by the declaration
-    if (!isTypeAllowedIn(id, initValue->getCurrentType())) {
-      throw Error("TypeError", typeMismatchErrorString, node->getTrace());
-    }
-    // if (allocated->getType() == /* type of boxed stuff */) {/* update type metadata in box and do a store on the actual data */}
-    builder->CreateStore(initValue->getValue(), decl); // TODO only for primitives, move to else block of above comment
-  }
+  auto declWrap = std::make_shared<DeclarationWrapper>(decl, id, id);
+  
   // Add to scope
-  auto inserted = enclosingBlock->blockScope.insert({
-    node->getIdentifier(),
-    std::make_shared<DeclarationWrapper>(decl, id, id)
-  });
+  auto inserted =
+    enclosingBlock->blockScope.insert({node->getIdentifier(), declWrap});
   // If it failed, it means the decl already exists
   if (!inserted.second) throw Error("ReferenceError",
       "Redefinition of " + node->getIdentifier(), node->getTrace());
+  
+  // Handle initialization
+  if (!node->hasInit()) return;
+  ValueWrapper::Link initValue = compileExpression(node->getInit());
+  // Check that the type of the initialization is allowed by the declaration
+  if (!isTypeAllowedIn(id, initValue->getCurrentType())) {
+    throw Error("TypeError", typeMismatchErrorString, node->getTrace());
+  }
+  if (decl->getType() == taggedUnionType) {
+    auto isCompatible = insertRuntimeTypeCheck(declWrap, initValue);
+    // TODO: at runtime, throw if isCompatible is false here
+    // TODO: also at runtime, dynamically allocate the actual data here
+  } else {
+    builder->CreateStore(initValue->getValue(), decl);
+  }
 }
 
 void ModuleCompiler::visitBranch(Node<BranchNode>::Link node) {

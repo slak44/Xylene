@@ -245,6 +245,11 @@ private:
   /// If the held value is a Boolean or can be converted to one
   bool canBeBoolean(ValueWrapper::Link) const;
   /**
+    \brief Inserts a call to the runtime 'checkTypeCompat' function
+    \returns a value with boolean type, whether or not the new type is compatible
+  */
+  ValueWrapper::Link insertRuntimeTypeCheck(DeclarationWrapper::Link, ValueWrapper::Link);
+  /**
     \brief Creates a pointer pointing to a specific function's argument
     
     Be careful where and when this gets called, since it inserts IR,
