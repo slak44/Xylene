@@ -84,7 +84,7 @@ public:
   
   /**
     \brief Remove a child and return it.
-    \param pos which child. Suports negative positions that count from the end of the children
+    \param pos which child. Supports negative positions that count from the end
   */
   virtual Link removeChild(int64 pos);
   
@@ -92,7 +92,7 @@ public:
   virtual Children getChildren() const;
   /**
     \brief Get child at position
-    \param pos which child. Suports negative positions that count from the end of the children
+    \param pos which child. Supports negative positions that count from the end
   */
   Link at(int64 pos) const;
   
