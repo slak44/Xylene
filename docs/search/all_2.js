@@ -14,7 +14,7 @@ var searchData=
   ['col',['col',['../struct_position.html#abff90067890ce6b6329ce72e095b3c2e',1,'Position']]],
   ['collate',['collate',['../util_8hpp.html#a01f496fd8b2a0f67c62e1a83732999bd',1,'util.hpp']]],
   ['compile',['compile',['../class_compiler.html#a4eb6d2076006863fc52116489c7b4ec8',1,'Compiler']]],
-  ['compiler',['Compiler',['../class_compiler.html',1,'Compiler'],['../class_compiler.html#ac383b20786143c84a99a09a5ddbe9cee',1,'Compiler::Compiler(fs::path rootScript, fs::path output)'],['../class_compiler.html#a630d18c336f29b66b27cf91c68df8e16',1,'Compiler::Compiler(const Compiler &amp;)=delete']]],
+  ['compiler',['Compiler',['../class_compiler.html',1,'Compiler'],['../class_compiler.html#ac383b20786143c84a99a09a5ddbe9cee',1,'Compiler::Compiler(fs::path rootScript, fs::path output)'],['../class_compiler.html#a812be8690fa6d333ec4c3b01a047ac40',1,'Compiler::Compiler(std::unique_ptr&lt; llvm::Module &gt;, fs::path rootScript, fs::path output)'],['../class_compiler.html#a630d18c336f29b66b27cf91c68df8e16',1,'Compiler::Compiler(const Compiler &amp;)=delete']]],
   ['compiler_2ecpp',['compiler.cpp',['../compiler_8cpp.html',1,'']]],
   ['compiler_2ehpp',['compiler.hpp',['../compiler_8hpp.html',1,'']]],
   ['constr',['CONSTR',['../namespace_t_t.html#acb190a2af4b615bc9547ebcfa55c503c',1,'TT']]],

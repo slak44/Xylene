@@ -15,6 +15,7 @@ var searchData=
   ['arithm_5fpairs',['ARITHM_PAIRS',['../codegen_8cpp.html#ae800fb3e15449d9cc231e9cdcf79df8d',1,'codegen.cpp']]],
   ['arity',['Arity',['../operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8',1,'operator.hpp']]],
   ['as',['AS',['../namespace_t_t.html#a2d645db5586055a6ddd381ab0b70728c',1,'TT']]],
+  ['assertcliintegrity',['assertCliIntegrity',['../main_8cpp.html#a2beadb2ab0a1b4adccbdbecf1492914b',1,'main.cpp']]],
   ['assignmentlist',['assignmentList',['../operator_8cpp.html#adf720f491e114ae641399390ee9675ef',1,'operator.cpp']]],
   ['associate_5ffrom_5fleft',['ASSOCIATE_FROM_LEFT',['../operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2aa90f4bdd5dd80cb48623ffeb28e498b6',1,'operator.hpp']]],
   ['associate_5ffrom_5fright',['ASSOCIATE_FROM_RIGHT',['../operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2abbd6c0d43c04ec6bf11ce63d0ea2e33a',1,'operator.hpp']]],

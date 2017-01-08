@@ -1,6 +1,7 @@
 var class_compiler =
 [
     [ "Compiler", "class_compiler.html#ac383b20786143c84a99a09a5ddbe9cee", null ],
+    [ "Compiler", "class_compiler.html#a812be8690fa6d333ec4c3b01a047ac40", null ],
     [ "Compiler", "class_compiler.html#a630d18c336f29b66b27cf91c68df8e16", null ],
     [ "compile", "class_compiler.html#a4eb6d2076006863fc52116489c7b4ec8", null ],
     [ "getOutputPath", "class_compiler.html#a18d57d8103a9b7261b21063c03ea2276", null ],

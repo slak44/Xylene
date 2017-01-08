@@ -3,6 +3,7 @@ var searchData=
   ['paren_5fleft',['PAREN_LEFT',['../namespace_t_t.html#af14ab1a5c06fd56c3452c5da86edb6f4',1,'TT']]],
   ['paren_5fright',['PAREN_RIGHT',['../namespace_t_t.html#ae2c852c9277bb78179246e6c31550e91',1,'TT']]],
   ['parse',['parse',['../class_token_parser.html#a0e901b68c915c97743de149768aedd51',1,'TokenParser::parse()'],['../class_x_m_l_parser.html#ae58f2f913e0b98edc1c031a7e076e521',1,'XMLParser::parse(char *str)'],['../class_x_m_l_parser.html#a42aa30c7a6ef43f0f4932d91cf2a2dc6',1,'XMLParser::parse(rapidxml::file&lt; char &gt; xmlFile)']]],
+  ['parsexml',['parseXML',['../main_8cpp.html#a8c461dcf4a5cc8ab766db4d1472589e2',1,'main.cpp']]],
   ['peekahead',['peekAhead',['../class_lexer_base.html#afcab26fe5571d9997dcf2093a88ee9f2',1,'LexerBase']]],
   ['peekbehind',['peekBehind',['../class_lexer_base.html#a8fe2752e51dfa716416f73db2d2900f7',1,'LexerBase']]],
   ['position',['Position',['../struct_position.html#a84a1f2f14203ee8283398811562e5350',1,'Position']]],

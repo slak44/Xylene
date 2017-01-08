@@ -13,5 +13,6 @@ var searchData=
   ['nomorechildrennode',['NoMoreChildrenNode',['../class_no_more_children_node.html',1,'NoMoreChildrenNode'],['../class_no_more_children_node.html#a395911075df10e1467f7ab6cf173ce68',1,'NoMoreChildrenNode::NoMoreChildrenNode()']]],
   ['normal_5fexit',['NORMAL_EXIT',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3a818c410bbe87e2485ff7cb62512fb00d',1,'main.cpp']]],
   ['notnull',['notNull',['../class_no_more_children_node.html#af701b192a8e4a4525e1927ed496f6d09',1,'NoMoreChildrenNode']]],
+  ['notreallymain',['notReallyMain',['../main_8cpp.html#a8b14e502ca9dcfd7ee73302c1b16d85f',1,'main.cpp']]],
   ['nullary',['NULLARY',['../operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8a74742057ec9d5653bb9423647e73e1cb',1,'operator.hpp']]]
 ];
