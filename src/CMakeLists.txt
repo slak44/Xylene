@@ -23,8 +23,8 @@ endif()
 target_link_libraries(release_bin ${COMMON_LINK_LIBS})
 target_link_libraries(debug_bin ${COMMON_LINK_LIBS})
 
-add_dependencies(release_bin ${COMMON_DEPS})
-add_dependencies(debug_bin ${COMMON_DEPS})
+add_dependencies(release_bin ${COMMON_DEPS} runtime_lib)
+add_dependencies(debug_bin ${COMMON_DEPS} runtime_lib)
 
 make_exe_symlink(release)
 make_exe_symlink(debug)
