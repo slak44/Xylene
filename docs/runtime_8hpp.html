@@ -83,14 +83,12 @@ $(document).ready(function(){initNavTree('runtime_8hpp.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">runtime.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;unordered_map&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
+<div class="textblock"><code>#include &lt;string&gt;</code><br />
 <code>#include &quot;<a class="el" href="type_id_8hpp_source.html">llvm/typeId.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="io_8hpp_source.html">runtime/io.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -98,9 +96,9 @@ Include dependency graph for runtime.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="runtime_8hpp__incl.png" border="0" usemap="#xylene_2include_2runtime_2runtime_8hpp" alt=""/></div>
 <map name="xylene_2include_2runtime_2runtime_8hpp" id="xylene_2include_2runtime_2runtime_8hpp">
-<area shape="rect" id="node4" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="386,95,495,121"/>
-<area shape="rect" id="node14" href="io_8hpp.html" title="runtime/io.hpp" alt="" coords="551,95,655,121"/>
-<area shape="rect" id="node7" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="416,169,508,196"/>
+<area shape="rect" id="node3" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="407,95,517,121"/>
+<area shape="rect" id="node13" href="io_8hpp.html" title="runtime/io.hpp" alt="" coords="551,95,655,121"/>
+<area shape="rect" id="node6" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="416,169,508,196"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -130,12 +128,6 @@ Functions</h2></td></tr>
 <tr class="separator:ae74a33c133d18a9fdbfed1d3746214ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f10cb8a910fe1c07dbd137607e9fc68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a2f10cb8a910fe1c07dbd137607e9fc68">withType</a> (<a class="el" href="struct_value.html">Value</a> toBeConcretized, <a class="el" href="type_id_8hpp.html#ab62eef244eb0fc10c18da6c4d6537348">UniqueIdentifier</a> concreteType)</td></tr>
 <tr class="separator:a2f10cb8a910fe1c07dbd137607e9fc68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a5e05d41aebefa74430b2973af66f743a"><td class="memItemLeft" align="right" valign="top">const std::unordered_map&lt; std::string, void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a5e05d41aebefa74430b2973af66f743a">nameToFunPtr</a></td></tr>
-<tr class="memdesc:a5e05d41aebefa74430b2973af66f743a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps standard library function names to pointers to those functions.  <a href="#a5e05d41aebefa74430b2973af66f743a">More...</a><br /></td></tr>
-<tr class="separator:a5e05d41aebefa74430b2973af66f743a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af315f96a8deeb9939cd163dfc8f97bf2"></a>
@@ -209,24 +201,6 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a5e05d41aebefa74430b2973af66f743a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e05d41aebefa74430b2973af66f743a">&sect;&nbsp;</a></span>nameToFunPtr</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::unordered_map&lt;std::string, void*&gt; nameToFunPtr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">{</div><div class="line">  {<span class="stringliteral">&quot;printC&quot;</span>, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(<a class="code" href="io_8cpp.html#a422cf07f1247502b71e7b415366ab814">printC</a>)}</div><div class="line">}</div><div class="ttc" id="io_8cpp_html_a422cf07f1247502b71e7b415366ab814"><div class="ttname"><a href="io_8cpp.html#a422cf07f1247502b71e7b415366ab814">printC</a></div><div class="ttdeci">void printC(char c)</div><div class="ttdef"><b>Definition:</b> io.cpp:3</div></div>
-</div><!-- fragment -->
-<p>Maps standard library function names to pointers to those functions. </p>
 
 </div>
 </div>
