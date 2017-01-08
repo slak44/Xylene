@@ -1,7 +1,6 @@
 #ifndef RUNTIME_HPP
 #define RUNTIME_HPP
 
-#include <unordered_map>
 #include <string>
 
 #include "llvm/typeId.hpp"
@@ -18,12 +17,5 @@ extern "C" {
   std::string typeOf(Value val);
   Value withType(Value toBeConcretized, UniqueIdentifier concreteType);
 }
-
-/**
-  \brief Maps standard library function names to pointers to those functions.
-*/
-const std::unordered_map<std::string, void*> nameToFunPtr {
-  {"printC", reinterpret_cast<void*>(printC)}
-};
 
 #endif
