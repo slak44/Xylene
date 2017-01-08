@@ -31,7 +31,6 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <fstream>
-#include <experimental/filesystem>
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
@@ -40,8 +39,6 @@
 #include "lexer.hpp"
 #include "parser/tokenParser.hpp"
 #include "llvm/typeId.hpp"
-
-namespace fs = std::experimental::filesystem;
 
 class OperatorCodegen;
 

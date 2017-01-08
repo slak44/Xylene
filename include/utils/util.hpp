@@ -9,6 +9,9 @@
 #include <memory>
 #include <algorithm>
 #include <functional>
+#include <experimental/filesystem>
+
+namespace fs = std::experimental::filesystem;
 
 #ifdef _MSC_VER
   #undef FILE_END
