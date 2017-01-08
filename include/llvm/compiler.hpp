@@ -124,8 +124,9 @@ public:
 class ProgramData {
 public:
   using TypeSet = std::unordered_set<AbstractId::Link>;
-  std::unordered_set<AbstractId::Link> types;
-  std::vector<llvm::Module*> modules;
+  TypeSet types;
+  std::vector<std::unique_ptr<llvm::Module>> modules;
+  std::unique_ptr<llvm::Module> rootModule;
 };
 
 /**
@@ -294,6 +295,8 @@ private:
   ProgramData pd;
 public:
   Compiler(fs::path rootScript, fs::path output);
+  /// Same as \link Compiler(fs::path,fs::path) \endlink, but with a precompiled module
+  Compiler(std::unique_ptr<llvm::Module>, fs::path rootScript, fs::path output);
   
   // This might be expensive to copy, so don't
   Compiler(const Compiler&) = delete; /// No copy-constructor

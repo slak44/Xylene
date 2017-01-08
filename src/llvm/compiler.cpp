@@ -1,11 +1,7 @@
 #include "llvm/compiler.hpp"
 
 Compiler::Compiler(fs::path rootScript, fs::path output):
-  rootScript(rootScript),
-  output(output) {
-}
-
-void Compiler::compile() {
+  rootScript(rootScript), output(output) {
   std::ifstream file(rootScript);
   std::stringstream buffer;
   buffer << file.rdbuf();
@@ -18,10 +14,21 @@ void Compiler::compile() {
   );
   mc->addMainFunction();
   mc->visit();
-  
-  auto m = mc->getModule();
-  
+  pd.rootModule = std::unique_ptr<llvm::Module>(mc->getModule());
+}
+
+Compiler::Compiler(
+  std::unique_ptr<llvm::Module> rootModule,
+  fs::path rootScript,
+  fs::path output
+): rootScript(rootScript), output(output) {
+  pd.rootModule = std::move(rootModule);
+}
+
+void Compiler::compile() {
   using namespace llvm;
+  Module* m = pd.rootModule.get();
+  
   InitializeAllTargetInfos();
   InitializeAllTargets();
   InitializeAllTargetMCs();
