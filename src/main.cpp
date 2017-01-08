@@ -15,30 +15,46 @@
 enum ExitCodes: int {
   NORMAL_EXIT = 0, ///< Everything is OK
   TCLAP_ERROR = 11, ///< TCLAP did something bad, should not happen
-  CLI_ERROR = 1, ///< The user is retar-- uh I mean the user used a wrong option
+  CLI_ERROR = 1, ///< The user used a wrong combination of options
   USER_PROGRAM_ERROR = 2, ///< The thing we had to lex/parse/run has an issue
   INTERNAL_ERROR = 3 ///< Unrecoverable error in this program, almost always a bug
 };
 
-int notReallyMain(int argc, const char* argv[]);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
 
-int main(int argc, const char* argv[]) {
-  #ifdef XYLENE_MEASURE_TIME
-  auto begin = std::chrono::steady_clock::now();
-  #endif
-  
-  int exitCode = notReallyMain(argc, argv);
-  
-  #ifdef XYLENE_MEASURE_TIME
-  auto end = std::chrono::steady_clock::now();
-  println(
-    "Time diff:",
-    std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count(),
-    "μs"
-  );
-  #endif
+std::unique_ptr<AST> parseXML(fs::path filePath, std::string cliEval) {
+  if (!filePath.empty()) {
+    // Read from file
+    auto file = rapidxml::file<>(filePath.c_str());
+    return std::make_unique<AST>(XMLParser().parse(file).getTree());
+  } else {
+    // Read from CLI
+    char* mutableCode = new char[cliEval.size() + 1];
+    std::move(ALL(cliEval), mutableCode);
+    mutableCode[cliEval.size()] = '\0';
+    return std::make_unique<AST>(XMLParser().parse(mutableCode).getTree());
+  }
+}
 
-  return exitCode;
+std::vector<Token> tokenize(fs::path filePath, std::string cliEval) {
+  std::string input;
+  if (!filePath.empty()) {
+    std::ifstream file(filePath);
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    input = buffer.str();
+  } else {
+    input = cliEval;
+  }
+  auto lx = Lexer();
+  return lx.tokenize(input, filePath.empty() ? "<cli-eval>" : filePath).getTokens();
+}
+
+void assertCliIntegrity(TCLAP::CmdLine& cmd, bool value, std::string message) {
+  if (!value) return;
+  TCLAP::ArgException arg(message);
+  cmd.getOutput()->failure(cmd, arg);
 }
 
 int notReallyMain(int argc, const char* argv[]) {
@@ -47,7 +63,7 @@ int notReallyMain(int argc, const char* argv[]) {
     
     TCLAP::SwitchArg asXML("", "xml", "Read file using the XML parser", cmd);
     
-    TCLAP::SwitchArg printTokens("", "tokens", "Print token list", cmd);
+    TCLAP::SwitchArg printTokens("", "tokens", "Print token list (if applicable)", cmd);
     TCLAP::SwitchArg printAST("", "ast", "Print AST (if applicable)", cmd);
     TCLAP::SwitchArg printIR("", "ir", "Print LLVM IR (if applicable)", cmd);
     
@@ -67,52 +83,50 @@ int notReallyMain(int argc, const char* argv[]) {
       false, std::string(), "path", cmd, nullptr);
     cmd.parse(argc, argv);
     
-    if (code.getValue().empty() && filePath.getValue().empty()) {
-      TCLAP::ArgException arg("Must specify either option -e or -f");
-      cmd.getOutput()->failure(cmd, arg);
-    }
+    // There must be at least one input
+    assertCliIntegrity(cmd, code.getValue().empty() && filePath.getValue().empty(),
+      "Must specify either option -e or -f");
     
+    // There is not much you can do to the XML without parsing it
+    assertCliIntegrity(cmd, asXML.getValue() && doNotParse.getValue(),
+      "--no-parse and --xml are incompatible");
+    
+    // The XML parser does not use tokens
+    assertCliIntegrity(cmd, asXML.getValue() && printTokens.getValue(),
+      "--tokens and --xml are incompatible");
+    
+    // Can't print AST without creating it first
+    assertCliIntegrity(cmd, printAST.getValue() && doNotParse.getValue(),
+      "--no-parse and --ast are incompatible");
+      
+    // Can't print IR without parsing the AST
+    assertCliIntegrity(cmd, printIR.getValue() && doNotParse.getValue(),
+      "--no-parse and --ir are incompatible");
+      
     std::unique_ptr<AST> ast;
     
     if (asXML.getValue()) {
-      if (doNotParse.getValue()) return NORMAL_EXIT;
-      if (filePath.getValue().empty()) {
-        TCLAP::ArgException arg("XML option only works with files");
-        cmd.getOutput()->failure(cmd, arg);
-      }
-      ast = std::make_unique<AST>(XMLParser().parse(rapidxml::file<>(filePath.getValue().c_str())).getTree());
+      ast = parseXML(filePath.getValue(), code.getValue());
     } else {
-      std::string input;
-      if (!filePath.getValue().empty()) {
-        std::ifstream file(filePath.getValue());
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        input = buffer.str();
-      } else {
-        input = code.getValue();
-      }
-      
-      auto lx = Lexer();
-      lx.tokenize(input, filePath.getValue().empty() ? "<cli-eval>" : filePath.getValue());
-      if (printTokens.getValue()) for (auto tok : lx.getTokens()) println(tok);
+      auto tokens = tokenize(filePath.getValue(), code.getValue());
+      if (printTokens.getValue()) for (auto tok : tokens) println(tok);
       
       if (doNotParse.getValue()) return NORMAL_EXIT;
-      ast = std::make_unique<AST>(TokenParser().parse(lx.getTokens()).getTree());
+      ast = std::make_unique<AST>(TokenParser().parse(tokens).getTree());
     }
     
     if (printAST.getValue()) ast->print();
     if (doNotRun.getValue()) return NORMAL_EXIT;
     
-    ModuleCompiler::Link v = ModuleCompiler::create("Command Line Module", *ast);
-    v->visit();
-    if (printIR.getValue()) v->getModule()->dump();
+    ModuleCompiler::Link mc = ModuleCompiler::create("Command Line Module", *ast);
+    mc->visit();
+    if (printIR.getValue()) mc->getModule()->dump();
         
     if (runner.getValue() == "interpret") {
-      return Runner(v).run();
+      return Runner(mc).run();
     } else if (runner.getValue() == "compile") {
-      // TODO: rearrange this somehow, right now the module is compiled twice
-      Compiler cp(filePath.getValue(), outPath.getValue());
-      cp.compile();
+      Compiler(std::unique_ptr<llvm::Module>(mc->getModule()),
+        filePath.getValue(), outPath.getValue()).compile();
       return NORMAL_EXIT;
     }
   } catch (const TCLAP::ExitException& arg) {
@@ -132,4 +146,25 @@ int notReallyMain(int argc, const char* argv[]) {
   }
   #endif
   return 0;
+}
+
+#pragma GCC diagnostic pop
+
+int main(int argc, const char* argv[]) {
+  #ifdef XYLENE_MEASURE_TIME
+  auto begin = std::chrono::steady_clock::now();
+  #endif
+  
+  int exitCode = notReallyMain(argc, argv);
+  
+  #ifdef XYLENE_MEASURE_TIME
+  auto end = std::chrono::steady_clock::now();
+  println(
+    "Time diff:",
+    std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count(),
+    "μs"
+  );
+  #endif
+
+  return exitCode;
 }
