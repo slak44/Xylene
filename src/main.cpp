@@ -51,12 +51,14 @@ std::vector<Token> tokenize(fs::path filePath, std::string cliEval) {
   return lx.tokenize(input, filePath.empty() ? "<cli-eval>" : filePath).getTokens();
 }
 
-void assertCliIntegrity(TCLAP::CmdLine& cmd, bool value, std::string message) {
-  if (!value) return;
+/// Throw if the assertion is false
+void assertCliIntegrity(TCLAP::CmdLine& cmd, bool assertion, std::string message) {
+  if (!assertion) return;
   TCLAP::ArgException arg(message);
   cmd.getOutput()->failure(cmd, arg);
 }
 
+/// Pseudo-main used to allow early returns while measuring execution time
 int notReallyMain(int argc, const char* argv[]) {
   try {
     TCLAP::CmdLine cmd("Xylene", ' ', "pre-release");
@@ -150,6 +152,7 @@ int notReallyMain(int argc, const char* argv[]) {
 
 #pragma GCC diagnostic pop
 
+/// Measures execution time if XYLENE_MEASURE_TIME is defined \see notReallyMain
 int main(int argc, const char* argv[]) {
   #ifdef XYLENE_MEASURE_TIME
   auto begin = std::chrono::steady_clock::now();
