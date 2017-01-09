@@ -3,6 +3,13 @@
 A small toy programming language.
 Documentation: https://slak44.github.io/Xylene/
 
+## Dependencies
+
+- cmake 3.6.1+
+- llvm 3.9.1
+
+Everything else is downloaded and installed before building.
+
 ## Language Syntax
 
 EBNF-ish format of a program:
@@ -59,7 +66,7 @@ TODO list:
   - interfaces?
   - abstract types?
   - enums (Java-like?)
-  - for loop multiple declarations & multiple update expressions
+- for loop: multiple declarations & multiple update expressions
 - properly define an identifier
 - name mangling
   - multiple modules linker name conflicts
