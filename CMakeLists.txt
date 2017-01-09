@@ -3,6 +3,31 @@ project(Xylene)
 
 subdirs(src tests)
 
+if(UNIX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -pedantic \
+    -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wfloat-equal -Wold-style-cast \
+    -Wswitch-default -Winit-self -Wlogical-op -Wmissing-declarations \
+    -Wmissing-include-dirs -Wnoexcept -Woverloaded-virtual -Wredundant-decls \
+    -Wstrict-null-sentinel -Wundef -Wstrict-overflow=5 -Wuseless-cast \
+    -Wzero-as-null-pointer-constant")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3 -O0 -DDEBUG -DCRASH_ON_INTERNAL_ERROR")
+  set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -Os -DNDEBUG")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O4 -DNDEBUG -Wdisabled-optimization")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O2 -g -DCRASH_ON_INTERNAL_ERROR -Wdisabled-optimization")
+  if(XYLENE_MEASURE_TIME)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DXYLENE_MEASURE_TIME")
+  endif()
+elseif(MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /Wall")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /DDEBUG /DCRASH_ON_INTERNAL_ERROR")
+  set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} /Os /DNDEBUG")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Ox /DNDEBUG")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /O2 /Zi /DCRASH_ON_INTERNAL_ERROR")
+  if(XYLENE_MEASURE_TIME)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DXYLENE_MEASURE_TIME")
+  endif()
+endif()
+
 include(ExternalProject)
 
 set(GTEST_PREFIX ${PROJECT_SOURCE_DIR}/libs/googletest)
@@ -69,43 +94,7 @@ ExternalProject_Add(
 include_directories(SYSTEM ${TINY_PROC_LIB_PREFIX}/src)
 link_directories(${TINY_PROC_LIB_PREFIX}/src/tiny-process-library-build)
 
-set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
-set(COMMON_SOURCES
-  ${SRC_DIR}/utils/util.cpp
-  ${SRC_DIR}/utils/trace.cpp
-  ${SRC_DIR}/utils/error.cpp
-  ${SRC_DIR}/utils/typeInfo.cpp
-  ${SRC_DIR}/operator.cpp
-  ${SRC_DIR}/token.cpp
-  ${SRC_DIR}/lexer.cpp
-  ${SRC_DIR}/ast.cpp
-  ${SRC_DIR}/ast.overrides.cpp
-  ${SRC_DIR}/parser/tokenParser.cpp
-  ${SRC_DIR}/parser/xmlParser.cpp
-  ${SRC_DIR}/llvm/compiler.cpp
-  ${SRC_DIR}/llvm/runner.cpp
-  ${SRC_DIR}/llvm/codegen.cpp
-  ${SRC_DIR}/llvm/type.cpp
-  ${SRC_DIR}/runtime/io.cpp
-)
-set(COMMON_DEPS rapidxml termcolor tclap)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-
-if(UNIX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -pedantic \
-    -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wfloat-equal -Wold-style-cast \
-    -Wswitch-default -Winit-self -Wlogical-op -Wmissing-declarations \
-    -Wmissing-include-dirs -Wnoexcept -Woverloaded-virtual -Wredundant-decls \
-    -Wstrict-null-sentinel -Wundef -Wstrict-overflow=5 -Wuseless-cast \
-    -Wzero-as-null-pointer-constant")
-elseif(MSVC)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /Wall")
-endif()
-
-find_package(LLVM)
-if(NOT LLVM_FOUND)
-  message(FATAL_ERROR "LLVM package can't be found. Set CMAKE_PREFIX_PATH variable to LLVM's installation prefix.")
-endif()
+find_package(LLVM REQUIRED)
 include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
 llvm_map_components_to_libnames(
@@ -130,6 +119,28 @@ llvm_map_components_to_libnames(
   profiledata runtimedyld scalaropts selectiondag support symbolize tablegen target transformutils vectorize
 )
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+
+set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+set(COMMON_SOURCES
+  ${SRC_DIR}/utils/util.cpp
+  ${SRC_DIR}/utils/trace.cpp
+  ${SRC_DIR}/utils/error.cpp
+  ${SRC_DIR}/utils/typeInfo.cpp
+  ${SRC_DIR}/operator.cpp
+  ${SRC_DIR}/token.cpp
+  ${SRC_DIR}/lexer.cpp
+  ${SRC_DIR}/ast.cpp
+  ${SRC_DIR}/ast.overrides.cpp
+  ${SRC_DIR}/parser/tokenParser.cpp
+  ${SRC_DIR}/parser/xmlParser.cpp
+  ${SRC_DIR}/llvm/compiler.cpp
+  ${SRC_DIR}/llvm/runner.cpp
+  ${SRC_DIR}/llvm/codegen.cpp
+  ${SRC_DIR}/llvm/type.cpp
+  ${SRC_DIR}/runtime/io.cpp
+)
+set(COMMON_DEPS rapidxml termcolor tclap)
 set(COMMON_LINK_LIBS ${REQ_LLVM_LIBRARIES} stdc++fs)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
