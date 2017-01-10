@@ -13,7 +13,10 @@
 #include "token.hpp"
 
 namespace {
-  /// Maps the second character in an escape sequence (eg the 'n' in \\n) to the actual escaped character.
+  /**
+    \brief Maps the second character in an escape sequence (eg the 'n' in \\n) to the
+    actual escaped character.
+  */
   const std::unordered_map<char, char> singleCharEscapeSeqences {
     {'a', '\a'},
     {'b', '\b'},
@@ -55,10 +58,6 @@ private:
   inline char peekAhead(uint ahead) const {
     return code[pos + ahead];
   }
-  /// Get the last inserted Token
-  inline const Token& peekBehind() const {
-    return tokens.back();
-  }
   /// Skip a number of chars, usually just advances to the next one
   inline void skip(uint64 skipped) {
     pos += skipped;
@@ -66,62 +65,70 @@ private:
     if (pos >= code.length()) pos = code.length();
   }
   /// Decrement current position so the loop doesn't increment automatically
-  inline void noIncrement() {
+  inline void noIncrement() noexcept {
     pos--;
   }
-  /// Is the input finished
-  inline bool hasFinishedString() const {
-    return pos == code.length();
-  }
   /// Is end of line
-  inline bool isEOL() const {
+  inline bool isEOL() const noexcept {
     return current() == '\n';
   }
   /// Is end of file
-  inline bool isEOF() const {
-    return current() == '\0';
-  }
-  /// Add a new Token to the output
-  inline void addToken(Token tok) {
-    tokens.push_back(tok);
-  }
-  /// Get count of tokens
-  inline std::size_t getTokenCount() const {
-    return tokens.size();
+  inline bool isEOF() const noexcept {
+    return pos == code.length();
   }
   /// Advance to the next line
-  inline void nextLine() {
+  inline void nextLine() noexcept {
     currentLinePos = 0;
     currentLine++;
   }
-  /// Get the current line number
-  inline uint64 getCurrentLine() const {
-    return currentLine;
-  }
-  /// Get a Position object
-  inline const Position getCurrentPosition() const {
+  /// Get a Position object to the current location
+  inline const Position getPos() const {
     return Position(currentLine, currentLinePos);
   }
   /// Make a range from the argument to the current position
-  inline const Range getRangeToHere(const Position start) const {
-    return Range(start, getCurrentPosition());
+  inline const Range rangeFrom(const Position start) const {
+    return Range(start, getPos());
+  }
+  /// Make a trace from the argument to the current position
+  inline const Trace traceFrom(const Position start) const {
+    return Trace(sourceOfCode, rangeFrom(start));
+  }
+  /// Make a trace n characters long
+  inline const Trace traceFor(uint n) const {
+    return Trace(sourceOfCode, Range(getPos(), n));
   }
 
-  /// \copydoc findConstruct
-  inline bool isOctalDigit(char c) const;
-  /// \copydoc findConstruct
-  inline bool isIdentifierChar() const;
-  /// \copydoc findConstruct
-  inline Fixity determineFixity(Fixity afterBinaryOrPrefix, Fixity afterIdentOrParen, Fixity otherCases) const;
-  
-  /// \copydoc findConstruct
   inline void handleMultiLineComments();
-  /// \copydoc findConstruct
-  inline int getNumberRadix();
-  /// \copydoc findConstruct
-  inline Token getNumberToken(int radix);
-  /// \copydoc findConstruct
-  inline std::string getQuotedString();
+  
+  /// Check if the current character can be part of an identifier
+  bool isIdentifierChar() const noexcept;
+  /**
+    \brief Disambiguate the fixity of the last token added
+    \returns one of the arguments, depending on the token in front
+  */
+  Fixity determineFixity(
+    Fixity afterBinaryOrPrefix,
+    Fixity afterIdentOrParen,
+    Fixity otherCases
+  ) const noexcept;
+  
+  bool isValidForRadix(char c, uint radix) const noexcept;
+  /**
+    \brief Look for a radix at the current position, eg the '0x' in 0xAAA
+    \returns the radix found (2, 16, etc)
+  */
+  uint readRadix();
+  /**
+    \brief Look for a number at the current position
+    \param radix the number's radix
+    \returns a token with TT::INTEGER or TT::FLOAT, with its data field in decimal
+  */
+  Token readNumber(uint radix);
+  /**
+    \brief Look for an escape sequence (assumes that the \\ was skipped)
+    \returns whatever was escaped
+  */
+  char readEscapeSeq();
 protected:
   /// Put the actual lexical analysis in here, not in tokenize
   void processTokens();
@@ -147,143 +154,5 @@ public:
   /// Get the where the code is from
   std::string getCodeSource() const noexcept;
 };
-
-inline void Lexer::handleMultiLineComments() {
-  // TODO nested comments
-  Position start = getCurrentPosition();
-  if (current(2) == "/*") {
-    skip(2); // Skip "/*"
-    while (current(2) != "*/") {
-      if (isEOF()) throw Error("SyntaxError", "Multi-line comment not closed", Trace(sourceOfCode, getRangeToHere(start)));
-      else if (isEOL()) nextLine();
-      skip(1); // Skip characters one by one until we hit the end of the comment
-    }
-    skip(2); // Skip "*/"
-  }
-}
-
-inline bool Lexer::isOctalDigit(char c) const {
-  return c >= '0' && c <= '7';
-}
-
-inline std::string Lexer::getQuotedString() {
-  std::string str = "";
-  Position start = getCurrentPosition();
-  while (current() != '"') {
-    if (isEOF()) throw Error("SyntaxError", "String literal has unmatched quote", Trace(sourceOfCode, getRangeToHere(start)));
-    if (current() == '\\') {
-      Position escCharPos = getCurrentPosition();
-      char escapedChar = peekAhead(1);
-      skip(2); // Skip escape code, eg '\n', '\t'
-      auto charIt = singleCharEscapeSeqences.find(escapedChar);
-      if (charIt != std::end(singleCharEscapeSeqences)) {
-        str += charIt->second;
-        continue;
-      } else {
-        auto badEscape = Error("SyntaxError",
-          "Invalid escape code", Trace(sourceOfCode, getRangeToHere(escCharPos)));
-        // \x00 hex escape code
-        if (escapedChar == 'x') {
-          std::string hexNumber = "";
-          if (std::isxdigit(current())) hexNumber += current();
-          else throw badEscape;
-          if (std::isxdigit(peekAhead(1))) hexNumber += peekAhead(1);
-          else throw badEscape;
-          skip(2);
-          str += static_cast<char>(std::stoll(hexNumber, nullptr, 16));
-          continue;
-        // \00 octal escape code
-        } else if (isdigit(escapedChar)) {
-          std::string octalNumber = "";
-          if (isOctalDigit(escapedChar)) octalNumber += escapedChar;
-          else throw badEscape;
-          if (isOctalDigit(current())) octalNumber += current();
-          else throw badEscape;
-          if (isOctalDigit(peekAhead(1))) octalNumber += peekAhead(1);
-          else throw badEscape;
-          skip(3);
-          str += static_cast<char>(std::stoll(octalNumber, nullptr, 8));
-          continue;
-        }
-        throw badEscape;
-      }
-    }
-    str += current();
-    skip(1);
-  }
-  return str;
-}
-
-inline bool Lexer::isIdentifierChar() const {
-  bool isOperatorChar =
-    Operator::operatorCharacters.find(current()) != Operator::operatorCharacters.end();
-  bool isConstructChar = contains({
-    ' ', '\n', '\0', '(', ')', '[', ']', '?', ';', ':'
-  }, current());
-  return !isOperatorChar && !isConstructChar;
-}
-
-inline Fixity Lexer::determineFixity(Fixity afterBinaryOrPrefix, Fixity afterIdentOrParen, Fixity otherCases) const {
-  if (getTokenCount() == 0) return otherCases;
-  Fixity type;
-  if (peekBehind().isOp() && (peekBehind().op().hasArity(BINARY) || peekBehind().op().hasFixity(PREFIX))) {
-    // If the thing before this op is a binary op or a prefix unary, it means this must be a prefix unary
-    type = afterBinaryOrPrefix;
-  } else if (peekBehind().isTerminal() || peekBehind().type == TT::PAREN_RIGHT || (peekBehind().isOp() && peekBehind().op().hasFixity(POSTFIX))) {
-    // If the thing before was an identifier/paren (or the postfix op attached to an ident), then this must be a postfix unary or a binary infix
-    type = afterIdentOrParen;
-  } else {
-    type = otherCases;
-  }
-  return type;
-}
-
-inline int Lexer::getNumberRadix() {
-  if (current() == '0' && isalpha(peekAhead(1))) {
-    Position zeroPos = getCurrentPosition();
-    auto radixIdent = peekAhead(1);
-    skip(2); // Skip the "0x", etc
-    switch (radixIdent) {
-      case 'x': return 16;
-      case 'b': return 2;
-      case 'o': return 8;
-      default: throw Error("SyntaxError", "Invalid radix", Trace(sourceOfCode, getRangeToHere(zeroPos)));
-    }
-  } else {
-    return 10;
-  }
-}
-
-inline Token Lexer::getNumberToken(int radix) {
-  Position start = getCurrentPosition();
-  if (current() == '0' && isdigit(peekAhead(1)))
-    throw Error("SyntaxError", "Numbers cannot begin with '0'", Trace(sourceOfCode, Range(start, 1)));
-  std::string number = "";
-  bool isFloat = false;
-  while (!isEOF()) {
-    if (current() == '.') {
-      if (isFloat) throw Error("SyntaxError", "Malformed float, multiple decimal points", Trace(sourceOfCode, getRangeToHere(start)));
-      isFloat = true;
-      number += current();
-      skip(1);
-    } else if (isdigit(current())) {
-      number += current();
-      skip(1);
-    } else if (
-        (current() >= 'A' && current() < 'A' + radix - 10) ||
-        (current() >= 'a' && current() < 'a' + radix - 10)
-      ) {
-      number += current();
-      skip(1);
-    } else {
-      break;
-    }
-  }
-  noIncrement();
-  if (number.back() == '.') throw Error("SyntaxError", "Malformed float, missing digits after decimal point", Trace(sourceOfCode, getRangeToHere(start)));
-  if (radix != 10 && isFloat) throw Error("SyntaxError", "Floating point numbers must be used with base 10 numbers", Trace(sourceOfCode, getRangeToHere(start)));
-  if (radix != 10) number = std::to_string(std::stoll(number, nullptr, radix));
-  return Token(isFloat ? TT::FLOAT : TT::INTEGER, number, Trace(sourceOfCode, getRangeToHere(start)));
-}
 
 #endif

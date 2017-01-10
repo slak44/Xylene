@@ -60,7 +60,8 @@ integer_literal = ? an integer value, see Lexer class for details ? ;
 float_literal = ? a floating point value, see Lexer class for details ?
 boolean_literal = "true" | "false" ;
 string_literal = ? quotation mark delimited string, see Lexer class for details ? ;
-ident = ? see Lexer class for what is an identifier ? ;
+ident = { ident_char } ;
+ident_char = ? see Lexer::isIdentifierChar ? ;
 ```
 TODO list:
 - strings
