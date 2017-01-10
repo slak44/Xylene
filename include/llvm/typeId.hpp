@@ -36,7 +36,7 @@ protected:
   /// Constant numeric unique id
   const UniqueIdentifier id = generateId();
   
-  virtual ~AbstractId() {};
+  virtual ~AbstractId() {}
 public:
   virtual UniqueIdentifier getId() const;
   virtual TypeName getName() const;
