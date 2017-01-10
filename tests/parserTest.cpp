@@ -20,7 +20,7 @@ protected:
 class ParserCompareTest: public ParserTest {
 protected:
   inline void test(std::string code, std::string xmlCodePath) {
-    px.parse(Lexer().tokenize(code, "<parser-test>").getTokens());
+    px.parse(Lexer::tokenize(code, "<parser-test>")->getTokens());
     xpx.parse(xmlFile(xmlCodePath));
     ASSERT_EQ(px.getTree(), xpx.getTree());
   }

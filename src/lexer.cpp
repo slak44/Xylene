@@ -1,33 +1,15 @@
 #include "lexer.hpp"
 
-const std::string& LexerBase::getCode() const {
-  return code;
+Lexer::Lexer(std::string code, std::string sourceOfCode):
+  code(code), sourceOfCode(sourceOfCode) {}
+
+std::unique_ptr<Lexer> Lexer::tokenize(std::string code, std::string sourceOfCode) {
+  Lexer* lx = new Lexer(code, sourceOfCode);
+  lx->processTokens();
+  return std::unique_ptr<Lexer>(lx);
 }
 
-const std::vector<Token>& LexerBase::getTokens() const {
-  return tokens;
-}
-
-const Token& LexerBase::operator[](std::size_t p) const {
-  return tokens[p];
-}
-
-uint64 LexerBase::getLineCount() const {
-  if (tokens.size() == 0) return 0;
-  return getCurrentLine();
-}
-
-LexerBase& LexerBase::tokenize(std::string source, std::string nameOfFile) {
-  code = source;
-  fileName = nameOfFile;
-  pos = 0;
-  tokens = {};
-  currentLine = 1;
-  processInput();
-  return *this;
-}
-
-void Lexer::processInput() {
+void Lexer::processTokens() {
   for (; !hasFinishedString(); skip(1)) {
     // Comments
     if (current(2) == "//") {
@@ -49,18 +31,18 @@ void Lexer::processInput() {
     if (current() == '"') {
       Position start = getCurrentPosition();
       skip(1); // Skip the quote
-      addToken(Token(TT::STRING, getQuotedString(), Trace(getFileName(), getRangeToHere(start))));
+      addToken(Token(TT::STRING, getQuotedString(), Trace(sourceOfCode, getRangeToHere(start))));
       continue;
     }
     // Check for constructs
     TokenType construct = TT::findConstruct(current());
     if (construct != TT::UNPROCESSED) {
-      addToken(Token(construct, current(1), Trace(getFileName(), Range(getCurrentPosition(), 1))));
+      addToken(Token(construct, current(1), Trace(sourceOfCode, Range(getCurrentPosition(), 1))));
       continue;
     }
     // Check for fat arrows
     if (current(2) == "=>") {
-      addToken(Token(TT::FAT_ARROW, "=>", Trace(getFileName(), Range(getCurrentPosition(), 2))));
+      addToken(Token(TT::FAT_ARROW, "=>", Trace(sourceOfCode, Range(getCurrentPosition(), 2))));
       skip(2);
       continue;
     }
@@ -95,7 +77,7 @@ void Lexer::processInput() {
       addToken(Token(
         TT::OPERATOR,
         static_cast<Operator::Index>(operatorIt - Operator::list.begin()),
-        Trace(getFileName(), getRangeToHere(operatorStart))
+        Trace(sourceOfCode, getRangeToHere(operatorStart))
       ));
       noIncrement();
       continue;
@@ -104,7 +86,7 @@ void Lexer::processInput() {
     std::string str = "";
     Position identStart = getCurrentPosition();
     while (isIdentifierChar()) {
-      if (current() == '\\') throw Error("SyntaxError", "Extraneous escape character", Trace(getFileName(), Range(getCurrentPosition(), 1)));
+      if (current() == '\\') throw Error("SyntaxError", "Extraneous escape character", Trace(sourceOfCode, Range(getCurrentPosition(), 1)));
       str += current();
       skip(1);
     }
@@ -113,18 +95,39 @@ void Lexer::processInput() {
     if (str.length() == 0) continue;
     // Check for boolean literals
     if (str == "true" || str == "false") {
-      addToken(Token(TT::BOOLEAN, str, Trace(getFileName(), getRangeToHere(identStart))));
+      addToken(Token(TT::BOOLEAN, str, Trace(sourceOfCode, getRangeToHere(identStart))));
       continue;
     }
     // Check for keywords
     TokenType keyword = TT::findKeyword(str);
     if (keyword != TT::UNPROCESSED) {
-      addToken(Token(keyword, str, Trace(getFileName(), getRangeToHere(identStart))));
+      addToken(Token(keyword, str, Trace(sourceOfCode, getRangeToHere(identStart))));
       continue;
     }
     
     // Must be an identifier
-    addToken(Token(TT::IDENTIFIER, str, Trace(getFileName(), getRangeToHere(identStart))));
+    addToken(Token(TT::IDENTIFIER, str, Trace(sourceOfCode, getRangeToHere(identStart))));
   }
-  addToken(Token(TT::FILE_END, Trace(getFileName(), Range(getCurrentPosition(), 1))));
+  addToken(Token(TT::FILE_END, Trace(sourceOfCode, Range(getCurrentPosition(), 1))));
+}
+
+Token Lexer::operator[](std::size_t at) const {
+  return tokens[at];
+}
+
+const std::string& Lexer::getCode() const noexcept {
+  return code;
+}
+
+const std::vector<Token>& Lexer::getTokens() const noexcept {
+  return tokens;
+}
+
+uint64 Lexer::getLineCount() const noexcept {
+  if (tokens.empty()) return 0;
+  return getCurrentLine();
+}
+
+std::string Lexer::getCodeSource() const noexcept {
+  return sourceOfCode;
 }

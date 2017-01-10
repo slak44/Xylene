@@ -14,7 +14,7 @@ Everything else is downloaded and installed before building.
 
 EBNF format of a program:
 ```
-program = block ;
+program = [ hashbang ], block ;
 block = { statement, ";" } ;
 statement =
   declaration | function_decl | for_loop | while_loop | block | if_statement |
@@ -42,6 +42,7 @@ typedef = "define", ident, "as", type_list ;
 function_decl = "function", function_signature, "do", block, "end" ;
 native_fun_decl = "foreign", "function", function_signature, ";" ;
 
+hashbang = ? Unix hashbang ? ;
 function_signature = [ ident ], argument_list, [ "=>", type_list ] ;
 visibility_specifier = "public" | "private" | "protected" ;
 type_list = ident, { ",", ident } ;

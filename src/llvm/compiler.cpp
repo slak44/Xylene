@@ -6,12 +6,11 @@ Compiler::Compiler(fs::path rootScript, fs::path output):
   std::ifstream file(rootScript);
   std::stringstream buffer;
   buffer << file.rdbuf();
-  auto lx = Lexer();
-  lx.tokenize(buffer.str(), rootScript);
+  auto lx = Lexer::tokenize(buffer.str(), rootScript);
   auto mc = ModuleCompiler::create(
     pd.types,
     "temp_module_name",
-    TokenParser().parse(lx.getTokens()).getTree()
+    TokenParser().parse(lx->getTokens()).getTree()
   );
   mc->addMainFunction();
   mc->visit();

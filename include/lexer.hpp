@@ -12,33 +12,34 @@
 #include "operator.hpp"
 #include "token.hpp"
 
-/// Maps the second character in an escape sequence (eg the 'n' in \\n) to the actual escaped code.
-const std::unordered_map<char, char> singleCharEscapeSeqences {
-  {'a', '\a'},
-  {'b', '\b'},
-  {'f', '\f'},
-  {'n', '\n'},
-  {'r', '\r'},
-  {'t', '\t'},
-  {'v', '\v'},
-  {'\\', '\\'},
-  {'\'', '\''},
-  {'"', '\"'},
-  {'?', '\?'},
-};
+namespace {
+  /// Maps the second character in an escape sequence (eg the 'n' in \\n) to the actual escaped character.
+  const std::unordered_map<char, char> singleCharEscapeSeqences {
+    {'a', '\a'},
+    {'b', '\b'},
+    {'f', '\f'},
+    {'n', '\n'},
+    {'r', '\r'},
+    {'t', '\t'},
+    {'v', '\v'},
+    {'\\', '\\'},
+    {'\'', '\''},
+    {'"', '\"'},
+    {'?', '\?'},
+  };
+}
 
-/**
-  \brief Base of Lexer. Maintains all of its state, and provides convenience methods for manipulating it
-*/
-class LexerBase {
+/// Tokenizes input.
+class Lexer {
 private:
-  std::string fileName;
   std::string code;
-  uint64 pos = 0;
+  std::string sourceOfCode;
   std::vector<Token> tokens {};
+  
+  uint64 pos = 0;
   uint64 currentLine = 1;
   uint64 currentLinePos = 0;
-protected:
+  
   /// Get character at current position
   inline char current() const {
     return code[pos];
@@ -105,37 +106,7 @@ protected:
   inline const Range getRangeToHere(const Position start) const {
     return Range(start, getCurrentPosition());
   }
-  /// Get the current file name
-  inline const std::string& getFileName() const {
-    return fileName;
-  }
-  /**
-    \brief Subclasses should use this to loop over the input and create Tokens from it
-  */
-  virtual void processInput() = 0;
-  
-  LexerBase() = default;
-  LexerBase(const LexerBase&) = default;
-  virtual ~LexerBase() = default;
-public:
-  /// Get input code
-  const std::string& getCode() const;
-  /// Get output tokens
-  const std::vector<Token>& getTokens() const;
-  /// Access an output token at a particular position
-  const Token& operator[](std::size_t p) const;
-  /// Get total line count
-  uint64 getLineCount() const;
-  
-  /// Call to create output token list
-  LexerBase& tokenize(std::string code, std::string fileName);
-};
 
-/**
-  \brief Tokenizes input.
-*/
-class Lexer: public LexerBase {
-private:
   /// \copydoc findConstruct
   inline bool isOctalDigit(char c) const;
   /// \copydoc findConstruct
@@ -152,9 +123,29 @@ private:
   /// \copydoc findConstruct
   inline std::string getQuotedString();
 protected:
-  void processInput() override;
+  /// Put the actual lexical analysis in here, not in tokenize
+  void processTokens();
+  
+  Lexer(std::string code, std::string sourceOfCode);
+  Lexer(const Lexer&) = default;
 public:
-  Lexer() {}
+  /**
+    \brief Call to create token list from code
+    \param code thing to tokenize
+    \param sourceOfCode where the code came from, used for error messages
+  */
+  static std::unique_ptr<Lexer> tokenize(std::string code, std::string sourceOfCode);
+  
+  Token operator[](std::size_t) const;
+  
+  /// Get input code
+  const std::string& getCode() const noexcept;
+  /// Get output tokens
+  const std::vector<Token>& getTokens() const noexcept;
+  /// Get total line count
+  uint64 getLineCount() const noexcept;
+  /// Get the where the code is from
+  std::string getCodeSource() const noexcept;
 };
 
 inline void Lexer::handleMultiLineComments() {
@@ -163,7 +154,7 @@ inline void Lexer::handleMultiLineComments() {
   if (current(2) == "/*") {
     skip(2); // Skip "/*"
     while (current(2) != "*/") {
-      if (isEOF()) throw Error("SyntaxError", "Multi-line comment not closed", Trace(getFileName(), getRangeToHere(start)));
+      if (isEOF()) throw Error("SyntaxError", "Multi-line comment not closed", Trace(sourceOfCode, getRangeToHere(start)));
       else if (isEOL()) nextLine();
       skip(1); // Skip characters one by one until we hit the end of the comment
     }
@@ -179,7 +170,7 @@ inline std::string Lexer::getQuotedString() {
   std::string str = "";
   Position start = getCurrentPosition();
   while (current() != '"') {
-    if (isEOF()) throw Error("SyntaxError", "String literal has unmatched quote", Trace(getFileName(), getRangeToHere(start)));
+    if (isEOF()) throw Error("SyntaxError", "String literal has unmatched quote", Trace(sourceOfCode, getRangeToHere(start)));
     if (current() == '\\') {
       Position escCharPos = getCurrentPosition();
       char escapedChar = peekAhead(1);
@@ -190,7 +181,7 @@ inline std::string Lexer::getQuotedString() {
         continue;
       } else {
         auto badEscape = Error("SyntaxError",
-          "Invalid escape code", Trace(getFileName(), getRangeToHere(escCharPos)));
+          "Invalid escape code", Trace(sourceOfCode, getRangeToHere(escCharPos)));
         // \x00 hex escape code
         if (escapedChar == 'x') {
           std::string hexNumber = "";
@@ -256,7 +247,7 @@ inline int Lexer::getNumberRadix() {
       case 'x': return 16;
       case 'b': return 2;
       case 'o': return 8;
-      default: throw Error("SyntaxError", "Invalid radix", Trace(getFileName(), getRangeToHere(zeroPos)));
+      default: throw Error("SyntaxError", "Invalid radix", Trace(sourceOfCode, getRangeToHere(zeroPos)));
     }
   } else {
     return 10;
@@ -266,12 +257,12 @@ inline int Lexer::getNumberRadix() {
 inline Token Lexer::getNumberToken(int radix) {
   Position start = getCurrentPosition();
   if (current() == '0' && isdigit(peekAhead(1)))
-    throw Error("SyntaxError", "Numbers cannot begin with '0'", Trace(getFileName(), Range(start, 1)));
+    throw Error("SyntaxError", "Numbers cannot begin with '0'", Trace(sourceOfCode, Range(start, 1)));
   std::string number = "";
   bool isFloat = false;
   while (!isEOF()) {
     if (current() == '.') {
-      if (isFloat) throw Error("SyntaxError", "Malformed float, multiple decimal points", Trace(getFileName(), getRangeToHere(start)));
+      if (isFloat) throw Error("SyntaxError", "Malformed float, multiple decimal points", Trace(sourceOfCode, getRangeToHere(start)));
       isFloat = true;
       number += current();
       skip(1);
@@ -289,10 +280,10 @@ inline Token Lexer::getNumberToken(int radix) {
     }
   }
   noIncrement();
-  if (number.back() == '.') throw Error("SyntaxError", "Malformed float, missing digits after decimal point", Trace(getFileName(), getRangeToHere(start)));
-  if (radix != 10 && isFloat) throw Error("SyntaxError", "Floating point numbers must be used with base 10 numbers", Trace(getFileName(), getRangeToHere(start)));
+  if (number.back() == '.') throw Error("SyntaxError", "Malformed float, missing digits after decimal point", Trace(sourceOfCode, getRangeToHere(start)));
+  if (radix != 10 && isFloat) throw Error("SyntaxError", "Floating point numbers must be used with base 10 numbers", Trace(sourceOfCode, getRangeToHere(start)));
   if (radix != 10) number = std::to_string(std::stoll(number, nullptr, radix));
-  return Token(isFloat ? TT::FLOAT : TT::INTEGER, number, Trace(getFileName(), getRangeToHere(start)));
+  return Token(isFloat ? TT::FLOAT : TT::INTEGER, number, Trace(sourceOfCode, getRangeToHere(start)));
 }
 
 #endif

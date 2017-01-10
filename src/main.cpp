@@ -41,17 +41,13 @@ std::unique_ptr<AST> parseXML(fs::path filePath, std::string cliEval) {
 }
 
 std::vector<Token> tokenize(fs::path filePath, std::string cliEval) {
-  std::string input;
   if (!filePath.empty()) {
     std::ifstream file(filePath);
     std::stringstream buffer;
     buffer << file.rdbuf();
-    input = buffer.str();
-  } else {
-    input = cliEval;
+    return Lexer::tokenize(buffer.str(), filePath)->getTokens();
   }
-  auto lx = Lexer();
-  return lx.tokenize(input, filePath.empty() ? "<cli-eval>" : filePath).getTokens();
+  return Lexer::tokenize(cliEval, "<cli-eval>")->getTokens();
 }
 
 /// Throw if the assertion is false

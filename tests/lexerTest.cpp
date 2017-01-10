@@ -7,21 +7,25 @@
 
 class LexerTest: public ::testing::Test {
 protected:
-  Lexer lx = Lexer();
+  std::unique_ptr<Lexer> lx;
   const std::vector<Token>& getTokens(std::string code) {
-    return lx.tokenize(code, "<lexer-test>").getTokens();
+    lx = Lexer::tokenize(code, "<lexer-test>");
+    return lx->getTokens();
+  }
+  Token at(std::size_t pos) {
+    return (*lx)[pos];
   }
 };
 
 TEST_F(LexerTest, CommentsSingleLine) {
   ASSERT_EQ(getTokens("// test\n"), std::vector<Token> {Token(TT::FILE_END, "", defaultTrace)});
   ASSERT_EQ(getTokens("// asd 123 . ////**//"), std::vector<Token> {Token(TT::FILE_END, "", defaultTrace)});
-  ASSERT_EQ(lx.getLineCount(), 1);
+  ASSERT_EQ(lx->getLineCount(), 1);
 }
 
 TEST_F(LexerTest, CommentsMultiLine) {
   ASSERT_EQ(getTokens("/*asdad\ndasd\nasd*/"), std::vector<Token> {Token(TT::FILE_END, "", defaultTrace)});
-  ASSERT_EQ(lx.getLineCount(), 3);
+  ASSERT_EQ(lx->getLineCount(), 3);
 }
 
 TEST_F(LexerTest, IntegerLiterals) {
@@ -80,9 +84,9 @@ TEST_F(LexerTest, Operators) {
   EXPECT_EQ(getTokens("+ 1")[0], Token(TT::OPERATOR, 25, defaultTrace));
   EXPECT_EQ(getTokens("++1")[0], Token(TT::OPERATOR, 23, defaultTrace));
   EXPECT_EQ(getTokens("1++ + 2")[1], Token(TT::OPERATOR, 20, defaultTrace));
-  EXPECT_EQ(lx[2], Token(TT::OPERATOR, 31, defaultTrace));
+  EXPECT_EQ(at(2), Token(TT::OPERATOR, 31, defaultTrace));
   EXPECT_EQ(getTokens("1++ + ++2")[3], Token(TT::OPERATOR, 23, defaultTrace));
-  EXPECT_EQ(lx[2], Token(TT::OPERATOR, 31, defaultTrace));
+  EXPECT_EQ(at(2), Token(TT::OPERATOR, 31, defaultTrace));
 }
 
 TEST_F(LexerTest, Keywords) {
@@ -93,11 +97,11 @@ TEST_F(LexerTest, Keywords) {
 
 TEST_F(LexerTest, Expression) {
   getTokens("(-12 + -3) / 1.5 >> 1");
-  EXPECT_EQ(lx[0], Token(TT::PAREN_LEFT, "(", defaultTrace));
-  EXPECT_EQ(lx[1], Token(TT::OPERATOR, 24, defaultTrace));
-  EXPECT_EQ(lx[2], Token(TT::INTEGER, "12", defaultTrace));
-  EXPECT_EQ(lx[5], Token(TT::INTEGER, "3", defaultTrace));
-  EXPECT_EQ(lx[6], Token(TT::PAREN_RIGHT, ")", defaultTrace));
-  EXPECT_EQ(lx[8], Token(TT::FLOAT, "1.5", defaultTrace));
-  EXPECT_EQ(lx[10], Token(TT::INTEGER, "1", defaultTrace));
+  EXPECT_EQ(at(0), Token(TT::PAREN_LEFT, "(", defaultTrace));
+  EXPECT_EQ(at(1), Token(TT::OPERATOR, 24, defaultTrace));
+  EXPECT_EQ(at(2), Token(TT::INTEGER, "12", defaultTrace));
+  EXPECT_EQ(at(5), Token(TT::INTEGER, "3", defaultTrace));
+  EXPECT_EQ(at(6), Token(TT::PAREN_RIGHT, ")", defaultTrace));
+  EXPECT_EQ(at(8), Token(TT::FLOAT, "1.5", defaultTrace));
+  EXPECT_EQ(at(10), Token(TT::INTEGER, "1", defaultTrace));
 }
