@@ -14,7 +14,7 @@ extern "C" {
   };
 
   bool checkTypeCompat(Value val, Value newVal);
-  std::string typeOf(Value val);
+  char* typeOf(Value val);
   Value withType(Value toBeConcretized, UniqueIdentifier concreteType);
 }
 
