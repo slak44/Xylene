@@ -83,6 +83,7 @@ $(document).ready(function(){initNavTree('class_lexer.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="class_lexer-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -94,110 +95,45 @@ $(document).ready(function(){initNavTree('class_lexer.html','');});
  <a href="class_lexer.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for Lexer:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_lexer__inherit__graph.png" border="0" usemap="#_lexer_inherit__map" alt="Inheritance graph"/></div>
-<map name="_lexer_inherit__map" id="_lexer_inherit__map">
-<area shape="rect" id="node2" href="class_lexer_base.html" title="Base of Lexer. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="5,5,88,32"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for Lexer:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_lexer__coll__graph.png" border="0" usemap="#_lexer_coll__map" alt="Collaboration graph"/></div>
-<map name="_lexer_coll__map" id="_lexer_coll__map">
-<area shape="rect" id="node2" href="class_lexer_base.html" title="Base of Lexer. Maintains all of its state, and provides convenience methods for manipulating it..." alt="" coords="5,5,88,32"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2752a2b16cc1ffbcb8fc3e82e95bf331"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a2752a2b16cc1ffbcb8fc3e82e95bf331">Lexer</a> ()</td></tr>
-<tr class="separator:a2752a2b16cc1ffbcb8fc3e82e95bf331"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_lexer_base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_lexer_base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_lexer_base.html">LexerBase</a></td></tr>
-<tr class="memitem:ab645cbbce55ecbd01185e0f1a0ffc738 inherit pub_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#ab645cbbce55ecbd01185e0f1a0ffc738">getCode</a> () const</td></tr>
-<tr class="memdesc:ab645cbbce55ecbd01185e0f1a0ffc738 inherit pub_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input code.  <a href="class_lexer_base.html#ab645cbbce55ecbd01185e0f1a0ffc738">More...</a><br /></td></tr>
-<tr class="separator:ab645cbbce55ecbd01185e0f1a0ffc738 inherit pub_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07d939c5678772d87702fc43942949ec inherit pub_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="class_token.html">Token</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a07d939c5678772d87702fc43942949ec">getTokens</a> () const</td></tr>
-<tr class="memdesc:a07d939c5678772d87702fc43942949ec inherit pub_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output tokens.  <a href="class_lexer_base.html#a07d939c5678772d87702fc43942949ec">More...</a><br /></td></tr>
-<tr class="separator:a07d939c5678772d87702fc43942949ec inherit pub_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a44e9afd182a387d59bc86d55eb5e6a inherit pub_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_token.html">Token</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a0a44e9afd182a387d59bc86d55eb5e6a">operator[]</a> (std::size_t p) const</td></tr>
-<tr class="memdesc:a0a44e9afd182a387d59bc86d55eb5e6a inherit pub_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access an output token at a particular position.  <a href="class_lexer_base.html#a0a44e9afd182a387d59bc86d55eb5e6a">More...</a><br /></td></tr>
-<tr class="separator:a0a44e9afd182a387d59bc86d55eb5e6a inherit pub_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58881dff1663e58f7d69c2ad376aa47f inherit pub_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top"><a class="el" href="util_8hpp.html#aba41bf2b6f6da5945ee08fb99931aede">uint64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a58881dff1663e58f7d69c2ad376aa47f">getLineCount</a> () const</td></tr>
-<tr class="memdesc:a58881dff1663e58f7d69c2ad376aa47f inherit pub_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get total line count.  <a href="class_lexer_base.html#a58881dff1663e58f7d69c2ad376aa47f">More...</a><br /></td></tr>
-<tr class="separator:a58881dff1663e58f7d69c2ad376aa47f inherit pub_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21c194f845c6ab535ad38ac26b47d8c7 inherit pub_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_lexer_base.html">LexerBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a21c194f845c6ab535ad38ac26b47d8c7">tokenize</a> (std::string code, std::string fileName)</td></tr>
-<tr class="memdesc:a21c194f845c6ab535ad38ac26b47d8c7 inherit pub_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call to create output token list.  <a href="class_lexer_base.html#a21c194f845c6ab535ad38ac26b47d8c7">More...</a><br /></td></tr>
-<tr class="separator:a21c194f845c6ab535ad38ac26b47d8c7 inherit pub_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a960379c06022930bd6df843e11c7e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_token.html">Token</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a0a960379c06022930bd6df843e11c7e4">operator[]</a> (std::size_t) const</td></tr>
+<tr class="separator:a0a960379c06022930bd6df843e11c7e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c85021dea4480b0d3484981b5bd6873"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a3c85021dea4480b0d3484981b5bd6873">getCode</a> () const noexcept</td></tr>
+<tr class="memdesc:a3c85021dea4480b0d3484981b5bd6873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input code.  <a href="#a3c85021dea4480b0d3484981b5bd6873">More...</a><br /></td></tr>
+<tr class="separator:a3c85021dea4480b0d3484981b5bd6873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdddfdaa4ad0f39328b9d1d74ea1fd46"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="class_token.html">Token</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#afdddfdaa4ad0f39328b9d1d74ea1fd46">getTokens</a> () const noexcept</td></tr>
+<tr class="memdesc:afdddfdaa4ad0f39328b9d1d74ea1fd46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output tokens.  <a href="#afdddfdaa4ad0f39328b9d1d74ea1fd46">More...</a><br /></td></tr>
+<tr class="separator:afdddfdaa4ad0f39328b9d1d74ea1fd46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cf5891c64eff9d0d5903f542568e597"><td class="memItemLeft" align="right" valign="top"><a class="el" href="util_8hpp.html#aba41bf2b6f6da5945ee08fb99931aede">uint64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a9cf5891c64eff9d0d5903f542568e597">getLineCount</a> () const noexcept</td></tr>
+<tr class="memdesc:a9cf5891c64eff9d0d5903f542568e597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get total line count.  <a href="#a9cf5891c64eff9d0d5903f542568e597">More...</a><br /></td></tr>
+<tr class="separator:a9cf5891c64eff9d0d5903f542568e597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2657d4395a5ba1f518135d53dfe8c414"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a2657d4395a5ba1f518135d53dfe8c414">getCodeSource</a> () const noexcept</td></tr>
+<tr class="memdesc:a2657d4395a5ba1f518135d53dfe8c414"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the where the code is from.  <a href="#a2657d4395a5ba1f518135d53dfe8c414">More...</a><br /></td></tr>
+<tr class="separator:a2657d4395a5ba1f518135d53dfe8c414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a042e59283f870b414b31b0125cef9820"><td class="memItemLeft" align="right" valign="top">static std::unique_ptr&lt; <a class="el" href="class_lexer.html">Lexer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a042e59283f870b414b31b0125cef9820">tokenize</a> (std::string code, std::string sourceOfCode)</td></tr>
+<tr class="memdesc:a042e59283f870b414b31b0125cef9820"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call to create token list from code.  <a href="#a042e59283f870b414b31b0125cef9820">More...</a><br /></td></tr>
+<tr class="separator:a042e59283f870b414b31b0125cef9820"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a75ff4d2a74e27ea92edc1cf09cbeb75d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a75ff4d2a74e27ea92edc1cf09cbeb75d">processInput</a> () override</td></tr>
-<tr class="memdesc:a75ff4d2a74e27ea92edc1cf09cbeb75d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subclasses should use this to loop over the input and create Tokens from it.  <a href="#a75ff4d2a74e27ea92edc1cf09cbeb75d">More...</a><br /></td></tr>
-<tr class="separator:a75ff4d2a74e27ea92edc1cf09cbeb75d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_class_lexer_base"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_lexer_base')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_lexer_base.html">LexerBase</a></td></tr>
-<tr class="memitem:a9845337350805a8b4795ec349f403167 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a9845337350805a8b4795ec349f403167">current</a> () const</td></tr>
-<tr class="memdesc:a9845337350805a8b4795ec349f403167 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get character at current position.  <a href="class_lexer_base.html#a9845337350805a8b4795ec349f403167">More...</a><br /></td></tr>
-<tr class="separator:a9845337350805a8b4795ec349f403167 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada72f63e4e0da39f9a303d36c913d22d inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#ada72f63e4e0da39f9a303d36c913d22d">current</a> (<a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a> charCount) const</td></tr>
-<tr class="memdesc:ada72f63e4e0da39f9a303d36c913d22d inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get multiple characters starting at the current position.  <a href="class_lexer_base.html#ada72f63e4e0da39f9a303d36c913d22d">More...</a><br /></td></tr>
-<tr class="separator:ada72f63e4e0da39f9a303d36c913d22d inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcab26fe5571d9997dcf2093a88ee9f2 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#afcab26fe5571d9997dcf2093a88ee9f2">peekAhead</a> (<a class="el" href="util_8hpp.html#a69aa29b598b851b0640aa225a9e5d61d">uint</a> ahead) const</td></tr>
-<tr class="memdesc:afcab26fe5571d9997dcf2093a88ee9f2 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a character this many indices ahead.  <a href="class_lexer_base.html#afcab26fe5571d9997dcf2093a88ee9f2">More...</a><br /></td></tr>
-<tr class="separator:afcab26fe5571d9997dcf2093a88ee9f2 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fe2752e51dfa716416f73db2d2900f7 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_token.html">Token</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a8fe2752e51dfa716416f73db2d2900f7">peekBehind</a> () const</td></tr>
-<tr class="memdesc:a8fe2752e51dfa716416f73db2d2900f7 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the last inserted <a class="el" href="class_token.html" title="Holds a token encountered by the lexer. ">Token</a>.  <a href="class_lexer_base.html#a8fe2752e51dfa716416f73db2d2900f7">More...</a><br /></td></tr>
-<tr class="separator:a8fe2752e51dfa716416f73db2d2900f7 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a391ba6230f653e8a30042039314a2ea8 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a391ba6230f653e8a30042039314a2ea8">skip</a> (<a class="el" href="util_8hpp.html#aba41bf2b6f6da5945ee08fb99931aede">uint64</a> skipped)</td></tr>
-<tr class="memdesc:a391ba6230f653e8a30042039314a2ea8 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skip a number of chars, usually just advances to the next one.  <a href="class_lexer_base.html#a391ba6230f653e8a30042039314a2ea8">More...</a><br /></td></tr>
-<tr class="separator:a391ba6230f653e8a30042039314a2ea8 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a432b3763720bfa8b9f4beb0bf933383a inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a432b3763720bfa8b9f4beb0bf933383a">noIncrement</a> ()</td></tr>
-<tr class="memdesc:a432b3763720bfa8b9f4beb0bf933383a inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement current position so the loop doesn't increment automatically.  <a href="class_lexer_base.html#a432b3763720bfa8b9f4beb0bf933383a">More...</a><br /></td></tr>
-<tr class="separator:a432b3763720bfa8b9f4beb0bf933383a inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43715ccd1b10942a7d435eec4eef5d55 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a43715ccd1b10942a7d435eec4eef5d55">hasFinishedString</a> () const</td></tr>
-<tr class="memdesc:a43715ccd1b10942a7d435eec4eef5d55 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the input finished.  <a href="class_lexer_base.html#a43715ccd1b10942a7d435eec4eef5d55">More...</a><br /></td></tr>
-<tr class="separator:a43715ccd1b10942a7d435eec4eef5d55 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ceb20bebfe5b6c94c14bbee46a17ac5 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a5ceb20bebfe5b6c94c14bbee46a17ac5">isEOL</a> () const</td></tr>
-<tr class="memdesc:a5ceb20bebfe5b6c94c14bbee46a17ac5 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is end of line.  <a href="class_lexer_base.html#a5ceb20bebfe5b6c94c14bbee46a17ac5">More...</a><br /></td></tr>
-<tr class="separator:a5ceb20bebfe5b6c94c14bbee46a17ac5 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f3b97d712fdbadfc83487d4e372bdd7 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a6f3b97d712fdbadfc83487d4e372bdd7">isEOF</a> () const</td></tr>
-<tr class="memdesc:a6f3b97d712fdbadfc83487d4e372bdd7 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is end of file.  <a href="class_lexer_base.html#a6f3b97d712fdbadfc83487d4e372bdd7">More...</a><br /></td></tr>
-<tr class="separator:a6f3b97d712fdbadfc83487d4e372bdd7 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4776a92d2d07ae428fe62fb0296c2e6 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#aa4776a92d2d07ae428fe62fb0296c2e6">addToken</a> (<a class="el" href="class_token.html">Token</a> tok)</td></tr>
-<tr class="memdesc:aa4776a92d2d07ae428fe62fb0296c2e6 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new <a class="el" href="class_token.html" title="Holds a token encountered by the lexer. ">Token</a> to the output.  <a href="class_lexer_base.html#aa4776a92d2d07ae428fe62fb0296c2e6">More...</a><br /></td></tr>
-<tr class="separator:aa4776a92d2d07ae428fe62fb0296c2e6 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72259a2393695feb94315711709cf059 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a72259a2393695feb94315711709cf059">getTokenCount</a> () const</td></tr>
-<tr class="memdesc:a72259a2393695feb94315711709cf059 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get count of tokens.  <a href="class_lexer_base.html#a72259a2393695feb94315711709cf059">More...</a><br /></td></tr>
-<tr class="separator:a72259a2393695feb94315711709cf059 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ca8b4b6e955ff4691efe03e01e4b46f inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a0ca8b4b6e955ff4691efe03e01e4b46f">nextLine</a> ()</td></tr>
-<tr class="memdesc:a0ca8b4b6e955ff4691efe03e01e4b46f inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance to the next line.  <a href="class_lexer_base.html#a0ca8b4b6e955ff4691efe03e01e4b46f">More...</a><br /></td></tr>
-<tr class="separator:a0ca8b4b6e955ff4691efe03e01e4b46f inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3e73b207963d016b9de4edc2bb0b3bc inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top"><a class="el" href="util_8hpp.html#aba41bf2b6f6da5945ee08fb99931aede">uint64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#af3e73b207963d016b9de4edc2bb0b3bc">getCurrentLine</a> () const</td></tr>
-<tr class="memdesc:af3e73b207963d016b9de4edc2bb0b3bc inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current line number.  <a href="class_lexer_base.html#af3e73b207963d016b9de4edc2bb0b3bc">More...</a><br /></td></tr>
-<tr class="separator:af3e73b207963d016b9de4edc2bb0b3bc inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66689c386e6abef8f27dcf89ec205c4b inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a66689c386e6abef8f27dcf89ec205c4b">getCurrentPosition</a> () const</td></tr>
-<tr class="memdesc:a66689c386e6abef8f27dcf89ec205c4b inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a <a class="el" href="struct_position.html" title="Tracks a position in a file. ">Position</a> object.  <a href="class_lexer_base.html#a66689c386e6abef8f27dcf89ec205c4b">More...</a><br /></td></tr>
-<tr class="separator:a66689c386e6abef8f27dcf89ec205c4b inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a323838f3d44eb46eb7835bc722cebfb3 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_range.html">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a323838f3d44eb46eb7835bc722cebfb3">getRangeToHere</a> (const <a class="el" href="struct_position.html">Position</a> start) const</td></tr>
-<tr class="memdesc:a323838f3d44eb46eb7835bc722cebfb3 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a range from the argument to the current position.  <a href="class_lexer_base.html#a323838f3d44eb46eb7835bc722cebfb3">More...</a><br /></td></tr>
-<tr class="separator:a323838f3d44eb46eb7835bc722cebfb3 inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab215dea6f11463181623f5a931bcd74b inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#ab215dea6f11463181623f5a931bcd74b">getFileName</a> () const</td></tr>
-<tr class="memdesc:ab215dea6f11463181623f5a931bcd74b inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current file name.  <a href="class_lexer_base.html#ab215dea6f11463181623f5a931bcd74b">More...</a><br /></td></tr>
-<tr class="separator:ab215dea6f11463181623f5a931bcd74b inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03da8742fbc672fda28302a75a66af4c inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a03da8742fbc672fda28302a75a66af4c">LexerBase</a> ()=default</td></tr>
-<tr class="separator:a03da8742fbc672fda28302a75a66af4c inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6749fd9137314f13490f487efea350ab inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a6749fd9137314f13490f487efea350ab">LexerBase</a> (const <a class="el" href="class_lexer_base.html">LexerBase</a> &amp;)=default</td></tr>
-<tr class="separator:a6749fd9137314f13490f487efea350ab inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacb6a8c81b7c7e6d19553fb8b704db9a inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#aacb6a8c81b7c7e6d19553fb8b704db9a">~LexerBase</a> ()=default</td></tr>
-<tr class="separator:aacb6a8c81b7c7e6d19553fb8b704db9a inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76a32c84df329e86b9a9517347ff5057"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a76a32c84df329e86b9a9517347ff5057">processTokens</a> ()</td></tr>
+<tr class="memdesc:a76a32c84df329e86b9a9517347ff5057"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the actual lexical analysis in here, not in tokenize.  <a href="#a76a32c84df329e86b9a9517347ff5057">More...</a><br /></td></tr>
+<tr class="separator:a76a32c84df329e86b9a9517347ff5057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2bb479a6dfbf79b6250d10f683ac3f3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#ab2bb479a6dfbf79b6250d10f683ac3f3">Lexer</a> (std::string code, std::string sourceOfCode)</td></tr>
+<tr class="separator:ab2bb479a6dfbf79b6250d10f683ac3f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae868294d65394f011a29ed122c883f6b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#ae868294d65394f011a29ed122c883f6b">Lexer</a> (const <a class="el" href="class_lexer.html">Lexer</a> &amp;)=default</td></tr>
+<tr class="separator:ae868294d65394f011a29ed122c883f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Tokenizes input. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2752a2b16cc1ffbcb8fc3e82e95bf331"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2752a2b16cc1ffbcb8fc3e82e95bf331">&sect;&nbsp;</a></span>Lexer()</h2>
+<a id="ab2bb479a6dfbf79b6250d10f683ac3f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2bb479a6dfbf79b6250d10f683ac3f3">&sect;&nbsp;</a></span>Lexer() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,22 +144,32 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">Lexer::Lexer </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sourceOfCode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a75ff4d2a74e27ea92edc1cf09cbeb75d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75ff4d2a74e27ea92edc1cf09cbeb75d">&sect;&nbsp;</a></span>processInput()</h2>
+<a id="ae868294d65394f011a29ed122c883f6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae868294d65394f011a29ed122c883f6b">&sect;&nbsp;</a></span>Lexer() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,7 +178,160 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Lexer::processInput </td>
+          <td class="memname">Lexer::Lexer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_lexer.html">Lexer</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3c85021dea4480b0d3484981b5bd6873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c85021dea4480b0d3484981b5bd6873">&sect;&nbsp;</a></span>getCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; Lexer::getCode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get input code. </p>
+
+</div>
+</div>
+<a id="a2657d4395a5ba1f518135d53dfe8c414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2657d4395a5ba1f518135d53dfe8c414">&sect;&nbsp;</a></span>getCodeSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Lexer::getCodeSource </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the where the code is from. </p>
+
+</div>
+</div>
+<a id="a9cf5891c64eff9d0d5903f542568e597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cf5891c64eff9d0d5903f542568e597">&sect;&nbsp;</a></span>getLineCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="util_8hpp.html#aba41bf2b6f6da5945ee08fb99931aede">uint64</a> Lexer::getLineCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get total line count. </p>
+
+</div>
+</div>
+<a id="afdddfdaa4ad0f39328b9d1d74ea1fd46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdddfdaa4ad0f39328b9d1d74ea1fd46">&sect;&nbsp;</a></span>getTokens()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="class_token.html">Token</a> &gt; &amp; Lexer::getTokens </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get output tokens. </p>
+
+</div>
+</div>
+<a id="a0a960379c06022930bd6df843e11c7e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a960379c06022930bd6df843e11c7e4">&sect;&nbsp;</a></span>operator[]()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_token.html">Token</a> Lexer::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>at</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a76a32c84df329e86b9a9517347ff5057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76a32c84df329e86b9a9517347ff5057">&sect;&nbsp;</a></span>processTokens()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Lexer::processTokens </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -240,14 +339,57 @@ Protected Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Subclasses should use this to loop over the input and create Tokens from it. </p>
+<p>Put the actual lexical analysis in here, not in tokenize. </p>
 
-<p>Implements <a class="el" href="class_lexer_base.html#ad122d7cd36b6d91533e58d06da6bb6a0">LexerBase</a>.</p>
+</div>
+</div>
+<a id="a042e59283f870b414b31b0125cef9820"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a042e59283f870b414b31b0125cef9820">&sect;&nbsp;</a></span>tokenize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="class_lexer.html">Lexer</a> &gt; Lexer::tokenize </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>code</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sourceOfCode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Call to create token list from code. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">code</td><td>thing to tokenize </td></tr>
+    <tr><td class="paramname">sourceOfCode</td><td>where the code came from, used for error messages </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

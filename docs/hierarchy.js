@@ -39,9 +39,7 @@ var hierarchy =
     [ "std::hash< AbstractId >", "structstd_1_1hash_3_01_abstract_id_01_4.html", null ],
     [ "std::hash< vector< AbstractId::Link > >", "structstd_1_1hash_3_01vector_3_01_abstract_id_1_1_link_01_4_01_4.html", null ],
     [ "Identity", "struct_identity.html", null ],
-    [ "LexerBase", "class_lexer_base.html", [
-      [ "Lexer", "class_lexer.html", null ]
-    ] ],
+    [ "Lexer", "class_lexer.html", null ],
     [ "MemberMetadata", "class_member_metadata.html", null ],
     [ "MethodData", "class_method_data.html", null ],
     [ "Operator", "class_operator.html", null ],

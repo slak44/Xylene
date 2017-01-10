@@ -9,8 +9,6 @@ var searchData=
   ['settid',['setTid',['../class_type_node.html#a70e3fb4a805a8903d8fdf3144a8bcc76',1,'TypeNode']]],
   ['settrace',['setTrace',['../class_a_s_t_node.html#a26aa86c9ef350e388a05cce7ca7eeb44',1,'ASTNode']]],
   ['setvalue',['setValue',['../class_value_wrapper.html#a795f429f58d302b09c18de1eb4e7d05b',1,'ValueWrapper']]],
-  ['singlecharescapeseqences',['singleCharEscapeSeqences',['../lexer_8hpp.html#a0c08db39fccca975eee2eef97dd2d37f',1,'lexer.hpp']]],
-  ['skip',['skip',['../class_lexer_base.html#a391ba6230f653e8a30042039314a2ea8',1,'LexerBase']]],
   ['special_5fcodegen_5fsig',['SPECIAL_CODEGEN_SIG',['../compiler_8hpp.html#aae0ebaf3b9632f07c1fc5ac8154dc595',1,'compiler.hpp']]],
   ['specialcodegenfunction',['SpecialCodegenFunction',['../class_operator_codegen.html#a122dc9bf944d0f1b042a94d31886da65',1,'OperatorCodegen']]],
   ['split',['split',['../util_8cpp.html#a5ec5407b8d7f28fd0aa7699dbe16c448',1,'split(const std::string &amp;str, char delim):&#160;util.cpp'],['../util_8hpp.html#a5ec5407b8d7f28fd0aa7699dbe16c448',1,'split(const std::string &amp;str, char delim):&#160;util.cpp']]],

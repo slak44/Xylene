@@ -20,8 +20,6 @@ var searchData=
   ['io_2ehpp',['io.hpp',['../io_8hpp.html',1,'']]],
   ['isanon',['isAnon',['../class_function_node.html#a390d7a0c3c1ec0fb92827a9ce00c947c',1,'FunctionNode']]],
   ['isdynamic',['isDynamic',['../class_declaration_node.html#a4ba3c67d410ffdd3187f74b6c1664729',1,'DeclarationNode::isDynamic()'],['../class_type_info.html#a4c35404799d01020bf44c9343d877a1b',1,'TypeInfo::isDynamic()']]],
-  ['iseof',['isEOF',['../class_lexer_base.html#a6f3b97d712fdbadfc83487d4e372bdd7',1,'LexerBase']]],
-  ['iseol',['isEOL',['../class_lexer_base.html#a5ceb20bebfe5b6c94c14bbee46a17ac5',1,'LexerBase']]],
   ['isforeign',['isForeign',['../class_function_node.html#adbddf277800d85b18f826bcae457240c',1,'FunctionNode::isForeign()'],['../class_method_data.html#add5d4edded62287e293582d6a700c145',1,'MethodData::isForeign()'],['../class_constructor_data.html#ac8b630e4b4f70bf93b865e646f9c3e44',1,'ConstructorData::isForeign()']]],
   ['isinitialized',['isInitialized',['../class_value_wrapper.html#a6813d22e1a7245e8373c0dd51fdcf2bf',1,'ValueWrapper']]],
   ['isop',['isOp',['../class_token.html#ab61afcbb7eea093237fe1419fd80a1c7',1,'Token']]],

@@ -25,7 +25,6 @@ var annotated_dup =
     [ "InstanceWrapper", "class_instance_wrapper.html", "class_instance_wrapper" ],
     [ "InternalError", "class_internal_error.html", "class_internal_error" ],
     [ "Lexer", "class_lexer.html", "class_lexer" ],
-    [ "LexerBase", "class_lexer_base.html", "class_lexer_base" ],
     [ "LoopNode", "class_loop_node.html", "class_loop_node" ],
     [ "MemberMetadata", "class_member_metadata.html", "class_member_metadata" ],
     [ "MemberNode", "class_member_node.html", "class_member_node" ],

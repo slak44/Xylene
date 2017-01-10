@@ -18,8 +18,8 @@ var searchData=
   ['compiler_2ecpp',['compiler.cpp',['../compiler_8cpp.html',1,'']]],
   ['compiler_2ehpp',['compiler.hpp',['../compiler_8hpp.html',1,'']]],
   ['constr',['CONSTR',['../namespace_t_t.html#acb190a2af4b615bc9547ebcfa55c503c',1,'TT']]],
-  ['construct',['Construct',['../class_t_t_1_1_construct.html',1,'TT']]],
   ['construct',['Construct',['../class_t_t_1_1_construct.html#a7752a9e452b1e7e4be65db7c47c590c4',1,'TT::Construct']]],
+  ['construct',['Construct',['../class_t_t_1_1_construct.html',1,'TT']]],
   ['constructordata',['ConstructorData',['../class_constructor_data.html',1,'ConstructorData'],['../class_constructor_data.html#a591f467e7651ffd7e6ed51713d9ecf83',1,'ConstructorData::ConstructorData()']]],
   ['constructornode',['ConstructorNode',['../class_constructor_node.html',1,'ConstructorNode'],['../class_constructor_node.html#ae8ff8ee6557996003556db93b49aee8b',1,'ConstructorNode::ConstructorNode()']]],
   ['constructs',['constructs',['../namespace_t_t.html#a8fe0395d7e705a01c3c0b8ac7ec869dc',1,'TT']]],
@@ -27,7 +27,6 @@ var searchData=
   ['continue',['CONTINUE',['../namespace_t_t.html#a6781bb7edf17d8d07b0a6624be234e33',1,'TT']]],
   ['create',['create',['../class_module_compiler.html#a989dcefaa789a6a4a14578652da4bf6a',1,'ModuleCompiler::create(std::string moduleName, AST)'],['../class_module_compiler.html#aa47233fcdafad8d4937d5637c6684a02',1,'ModuleCompiler::create(ProgramData::TypeSet &amp;t, std::string moduleName, AST)'],['../class_type_id.html#a204102276389abdfe35e73421aad6da6',1,'TypeId::create()'],['../class_type_list_id.html#ac31bec7f1070c8bd6014b4a7bd14ac5f',1,'TypeListId::create()']]],
   ['createbasic',['createBasic',['../class_type_id.html#a8bb743bde3c3bade8deb96fbbb2016fb',1,'TypeId']]],
-  ['current',['current',['../class_lexer_base.html#a9845337350805a8b4795ec349f403167',1,'LexerBase::current() const'],['../class_lexer_base.html#ada72f63e4e0da39f9a303d36c913d22d',1,'LexerBase::current(uint charCount) const']]],
   ['current_5ffunction',['CURRENT_FUNCTION',['../util_8hpp.html#a84662874cf763c9001e3913fe20b3785',1,'util.hpp']]],
   ['currenttype',['currentType',['../class_value_wrapper.html#afd3fdf1ed44ca3f64618952d237cdfb7',1,'ValueWrapper::currentType()'],['../struct_value.html#a0481218e56c3f71bb2e03bec72d377ba',1,'Value::currentType()']]]
 ];

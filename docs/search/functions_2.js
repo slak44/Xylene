@@ -12,6 +12,5 @@ var searchData=
   ['contains',['contains',['../util_8hpp.html#a5b2998d0f98101452d2df3e43995f309',1,'util.hpp']]],
   ['continue',['CONTINUE',['../namespace_t_t.html#a6781bb7edf17d8d07b0a6624be234e33',1,'TT']]],
   ['create',['create',['../class_module_compiler.html#a989dcefaa789a6a4a14578652da4bf6a',1,'ModuleCompiler::create(std::string moduleName, AST)'],['../class_module_compiler.html#aa47233fcdafad8d4937d5637c6684a02',1,'ModuleCompiler::create(ProgramData::TypeSet &amp;t, std::string moduleName, AST)'],['../class_type_id.html#a204102276389abdfe35e73421aad6da6',1,'TypeId::create()'],['../class_type_list_id.html#ac31bec7f1070c8bd6014b4a7bd14ac5f',1,'TypeListId::create()']]],
-  ['createbasic',['createBasic',['../class_type_id.html#a8bb743bde3c3bade8deb96fbbb2016fb',1,'TypeId']]],
-  ['current',['current',['../class_lexer_base.html#a9845337350805a8b4795ec349f403167',1,'LexerBase::current() const'],['../class_lexer_base.html#ada72f63e4e0da39f9a303d36c913d22d',1,'LexerBase::current(uint charCount) const']]]
+  ['createbasic',['createBasic',['../class_type_id.html#a8bb743bde3c3bade8deb96fbbb2016fb',1,'TypeId']]]
 ];
