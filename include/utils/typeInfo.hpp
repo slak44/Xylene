@@ -21,24 +21,20 @@ protected:
     if (isVoidType) throw InternalError("Void types have undefined type lists", {METADATA_PAIRS});
   }
 public:
-  /**
-    \brief Store only one type. Convenience constructor.
-  */
+  /// Store only one type. Convenience constructor.
   TypeInfo(TypeName);
   /// \copydoc TypeInfo(TypeName)
   TypeInfo(const char*);
-  /**
-    \brief Store a list of types. If list is empty, the type is dynamic.
-  */
+  /// Store a list of types. If list is empty, the type is dynamic.
   TypeInfo(TypeList evalValue);
-  /**
-    \brief Construct TypeInfo for a void type.
-  */
+  /// Construct TypeInfo for a void type.
   TypeInfo(std::nullptr_t voidType);
-  /**
-    \brief Construct a dynamic TypeInfo (can have any type).
-  */
+  /// Construct a dynamic TypeInfo (can have any type).
   TypeInfo();
+  
+  virtual ~TypeInfo() {}
+  TypeInfo(const TypeInfo&) = default;
+  TypeInfo& operator=(const TypeInfo&) = default;
   
   TypeList getEvalTypeList() const;
   

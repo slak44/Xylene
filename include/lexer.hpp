@@ -113,6 +113,10 @@ protected:
     \brief Subclasses should use this to loop over the input and create Tokens from it
   */
   virtual void processInput() = 0;
+  
+  LexerBase() = default;
+  LexerBase(const LexerBase&) = default;
+  virtual ~LexerBase() = 0;
 public:
   /// Get input code
   const std::string& getCode() const;

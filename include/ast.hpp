@@ -74,8 +74,9 @@ protected:
   
   std::size_t transformArrayIndex(int64 idx) const;
 public:
-  ASTNode();
-  virtual ~ASTNode();
+  ASTNode() = default;
+  ASTNode(const ASTNode&) = default;
+  virtual ~ASTNode() = default;
   
   /**
     \brief Add a new child to this node.
@@ -525,6 +526,9 @@ public:
 */
 class ASTVisitor {
 public:
+  virtual ~ASTVisitor() = 0;
+  ASTVisitor() = default;
+  ASTVisitor(const ASTVisitor&) = default;
   PURE_VIRTUAL_VISIT(Block)
   PURE_VIRTUAL_VISIT(Expression)
   PURE_VIRTUAL_VISIT(Declaration)
