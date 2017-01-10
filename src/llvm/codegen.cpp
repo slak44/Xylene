@@ -68,7 +68,8 @@ OperatorCodegen::CodegenFunction OperatorCodegen::getNormalFun(
   // Try to find the function in the TypeMap using the operand types
   auto funIt = opMapIt->second.find(types);
   if (funIt == opMapIt->second.end()) {
-    throw Error("TypeError", mc->typeMismatchErrorString, node->getToken().trace);
+    throw Error("TypeError",
+      "No operation available for given operands", node->getToken().trace);
   }
   return funIt->second;
 }

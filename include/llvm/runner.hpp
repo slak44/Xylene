@@ -11,9 +11,7 @@
 #include "runtime/runtime.hpp"
 #include "llvm/compiler.hpp"
 
-/**
-  \brief Maps runtime function names to pointers to those functions.
-*/
+/// Maps runtime function names to pointers to those functions.
 const std::unordered_map<std::string, void*> nameToFunPtr {
   {"printC", reinterpret_cast<void*>(printC)}
 };

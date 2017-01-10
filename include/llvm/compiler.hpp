@@ -167,9 +167,6 @@ private:
   std::stack<FunctionWrapper::Link> functionStack; ///< Current function stack. Not a call stack
   std::unique_ptr<AST> ast; ///< Source AST
   
-  /// Used for throwing consistent type mismatch errors
-  static const std::string typeMismatchErrorString;
-  
   /// Instance of OperatorCodegen
   std::unique_ptr<OperatorCodegen> codegen;
 

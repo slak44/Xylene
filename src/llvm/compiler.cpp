@@ -145,8 +145,6 @@ ModuleCompiler::Link ModuleCompiler::create(ProgramData::TypeSet& types, std::st
   return thisThing;
 }
 
-const std::string ModuleCompiler::typeMismatchErrorString = "No operation available for given operands";
-  
 void ModuleCompiler::visit() {
   ast->getRoot()->visit(shared_from_this());
   // If the current block, which is the one that exits from main, has no terminator, add one
@@ -457,7 +455,8 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   ValueWrapper::Link initValue = compileExpression(node->getInit());
   // Check that the type of the initialization is allowed by the declaration
   if (!isTypeAllowedIn(id, initValue->getCurrentType())) {
-    throw Error("TypeError", typeMismatchErrorString, node->getTrace());
+    throw Error("TypeError",
+      "Type of initialization is not allowed by declaration", node->getTrace());
   }
   if (decl->getType() == taggedUnionType) {
     auto isCompatible = insertRuntimeTypeCheck(declWrap, initValue);
