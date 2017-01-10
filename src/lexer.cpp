@@ -101,6 +101,8 @@ Token Lexer::readNumber(uint radix) {
     } else if (isValidForRadix(current(), radix)) {
       number += current();
       skip(1);
+    } else if (isIdentifierChar()) {
+      throw Error("SyntaxError", "Invalid character in a number", traceFrom(start));
     } else {
       break;
     }
@@ -142,7 +144,7 @@ char Lexer::readEscapeSeq() {
     else throw badEscape;
     if (isValidForRadix(peekAhead(1), 8)) octalNumber += peekAhead(1);
     else throw badEscape;
-    skip(3);
+    skip(2); // Skip only 2 because escapedChar is already skipped
     return static_cast<char>(std::stoi(octalNumber, nullptr, 8));
   }
   throw badEscape;
