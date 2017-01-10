@@ -1,8 +1,8 @@
 #include "parser/tokenParser.hpp"
 
-TokenParser& TokenParser::parse(std::vector<Token> input) {
-  this->input = input;
-  this->pos = 0;
+TokenParser& TokenParser::parse(std::vector<Token> list) {
+  input = list;
+  pos = 0;
   tree = std::make_unique<AST>(AST(block(ROOT_BLOCK)));
   return *this;
 }

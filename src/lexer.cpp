@@ -17,9 +17,9 @@ uint64 LexerBase::getLineCount() const {
   return getCurrentLine();
 }
 
-LexerBase& LexerBase::tokenize(std::string code, std::string fileName) {
-  this->code = code;
-  this->fileName = fileName;
+LexerBase& LexerBase::tokenize(std::string source, std::string nameOfFile) {
+  code = source;
+  fileName = nameOfFile;
   pos = 0;
   tokens = {};
   currentLine = 1;

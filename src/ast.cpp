@@ -41,8 +41,8 @@ ASTNode::Link ASTNode::at(int64 pos) const {
 void ASTNode::setParent(WeakLink newParent) {parent = newParent;}
 ASTNode::WeakLink ASTNode::getParent() const {return parent;}
 
-void ASTNode::setTrace(Trace trace) {
-  this->trace = trace;
+void ASTNode::setTrace(Trace newTrace) {
+  trace = newTrace;
 }
 Trace ASTNode::getTrace() const {
   return trace;

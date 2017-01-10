@@ -77,7 +77,7 @@ fs::path Compiler::getOutputPath() const {
   return output;
 }
 
-void ModuleCompiler::init(std::string moduleName, AST& ast) {
+void ModuleCompiler::init(std::string moduleName, AST& moduleAst) {
   context = new llvm::LLVMContext();
   integerType = llvm::IntegerType::get(*context, bitsPerInt);
   floatType = llvm::Type::getDoubleTy(*context);
@@ -95,7 +95,7 @@ void ModuleCompiler::init(std::string moduleName, AST& ast) {
   functionTid = TypeId::createBasic("Function", voidPtrType); // TODO
   builder = std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context));
   module = new llvm::Module(moduleName, *context);
-  this->ast = std::make_unique<AST>(ast);
+  ast = std::make_unique<AST>(moduleAst);
 }
 
 void ModuleCompiler::addMainFunction() {
@@ -234,7 +234,7 @@ llvm::Type* ModuleCompiler::typeFromInfo(TypeInfo ti, ASTNode::Link node) {
 }
 
 AbstractId::Link ModuleCompiler::typeIdFromInfo(TypeInfo ti, ASTNode::Link node) {
-  AbstractId::Link id = nullptr;
+  AbstractId::Link result = nullptr;
   ASTNode::Link defBlock = node->findAbove([&](ASTNode::Link n) {
     auto b = Node<BlockNode>::dynPtrCast(n);
     if (!b) return false;
@@ -243,17 +243,17 @@ AbstractId::Link ModuleCompiler::typeIdFromInfo(TypeInfo ti, ASTNode::Link node)
       return ti.getEvalTypeList() == id->storedNames();
     });
     if (it != b->blockTypes.end()) {
-      id = *it;
+      result = *it;
       return true;
     }
     return false;
   });
-  if (id == nullptr) throw Error(
+  if (result == nullptr) throw Error(
     "TypeError",
     "Can't find type '" + ti.getTypeNameString() + "'",
     node->getTrace()
   );
-  return id;
+  return result;
 }
 
 ValueWrapper::Link ModuleCompiler::valueFromIdentifier(Node<ExpressionNode>::Link identifier) {
@@ -427,16 +427,16 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
     llvm::Type* ty = typeFromInfo(node->getTypeInfo(), node);
     decl = builder->CreateAlloca(ty, nullptr, node->getIdentifier());
   } else {
-    std::unordered_set<AbstractId::Link> types;
+    std::unordered_set<AbstractId::Link> declTypes;
     std::for_each(ALL(node->getTypeInfo().getEvalTypeList()), [&](TypeName name) {
-      types.insert(typeIdFromInfo(StaticTypeInfo(name), node));
+      declTypes.insert(typeIdFromInfo(StaticTypeInfo(name), node));
     });
     auto list = TypeListId::create(
       collate(node->getTypeInfo().getEvalTypeList()),
-      types,
+      declTypes,
       taggedUnionType
     );
-    types.insert(list);
+    declTypes.insert(list);
     enclosingBlock->blockTypes.insert(list);
     decl = builder->CreateAlloca(taggedUnionType, nullptr, node->getIdentifier());
   }
