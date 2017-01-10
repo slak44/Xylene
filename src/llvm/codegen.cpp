@@ -163,7 +163,7 @@ static inline ValueWrapper::Link boolVal(TypeId::Link b, llvm::Value* v) {
 */
 static llvm::Constant* getOne(std::string ofWhat, llvm::Type* intTy, llvm::Type* fltTy) {
   if (ofWhat == "Integer") return llvm::ConstantInt::getSigned(intTy, 1);
-  else if (ofWhat == "Float") return llvm::ConstantFP::get(fltTy, 1.0f);
+  else if (ofWhat == "Float") return llvm::ConstantFP::get(fltTy, 1.0);
   else throw InternalError("Wrong parameter, can only be Integer or Float", {
     METADATA_PAIRS,
     {"param", ofWhat}
