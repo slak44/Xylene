@@ -10,17 +10,17 @@ add_executable(tests_bin
 
 include_directories(${PROJECT_SOURCE_DIR}/tests)
 
-if(UNIX)
-  target_compile_options(tests_bin PRIVATE
-    -DCRASH_ON_INTERNAL_ERROR
-    -DFULL_PROGRAM_PATH=\"$<TARGET_FILE:xylene_bin>\"
-    -DDATA_PARENT_DIR=\"$<TARGET_FILE_DIR:tests_bin>\"
-  )
-elseif(MSVC)
+if(MSVC)
   target_compile_options(tests_bin PRIVATE
     /DCRASH_ON_INTERNAL_ERROR
     /DFULL_PROGRAM_PATH=\"$<TARGET_FILE:xylene_bin>\"
     /DDATA_PARENT_DIR=\"$<TARGET_FILE_DIR:tests_bin>\"
+  )
+else()
+  target_compile_options(tests_bin PRIVATE
+    -DCRASH_ON_INTERNAL_ERROR
+    -DFULL_PROGRAM_PATH=\"$<TARGET_FILE:xylene_bin>\"
+    -DDATA_PARENT_DIR=\"$<TARGET_FILE_DIR:tests_bin>\"
   )
 endif()
 
