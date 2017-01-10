@@ -180,12 +180,13 @@ inline std::string Lexer::getQuotedString() {
       Position escCharPos = getCurrentPosition();
       char escapedChar = peekAhead(1);
       skip(2); // Skip escape code, eg '\n', '\t'
-      try {
-        escapedChar = singleCharEscapeSeqences.at(escapedChar);
-        str += escapedChar;
+      auto charIt = singleCharEscapeSeqences.find(escapedChar);
+      if (charIt != std::end(singleCharEscapeSeqences)) {
+        str += charIt->second;
         continue;
-      } catch (std::out_of_range& oor) {
-        auto badEscape = Error("SyntaxError", "Invalid escape code", Trace(getFileName(), getRangeToHere(escCharPos)));
+      } else {
+        auto badEscape = Error("SyntaxError",
+          "Invalid escape code", Trace(getFileName(), getRangeToHere(escCharPos)));
         // \x00 hex escape code
         if (escapedChar == 'x') {
           std::string hexNumber = "";

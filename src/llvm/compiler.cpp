@@ -327,6 +327,7 @@ ValueWrapper::Link ModuleCompiler::valueFromIdentifier(Node<ExpressionNode>::Lin
       // getMember throws Error instances only when it can't find the member
       // So this means the identifier we're looking for isn't here
       // Which means that this catch block can be safely ignored
+      UNUSED(err);
     }
   }
   throw Error("ReferenceError", "Cannot find '" + name + "' in this scope", identifier->getTrace());
