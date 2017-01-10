@@ -96,9 +96,11 @@ Include dependency graph for runtime.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="runtime_8hpp__incl.png" border="0" usemap="#xylene_2include_2runtime_2runtime_8hpp" alt=""/></div>
 <map name="xylene_2include_2runtime_2runtime_8hpp" id="xylene_2include_2runtime_2runtime_8hpp">
-<area shape="rect" id="node3" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="407,95,517,121"/>
-<area shape="rect" id="node13" href="io_8hpp.html" title="runtime/io.hpp" alt="" coords="551,95,655,121"/>
-<area shape="rect" id="node6" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="416,169,508,196"/>
+<area shape="rect" id="node3" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="620,95,729,121"/>
+<area shape="rect" id="node19" href="io_8hpp.html" title="runtime/io.hpp" alt="" coords="772,95,876,121"/>
+<area shape="rect" id="node6" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="515,319,607,345"/>
+<area shape="rect" id="node13" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="366,169,466,196"/>
+<area shape="rect" id="node17" href="trace_8hpp.html" title="trace.hpp" alt="" coords="328,244,403,271"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -124,9 +126,9 @@ Classes</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:af315f96a8deeb9939cd163dfc8f97bf2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#af315f96a8deeb9939cd163dfc8f97bf2">checkTypeCompat</a> (<a class="el" href="struct_value.html">Value</a> val, <a class="el" href="struct_value.html">Value</a> newVal)</td></tr>
 <tr class="separator:af315f96a8deeb9939cd163dfc8f97bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae74a33c133d18a9fdbfed1d3746214ff"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#ae74a33c133d18a9fdbfed1d3746214ff">typeOf</a> (<a class="el" href="struct_value.html">Value</a> val)</td></tr>
-<tr class="separator:ae74a33c133d18a9fdbfed1d3746214ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f10cb8a910fe1c07dbd137607e9fc68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a2f10cb8a910fe1c07dbd137607e9fc68">withType</a> (<a class="el" href="struct_value.html">Value</a> toBeConcretized, <a class="el" href="type_id_8hpp.html#ab62eef244eb0fc10c18da6c4d6537348">UniqueIdentifier</a> concreteType)</td></tr>
+<tr class="memitem:a9c84630ea481212b64fb2874ff19b506"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a9c84630ea481212b64fb2874ff19b506">typeOf</a> (<a class="el" href="struct_value.html">Value</a> val)</td></tr>
+<tr class="separator:a9c84630ea481212b64fb2874ff19b506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f10cb8a910fe1c07dbd137607e9fc68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a2f10cb8a910fe1c07dbd137607e9fc68">withType</a> (<a class="el" href="struct_value.html">Value</a> toBeConcretized, <a class="el" href="type_id_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a> concreteType)</td></tr>
 <tr class="separator:a2f10cb8a910fe1c07dbd137607e9fc68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -158,14 +160,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae74a33c133d18a9fdbfed1d3746214ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae74a33c133d18a9fdbfed1d3746214ff">&sect;&nbsp;</a></span>typeOf()</h2>
+<a id="a9c84630ea481212b64fb2874ff19b506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c84630ea481212b64fb2874ff19b506">&sect;&nbsp;</a></span>typeOf()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string typeOf </td>
+          <td class="memname">char* typeOf </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_value.html">Value</a>&#160;</td>
           <td class="paramname"><em>val</em></td><td>)</td>
@@ -191,7 +193,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="type_id_8hpp.html#ab62eef244eb0fc10c18da6c4d6537348">UniqueIdentifier</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="type_id_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a>&#160;</td>
           <td class="paramname"><em>concreteType</em>&#160;</td>
         </tr>
         <tr>

@@ -1,5 +1,7 @@
 <map id="xylene/include/runtime/runtime.hpp" name="xylene/include/runtime/runtime.hpp">
-<area shape="rect" id="node3" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="407,95,517,121"/>
-<area shape="rect" id="node13" href="$io_8hpp.html" title="runtime/io.hpp" alt="" coords="551,95,655,121"/>
-<area shape="rect" id="node6" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="416,169,508,196"/>
+<area shape="rect" id="node3" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="620,95,729,121"/>
+<area shape="rect" id="node19" href="$io_8hpp.html" title="runtime/io.hpp" alt="" coords="772,95,876,121"/>
+<area shape="rect" id="node6" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="515,319,607,345"/>
+<area shape="rect" id="node13" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="366,169,466,196"/>
+<area shape="rect" id="node17" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="328,244,403,271"/>
 </map>

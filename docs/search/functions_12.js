@@ -12,10 +12,10 @@ var searchData=
   ['try',['TRY',['../namespace_t_t.html#a5083d346aaf46df8a315ac59e0437cf0',1,'TT']]],
   ['two_5fpoint',['TWO_POINT',['../namespace_t_t.html#a9e62d67f7134d4934d63aac9990b5cbc',1,'TT']]],
   ['type',['TYPE',['../namespace_t_t.html#a759b5a2a0f323dcc8eb38ec4b8286533',1,'TT']]],
-  ['typedata',['TypeData',['../class_type_data.html#ade50ffca762786d884cc714d6b696e15',1,'TypeData::TypeData(llvm::StructType *type, ModuleCompiler::Link mc, Node&lt; TypeNode &gt;::Link tyNode)'],['../class_type_data.html#a95d3b9292467f235950d501cf15d0b25',1,'TypeData::TypeData(const TypeData &amp;)=delete']]],
+  ['typedata',['TypeData',['../class_type_data.html#ac6ed70f219459877fc5bcf2cb193eb73',1,'TypeData::TypeData(llvm::StructType *type, std::shared_ptr&lt; ModuleCompiler &gt;, Node&lt; TypeNode &gt;::Link tyNode)'],['../class_type_data.html#a95d3b9292467f235950d501cf15d0b25',1,'TypeData::TypeData(const TypeData &amp;)=delete']]],
   ['typeid',['TypeId',['../class_type_id.html#acf33d20f4017b1eca7b165b679fb58e8',1,'TypeId::TypeId(TypeData *tyData)'],['../class_type_id.html#af140701edfacafb3741edda6dc94decd',1,'TypeId::TypeId(TypeName, llvm::Type *)']]],
-  ['typeinfo',['TypeInfo',['../class_type_info.html#a0861de9df206d4c04be6901110c954af',1,'TypeInfo::TypeInfo(TypeName)'],['../class_type_info.html#aa2356a1ee45ea50847cbb366367ffd33',1,'TypeInfo::TypeInfo(const char *)'],['../class_type_info.html#a5bf8e362b49407d421e2ac78d3c77b99',1,'TypeInfo::TypeInfo(TypeList evalValue)'],['../class_type_info.html#a52bd7e2d13ad15dc9ae5808793663456',1,'TypeInfo::TypeInfo(std::nullptr_t voidType)'],['../class_type_info.html#a5e8f32e1bc0d05a5a234e9630cf002ce',1,'TypeInfo::TypeInfo()']]],
+  ['typeinfo',['TypeInfo',['../class_type_info.html#a0861de9df206d4c04be6901110c954af',1,'TypeInfo::TypeInfo(TypeName)'],['../class_type_info.html#aa2356a1ee45ea50847cbb366367ffd33',1,'TypeInfo::TypeInfo(const char *)'],['../class_type_info.html#a5bf8e362b49407d421e2ac78d3c77b99',1,'TypeInfo::TypeInfo(TypeList evalValue)'],['../class_type_info.html#a52bd7e2d13ad15dc9ae5808793663456',1,'TypeInfo::TypeInfo(std::nullptr_t voidType)'],['../class_type_info.html#a5e8f32e1bc0d05a5a234e9630cf002ce',1,'TypeInfo::TypeInfo()'],['../class_type_info.html#a77517c698cbd3af2375b73ce2a6b3316',1,'TypeInfo::TypeInfo(const TypeInfo &amp;)=default']]],
   ['typelistid',['TypeListId',['../class_type_list_id.html#aa954241f846d1d38bbb31a88e759461a',1,'TypeListId']]],
   ['typenode',['TypeNode',['../class_type_node.html#a0b1e4eeaec30c1af29cdc11879c6c2c1',1,'TypeNode']]],
-  ['typeof',['typeOf',['../runtime_8hpp.html#ae74a33c133d18a9fdbfed1d3746214ff',1,'runtime.hpp']]]
+  ['typeof',['typeOf',['../runtime_8hpp.html#a9c84630ea481212b64fb2874ff19b506',1,'runtime.hpp']]]
 ];

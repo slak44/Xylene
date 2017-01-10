@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['id',['id',['../class_abstract_id.html#a189c973200e60c73480a874b9cc887b9',1,'AbstractId']]],
+  ['id',['id',['../class_abstract_id.html#a3fa9dc7c50d87f5ee44fac6cf6010cf0',1,'AbstractId']]],
   ['identifier',['IDENTIFIER',['../namespace_t_t.html#a1cd22d3803bc055ec10fff80a12178c7',1,'TT']]],
   ['identity',['Identity',['../struct_identity.html',1,'']]],
   ['idx',['idx',['../class_token.html#ac34bb1683e74707f37a97f91ba0bdcc8',1,'Token']]],
@@ -26,7 +26,7 @@ var searchData=
   ['isinitialized',['isInitialized',['../class_value_wrapper.html#a6813d22e1a7245e8373c0dd51fdcf2bf',1,'ValueWrapper']]],
   ['isop',['isOp',['../class_token.html#ab61afcbb7eea093237fe1419fd80a1c7',1,'Token']]],
   ['isready',['isReady',['../class_type_data.html#ad88f0f530be32647d5aa16551fb95e2d',1,'TypeData']]],
-  ['issametype',['isSameType',['../struct_node.html#a52d9868b8dafbee40ccef233599cb488',1,'Node::isSameType()'],['../struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52',1,'PtrUtil::isSameType()']]],
+  ['issametype',['isSameType',['../struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52',1,'PtrUtil']]],
   ['isstatic',['isStatic',['../class_method_node.html#a0083577364f55051c295812df7c61c7a',1,'MethodNode::isStatic()'],['../class_member_node.html#a35c2f2f87ae5153354f874973a1f3a02',1,'MemberNode::isStatic()']]],
   ['isterminal',['isTerminal',['../class_token.html#a3c2359de673ad5e2f28d833ed0cf9bc8',1,'Token']]],
   ['istypeallowedin',['isTypeAllowedIn',['../type_id_8hpp.html#a702520d91997b405258f1b2948a67c7d',1,'typeId.hpp']]],

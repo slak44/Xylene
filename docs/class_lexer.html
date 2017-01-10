@@ -134,9 +134,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a25b0700993785144b8c6fdc3af0a0c2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a25b0700993785144b8c6fdc3af0a0c2c">processInput</a> ()</td></tr>
-<tr class="memdesc:a25b0700993785144b8c6fdc3af0a0c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subclasses should use this to loop over the input and create Tokens from it.  <a href="#a25b0700993785144b8c6fdc3af0a0c2c">More...</a><br /></td></tr>
-<tr class="separator:a25b0700993785144b8c6fdc3af0a0c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75ff4d2a74e27ea92edc1cf09cbeb75d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer.html#a75ff4d2a74e27ea92edc1cf09cbeb75d">processInput</a> () override</td></tr>
+<tr class="memdesc:a75ff4d2a74e27ea92edc1cf09cbeb75d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subclasses should use this to loop over the input and create Tokens from it.  <a href="#a75ff4d2a74e27ea92edc1cf09cbeb75d">More...</a><br /></td></tr>
+<tr class="separator:a75ff4d2a74e27ea92edc1cf09cbeb75d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_lexer_base"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_lexer_base')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_lexer_base.html">LexerBase</a></td></tr>
 <tr class="memitem:a9845337350805a8b4795ec349f403167 inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a9845337350805a8b4795ec349f403167">current</a> () const</td></tr>
 <tr class="memdesc:a9845337350805a8b4795ec349f403167 inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get character at current position.  <a href="class_lexer_base.html#a9845337350805a8b4795ec349f403167">More...</a><br /></td></tr>
@@ -186,6 +186,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ab215dea6f11463181623f5a931bcd74b inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#ab215dea6f11463181623f5a931bcd74b">getFileName</a> () const</td></tr>
 <tr class="memdesc:ab215dea6f11463181623f5a931bcd74b inherit pro_methods_class_lexer_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current file name.  <a href="class_lexer_base.html#ab215dea6f11463181623f5a931bcd74b">More...</a><br /></td></tr>
 <tr class="separator:ab215dea6f11463181623f5a931bcd74b inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03da8742fbc672fda28302a75a66af4c inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a03da8742fbc672fda28302a75a66af4c">LexerBase</a> ()=default</td></tr>
+<tr class="separator:a03da8742fbc672fda28302a75a66af4c inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6749fd9137314f13490f487efea350ab inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#a6749fd9137314f13490f487efea350ab">LexerBase</a> (const <a class="el" href="class_lexer_base.html">LexerBase</a> &amp;)=default</td></tr>
+<tr class="separator:a6749fd9137314f13490f487efea350ab inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb6a8c81b7c7e6d19553fb8b704db9a inherit pro_methods_class_lexer_base"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lexer_base.html#aacb6a8c81b7c7e6d19553fb8b704db9a">~LexerBase</a> ()=default</td></tr>
+<tr class="separator:aacb6a8c81b7c7e6d19553fb8b704db9a inherit pro_methods_class_lexer_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Tokenizes input. </p>
@@ -216,8 +222,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a25b0700993785144b8c6fdc3af0a0c2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25b0700993785144b8c6fdc3af0a0c2c">&sect;&nbsp;</a></span>processInput()</h2>
+<a id="a75ff4d2a74e27ea92edc1cf09cbeb75d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75ff4d2a74e27ea92edc1cf09cbeb75d">&sect;&nbsp;</a></span>processInput()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,7 +240,7 @@ Protected Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

@@ -131,9 +131,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:acb016f71a6cc5dea6baf02b673188151"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="struct_node.html#a936b66f046851bac4d2475cfb8192002">Link</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="struct_node.html#acb016f71a6cc5dea6baf02b673188151">make</a> (Args... args)</td></tr>
 <tr class="memdesc:acb016f71a6cc5dea6baf02b673188151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a shared ptr that holds a node.  <a href="#acb016f71a6cc5dea6baf02b673188151">More...</a><br /></td></tr>
 <tr class="separator:acb016f71a6cc5dea6baf02b673188151"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52d9868b8dafbee40ccef233599cb488"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a52d9868b8dafbee40ccef233599cb488">isSameType</a> (<a class="el" href="ast_8hpp.html#a1ed31a4c40e190659839704db912b5ac">ASTNodeLink</a> node)</td></tr>
-<tr class="memdesc:a52d9868b8dafbee40ccef233599cb488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Technically overrides <a class="el" href="struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52" title="Use RTTI to determine if 2 pointers have the same type. ">PtrUtil&lt;T&gt;::isSameType</a>.  <a href="#a52d9868b8dafbee40ccef233599cb488">More...</a><br /></td></tr>
-<tr class="separator:a52d9868b8dafbee40ccef233599cb488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb32bba381610f5a9a559ee089c61c27"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_node.html#a936b66f046851bac4d2475cfb8192002">Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#acb32bba381610f5a9a559ee089c61c27">dynPtrCast</a> (<a class="el" href="ast_8hpp.html#a1ed31a4c40e190659839704db912b5ac">ASTNodeLink</a> node)</td></tr>
 <tr class="memdesc:acb32bba381610f5a9a559ee089c61c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Technically overrides <a class="el" href="struct_ptr_util.html#ac4d0a5ec217bf2771f420e8c8e3bfc74" title="Wrapper around std::dynamic_pointer_cast. ">PtrUtil&lt;T&gt;::dynPtrCast</a>.  <a href="#acb32bba381610f5a9a559ee089c61c27">More...</a><br /></td></tr>
 <tr class="separator:acb32bba381610f5a9a559ee089c61c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,36 +214,6 @@ template&lt;typename T, typename std::enable_if&lt; std::is_base_of&lt; ASTNode,
 </div><div class="memdoc">
 
 <p>Technically overrides <a class="el" href="struct_ptr_util.html#ac4d0a5ec217bf2771f420e8c8e3bfc74" title="Wrapper around std::dynamic_pointer_cast. ">PtrUtil&lt;T&gt;::dynPtrCast</a>. </p>
-
-</div>
-</div>
-<a id="a52d9868b8dafbee40ccef233599cb488"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52d9868b8dafbee40ccef233599cb488">&sect;&nbsp;</a></span>isSameType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename std::enable_if&lt; std::is_base_of&lt; ASTNode, T &gt;::value &gt;::type * = nullptr&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool <a class="el" href="struct_node.html">Node</a>&lt; T, std::enable_if&lt; std::is_base_of&lt; <a class="el" href="class_a_s_t_node.html">ASTNode</a>, T &gt;::value &gt;::type * &gt;::isSameType </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="ast_8hpp.html#a1ed31a4c40e190659839704db912b5ac">ASTNodeLink</a>&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Technically overrides <a class="el" href="struct_ptr_util.html#aa43fe31d93750e2a8fdd5a5192f92c52" title="Use RTTI to determine if 2 pointers have the same type. ">PtrUtil&lt;T&gt;::isSameType</a>. </p>
 
 </div>
 </div>

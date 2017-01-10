@@ -125,20 +125,21 @@ $(document).ready(function(){initNavTree('compiler_8hpp.html','');});
 <code>#include &quot;<a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="token_parser_8hpp_source.html">parser/tokenParser.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="type_id_8hpp_source.html">llvm/typeId.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="values_8hpp_source.html">llvm/values.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for compiler.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="compiler_8hpp__incl.png" border="0" usemap="#xylene_2include_2llvm_2compiler_8hpp" alt=""/></div>
 <map name="xylene_2include_2llvm_2compiler_8hpp" id="xylene_2include_2llvm_2compiler_8hpp">
-<area shape="rect" id="node32" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="4561,483,4653,509"/>
-<area shape="rect" id="node39" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="5168,333,5268,360"/>
-<area shape="rect" id="node44" href="ast_8hpp.html" title="ast.hpp" alt="" coords="4474,184,4538,211"/>
-<area shape="rect" id="node47" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="4186,408,4295,435"/>
-<area shape="rect" id="node48" href="operator_8hpp.html" title="operator.hpp" alt="" coords="4808,259,4900,285"/>
-<area shape="rect" id="node49" href="lexer_8hpp.html" title="lexer.hpp" alt="" coords="5326,184,5398,211"/>
-<area shape="rect" id="node50" href="token_parser_8hpp.html" title="parser/tokenParser.hpp" alt="" coords="4721,102,4875,129"/>
-<area shape="rect" id="node43" href="trace_8hpp.html" title="trace.hpp" alt="" coords="4927,408,5002,435"/>
-<area shape="rect" id="node46" href="type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="4977,259,5099,285"/>
+<area shape="rect" id="node32" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="1539,483,1631,509"/>
+<area shape="rect" id="node39" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="1548,333,1648,360"/>
+<area shape="rect" id="node44" href="ast_8hpp.html" title="ast.hpp" alt="" coords="1497,184,1561,211"/>
+<area shape="rect" id="node46" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="886,259,995,285"/>
+<area shape="rect" id="node47" href="operator_8hpp.html" title="operator.hpp" alt="" coords="1916,259,2008,285"/>
+<area shape="rect" id="node48" href="lexer_8hpp.html" title="lexer.hpp" alt="" coords="2185,184,2257,211"/>
+<area shape="rect" id="node49" href="token_parser_8hpp.html" title="parser/tokenParser.hpp" alt="" coords="1814,102,1969,129"/>
+<area shape="rect" id="node50" href="values_8hpp.html" title="llvm/values.hpp" alt="" coords="1260,102,1371,129"/>
+<area shape="rect" id="node43" href="trace_8hpp.html" title="trace.hpp" alt="" coords="1939,408,2014,435"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -148,10 +149,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <map name="xylene_2include_2llvm_2compiler_8hppdep" id="xylene_2include_2llvm_2compiler_8hppdep">
 <area shape="rect" id="node2" href="codegen_8cpp.html" title="xylene/src/llvm/codegen.cpp" alt="" coords="5,102,192,129"/>
 <area shape="rect" id="node3" href="compiler_8cpp.html" title="xylene/src/llvm/compiler.cpp" alt="" coords="216,102,403,129"/>
-<area shape="rect" id="node4" href="type_8cpp.html" title="xylene/src/llvm/type.cpp" alt="" coords="427,102,589,129"/>
-<area shape="rect" id="node5" href="main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="557,184,696,211"/>
-<area shape="rect" id="node6" href="runner_8hpp.html" title="xylene/include/llvm\l/runner.hpp" alt="" coords="665,95,797,136"/>
-<area shape="rect" id="node7" href="runner_8cpp.html" title="xylene/src/llvm/runner.cpp" alt="" coords="720,184,893,211"/>
+<area shape="rect" id="node4" href="type_data_8cpp.html" title="xylene/src/llvm/typeData.cpp" alt="" coords="427,102,616,129"/>
+<area shape="rect" id="node5" href="values_8cpp.html" title="xylene/src/llvm/values.cpp" alt="" coords="641,102,815,129"/>
+<area shape="rect" id="node6" href="main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="784,184,923,211"/>
+<area shape="rect" id="node7" href="runner_8hpp.html" title="xylene/include/llvm\l/runner.hpp" alt="" coords="891,95,1023,136"/>
+<area shape="rect" id="node8" href="runner_8cpp.html" title="xylene/src/llvm/runner.cpp" alt="" coords="947,184,1120,211"/>
 </map>
 </div>
 </div>
@@ -159,18 +161,6 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_value_wrapper.html">ValueWrapper</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds a llvm::Value* and the type it currently carries.  <a href="class_value_wrapper.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function_wrapper.html">FunctionWrapper</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds a llvm::Function* and its respective <a class="el" href="class_function_signature.html" title="Signature for a function. Stores return type and argument types. ">FunctionSignature</a>.  <a href="class_function_wrapper.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_declaration_wrapper.html">DeclarationWrapper</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the value pointing to the declared variable, its current type, and its list of allowed types.  <a href="class_declaration_wrapper.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instance_wrapper.html">InstanceWrapper</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores an instance of a user type.  <a href="class_instance_wrapper.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program_data.html">ProgramData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module_compiler.html">ModuleCompiler</a></td></tr>
@@ -181,18 +171,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_operator_codegen.html">OperatorCodegen</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to generate IR for operators.  <a href="class_operator_codegen.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_member_metadata.html">MemberMetadata</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores information about a field in a type.  <a href="class_member_metadata.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_method_data.html">MethodData</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores a method in a type.  <a href="class_method_data.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_constructor_data.html">ConstructorData</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores a constructor in a type.  <a href="class_constructor_data.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_data.html">TypeData</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maintans state for a type.  <a href="class_type_data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -217,7 +195,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">(\</div><div class="line">    __attribute__((unused)) ValueList operands,\</div><div class="line">    __attribute__((unused)) ValueList rawOperands,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_trace.html">Trace</a> trace\</div><div class="line">  ) -&gt; <a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link</div><div class="ttc" id="class_trace_html"><div class="ttname"><a href="class_trace.html">Trace</a></div><div class="ttdoc">Stores debug information. </div><div class="ttdef"><b>Definition:</b> trace.hpp:43</div></div>
-<div class="ttc" id="class_value_wrapper_html"><div class="ttname"><a href="class_value_wrapper.html">ValueWrapper</a></div><div class="ttdoc">Holds a llvm::Value* and the type it currently carries. </div><div class="ttdef"><b>Definition:</b> compiler.hpp:48</div></div>
+<div class="ttc" id="class_value_wrapper_html"><div class="ttname"><a href="class_value_wrapper.html">ValueWrapper</a></div><div class="ttdoc">Holds a llvm::Value* and the type it currently carries. </div><div class="ttdef"><b>Definition:</b> values.hpp:15</div></div>
 </div><!-- fragment -->
 <p>Signature for a lambda representing a CodegenFunction. </p>
 
@@ -234,9 +212,9 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(\</div><div class="line">    ValueList operands,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_a_s_t_node.html">ASTNode</a>::Link node,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_trace.html">Trace</a> trace\</div><div class="line">  ) -&gt; <a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link</div><div class="ttc" id="class_a_s_t_node_html"><div class="ttname"><a href="class_a_s_t_node.html">ASTNode</a></div><div class="ttdoc">A node in an AST. </div><div class="ttdef"><b>Definition:</b> ast.hpp:61</div></div>
+<b>Value:</b><div class="fragment"><div class="line">(\</div><div class="line">    ValueList operands,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_a_s_t_node.html">ASTNode</a>::Link node,\</div><div class="line">    __attribute__((unused)) <a class="code" href="class_trace.html">Trace</a> trace\</div><div class="line">  ) -&gt; <a class="code" href="class_value_wrapper.html">ValueWrapper</a>::Link</div><div class="ttc" id="class_a_s_t_node_html"><div class="ttname"><a href="class_a_s_t_node.html">ASTNode</a></div><div class="ttdoc">A node in an AST. </div><div class="ttdef"><b>Definition:</b> ast.hpp:56</div></div>
 <div class="ttc" id="class_trace_html"><div class="ttname"><a href="class_trace.html">Trace</a></div><div class="ttdoc">Stores debug information. </div><div class="ttdef"><b>Definition:</b> trace.hpp:43</div></div>
-<div class="ttc" id="class_value_wrapper_html"><div class="ttname"><a href="class_value_wrapper.html">ValueWrapper</a></div><div class="ttdoc">Holds a llvm::Value* and the type it currently carries. </div><div class="ttdef"><b>Definition:</b> compiler.hpp:48</div></div>
+<div class="ttc" id="class_value_wrapper_html"><div class="ttname"><a href="class_value_wrapper.html">ValueWrapper</a></div><div class="ttdoc">Holds a llvm::Value* and the type it currently carries. </div><div class="ttdef"><b>Definition:</b> values.hpp:15</div></div>
 </div><!-- fragment -->
 <p>Signature for a lambda representing a SpecialCodegenFunction. </p>
 

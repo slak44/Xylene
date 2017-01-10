@@ -1,5 +1,8 @@
 var class_lexer_base =
 [
+    [ "LexerBase", "class_lexer_base.html#a03da8742fbc672fda28302a75a66af4c", null ],
+    [ "LexerBase", "class_lexer_base.html#a6749fd9137314f13490f487efea350ab", null ],
+    [ "~LexerBase", "class_lexer_base.html#aacb6a8c81b7c7e6d19553fb8b704db9a", null ],
     [ "addToken", "class_lexer_base.html#aa4776a92d2d07ae428fe62fb0296c2e6", null ],
     [ "current", "class_lexer_base.html#a9845337350805a8b4795ec349f403167", null ],
     [ "current", "class_lexer_base.html#ada72f63e4e0da39f9a303d36c913d22d", null ],
