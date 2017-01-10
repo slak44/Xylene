@@ -4,6 +4,7 @@
 #include <memory>
 #include <unordered_set>
 #include "utils/util.hpp"
+#include "utils/error.hpp"
 
 namespace llvm {
   class Type;
@@ -36,6 +37,8 @@ protected:
   /// Constant numeric unique id
   const UniqueIdentifier id = generateId();
   
+  AbstractId() = default;
+  AbstractId(const AbstractId&) = default;
   virtual ~AbstractId() {}
 public:
   virtual UniqueIdentifier getId() const;
