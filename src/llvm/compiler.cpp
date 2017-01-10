@@ -209,7 +209,6 @@ llvm::BasicBlock* ModuleCompiler::compileBlock(Node<BlockNode>::Link node, const
           throw Error("SyntaxError", "Function has non-void return type, but no return was found", node->getTrace());
         }
         break;
-      default: break;
     }
   }
   // After functions are done, start inserting in the old block, not in the function
