@@ -13,12 +13,16 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DXYLENE_MEASURE_TIME")
   endif()
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -pedantic \
-    -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wfloat-equal -Wold-style-cast \
-    -Wswitch-default -Winit-self -Wlogical-op -Wmissing-declarations \
-    -Wmissing-include-dirs -Wnoexcept -Woverloaded-virtual -Wredundant-decls \
-    -Wstrict-null-sentinel -Wundef -Wstrict-overflow=5 -Wuseless-cast \
-    -Wzero-as-null-pointer-constant")
+  if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -pedantic -Wlogical-op -Wstrict-null-sentinel -Wnoexcept \
+      -Wzero-as-null-pointer-constant -Wuseless-cast -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wfloat-equal -Wold-style-cast \
+      -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Woverloaded-virtual -Wredundant-decls -Wundef -Wstrict-overflow=5")
+  elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libstdc++ -Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded \
+      -Wno-weak-vtables -Wno-global-constructors -Wno-exit-time-destructors -Wno-shadow-field-in-constructor -Wno-documentation-unknown-command -Wno-used-but-marked-unused")
+  else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall")
+  endif()
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3 -O0 -DDEBUG -DCRASH_ON_INTERNAL_ERROR")
   set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -Os -DNDEBUG")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O4 -DNDEBUG -Wdisabled-optimization")
@@ -137,7 +141,9 @@ set(COMMON_SOURCES
   ${SRC_DIR}/llvm/compiler.cpp
   ${SRC_DIR}/llvm/runner.cpp
   ${SRC_DIR}/llvm/codegen.cpp
-  ${SRC_DIR}/llvm/type.cpp
+  ${SRC_DIR}/llvm/values.cpp
+  ${SRC_DIR}/llvm/typeId.cpp
+  ${SRC_DIR}/llvm/typeData.cpp
   ${SRC_DIR}/runtime/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor tclap)
