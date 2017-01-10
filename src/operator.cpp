@@ -125,7 +125,7 @@ const std::unordered_set<char> Operator::operatorCharacters = std::accumulate(
 );
 
 Operator::Index Operator::find(Operator::Name name) {
-  Operator::Index idx = -1;
+  int idx = -1;
   auto it = std::find_if(ALL(Operator::list), [&](auto op) {
     idx++;
     return op.getName() == name;
@@ -134,5 +134,5 @@ Operator::Index Operator::find(Operator::Name name) {
     METADATA_PAIRS,
     {"offending Operator::Name", name}
   });
-  return idx;
+  return static_cast<Operator::Index>(idx);
 }

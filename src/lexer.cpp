@@ -67,7 +67,8 @@ void Lexer::processInput() {
     // Check for operators
     auto operatorIt = Operator::list.end();
     for (auto op = Operator::list.begin(); op != Operator::list.end(); ++op) {
-      bool doesNameMatch = current(op->getSymbol().length()) == op->getSymbol();
+      bool doesNameMatch =
+        current(static_cast<uint>(op->getSymbol().length())) == op->getSymbol();
       if (!doesNameMatch) continue;
       Fixity type;
       if (op->hasSymbol("++") || op->hasSymbol("--")) {
@@ -91,7 +92,11 @@ void Lexer::processInput() {
     if (operatorIt != Operator::list.end()) {
       Position operatorStart = getCurrentPosition();
       skip(operatorIt->getSymbol().length());
-      addToken(Token(TT::OPERATOR, operatorIt - Operator::list.begin(), Trace(getFileName(), getRangeToHere(operatorStart))));
+      addToken(Token(
+        TT::OPERATOR,
+        static_cast<Operator::Index>(operatorIt - Operator::list.begin()),
+        Trace(getFileName(), getRangeToHere(operatorStart))
+      ));
       noIncrement();
       continue;
     }
