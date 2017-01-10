@@ -116,7 +116,7 @@ protected:
   
   LexerBase() = default;
   LexerBase(const LexerBase&) = default;
-  virtual ~LexerBase() = 0;
+  virtual ~LexerBase() = default;
 public:
   /// Get input code
   const std::string& getCode() const;

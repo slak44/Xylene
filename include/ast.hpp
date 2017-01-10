@@ -521,9 +521,9 @@ public:
 */
 class ASTVisitor {
 public:
-  virtual ~ASTVisitor() = 0;
   ASTVisitor() = default;
   ASTVisitor(const ASTVisitor&) = default;
+  virtual ~ASTVisitor() = default;
   PURE_VIRTUAL_VISIT(Block)
   PURE_VIRTUAL_VISIT(Expression)
   PURE_VIRTUAL_VISIT(Declaration)
