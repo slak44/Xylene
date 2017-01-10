@@ -148,7 +148,7 @@ private:
   /// \copydoc findConstruct
   inline std::string getQuotedString();
 protected:
-  void processInput();
+  void processInput() override;
 public:
   Lexer() {}
 };
