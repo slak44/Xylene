@@ -9,20 +9,14 @@
 class BaseParser {
 protected:
   std::unique_ptr<AST> tree;
-public:
-  BaseParser();
-  BaseParser(const BaseParser&);
-  BaseParser(BaseParser&&);
-  virtual ~BaseParser() = 0;
   
+  BaseParser();
+public:
   AST getTree() const {
     return *tree;
   }
 };
 
 inline BaseParser::BaseParser() {}
-inline BaseParser::BaseParser(const BaseParser&) {}
-inline BaseParser::BaseParser(BaseParser&&) {}
-inline BaseParser::~BaseParser() {}
 
 #endif
