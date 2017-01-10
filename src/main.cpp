@@ -134,7 +134,7 @@ int notReallyMain(int argc, const char* argv[]) {
         filePath.getValue(), outPath.getValue()).compile();
       return NORMAL_EXIT;
     }
-  } catch (const TCLAP::ExitException& arg) {
+  } catch (const TCLAP::ExitException&) {
     return CLI_ERROR;
   } catch (const TCLAP::ArgException& arg) {
     println("TCLAP error", arg.error(), "for", arg.argId());
