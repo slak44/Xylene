@@ -42,11 +42,6 @@ struct Node: public PtrUtil<T> {
     return std::make_shared<T>(args...);
   }
   
-  /// Technically overrides PtrUtil<T>::isSameType
-  static inline bool isSameType(ASTNodeLink node) {
-    return typeid(T) == typeid(*node);
-  }
-  
   /// Technically overrides PtrUtil<T>::dynPtrCast
   static inline Link dynPtrCast(ASTNodeLink node) {
     return std::dynamic_pointer_cast<T>(node);
