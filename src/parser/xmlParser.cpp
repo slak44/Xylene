@@ -1,7 +1,11 @@
 #include "parser/xmlParser.hpp"
 
+#ifndef __clang__
+#ifdef __GNUG__
 // Too many false-positives involving default parameters in library functions
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+#endif
+#endif
 
 XMLParser::XMLParser() {}
 
