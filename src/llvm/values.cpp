@@ -70,7 +70,7 @@ DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
       {"member name", name},
       {"type name", currentType->getName()}
     });
-  std::size_t idx = -1;
+  int idx = -1;
   auto member = std::find_if(ALL(tyd->members),
   [&idx, &name](MemberMetadata::Link m) {
     idx++;
@@ -87,7 +87,7 @@ DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
     auto gep = tyd->mc->builder->CreateStructGEP(
       tyd->dataType,
       this->getValue(),
-      idx,
+      static_cast<uint>(idx),
       "gep_" + name
     );
     auto id = tyd->mc->typeIdFromInfo((*member)->getTypeInfo(), tyd->node);
