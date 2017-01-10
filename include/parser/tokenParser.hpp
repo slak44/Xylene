@@ -18,11 +18,11 @@
 class TokenParser: public BaseParser {
 private:
   std::vector<Token> input;
-  std::size_t pos = 0;
+  int pos = 0;
   
   /// Get token at current position
   inline Token current() {
-    return input[pos];
+    return input[static_cast<std::size_t>(pos)];
   }
   /// Skip a number of tokens, usually just advances to the next one
   inline void skip(int by = 1) {

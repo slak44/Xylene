@@ -12,7 +12,7 @@ namespace llvm {
 }
 class TypeData; 
 
-using UniqueIdentifier = int;
+using UniqueIdentifier = std::size_t;
 
 /**
   \brief An abstract identifier with a name and a unique id.
@@ -25,19 +25,20 @@ private:
     The values returned by this function MUST be unique (until max int value is hit).
     Otherwise, there are no requirements on the value of the number.
   */
-  static inline int generateId() {
-    static int lastId = 100;
-    return ++lastId;
+  static inline UniqueIdentifier generateId() {
+    static UniqueIdentifier lastId = 100;
+    lastId += 1;
+    return lastId;
   }
 protected:
   /// Name of the this type
   TypeName name;
   /// Constant numeric unique id
-  const int id = generateId();
+  const UniqueIdentifier id = generateId();
   
   virtual ~AbstractId() {};
 public:
-  virtual int getId() const;
+  virtual UniqueIdentifier getId() const;
   virtual TypeName getName() const;
   
   /// \returns how many types are stored by this identifier

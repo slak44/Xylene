@@ -8,21 +8,25 @@ void ASTNode::addChild(Link child) {
 ASTNode::Link ASTNode::removeChild(int64 pos) {
   Link child = this->at(pos);
   child->setParent(WeakLink());
-  this->children.erase(children.begin() + transformArrayIndex(pos));
+  this->children.erase(children.begin() + static_cast<int64>(transformArrayIndex(pos)));
   return child;
 }
 
 std::size_t ASTNode::transformArrayIndex(int64 idx) const {
-  std::size_t res = idx;
+  std::size_t res;
   if (idx < 0) {
-    res = children.size() + idx; // Negative indices count from the end of the vector
-  }
-  if (res > children.size()) {
-    throw InternalError("Index out of array bounds", {
-      METADATA_PAIRS,
-      {"index", std::to_string(idx)},
-      {"calculated", std::to_string(res)}
-    });
+    // Negative indices count from the end of the vector
+    int64 transPos = static_cast<int64>(children.size()) + idx;
+    if (transPos < 0 || transPos > static_cast<int64>(children.size())) {
+      throw InternalError("Index out of array bounds", {
+        METADATA_PAIRS,
+        {"index", std::to_string(idx)},
+        {"calculated", std::to_string(transPos)}
+      });
+    }
+    res = static_cast<std::size_t>(transPos);
+  } else {
+    res = static_cast<std::size_t>(idx);
   }
   return res;
 }
@@ -56,7 +60,7 @@ ASTNode::Link ASTNode::findAbove(std::function<bool(Link)> isOk) const {
 bool ASTNode::operator==(const ASTNode& rhs) const {
   if (typeid(*this) != typeid(rhs)) return false;
   if (children.size() != rhs.getChildren().size()) return false;
-  for (uint64 i = 0; i < children.size(); i++) {
+  for (int64 i = 0; i < static_cast<int64>(children.size()); i++) {
     if (this->at(i) == nullptr && rhs.at(i) == nullptr) continue;
     if (*(this->at(i)) != *(rhs.at(i))) return false;
   }
@@ -67,7 +71,7 @@ bool ASTNode::operator!=(const ASTNode& rhs) const {
   return !operator==(rhs);
 }
 
-NoMoreChildrenNode::NoMoreChildrenNode(int childrenCount) {
+NoMoreChildrenNode::NoMoreChildrenNode(std::size_t childrenCount) {
   children.resize(childrenCount, nullptr);
 }
 

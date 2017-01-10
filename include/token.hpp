@@ -157,7 +157,7 @@ class Token {
 public:
   TokenType type; ///< \see TokenType
   std::string data = ""; ///< Stores the data that represents this token. May be processed
-  Operator::Index idx = -1; ///< Only if the type is OPERATOR
+  Operator::Index idx = 9999; ///< Only if the type is OPERATOR
   Trace trace; ///< At what line of the input was this Token encountered
   
   /// Create a non-operator Token.

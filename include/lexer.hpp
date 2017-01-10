@@ -148,7 +148,7 @@ private:
   /// \copydoc findConstruct
   inline int getNumberRadix();
   /// \copydoc findConstruct
-  inline Token getNumberToken(uint radix);
+  inline Token getNumberToken(int radix);
   /// \copydoc findConstruct
   inline std::string getQuotedString();
 protected:
@@ -263,7 +263,7 @@ inline int Lexer::getNumberRadix() {
   }
 }
 
-inline Token Lexer::getNumberToken(uint radix) {
+inline Token Lexer::getNumberToken(int radix) {
   Position start = getCurrentPosition();
   if (current() == '0' && isdigit(peekAhead(1)))
     throw Error("SyntaxError", "Numbers cannot begin with '0'", Trace(getFileName(), Range(start, 1)));
@@ -279,8 +279,8 @@ inline Token Lexer::getNumberToken(uint radix) {
       number += current();
       skip(1);
     } else if (
-        (current() >= 'A' && static_cast<uint>(current()) < 'A' + radix - 10) ||
-        (current() >= 'a' && static_cast<uint>(current()) < 'a' + radix - 10)
+        (current() >= 'A' && current() < 'A' + radix - 10) ||
+        (current() >= 'a' && current() < 'a' + radix - 10)
       ) {
       number += current();
       skip(1);

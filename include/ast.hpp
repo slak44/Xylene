@@ -244,7 +244,7 @@ public:
   /**
     \param childrenCount does not have more than this many children
   */
-  NoMoreChildrenNode(int childrenCount);
+  NoMoreChildrenNode(std::size_t childrenCount);
   
   /**
     \throws InternalError always throws, never use
