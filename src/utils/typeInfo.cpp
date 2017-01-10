@@ -5,7 +5,6 @@ TypeInfo::TypeInfo(const char* type): TypeInfo(std::string(type)) {}
 TypeInfo::TypeInfo(TypeList evalValue): evalValue(evalValue) {}
 TypeInfo::TypeInfo(std::nullptr_t voidType): isVoidType(true) {UNUSED(voidType);}
 TypeInfo::TypeInfo(): evalValue({}) {}
-inline TypeInfo::~TypeInfo() {}
 
 TypeList TypeInfo::getEvalTypeList() const {
   throwIfVoid();

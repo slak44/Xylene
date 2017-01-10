@@ -40,8 +40,6 @@ public:
   */
   TypeInfo();
   
-  virtual ~TypeInfo();
-  
   TypeList getEvalTypeList() const;
   
   bool isDynamic() const;
