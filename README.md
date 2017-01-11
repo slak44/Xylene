@@ -65,6 +65,7 @@ ident_char = ? see Lexer::isIdentifierChar ? ;
 ```
 TODO list:
 - strings
+- disallow declarations starting with `_xyl_`
 - operating with variants
   - get the concrete type of a value as a string (function `typeOf(variable)` or unary operator `typeof variable`?)
   - concretize variant to type
