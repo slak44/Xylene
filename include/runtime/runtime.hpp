@@ -14,11 +14,11 @@ extern "C" {
     UniqueIdentifier currentType;
   };
 
-  bool _xyl_checkTypeCompat(_xyl_Value val, _xyl_Value newVal);
-  const char* _xyl_typeOf(_xyl_Value val);
-  _xyl_Value _xyl_withType(_xyl_Value toBeConcretized, UniqueIdentifier concreteType);
+  bool _xyl_checkTypeCompat(_xyl_Value* val, _xyl_Value* newVal);
+  const char* _xyl_typeOf(_xyl_Value* val);
+  _xyl_Value _xyl_withType(_xyl_Value* toConcretize, UniqueIdentifier concreteType);
   
-  void _xyl_typeErrIfIncompatible(_xyl_Value val, _xyl_Value newVal);
+  void _xyl_typeErrIfIncompatible(_xyl_Value* val, _xyl_Value* newVal);
   /**
     \brief This kills the program
     

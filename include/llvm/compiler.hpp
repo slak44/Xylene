@@ -75,6 +75,7 @@ private:
   llvm::PointerType* functionType;
   llvm::PointerType* voidPtrType;
   llvm::StructType* taggedUnionType;
+  llvm::PointerType* taggedUnionPtrType;
   
   TypeId::Link voidTid;
   TypeId::Link integerTid;
@@ -152,11 +153,12 @@ private:
   
   /// If the held value is a Boolean or can be converted to one
   bool canBeBoolean(ValueWrapper::Link) const;
+  /// Convert simple value to tagged union with 1 type
+  ValueWrapper::Link boxPrimitive(ValueWrapper::Link p);
   /**
-    \brief Inserts a call to the runtime 'checkTypeCompat' function
-    \returns a value with boolean type, whether or not the new type is compatible
+    \brief Inserts a call to the runtime '_xyl_typeErrIfIncompatible' function
   */
-  ValueWrapper::Link insertRuntimeTypeCheck(DeclarationWrapper::Link, ValueWrapper::Link);
+  void insertRuntimeTypeCheck(DeclarationWrapper::Link, ValueWrapper::Link);
   /**
     \brief Creates a pointer pointing to a specific function's argument
     

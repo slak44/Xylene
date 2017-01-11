@@ -89,6 +89,7 @@ void ModuleCompiler::init(std::string moduleName, AST& moduleAst) {
     integerType, // TypeListId with allowed types
     integerType, // TypeId with currently stored type
   }, "tagged_union");
+  taggedUnionPtrType = llvm::PointerType::getUnqual(taggedUnionType);
   voidTid = TypeId::createBasic("Void", voidType);
   integerTid = TypeId::createBasic("Integer", integerType);
   floatTid = TypeId::createBasic("Float", floatType);
@@ -109,9 +110,9 @@ void ModuleCompiler::init(std::string moduleName, AST& moduleAst) {
   using FT = llvm::FunctionType;
   using FunTyArgs = std::vector<llvm::Type*>;
   const std::array<llvm::FunctionType*, rtFunCount> funTys {
-    FT::get(booleanType, FunTyArgs {taggedUnionType, taggedUnionType}, false),
-    FT::get(voidPtrType, FunTyArgs {taggedUnionType}, false), // TODO return string type
-    FT::get(voidType, FunTyArgs {taggedUnionType, taggedUnionType}, false),
+    FT::get(booleanType, FunTyArgs {taggedUnionPtrType, taggedUnionPtrType}, false),
+    FT::get(voidPtrType, FunTyArgs {taggedUnionPtrType}, false), // TODO return string type
+    FT::get(voidType, FunTyArgs {taggedUnionPtrType, taggedUnionPtrType}, false),
     FT::get(voidType, FunTyArgs {voidPtrType, integerType}, false) // TODO arg1 is string type
   };
   for (std::size_t i = 0; i < rtFunCount; i++) {
@@ -182,6 +183,7 @@ void ModuleCompiler::visit() {
   std::string str;
   llvm::raw_string_ostream rso(str);
   if (llvm::verifyModule(*module, &rso)) {
+    module->dump();
     throw InternalError("Module failed validation", {
       METADATA_PAIRS,
       {"module name", module->getName()},
@@ -435,16 +437,22 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
   }
 }
 
-ValueWrapper::Link ModuleCompiler::insertRuntimeTypeCheck(
+ValueWrapper::Link ModuleCompiler::boxPrimitive(ValueWrapper::Link p) {
+  if (p->getValue()->getType() == llvm::PointerType::getUnqual(taggedUnionType))
+    return p;
+  auto box = builder->CreateAlloca(taggedUnionType, nullptr, "boxPrimitive");
+  // TODO: store value into the box
+  return std::make_shared<ValueWrapper>(box, p->getCurrentType());
+}
+
+void ModuleCompiler::insertRuntimeTypeCheck(
   DeclarationWrapper::Link target,
   ValueWrapper::Link newValue
 ) {
-  auto res = builder->CreateCall(
-    module->getFunction("checkTypeCompat"),
-    {target->getValue(), newValue->getValue()},
-    "iscompatible"
+  builder->CreateCall(
+    module->getFunction("_xyl_typeErrIfIncompatible"),
+    {target->getValue(), boxPrimitive(newValue)->getValue()}
   );
-  return std::make_shared<ValueWrapper>(res, booleanTid);
 }
 
 void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
@@ -486,10 +494,9 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
     throw Error("TypeError",
       "Type of initialization is not allowed by declaration", node->getTrace());
   }
-  if (decl->getType() == taggedUnionType) {
-    auto isCompatible = insertRuntimeTypeCheck(declWrap, initValue);
-    // TODO: at runtime, throw if isCompatible is false here
-    // TODO: also at runtime, dynamically allocate the actual data here
+  if (decl->getType() == llvm::PointerType::getUnqual(taggedUnionType)) {
+    insertRuntimeTypeCheck(declWrap, initValue);
+    // TODO: at runtime, dynamically allocate the actual data here and store it
   } else {
     builder->CreateStore(initValue->getValue(), decl);
   }

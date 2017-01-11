@@ -144,6 +144,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/llvm/values.cpp
   ${SRC_DIR}/llvm/typeId.cpp
   ${SRC_DIR}/llvm/typeData.cpp
+  ${SRC_DIR}/runtime/runtime.cpp
   ${SRC_DIR}/runtime/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor tclap)
