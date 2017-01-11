@@ -19,7 +19,7 @@ TEST(UtilTest, Collate) {
     test_obj(72364),
     test_obj(985123)
   };
-  auto collated1 = collate<decltype(vec1)>(vec1, [](test_obj x) {
+  auto collated1 = collate(vec1, [](test_obj x) {
     return std::to_string(x.getInt());
   });
   EXPECT_EQ(collated1, "1, 54, 72364, 985123");

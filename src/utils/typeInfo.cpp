@@ -65,7 +65,7 @@ FunctionSignature::Arguments FunctionSignature::getArguments() const {
 std::string FunctionSignature::toString() const {
   std::string str = "FunctionSignature (";
   str += "return: " + returnType.getTypeNameString();
-  str += ", arguments: " + collate<Arguments>(arguments, [](const std::pair<std::string, DefiniteTypeInfo>& arg) {
+  str += ", arguments: " + collate(arguments, [](Arguments::value_type arg) {
     return "(arg " + arg.first + ": " + arg.second.getTypeNameString() + ")";
   });
   str += ")";
