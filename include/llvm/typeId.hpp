@@ -13,8 +13,6 @@ namespace llvm {
 }
 class TypeData; 
 
-using UniqueIdentifier = std::size_t;
-
 /**
   \brief An abstract identifier with a name and a unique id.
 */

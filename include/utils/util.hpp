@@ -28,6 +28,9 @@ using uint = unsigned int;
 using int64 = long long;
 using uint64 = unsigned long long;
 
+/// Type for AbstractId's unique identifiers
+using UniqueIdentifier = std::size_t;
+
 /// Represents a list of types. Used in multiple places
 using TypeList = std::unordered_set<std::string>;
 
