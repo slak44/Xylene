@@ -1,12 +1,14 @@
 <!--
-Integer, Float nr;
+Integer, Float nr = 420;
 nr = 1;
 nr = 3.1313;
 nr = 7;
 return nr;
 -->
 <block type="root">
-  <decl ident="nr" types="Integer Float"/>
+  <decl ident="nr" types="Integer Float">
+    <expr type="Integer" value="420"/>
+  </decl>
   <expr type="Operator" value="Assignment">
     <expr type="Identifier" value="nr"/>
     <expr type="Integer" value="1"/>

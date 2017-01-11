@@ -82,13 +82,14 @@ void ModuleCompiler::init(std::string moduleName, AST& moduleAst) {
   integerType = llvm::IntegerType::get(*context, bitsPerInt);
   floatType = llvm::Type::getDoubleTy(*context);
   booleanType = llvm::Type::getInt1Ty(*context);
+  voidType = llvm::Type::getVoidTy(*context);
   voidPtrType = llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8));
   taggedUnionType = llvm::StructType::create(*context, {
     voidPtrType, // Pointer to data
     integerType, // TypeListId with allowed types
     integerType, // TypeId with currently stored type
   }, "tagged_union");
-  voidTid = TypeId::createBasic("Void", llvm::Type::getVoidTy(*context));
+  voidTid = TypeId::createBasic("Void", voidType);
   integerTid = TypeId::createBasic("Integer", integerType);
   floatTid = TypeId::createBasic("Float", floatType);
   booleanTid = TypeId::createBasic("Boolean", booleanType);
@@ -96,6 +97,33 @@ void ModuleCompiler::init(std::string moduleName, AST& moduleAst) {
   builder = std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context));
   module = new llvm::Module(moduleName, *context);
   ast = std::make_unique<AST>(moduleAst);
+  
+  // Insert declarations for these functions in IR, they are linked in later
+  constexpr const std::size_t rtFunCount = 4;
+  constexpr const std::array<const char*, rtFunCount> runtimeFuncs = {
+    "_xyl_checkTypeCompat",
+    "_xyl_typeOf",
+    "_xyl_typeErrIfIncompatible",
+    "_xyl_finish"
+  };
+  using FT = llvm::FunctionType;
+  using FunTyArgs = std::vector<llvm::Type*>;
+  const std::array<llvm::FunctionType*, rtFunCount> funTys {
+    FT::get(booleanType, FunTyArgs {taggedUnionType, taggedUnionType}, false),
+    FT::get(voidPtrType, FunTyArgs {taggedUnionType}, false), // TODO return string type
+    FT::get(voidType, FunTyArgs {taggedUnionType, taggedUnionType}, false),
+    FT::get(voidType, FunTyArgs {voidPtrType, integerType}, false) // TODO arg1 is string type
+  };
+  for (std::size_t i = 0; i < rtFunCount; i++) {
+    if (module->getFunction(runtimeFuncs[i]) != nullptr) continue;
+    auto fun = llvm::Function::Create(
+      funTys[i], llvm::Function::ExternalLinkage, runtimeFuncs[i], module);
+    fun->deleteBody();
+    ast->getRoot()->blockFuncs.insert({
+      std::string(runtimeFuncs[i]),
+      std::make_shared<FunctionWrapper>(fun, FunctionSignature("", {}), functionTid)
+    });
+  }
 }
 
 void ModuleCompiler::addMainFunction() {

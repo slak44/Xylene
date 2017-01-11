@@ -40,6 +40,7 @@
 #include "parser/tokenParser.hpp"
 #include "llvm/typeId.hpp"
 #include "llvm/values.hpp"
+#include "runtime/runtime.hpp"
 
 class OperatorCodegen;
 
@@ -69,6 +70,7 @@ private:
 
   llvm::IntegerType* integerType;
   llvm::Type* floatType;
+  llvm::Type* voidType;
   llvm::IntegerType* booleanType;
   llvm::PointerType* functionType;
   llvm::PointerType* voidPtrType;

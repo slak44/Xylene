@@ -8,22 +8,23 @@
 #include "runtime/io.hpp"
 
 extern "C" {
-  struct Value {
+  struct _xyl_Value {
     void* ptrToData;
     UniqueIdentifier allowedTypeList;
     UniqueIdentifier currentType;
   };
 
-  bool checkTypeCompat(Value val, Value newVal);
-  char* typeOf(Value val);
-  Value withType(Value toBeConcretized, UniqueIdentifier concreteType);
+  bool _xyl_checkTypeCompat(_xyl_Value val, _xyl_Value newVal);
+  const char* _xyl_typeOf(_xyl_Value val);
+  _xyl_Value _xyl_withType(_xyl_Value toBeConcretized, UniqueIdentifier concreteType);
   
+  void _xyl_typeErrIfIncompatible(_xyl_Value val, _xyl_Value newVal);
   /**
     \brief This kills the program
     
     This will be temporarily used for errors, before exceptions are implemented.
   */
-  void finish(char* message, int exitCode);
+  void _xyl_finish(const char* message, int exitCode) __attribute__((noreturn));
 }
 
 #endif
