@@ -96,6 +96,8 @@ namespace TT {
   constexpr Construct PAREN_RIGHT(')', 304, "Right parenthesis");
   constexpr Construct SQPAREN_LEFT('[', 305, "Left square parenthesis");
   constexpr Construct SQPAREN_RIGHT(']', 306, "Right square parenthesis");
+  constexpr Construct CALL_BEGIN('(', 307, "Call begin");
+  constexpr Construct CALL_END(')', 308, "Call end");
 
   constexpr TokenType FILE_END(999, "End of file");
   constexpr TokenType OPERATOR(1, "Operator");

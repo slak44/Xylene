@@ -39,6 +39,16 @@ Fixity Lexer::determineFixity(
   return otherCases;
 }
 
+TokenType Lexer::determineParenBeginType() const noexcept {
+  if (tokens.empty()) return TT::PAREN_LEFT;
+  const auto prev = tokens.back();
+  bool isCall =
+    prev.type == TT::IDENTIFIER ||
+    prev.type == TT::PAREN_RIGHT || prev.type == TT::CALL_END ||
+    (prev.isOp() && prev.op().hasFixity(POSTFIX));
+  return isCall ? TT::CALL_BEGIN : TT::PAREN_LEFT;
+}
+
 inline void Lexer::handleMultiLineComments() {
   // TODO: nested comments
   Position start = getPos();
@@ -151,6 +161,11 @@ char Lexer::readEscapeSeq() {
 }
 
 void Lexer::processTokens() {
+  // Keep track of paren and call beginnings
+  // When a paren close is found, the top of the stack is popped, and determines if
+  // the paren is TT::PAREN_RIGHT or TT::CALL_END
+  std::stack<Token> parenStack {};
+  
   for (; pos != code.length(); skip(1)) {
     // Comments
     if (current(2) == "//") {
@@ -189,7 +204,28 @@ void Lexer::processTokens() {
     // Check for constructs
     TokenType construct = TT::findConstruct(current());
     if (construct != TT::UNPROCESSED) {
-      tokens.push_back(Token(construct, current(1), traceFor(1)));
+      construct = construct == TT::PAREN_LEFT ?
+        determineParenBeginType() : construct;
+      auto constrTok = Token(construct, current(1), traceFor(1));
+      if (construct == TT::PAREN_LEFT || construct == TT::CALL_BEGIN || construct == TT::SQPAREN_LEFT) {
+        parenStack.push(constrTok);
+      }
+      if (construct == TT::PAREN_RIGHT || construct == TT::SQPAREN_RIGHT) {
+        if (parenStack.empty())
+          throw Error("SyntaxError", "Mismatched parenthesis", constrTok.trace);
+        Token topOfStack = parenStack.top();
+        parenStack.pop();
+        if (topOfStack.type == TT::CALL_BEGIN) {
+          constrTok.type = construct = TT::CALL_END;
+        }
+        bool isMatched =
+          (topOfStack.type == TT::PAREN_LEFT && construct == TT::PAREN_RIGHT) ||
+          (topOfStack.type == TT::SQPAREN_LEFT && construct == TT::SQPAREN_RIGHT) ||
+          (topOfStack.type == TT::CALL_BEGIN && construct == TT::CALL_END);
+        if (!isMatched)
+          throw Error("SyntaxError", "Mismatched parenthesis", constrTok.trace);
+      }
+      tokens.push_back(constrTok);
       continue;
     }
     // Check for fat arrows
@@ -259,6 +295,10 @@ void Lexer::processTokens() {
     
     // Must be an identifier
     tokens.push_back(Token(TT::IDENTIFIER, str, traceFrom(identStart)));
+  }
+  if (!parenStack.empty()) {
+    // TODO: print error for each paren left in the stack
+    throw Error("SyntaxError", "Unmatched parenthesis", parenStack.top().trace);
   }
   tokens.push_back(Token(TT::FILE_END, traceFor(1)));
 }

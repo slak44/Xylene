@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <stack>
 #include <algorithm>
 
 #include "utils/util.hpp"
@@ -18,15 +19,16 @@
 class TokenParser: public BaseParser {
 private:
   std::vector<Token> input;
-  int pos = 0;
+  std::size_t pos = 0;
   
   /// Get token at current position
   inline Token current() {
-    return input[static_cast<std::size_t>(pos)];
+    return input[pos];
   }
   /// Skip a number of tokens, usually just advances to the next one
-  inline void skip(int by = 1) {
-    pos += by;
+  inline void skip(int skipped = 1) {
+    pos += skipped;
+    if (pos >= input.size()) pos = input.size() - 1;
   }
   /// Accept a TokenType
   inline bool accept(TokenType tok) {
@@ -48,7 +50,7 @@ private:
   }
   /// Accept anything that ends an expression
   inline bool acceptEndOfExpression() {
-    return accept(TT::SEMI) || accept(TT::PAREN_RIGHT) || accept(TT::FILE_END) || accept(TT::DO);
+    return accept(TT::SEMI) || accept(TT::FILE_END) || accept(TT::DO);
   }
   /// Expect certain tokens to appear (throw otherwise)
   inline bool expect(TokenType tok, std::string errorMessage = "Unexpected symbol") {
@@ -69,16 +71,17 @@ private:
   
   /// Creates an ExpressionNode from the current Token
   Node<ExpressionNode>::Link exprFromCurrent();
+  /// Parse the stuff inside () or [] or calls
+  Node<ExpressionNode>::Link parseCircumfixGroup(Token begin);
   /// Parse postfix ops in primaries
   Node<ExpressionNode>::Link parsePostfix(Node<ExpressionNode>::Link terminal);
   /**
     \brief Parse a primary in the expression
     
-    \param parenAsFuncCall if a paren is found, it will be treated as a function call
-    ';' is an empty expression for example
+    Example of empty expressions: "" or ";"
     \returns an ExpressionNode, or nullptr if the expression is empty (terminates immediately)
   */
-  Node<ExpressionNode>::Link parseExpressionPrimary(bool parenAsFuncCall);
+  Node<ExpressionNode>::Link parseExpressionPrimary();
   /// Implementation detail of expression, only exists to allow recursion.
   Node<ExpressionNode>::Link expressionImpl(Node<ExpressionNode>::Link lhs, int minPrecedence);
   /**

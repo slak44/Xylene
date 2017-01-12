@@ -3,10 +3,10 @@ a(42, 6714);
 -->
 <block type="root">
   <expr type="Operator" value="Call">
-    <expr type="Identifier" value="a"/>
     <expr type="Operator" value="Comma">
       <expr type="Integer" value="42"/>
       <expr type="Integer" value="6714"/>
     </expr>
+    <expr type="Identifier" value="a"/>
   </expr>
 </block>

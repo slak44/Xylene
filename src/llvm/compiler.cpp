@@ -391,11 +391,11 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
     std::vector<ValueWrapper::Link> operands {};
     // Do some magic for function calls
     if (tok.op().hasSymbol("()")) {
-      // First arg to calls is the thing being called
+      // Second arg to calls is the thing being called
       // Should be a pointer
-      operands.push_back(compileExpression(node->at(0), AS_POINTER));
+      operands.push_back(compileExpression(node->at(1), AS_POINTER));
       // Compute arguments and add them too
-      auto lastNode = node->at(1);
+      auto lastNode = node->at(0);
       // If it's not an comma, it means this func call only has one argument
       if (!(lastNode->getToken().isOp() && lastNode->getToken().op().hasSymbol(","))) {
         operands.push_back(compileExpression(lastNode, AS_VALUE));

@@ -13,6 +13,9 @@ Everything else is downloaded and installed before building.
 ## Language Syntax
 
 EBNF format of a program:
+Notes:
+- parenthesis must be matched
+- operators respect the precedence, fixity, associativity and arity defined in operator.cpp
 ```
 program = [ hashbang ], block ;
 block = { statement, ";" } ;
@@ -49,11 +52,12 @@ type_list = ident, { ",", ident } ;
 argument = ( type_list, ident ) | ( ident, ":", type_list ) ;
 argument_list = { "[", argument, "]" } ;
 expression = primary, { binary_op, primary } ;
-primary = { prefix_op }, terminal, { postfix_op | function_call } ;
+primary = { [ "(" ], { prefix_op }, [ "(" ] }, terminal | expression,
+  { [ ")" ], { postfix_op | function_call }, [ ")" ] } ;
 function_call = "(", [ expression, { ",", expression } ], ")" ;
-binary_op = ? see binary operators in operator.hpp ? ;
-prefix_op = ? see prefix operators in operator.hpp ? ;
-postfix_op = ? see postfix operators in operator.hpp ? ;
+binary_op = ? see binary operators in operator.cpp ? ;
+prefix_op = ? see prefix operators in operator.cpp ? ;
+postfix_op = ? see postfix operators in operator.cpp ? ;
 terminal = integer_literal | float_literal | boolean_literal | string_literal
   | identifier ;
 integer_literal = ? an integer value, see Lexer class for details ? ;

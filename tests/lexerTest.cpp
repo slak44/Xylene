@@ -20,6 +20,10 @@ protected:
 
 const std::vector<Token> LexerTest::fileEnd {Token(TT::FILE_END, "", defaultTrace)};
 
+TEST_F(LexerTest, Identifier) {
+  ASSERT_EQ(getTokens("hello")[0], Token(TT::IDENTIFIER, "hello", defaultTrace));
+}
+
 TEST_F(LexerTest, CommentsSingleLine) {
   ASSERT_EQ(getTokens("// \xAA"), fileEnd);
   ASSERT_EQ(getTokens("// test\n"), fileEnd);
@@ -77,7 +81,9 @@ TEST_F(LexerTest, EscapeSequences) {
 
 TEST_F(LexerTest, Constructs) {
   ASSERT_EQ(getTokens(";")[0], Token(TT::SEMI, ";", defaultTrace));
-  ASSERT_EQ(getTokens("]")[0], Token(TT::SQPAREN_RIGHT, "]", defaultTrace));
+  ASSERT_THROW(getTokens("]"), Error);
+  ASSERT_THROW(getTokens("([)]"), Error);
+  ASSERT_NO_THROW(getTokens("([])"));
 }
 
 TEST_F(LexerTest, FatArrow) {

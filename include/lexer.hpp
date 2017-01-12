@@ -2,6 +2,7 @@
 #define LEXER_HPP
 
 #include <vector>
+#include <stack>
 #include <string>
 #include <cctype>
 #include <unordered_map>
@@ -111,6 +112,9 @@ private:
     Fixity afterIdentOrParen,
     Fixity otherCases
   ) const noexcept;
+  
+  /// Disambiguate between parens and calls, on the current token
+  TokenType determineParenBeginType() const noexcept;
   
   bool isValidForRadix(char c, uint radix) const noexcept;
   /**

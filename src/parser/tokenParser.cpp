@@ -13,66 +13,104 @@ Node<ExpressionNode>::Link TokenParser::exprFromCurrent() {
   return e;
 }
 
-Node<ExpressionNode>::Link TokenParser::parsePostfix(Node<ExpressionNode>::Link terminal) {
-  Node<ExpressionNode>::Link expr;
-  // Check if there are any postfix operators around
-  if (accept(POSTFIX)) {
-    auto lastNode = expr = exprFromCurrent();
-    skip();
-    while (accept(POSTFIX)) {
-      auto newPostfix = exprFromCurrent();
-      lastNode->addChild(newPostfix);
-      lastNode = newPostfix;
-      skip();
+Node<ExpressionNode>::Link TokenParser::parseCircumfixGroup(Token begin) {
+  const TokenType end =
+    begin.type == TT::PAREN_LEFT ? TT::PAREN_RIGHT :
+    begin.type == TT::CALL_BEGIN ? TT::CALL_END :
+    begin.type == TT::SQPAREN_LEFT ? TT::SQPAREN_RIGHT :
+      TT::UNPROCESSED;
+  if (end == TT::UNPROCESSED)
+    throw InternalError("Wrong token passed to parseCircumfixGroup", {
+      METADATA_PAIRS,
+      {"begin", begin.toString()}
+    });
+  // Allow empty expression only for calls
+  bool throwIfEmpty = begin.type != TT::CALL_BEGIN;
+  // Circumfix groups are guaranteed to be matched correctly by the lexer, so we only
+  // need to keep track of how many times is our group opened. When we close
+  // begin's group, beginOccurrences will be 0, because the begin token is skipped
+  uint beginOccurrences = 1;
+  const std::size_t beginPos = pos;
+  std::size_t tokensInGroup = 0;
+  while (beginOccurrences > 0) {
+    if (accept(begin.type)) {
+      beginOccurrences++;
     }
-    lastNode->addChild(terminal);
-  } else {
-    expr = terminal;
+    if (accept(end)) {
+      beginOccurrences--;
+    }
+    tokensInGroup++;
+    skip();
+  } // At this point the end token is already skipped
+  // No tokens means empty expression
+  if (tokensInGroup - 1 == 0) {
+    if (throwIfEmpty) throw InternalError("Empty expression", {
+      METADATA_PAIRS,
+      {"circumfix group begin", begin.toString()}
+    });
+    return nullptr;
   }
-  return expr;
+  // This is like recursively calling expression(), but it has to be isolated from
+  // the parent parser because it wouldn't know where to stop. Copying the correct
+  // tokens ensures that only those are parsed, and doesn't mess with the parent's
+  // internal state
+  TokenParser recursive = TokenParser();
+  // Copy everything between the beginning of the group and the end in the recursive
+  // parser. beginPos is already after begin, but tokensInGroup counts the end, so -1
+  recursive.input = std::vector<Token>(
+    std::begin(input) + beginPos, std::begin(input) + beginPos + tokensInGroup - 1);
+  // Throw in a TT::FILE_END if there isn't any, so acceptEndOfExpression works
+  if (recursive.input.back().type != TT::FILE_END)
+    recursive.input.push_back(Token(TT::FILE_END, "", nullptr));
+  return recursive.expression(throwIfEmpty);
 }
 
-Node<ExpressionNode>::Link TokenParser::parseExpressionPrimary(bool parenAsFuncCall = false) {
+Node<ExpressionNode>::Link TokenParser::parsePostfix(Node<ExpressionNode>::Link terminal) {
+  Node<ExpressionNode>::Link base;
+  // Check if there are any postfix operators around (function calls are postfix ops)
+  while (accept(POSTFIX) || accept(TT::CALL_BEGIN)) {
+    decltype(base) newOp;
+    if (accept(POSTFIX)) {
+      newOp = exprFromCurrent();
+      skip();
+    } else {
+      newOp = Node<ExpressionNode>::make(
+        Token(TT::OPERATOR, Operator::find("Call"), current().trace));
+      Token begin = current();
+      skip(); // Skip TT::CALL_BEGIN
+      auto insideCall = parseCircumfixGroup(begin);
+      // Empty expression means no-args call
+      if (insideCall == nullptr) insideCall = Node<ExpressionNode>::make(
+        Token(TT::OPERATOR, Operator::find("No-op"), begin.trace));
+      newOp->addChild(insideCall);
+    }
+    if (base == nullptr) {
+      base = newOp;
+      base->addChild(terminal);
+    } else {
+      newOp->addChild(base);
+      base = newOp;
+    }
+  }
+  return base == nullptr ? terminal : base;
+}
+
+Node<ExpressionNode>::Link TokenParser::parseExpressionPrimary() {
   if (acceptEndOfExpression()) return nullptr; // Empty expression
   Node<ExpressionNode>::Link expr;
+  if (accept(TT::CALL_BEGIN) || accept(TT::SQPAREN_LEFT))
+    throw InternalError("The grammar does not allow this to be here", {
+      METADATA_PAIRS,
+      {"token", current().toString()}
+    });
   if (accept(TT::PAREN_LEFT)) {
+    Token begin = current();
     skip();
-    expr = expression(false);
-    expect(TT::PAREN_RIGHT, "Mismatched parenthesis");
-    if (
-      // Something higher up the chain has higher level info forcing this parse path
-      parenAsFuncCall ||
-      // Empty expression between parens means it's actually a function call without arguments
-      expr == nullptr ||
-      // If it's a terminal, it's a function call with 1 arg
-      expr->getToken().isTerminal() ||
-      // If the root of the parenthesised expression is a comma, then this is a tree of arguments, so func call
-      (expr->getToken().isOp() && expr->getToken().op().hasSymbol(","))
-    ) {
-      auto callOpExpr = Node<ExpressionNode>::make(
-        Token(TT::OPERATOR, Operator::find("Call"), current().trace)
-      );
-      // If expr is nullptr, use a no-op
-      callOpExpr->addChild(expr != nullptr ? expr :
-        Node<ExpressionNode>::make(Token(TT::OPERATOR, Operator::find("No-op"), current().trace)));
-      expr = callOpExpr;
-    }
-    skip(); // Skip ")"
-    expr = parsePostfix(expr);
-    return expr;
+    expr = parseCircumfixGroup(begin);
+    return parsePostfix(expr);
   } else if (acceptTerminal()) {
     expr = exprFromCurrent();
     skip();
-    // Function call
-    if (expr->getToken().type == TT::IDENTIFIER && accept(TT::PAREN_LEFT)) {
-      auto call = parseExpressionPrimary(true);
-      // The expr being called must be the first operand of the call operator
-      // So remove the arguments, add expr, then put the arguments back in
-      auto argTree = call->removeChild(0);
-      call->addChild(expr);
-      call->addChild(argTree);
-      return call;
-    }
     return parsePostfix(expr);
   // Prefix operators
   } else if (accept(PREFIX)) {
@@ -84,28 +122,7 @@ Node<ExpressionNode>::Link TokenParser::parseExpressionPrimary(bool parenAsFuncC
       skip();
     }
     auto terminalAndPostfix = parseExpressionPrimary();
-    // Postfix ops must get in front if at least one exists
-    if (
-      terminalAndPostfix->getToken().isOp() && // Check that there is a postfix op, not a terminal
-      lastNode->getToken().op().getPrec() < terminalAndPostfix->getToken().op().getPrec()
-    ) {
-      auto lastPostfix = terminalAndPostfix;
-      // Go down the tree and find the last postfix
-      while (lastPostfix->getToken().isOp() && lastPostfix->getToken().op().hasFixity(POSTFIX)) {
-        lastPostfix = lastPostfix->at(0);
-      }
-      // This loop iterates one too many times, and finds the terminal
-      // The last postfix is the terminal's parent
-      lastPostfix = Node<ExpressionNode>::staticPtrCast(lastPostfix->getParent().lock());
-      // Add the terminal to the prefixes
-      lastNode->addChild(lastPostfix->removeChild(0));
-      // Add the prefixes as a child of the last postfix
-      lastPostfix->addChild(expr);
-      // The postfixes are the root of the returned expr node
-      expr = terminalAndPostfix;
-    } else {
-      lastNode->addChild(terminalAndPostfix);
-    }
+    lastNode->addChild(terminalAndPostfix);
     return expr;
   } else {
     throw InternalError("Unimplemented primary expression", {
@@ -122,29 +139,6 @@ Node<ExpressionNode>::Link TokenParser::expressionImpl(Node<ExpressionNode>::Lin
   Node<ExpressionNode>::Link lastExpr = nullptr;
   Token tok = current();
   if (acceptEndOfExpression()) return lhs;
-  if (lhs != nullptr) {
-    skip(-1);
-    auto tt = current().type;
-    skip(1);
-    // If we have any of:
-    // TT::IDENTIFIER, TT::PAREN_RIGHT, postfix ops
-    // before a paren, it's a function call
-    auto isCallable =
-      tt == TT::IDENTIFIER ||
-      tt == TT::PAREN_RIGHT ||
-      (tt == TT::OPERATOR && lhs->getToken().op().hasFixity(POSTFIX));
-    if (accept(TT::PAREN_LEFT) && isCallable) {
-      auto fCall = parseExpressionPrimary(true);
-      auto args = fCall->removeChild(0);
-      fCall->addChild(lhs);
-      fCall->addChild(args);
-      lhs = fCall;
-      // If the expression finishes here, return
-      if (acceptEndOfExpression()) return lhs;
-      // Otherwise, update tok
-      tok = current();
-    }
-  }
   while (tok.op().hasArity(BINARY) && tok.op().getPrec() >= minPrecedence) {
     auto tokExpr = Node<ExpressionNode>::make(tok);
     tokExpr->setTrace(tok.trace);

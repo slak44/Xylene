@@ -109,8 +109,8 @@ const std::vector<Operator> Operator::list {
   // These don't get matched by the lexer as operators, their symbols get matched as
   // constructs. The expressions using those are created in the parser
   Operator("[]", 13, "Subscript", ASSOCIATE_FROM_LEFT, BINARY, CIRCUMFIX, {true, false}),
-  // Call op will contain name of function + argument tree with commas
-  Operator("()", 13, "Call", ASSOCIATE_FROM_LEFT, BINARY, POSTFIX, {true, false}),
+  // Call op will contain argument tree with commas + name of function
+  Operator("()", 13, "Call", ASSOCIATE_FROM_LEFT, BINARY, POSTFIX, {false, true}),
   Operator("?:", 1, "Conditional", ASSOCIATE_FROM_LEFT, TERNARY, CIRCUMFIX),
   Operator(" ", 0, "No-op", ASSOCIATE_FROM_LEFT, NULLARY)
 };
