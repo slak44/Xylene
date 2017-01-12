@@ -8,7 +8,6 @@
 
 #include "utils/util.hpp"
 #include "utils/error.hpp"
-#include "parser/baseParser.hpp"
 #include "ast.hpp"
 #include "token.hpp"
 #include "operator.hpp"
@@ -16,7 +15,7 @@
 /**
   \brief Parses a list of tokens, and produces an AST.
 */
-class TokenParser: public BaseParser {
+class TokenParser {
 private:
   std::vector<Token> input;
   std::size_t pos = 0;
@@ -150,14 +149,12 @@ private:
   */
   ASTNode::Link statement();
 
-public:  
   inline TokenParser() {}
-  
+public:
   /**
-    \brief Call this method to actually do the parsing before using getTree
-    \param input list of tokens from lexer
+    \brief Turn a list of tokens into an AST
   */
-  TokenParser& parse(std::vector<Token> input);
+  static std::unique_ptr<AST> parse(std::vector<Token> input);
 };
 
 #endif

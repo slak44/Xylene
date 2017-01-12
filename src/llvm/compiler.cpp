@@ -10,7 +10,7 @@ Compiler::Compiler(fs::path rootScript, fs::path output):
   auto mc = ModuleCompiler::create(
     pd.types,
     "temp_module_name",
-    TokenParser().parse(lx->getTokens()).getTree()
+    *TokenParser::parse(lx->getTokens())
   );
   mc->addMainFunction();
   mc->visit();

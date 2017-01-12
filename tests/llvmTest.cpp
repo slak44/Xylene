@@ -14,8 +14,6 @@ namespace fs = std::experimental::filesystem;
 
 class LLVMCompilerTest: public ::testing::Test {
 protected:
-  XMLParser xpx = XMLParser();
-  
   inline std::string absoluteXmlPath(fs::path relativePath) {
     fs::path dataParentDir = DATA_PARENT_DIR/relativePath;
     return dataParentDir;
@@ -26,23 +24,23 @@ protected:
   }
   
   inline ModuleCompiler::Link compile(fs::path xmlFilePath) {
-    xpx.parse(xmlFile(xmlFilePath));
-    ModuleCompiler::Link visitor = ModuleCompiler::create(xmlFilePath, xpx.getTree());
-    visitor->visit();
-    if (printIr) visitor->getModule()->dump();
-    return visitor;
+    auto xpxTree = XMLParser::parse(xmlFile(xmlFilePath));
+    auto mc = ModuleCompiler::create(xmlFilePath, *xpxTree);
+    mc->visit();
+    if (printIr) mc->getModule()->dump();
+    return mc;
   }
   
   inline void noThrowOnCompile(fs::path xmlFilePath) {
-    xpx.parse(xmlFile(xmlFilePath));
-    ModuleCompiler::Link visitor = ModuleCompiler::create(xmlFilePath, xpx.getTree());
+    auto xpxTree = XMLParser::parse(xmlFile(xmlFilePath));
+    auto mc = ModuleCompiler::create(xmlFilePath, *xpxTree);
     try {
-      visitor->visit();
-      if (printIr) visitor->getModule()->dump();
+      mc->visit();
+      if (printIr) mc->getModule()->dump();
     } catch (InternalError& err) {
       EXPECT_NO_THROW(throw err);
       println(err.what());
-      visitor->getModule()->dump();
+      mc->getModule()->dump();
     }
   }
   

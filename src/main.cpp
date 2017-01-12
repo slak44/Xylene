@@ -30,13 +30,13 @@ std::unique_ptr<AST> parseXML(fs::path filePath, std::string cliEval) {
   if (!filePath.empty()) {
     // Read from file
     auto file = rapidxml::file<>(filePath.c_str());
-    return std::make_unique<AST>(XMLParser().parse(file).getTree());
+    return XMLParser::parse(file);
   } else {
     // Read from CLI
     char* mutableCode = new char[cliEval.size() + 1];
     std::move(ALL(cliEval), mutableCode);
     mutableCode[cliEval.size()] = '\0';
-    return std::make_unique<AST>(XMLParser().parse(mutableCode).getTree());
+    return XMLParser::parse(mutableCode);
   }
 }
 
@@ -113,7 +113,7 @@ int notReallyMain(int argc, const char* argv[]) {
       if (printTokens.getValue()) for (auto tok : tokens) println(tok);
       
       if (doNotParse.getValue()) return NORMAL_EXIT;
-      ast = std::make_unique<AST>(TokenParser().parse(tokens).getTree());
+      ast = TokenParser::parse(tokens);
     }
     
     if (printAST.getValue()) ast->print();

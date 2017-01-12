@@ -8,9 +8,6 @@
 
 class ParserTest: public ::testing::Test {
 protected:
-  TokenParser px = TokenParser();
-  XMLParser xpx = XMLParser();
-  
   inline rapidxml::file<> xmlFile(std::string path) {
     path = DATA_PARENT_DIR + ("/" + path);
     return rapidxml::file<>(path.c_str());
@@ -20,10 +17,9 @@ protected:
 class ParserCompareTest: public ParserTest {
 protected:
   inline void test(std::string code, std::string xmlCodePath) {
-    px = TokenParser();
-    px.parse(Lexer::tokenize(code, xmlCodePath)->getTokens());
-    xpx.parse(xmlFile(xmlCodePath));
-    ASSERT_EQ(px.getTree(), xpx.getTree());
+    auto pxTr = TokenParser::parse(Lexer::tokenize(code, xmlCodePath)->getTokens());
+    auto xpxTr = XMLParser::parse(xmlFile(xmlCodePath));
+    ASSERT_EQ(*pxTr, *xpxTr);
   }
 };
 

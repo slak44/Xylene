@@ -8,7 +8,6 @@
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 #include "utils/typeInfo.hpp"
-#include "baseParser.hpp"
 #include "ast.hpp"
 
 /**
@@ -70,20 +69,19 @@ public:
     - attribute \b visibility: public, private or protected
     - attribute \b static: true if static
 */
-class XMLParser: public BaseParser {
-public:
-  XMLParser();
-  
-  /// Parse an XML string
-  XMLParser& parse(char* str);
-  /// Parse an XML file
-  XMLParser& parse(rapidxml::file<char> xmlFile);
-  
+class XMLParser {
 private:
   /// Implementation detail. Parses all the children of an XML node
   void parseChildren(rapidxml::xml_node<>* node, ASTNode::Link target);
   /// Implementation detail. Recursively parse XML nodes
   ASTNode::Link parseXMLNode(rapidxml::xml_node<>* node);
+  
+  inline XMLParser() {}
+public:
+  /// Parse an XML string
+  static std::unique_ptr<AST> parse(char* str);
+  /// Parse an XML file
+  static std::unique_ptr<AST> parse(rapidxml::file<char> xmlFile);
 };
 
 #endif

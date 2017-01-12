@@ -7,9 +7,11 @@
 #endif
 #endif
 
-XMLParser::XMLParser() {}
+XMLParseError::XMLParseError(std::string msg, ErrorData data):
+  InternalError("XMLParseError", msg, data) {}
 
-XMLParser& XMLParser::parse(char* str) {
+std::unique_ptr<AST> XMLParser::parse(char* str) {
+  XMLParser xpx = XMLParser();
   rapidxml::xml_document<char> doc;
   try {
     doc.parse<0>(str);
@@ -20,18 +22,16 @@ XMLParser& XMLParser::parse(char* str) {
       {"position", std::to_string(*pe.where<int>())}
     });
   }
-  auto rootNode = Node<BlockNode>::dynPtrCast(parseXMLNode(doc.first_node()));
+  auto rootNode = Node<BlockNode>::dynPtrCast(xpx.parseXMLNode(doc.first_node()));
   if (rootNode == nullptr) throw XMLParseError("Root node isn't a block node", {
     METADATA_PAIRS,
     {"tag name", doc.first_node()->name()}
   });
-  tree = std::make_unique<AST>(AST(rootNode));
-  return *this;
+  return std::make_unique<AST>(AST(rootNode));
 }
 
-XMLParser& XMLParser::parse(rapidxml::file<char> xmlFile) {
-  parse(xmlFile.data());
-  return *this;
+std::unique_ptr<AST> XMLParser::parse(rapidxml::file<char> xmlFile) {
+  return parse(xmlFile.data());
 }
 
 void XMLParser::parseChildren(rapidxml::xml_node<>* node, ASTNode::Link target) {
@@ -55,7 +55,8 @@ static Visibility fromString(std::string str) {
 }
 
 ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
-  auto safeAttr = [node](std::string what, std::string defaultValue = "") -> std::string {
+  auto safeAttr =
+  [node](std::string what, std::string defaultValue = "") -> std::string {
     auto attr = node->first_attribute(what.c_str());
     if (attr != nullptr) return attr->value();
     else return defaultValue;
@@ -85,7 +86,8 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   auto funBlock = [=](Node<FunctionNode>::Link f) {
     if (!f->isForeign()) {
       auto codeBlock = node->first_node("block");
-      if (codeBlock == nullptr) throw XMLParseError("Method missing code block", {METADATA_PAIRS});
+      if (codeBlock == nullptr)
+        throw XMLParseError("Method missing code block", {METADATA_PAIRS});
       f->setCode(Node<BlockNode>::staticPtrCast(parseXMLNode(codeBlock)));
     }
   };
@@ -110,14 +112,16 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   } else if (name == "return") {
     auto retNode = Node<ReturnNode>::make();
     auto val = node->first_node("expr");
-    if (val != nullptr) retNode->setValue(Node<ExpressionNode>::dynPtrCast(parseXMLNode(val)));
+    if (val != nullptr)
+      retNode->setValue(Node<ExpressionNode>::dynPtrCast(parseXMLNode(val)));
     return retNode;
   } else if (name == "expr") {
     TokenType tokenType = TT::findByPrettyName(requiredAttr("type"));
     std::string data = requiredAttr("value");
     std::unique_ptr<Token> content;
     if (tokenType == TT::OPERATOR) {
-      content = std::make_unique<Token>(tokenType, Operator::find(data), defaultTrace);
+      content = std::make_unique<Token>(
+        tokenType, Operator::find(data), defaultTrace);
     } else {
       content = std::make_unique<Token>(tokenType, data, defaultTrace);
     }
@@ -143,18 +147,22 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   } else if (name == "branch") {
     auto branch = Node<BranchNode>::make();
     auto cond = node->first_node();
-    if (cond == nullptr) throw XMLParseError("Missing condition in branch", {METADATA_PAIRS});
+    if (cond == nullptr)
+      throw XMLParseError("Missing condition in branch", {METADATA_PAIRS});
     branch->setCondition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
     auto success = cond->next_sibling();
-    if (success == nullptr) throw XMLParseError("Missing success node in branch", {METADATA_PAIRS});
+    if (success == nullptr)
+      throw XMLParseError("Missing success node in branch", {METADATA_PAIRS});
     branch->setSuccessBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(success)));
     auto blockFailiure = success->next_sibling("block");
     if (blockFailiure != nullptr) {
-      branch->setFailiureBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(blockFailiure)));
+      branch->setFailiureBlock(
+        Node<BlockNode>::dynPtrCast(parseXMLNode(blockFailiure)));
     }
     auto branchFailiure = success->next_sibling("branch");
     if (branchFailiure != nullptr) {
-      branch->setFailiureBlock(Node<BranchNode>::dynPtrCast(parseXMLNode(branchFailiure)));
+      branch->setFailiureBlock(
+        Node<BranchNode>::dynPtrCast(parseXMLNode(branchFailiure)));
     }
     return branch;
   } else if (name == "loop") {
@@ -176,16 +184,20 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
       loop->setCode(Node<BlockNode>::dynPtrCast(parseXMLNode(code)));
     }
     return loop;
-  } else if (name == "loop_init" || name == "loop_condition" || name == "loop_update") {
+  } else if (
+      name == "loop_init" || name == "loop_condition" || name == "loop_update"
+    ) {
     return parseXMLNode(node->first_node());
   } else if (name == "break") {
     return Node<BreakLoopNode>::make();
   } else if (name == "function") {
     std::string ident = safeAttr("ident");
     bool isForeign = boolAttr("foreign");
-    auto n = Node<FunctionNode>::make(ident, FunctionSignature(funRet(), funArgs()), isForeign);
+    auto n = Node<FunctionNode>::make(
+      ident, FunctionSignature(funRet(), funArgs()), isForeign);
     funBlock(n);
-    if (isForeign && ident.empty()) throw XMLParseError("Can't have anonymous foreign function", {METADATA_PAIRS});
+    if (isForeign && ident.empty())
+      throw XMLParseError("Can't have anonymous foreign function", {METADATA_PAIRS});
     return n;
   } else if (name == "type") {
     std::string typeName = requiredAttr("name");
@@ -196,7 +208,8 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   } else if (name == "member") {
     std::string ident = requiredAttr("ident");
     std::vector<std::string> types = split(safeAttr("types"), ' ');
-    auto member = Node<MemberNode>::make(ident, TypeList(ALL(types)), boolAttr("static"), getVisibility());
+    auto member = Node<MemberNode>::make(
+      ident, TypeList(ALL(types)), boolAttr("static"), getVisibility());
     auto init = node->first_node("expr");
     if (init != nullptr) {
       member->setInit(Node<ExpressionNode>::staticPtrCast(parseXMLNode(init)));
@@ -205,9 +218,16 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   } else if (name == "method") {
     std::string ident = safeAttr("ident");
     bool isForeign = boolAttr("foreign");
-    auto method = Node<MethodNode>::make(ident, FunctionSignature(funRet(), funArgs()), getVisibility(), boolAttr("static"), isForeign);
+    auto method = Node<MethodNode>::make(
+      ident,
+      FunctionSignature(funRet(), funArgs()),
+      getVisibility(),
+      boolAttr("static"),
+      isForeign
+    );
     funBlock(method);
-    if (isForeign && ident.empty()) throw XMLParseError("Can't have anonymous foreign method", {METADATA_PAIRS});
+    if (isForeign && ident.empty())
+      throw XMLParseError("Can't have anonymous foreign method", {METADATA_PAIRS});
     return method;
   } else if (name == "constructor") {
     auto constructor = Node<ConstructorNode>::make(funArgs(), getVisibility());
@@ -216,6 +236,3 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
   }
   throw XMLParseError("Unknown type of node", {METADATA_PAIRS, {"node name", name}});
 }
-
-XMLParseError::XMLParseError(std::string msg, ErrorData data):
-  InternalError("XMLParseError", msg, data) {}
