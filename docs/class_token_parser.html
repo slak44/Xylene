@@ -82,7 +82,7 @@ $(document).ready(function(){initNavTree('class_token_parser.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_token_parser-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TokenParser Class Reference</div>  </div>
@@ -93,48 +93,18 @@ $(document).ready(function(){initNavTree('class_token_parser.html','');});
  <a href="class_token_parser.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="token_parser_8hpp_source.html">tokenParser.hpp</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for TokenParser:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_token_parser__inherit__graph.png" border="0" usemap="#_token_parser_inherit__map" alt="Inheritance graph"/></div>
-<map name="_token_parser_inherit__map" id="_token_parser_inherit__map">
-<area shape="rect" id="node2" href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="9,5,97,32"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for TokenParser:</div>
-<div class="dyncontent">
-<div class="center"><img src="class_token_parser__coll__graph.png" border="0" usemap="#_token_parser_coll__map" alt="Collaboration graph"/></div>
-<map name="_token_parser_coll__map" id="_token_parser_coll__map">
-<area shape="rect" id="node2" href="class_base_parser.html" title="Base of all parsers. Consistent API for getting the AST from a parser. " alt="" coords="9,5,97,32"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a9a86a30db107b9e033fdbef60963f7f7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token_parser.html#a9a86a30db107b9e033fdbef60963f7f7">TokenParser</a> ()</td></tr>
-<tr class="separator:a9a86a30db107b9e033fdbef60963f7f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e901b68c915c97743de149768aedd51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_token_parser.html">TokenParser</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token_parser.html#a0e901b68c915c97743de149768aedd51">parse</a> (std::vector&lt; <a class="el" href="class_token.html">Token</a> &gt; input)</td></tr>
-<tr class="memdesc:a0e901b68c915c97743de149768aedd51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call this method to actually do the parsing before using getTree.  <a href="#a0e901b68c915c97743de149768aedd51">More...</a><br /></td></tr>
-<tr class="separator:a0e901b68c915c97743de149768aedd51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_base_parser"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_base_parser')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_base_parser.html">BaseParser</a></td></tr>
-<tr class="memitem:a1f2ffa44f94e880f8d50c628bb7c90b8 inherit pub_methods_class_base_parser"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_s_t.html">AST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_parser.html#a1f2ffa44f94e880f8d50c628bb7c90b8">getTree</a> () const</td></tr>
-<tr class="separator:a1f2ffa44f94e880f8d50c628bb7c90b8 inherit pub_methods_class_base_parser"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_class_base_parser"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_base_parser')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_base_parser.html">BaseParser</a></td></tr>
-<tr class="memitem:ad1b62c46a68400c305d7d4d9826787d9 inherit pro_methods_class_base_parser"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_parser.html#ad1b62c46a68400c305d7d4d9826787d9">BaseParser</a> ()</td></tr>
-<tr class="separator:ad1b62c46a68400c305d7d4d9826787d9 inherit pro_methods_class_base_parser"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_class_base_parser"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_base_parser')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_base_parser.html">BaseParser</a></td></tr>
-<tr class="memitem:a220c4ea03faa24b83264d73760c340d8 inherit pro_attribs_class_base_parser"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_a_s_t.html">AST</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_parser.html#a220c4ea03faa24b83264d73760c340d8">tree</a></td></tr>
-<tr class="separator:a220c4ea03faa24b83264d73760c340d8 inherit pro_attribs_class_base_parser"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a826abd33343df69c969d0169d172249d"><td class="memItemLeft" align="right" valign="top">static std::unique_ptr&lt; <a class="el" href="class_a_s_t.html">AST</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token_parser.html#a826abd33343df69c969d0169d172249d">parse</a> (std::vector&lt; <a class="el" href="class_token.html">Token</a> &gt; input)</td></tr>
+<tr class="memdesc:a826abd33343df69c969d0169d172249d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn a list of tokens into an <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a>.  <a href="#a826abd33343df69c969d0169d172249d">More...</a><br /></td></tr>
+<tr class="separator:a826abd33343df69c969d0169d172249d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Parses a list of tokens, and produces an <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a>. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9a86a30db107b9e033fdbef60963f7f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a86a30db107b9e033fdbef60963f7f7">&sect;&nbsp;</a></span>TokenParser()</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a826abd33343df69c969d0169d172249d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a826abd33343df69c969d0169d172249d">&sect;&nbsp;</a></span>parse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,45 +113,21 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TokenParser::TokenParser </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0e901b68c915c97743de149768aedd51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e901b68c915c97743de149768aedd51">&sect;&nbsp;</a></span>parse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_token_parser.html">TokenParser</a> &amp; TokenParser::parse </td>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="class_a_s_t.html">AST</a> &gt; TokenParser::parse </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; <a class="el" href="class_token.html">Token</a> &gt;&#160;</td>
           <td class="paramname"><em>input</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Call this method to actually do the parsing before using getTree. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">input</td><td>list of tokens from lexer </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Turn a list of tokens into an <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a>. </p>
 
 </div>
 </div>

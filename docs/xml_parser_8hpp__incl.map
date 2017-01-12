@@ -1,11 +1,10 @@
 <map id="xylene/include/parser/xmlParser.hpp" name="xylene/include/parser/xmlParser.hpp">
-<area shape="rect" id="node5" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="999,543,1091,569"/>
-<area shape="rect" id="node14" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="695,393,795,420"/>
-<area shape="rect" id="node20" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="165,319,288,345"/>
-<area shape="rect" id="node21" href="$base_parser_8hpp.html" title="baseParser.hpp" alt="" coords="659,95,770,121"/>
-<area shape="rect" id="node22" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="784,169,848,196"/>
-<area shape="rect" id="node18" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="1102,468,1177,495"/>
-<area shape="rect" id="node24" href="$token_8hpp.html" title="token.hpp" alt="" coords="879,244,958,271"/>
-<area shape="rect" id="node27" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="1321,319,1430,345"/>
-<area shape="rect" id="node25" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="1004,319,1096,345"/>
+<area shape="rect" id="node5" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="1074,468,1166,495"/>
+<area shape="rect" id="node14" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="804,319,904,345"/>
+<area shape="rect" id="node20" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="216,244,338,271"/>
+<area shape="rect" id="node21" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="894,95,958,121"/>
+<area shape="rect" id="node18" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="1177,393,1252,420"/>
+<area shape="rect" id="node23" href="$token_8hpp.html" title="token.hpp" alt="" coords="984,169,1063,196"/>
+<area shape="rect" id="node26" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="1396,244,1505,271"/>
+<area shape="rect" id="node24" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="1078,244,1170,271"/>
 </map>

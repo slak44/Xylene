@@ -7,7 +7,6 @@ var annotated_dup =
     [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "ASTNode", "class_a_s_t_node.html", "class_a_s_t_node" ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", "class_a_s_t_visitor" ],
-    [ "BaseParser", "class_base_parser.html", "class_base_parser" ],
     [ "BlockNode", "class_block_node.html", "class_block_node" ],
     [ "BranchNode", "class_branch_node.html", "class_branch_node" ],
     [ "BreakLoopNode", "class_break_loop_node.html", "class_break_loop_node" ],

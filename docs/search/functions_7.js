@@ -48,7 +48,6 @@ var searchData=
   ['gettoken',['getToken',['../class_expression_node.html#ad7db896b94030ce813ddf907ba61f55c',1,'ExpressionNode']]],
   ['gettokens',['getTokens',['../class_lexer.html#afdddfdaa4ad0f39328b9d1d74ea1fd46',1,'Lexer']]],
   ['gettrace',['getTrace',['../class_a_s_t_node.html#a27a326fc956d12b588bec2448fbedf2a',1,'ASTNode::getTrace()'],['../class_member_metadata.html#afcdff0186c91c25550d33fef59515812',1,'MemberMetadata::getTrace()'],['../class_method_data.html#a693803a45430ba14d805b546d918e0cb',1,'MethodData::getTrace()'],['../class_constructor_data.html#a51e70c7f2c6c03d14539bef210079f42',1,'ConstructorData::getTrace()']]],
-  ['gettree',['getTree',['../class_base_parser.html#a1f2ffa44f94e880f8d50c628bb7c90b8',1,'BaseParser']]],
   ['gettydata',['getTyData',['../class_type_id.html#a4774345f8675fa5cc95de26c2e611b15',1,'TypeId']]],
   ['gettype',['getType',['../class_block_node.html#a52fa59ddac9fa4b416fb111eb711b09e',1,'BlockNode']]],
   ['gettypeinfo',['getTypeInfo',['../class_declaration_node.html#a423dafeda9c1d2d86049f5a5084119ce',1,'DeclarationNode::getTypeInfo()'],['../class_member_metadata.html#a43d63f5fcc90b7061b86f9afae89e69d',1,'MemberMetadata::getTypeInfo()']]],

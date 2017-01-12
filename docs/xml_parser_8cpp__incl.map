@@ -1,12 +1,11 @@
 <map id="xylene/src/parser/xmlParser.cpp" name="xylene/src/parser/xmlParser.cpp">
-<area shape="rect" id="node2" href="$xml_parser_8hpp.html" title="parser/xmlParser.hpp" alt="" coords="279,80,422,107"/>
-<area shape="rect" id="node6" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="999,603,1091,629"/>
-<area shape="rect" id="node15" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="695,453,795,480"/>
-<area shape="rect" id="node21" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="165,379,288,405"/>
-<area shape="rect" id="node22" href="$base_parser_8hpp.html" title="baseParser.hpp" alt="" coords="659,155,770,181"/>
-<area shape="rect" id="node23" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="784,229,848,256"/>
-<area shape="rect" id="node19" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="1103,528,1177,555"/>
-<area shape="rect" id="node25" href="$token_8hpp.html" title="token.hpp" alt="" coords="879,304,958,331"/>
-<area shape="rect" id="node28" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="1321,379,1431,405"/>
-<area shape="rect" id="node26" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="1005,379,1097,405"/>
+<area shape="rect" id="node2" href="$xml_parser_8hpp.html" title="parser/xmlParser.hpp" alt="" coords="254,80,396,107"/>
+<area shape="rect" id="node6" href="$util_8hpp.html" title="utils/util.hpp" alt="" coords="1074,528,1166,555"/>
+<area shape="rect" id="node15" href="$error_8hpp.html" title="utils/error.hpp" alt="" coords="804,379,904,405"/>
+<area shape="rect" id="node21" href="$type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="216,304,338,331"/>
+<area shape="rect" id="node22" href="$ast_8hpp.html" title="ast.hpp" alt="" coords="894,155,958,181"/>
+<area shape="rect" id="node19" href="$trace_8hpp.html" title="trace.hpp" alt="" coords="1177,453,1252,480"/>
+<area shape="rect" id="node24" href="$token_8hpp.html" title="token.hpp" alt="" coords="984,229,1063,256"/>
+<area shape="rect" id="node27" href="$type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="1396,304,1505,331"/>
+<area shape="rect" id="node25" href="$operator_8hpp.html" title="operator.hpp" alt="" coords="1078,304,1170,331"/>
 </map>

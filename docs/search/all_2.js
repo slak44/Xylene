@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['baseparser',['BaseParser',['../class_base_parser.html',1,'BaseParser'],['../class_base_parser.html#ad1b62c46a68400c305d7d4d9826787d9',1,'BaseParser::BaseParser()']]],
-  ['baseparser_2ehpp',['baseParser.hpp',['../base_parser_8hpp.html',1,'']]],
   ['bin_5fvalues',['BIN_VALUES',['../codegen_8cpp.html#a5b6e668f0f1e5f15a8e1997f3aac8684',1,'codegen.cpp']]],
   ['binary',['BINARY',['../operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8aecafbc1299672a8c1521cc0d5f1ae986',1,'operator.hpp']]],
   ['bitwise_5fbin_5fpair',['BITWISE_BIN_PAIR',['../codegen_8cpp.html#a22ea4cb79b6bcf435cb8b2f3d0c6c1a7',1,'codegen.cpp']]],
