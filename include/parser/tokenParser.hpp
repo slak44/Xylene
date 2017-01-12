@@ -27,7 +27,7 @@ private:
   }
   /// Skip a number of tokens, usually just advances to the next one
   inline void skip(int skipped = 1) {
-    pos += skipped;
+    pos = pos + static_cast<std::size_t>(skipped);
     if (pos >= input.size()) pos = input.size() - 1;
   }
   /// Accept a TokenType

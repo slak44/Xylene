@@ -30,7 +30,7 @@ Node<ExpressionNode>::Link TokenParser::parseCircumfixGroup(Token begin) {
   // need to keep track of how many times is our group opened. When we close
   // begin's group, beginOccurrences will be 0, because the begin token is skipped
   uint beginOccurrences = 1;
-  const std::size_t beginPos = pos;
+  const int beginPos = static_cast<int>(pos);
   std::size_t tokensInGroup = 0;
   while (beginOccurrences > 0) {
     if (accept(begin.type)) {
@@ -58,7 +58,9 @@ Node<ExpressionNode>::Link TokenParser::parseCircumfixGroup(Token begin) {
   // Copy everything between the beginning of the group and the end in the recursive
   // parser. beginPos is already after begin, but tokensInGroup counts the end, so -1
   recursive.input = std::vector<Token>(
-    std::begin(input) + beginPos, std::begin(input) + beginPos + tokensInGroup - 1);
+    std::begin(input) + beginPos,
+    std::begin(input) + beginPos + static_cast<int>(tokensInGroup) - 1
+  );
   // Throw in a TT::FILE_END if there isn't any, so acceptEndOfExpression works
   if (recursive.input.back().type != TT::FILE_END)
     recursive.input.push_back(Token(TT::FILE_END, "", nullptr));
