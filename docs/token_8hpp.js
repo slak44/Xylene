@@ -9,6 +9,8 @@ var token_8hpp =
     [ "AS", "token_8hpp.html#a2d645db5586055a6ddd381ab0b70728c", null ],
     [ "BOOLEAN", "token_8hpp.html#ada331b55b3acbc80772b4b58c455e382", null ],
     [ "BREAK", "token_8hpp.html#a12c1674f03b9163a17e062eebf664b86", null ],
+    [ "CALL_BEGIN", "token_8hpp.html#af4071ab31e964e7811769d9fd2f4af99", null ],
+    [ "CALL_END", "token_8hpp.html#a87b88ac196745a9055d85679b8d53f1e", null ],
     [ "CATCH", "token_8hpp.html#a42eeecc96a0e9f0748568e0769c07a60", null ],
     [ "CONSTR", "token_8hpp.html#acb190a2af4b615bc9547ebcfa55c503c", null ],
     [ "CONTINUE", "token_8hpp.html#a6781bb7edf17d8d07b0a6624be234e33", null ],

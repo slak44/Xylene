@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_a_s_t.html" title="Stores an abstract syntax tree of a program. " alt="" coords="5,5,52,32"/>
+<area shape="rect" id="node1" href="$class_abstract_id.html" title="An abstract identifier with a name and a unique id. " alt="" coords="5,31,87,57"/>
+<area shape="rect" id="node2" href="$class_type_id.html" title="Identifies a single type. " alt="" coords="145,5,207,32"/>
+<area shape="rect" id="node3" href="$class_type_list_id.html" title="Identifies a list of types. " alt="" coords="135,56,217,83"/>
 </map>

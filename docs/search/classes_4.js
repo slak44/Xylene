@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['error',['Error',['../class_error.html',1,'']]],
-  ['expressionnode',['ExpressionNode',['../class_expression_node.html',1,'']]]
+  ['declarationnode',['DeclarationNode',['../class_declaration_node.html',1,'']]],
+  ['declarationwrapper',['DeclarationWrapper',['../class_declaration_wrapper.html',1,'']]],
+  ['definitetypeinfo',['DefiniteTypeInfo',['../class_definite_type_info.html',1,'']]]
 ];

@@ -1,7 +1,9 @@
 var runtime_8hpp =
 [
-    [ "Value", "struct_value.html", "struct_value" ],
-    [ "checkTypeCompat", "runtime_8hpp.html#af315f96a8deeb9939cd163dfc8f97bf2", null ],
-    [ "typeOf", "runtime_8hpp.html#a9c84630ea481212b64fb2874ff19b506", null ],
-    [ "withType", "runtime_8hpp.html#a2f10cb8a910fe1c07dbd137607e9fc68", null ]
+    [ "_xyl_Value", "struct__xyl___value.html", "struct__xyl___value" ],
+    [ "_xyl_checkTypeCompat", "runtime_8hpp.html#ace9665a8e467999f6d34fc20abf92e12", null ],
+    [ "_xyl_finish", "runtime_8hpp.html#ab42425d5076025d202f3cd286855e9ce", null ],
+    [ "_xyl_typeErrIfIncompatible", "runtime_8hpp.html#a68078793e7ac1680a048f02096e94d0a", null ],
+    [ "_xyl_typeOf", "runtime_8hpp.html#a2662519d4ed0422423d5220652a08e68", null ],
+    [ "_xyl_withType", "runtime_8hpp.html#a3453db0b5d211145dbcebaf236ae1001", null ]
 ];

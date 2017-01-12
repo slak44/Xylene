@@ -2,6 +2,7 @@ var annotated_dup =
 [
     [ "std", "namespacestd.html", "namespacestd" ],
     [ "TT", "namespace_t_t.html", "namespace_t_t" ],
+    [ "_xyl_Value", "struct__xyl___value.html", "struct__xyl___value" ],
     [ "AbstractId", "class_abstract_id.html", "class_abstract_id" ],
     [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "ASTNode", "class_a_s_t_node.html", "class_a_s_t_node" ],
@@ -51,7 +52,6 @@ var annotated_dup =
     [ "TypeInfo", "class_type_info.html", "class_type_info" ],
     [ "TypeListId", "class_type_list_id.html", "class_type_list_id" ],
     [ "TypeNode", "class_type_node.html", "class_type_node" ],
-    [ "Value", "struct_value.html", "struct_value" ],
     [ "ValueWrapper", "class_value_wrapper.html", "class_value_wrapper" ],
     [ "XMLParseError", "class_x_m_l_parse_error.html", "class_x_m_l_parse_error" ],
     [ "XMLParser", "class_x_m_l_parser.html", "class_x_m_l_parser" ]

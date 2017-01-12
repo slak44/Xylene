@@ -81,6 +81,8 @@ $(document).ready(function(){initNavTree('runtime_8cpp.html','');});
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">runtime.cpp File Reference</div>  </div>
 </div><!--header-->
@@ -91,15 +93,131 @@ Include dependency graph for runtime.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="runtime_8cpp__incl.png" border="0" usemap="#xylene_2src_2runtime_2runtime_8cpp" alt=""/></div>
 <map name="xylene_2src_2runtime_2runtime_8cpp" id="xylene_2src_2runtime_2runtime_8cpp">
-<area shape="rect" id="node2" href="runtime_8hpp.html" title="runtime/runtime.hpp" alt="" coords="606,95,743,121"/>
-<area shape="rect" id="node4" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="620,169,729,196"/>
-<area shape="rect" id="node20" href="io_8hpp.html" title="runtime/io.hpp" alt="" coords="772,169,876,196"/>
-<area shape="rect" id="node7" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="515,393,607,420"/>
-<area shape="rect" id="node14" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="366,244,466,271"/>
-<area shape="rect" id="node18" href="trace_8hpp.html" title="trace.hpp" alt="" coords="328,319,403,345"/>
+<area shape="rect" id="node2" href="runtime_8hpp.html" title="runtime/runtime.hpp" alt="" coords="288,95,425,121"/>
+<area shape="rect" id="node5" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="361,169,453,196"/>
+<area shape="rect" id="node14" href="io_8hpp.html" title="runtime/io.hpp" alt="" coords="707,169,811,196"/>
 </map>
 </div>
-</div></div><!-- contents -->
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aa79b50b5f7c54eb11383e7d0ccf2b07d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8cpp.html#aa79b50b5f7c54eb11383e7d0ccf2b07d">_xyl_finish</a> (const char *message, int exitCode)</td></tr>
+<tr class="memdesc:aa79b50b5f7c54eb11383e7d0ccf2b07d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This kills the program.  <a href="#aa79b50b5f7c54eb11383e7d0ccf2b07d">More...</a><br /></td></tr>
+<tr class="separator:aa79b50b5f7c54eb11383e7d0ccf2b07d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68078793e7ac1680a048f02096e94d0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8cpp.html#a68078793e7ac1680a048f02096e94d0a">_xyl_typeErrIfIncompatible</a> (<a class="el" href="struct__xyl___value.html">_xyl_Value</a> *val, <a class="el" href="struct__xyl___value.html">_xyl_Value</a> *newVal)</td></tr>
+<tr class="separator:a68078793e7ac1680a048f02096e94d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace9665a8e467999f6d34fc20abf92e12"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8cpp.html#ace9665a8e467999f6d34fc20abf92e12">_xyl_checkTypeCompat</a> (<a class="el" href="struct__xyl___value.html">_xyl_Value</a> *val, <a class="el" href="struct__xyl___value.html">_xyl_Value</a> *newVal)</td></tr>
+<tr class="separator:ace9665a8e467999f6d34fc20abf92e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2662519d4ed0422423d5220652a08e68"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8cpp.html#a2662519d4ed0422423d5220652a08e68">_xyl_typeOf</a> (<a class="el" href="struct__xyl___value.html">_xyl_Value</a> *val)</td></tr>
+<tr class="separator:a2662519d4ed0422423d5220652a08e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ace9665a8e467999f6d34fc20abf92e12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace9665a8e467999f6d34fc20abf92e12">&sect;&nbsp;</a></span>_xyl_checkTypeCompat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool _xyl_checkTypeCompat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
+          <td class="paramname"><em>newVal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa79b50b5f7c54eb11383e7d0ccf2b07d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa79b50b5f7c54eb11383e7d0ccf2b07d">&sect;&nbsp;</a></span>_xyl_finish()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _xyl_finish </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>exitCode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This kills the program. </p>
+<p>This will be temporarily used for errors, before exceptions are implemented. </p>
+
+</div>
+</div>
+<a id="a68078793e7ac1680a048f02096e94d0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68078793e7ac1680a048f02096e94d0a">&sect;&nbsp;</a></span>_xyl_typeErrIfIncompatible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _xyl_typeErrIfIncompatible </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
+          <td class="paramname"><em>newVal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2662519d4ed0422423d5220652a08e68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2662519d4ed0422423d5220652a08e68">&sect;&nbsp;</a></span>_xyl_typeOf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* _xyl_typeOf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

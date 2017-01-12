@@ -89,18 +89,16 @@ $(document).ready(function(){initNavTree('runtime_8hpp.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
-<code>#include &quot;<a class="el" href="type_id_8hpp_source.html">llvm/typeId.hpp</a>&quot;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
+<code>#include &quot;<a class="el" href="util_8hpp_source.html">utils/util.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="io_8hpp_source.html">runtime/io.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for runtime.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="runtime_8hpp__incl.png" border="0" usemap="#xylene_2include_2runtime_2runtime_8hpp" alt=""/></div>
 <map name="xylene_2include_2runtime_2runtime_8hpp" id="xylene_2include_2runtime_2runtime_8hpp">
-<area shape="rect" id="node3" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="620,95,729,121"/>
-<area shape="rect" id="node19" href="io_8hpp.html" title="runtime/io.hpp" alt="" coords="772,95,876,121"/>
-<area shape="rect" id="node6" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="515,319,607,345"/>
-<area shape="rect" id="node13" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="366,169,466,196"/>
-<area shape="rect" id="node17" href="trace_8hpp.html" title="trace.hpp" alt="" coords="328,244,403,271"/>
+<area shape="rect" id="node4" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="361,95,453,121"/>
+<area shape="rect" id="node13" href="io_8hpp.html" title="runtime/io.hpp" alt="" coords="707,95,811,121"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -108,10 +106,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="runtime_8hpp__dep__incl.png" border="0" usemap="#xylene_2include_2runtime_2runtime_8hppdep" alt=""/></div>
 <map name="xylene_2include_2runtime_2runtime_8hppdep" id="xylene_2include_2runtime_2runtime_8hppdep">
-<area shape="rect" id="node2" href="runtime_8cpp.html" title="xylene/src/runtime\l/runtime.cpp" alt="" coords="5,95,135,136"/>
-<area shape="rect" id="node3" href="runner_8hpp.html" title="xylene/include/llvm\l/runner.hpp" alt="" coords="159,95,291,136"/>
-<area shape="rect" id="node4" href="runner_8cpp.html" title="xylene/src/llvm/runner.cpp" alt="" coords="47,184,221,211"/>
-<area shape="rect" id="node5" href="main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="245,184,383,211"/>
+<area shape="rect" id="node2" href="runtime_8cpp.html" title="xylene/src/runtime\l/runtime.cpp" alt="" coords="509,95,638,136"/>
+<area shape="rect" id="node3" href="compiler_8hpp.html" title="xylene/include/llvm\l/compiler.hpp" alt="" coords="662,95,794,136"/>
+<area shape="rect" id="node9" href="runner_8hpp.html" title="xylene/include/llvm\l/runner.hpp" alt="" coords="891,184,1023,225"/>
+<area shape="rect" id="node4" href="codegen_8cpp.html" title="xylene/src/llvm/codegen.cpp" alt="" coords="5,191,192,218"/>
+<area shape="rect" id="node5" href="compiler_8cpp.html" title="xylene/src/llvm/compiler.cpp" alt="" coords="216,191,403,218"/>
+<area shape="rect" id="node6" href="type_data_8cpp.html" title="xylene/src/llvm/typeData.cpp" alt="" coords="427,191,616,218"/>
+<area shape="rect" id="node7" href="values_8cpp.html" title="xylene/src/llvm/values.cpp" alt="" coords="641,191,815,218"/>
+<area shape="rect" id="node8" href="main_8cpp.html" title="xylene/src/main.cpp" alt="" coords="784,273,923,300"/>
+<area shape="rect" id="node10" href="runner_8cpp.html" title="xylene/src/llvm/runner.cpp" alt="" coords="947,273,1120,300"/>
 </map>
 </div>
 </div>
@@ -119,35 +122,40 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_value.html">Value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__xyl___value.html">_xyl_Value</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af315f96a8deeb9939cd163dfc8f97bf2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#af315f96a8deeb9939cd163dfc8f97bf2">checkTypeCompat</a> (<a class="el" href="struct_value.html">Value</a> val, <a class="el" href="struct_value.html">Value</a> newVal)</td></tr>
-<tr class="separator:af315f96a8deeb9939cd163dfc8f97bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c84630ea481212b64fb2874ff19b506"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a9c84630ea481212b64fb2874ff19b506">typeOf</a> (<a class="el" href="struct_value.html">Value</a> val)</td></tr>
-<tr class="separator:a9c84630ea481212b64fb2874ff19b506"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f10cb8a910fe1c07dbd137607e9fc68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a2f10cb8a910fe1c07dbd137607e9fc68">withType</a> (<a class="el" href="struct_value.html">Value</a> toBeConcretized, <a class="el" href="type_id_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a> concreteType)</td></tr>
-<tr class="separator:a2f10cb8a910fe1c07dbd137607e9fc68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace9665a8e467999f6d34fc20abf92e12"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#ace9665a8e467999f6d34fc20abf92e12">_xyl_checkTypeCompat</a> (<a class="el" href="struct__xyl___value.html">_xyl_Value</a> *val, <a class="el" href="struct__xyl___value.html">_xyl_Value</a> *newVal)</td></tr>
+<tr class="separator:ace9665a8e467999f6d34fc20abf92e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2662519d4ed0422423d5220652a08e68"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a2662519d4ed0422423d5220652a08e68">_xyl_typeOf</a> (<a class="el" href="struct__xyl___value.html">_xyl_Value</a> *val)</td></tr>
+<tr class="separator:a2662519d4ed0422423d5220652a08e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3453db0b5d211145dbcebaf236ae1001"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct__xyl___value.html">_xyl_Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a3453db0b5d211145dbcebaf236ae1001">_xyl_withType</a> (<a class="el" href="struct__xyl___value.html">_xyl_Value</a> *toConcretize, <a class="el" href="util_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a> concreteType)</td></tr>
+<tr class="separator:a3453db0b5d211145dbcebaf236ae1001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68078793e7ac1680a048f02096e94d0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#a68078793e7ac1680a048f02096e94d0a">_xyl_typeErrIfIncompatible</a> (<a class="el" href="struct__xyl___value.html">_xyl_Value</a> *val, <a class="el" href="struct__xyl___value.html">_xyl_Value</a> *newVal)</td></tr>
+<tr class="separator:a68078793e7ac1680a048f02096e94d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab42425d5076025d202f3cd286855e9ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_8hpp.html#ab42425d5076025d202f3cd286855e9ce">_xyl_finish</a> (const char *message, int exitCode) __attribute__((noreturn))</td></tr>
+<tr class="memdesc:ab42425d5076025d202f3cd286855e9ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">This kills the program.  <a href="#ab42425d5076025d202f3cd286855e9ce">More...</a><br /></td></tr>
+<tr class="separator:ab42425d5076025d202f3cd286855e9ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="af315f96a8deeb9939cd163dfc8f97bf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af315f96a8deeb9939cd163dfc8f97bf2">&sect;&nbsp;</a></span>checkTypeCompat()</h2>
+<a id="ace9665a8e467999f6d34fc20abf92e12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace9665a8e467999f6d34fc20abf92e12">&sect;&nbsp;</a></span>_xyl_checkTypeCompat()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool checkTypeCompat </td>
+          <td class="memname">bool _xyl_checkTypeCompat </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_value.html">Value</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
           <td class="paramname"><em>val</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_value.html">Value</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
           <td class="paramname"><em>newVal</em>&#160;</td>
         </tr>
         <tr>
@@ -160,16 +168,75 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9c84630ea481212b64fb2874ff19b506"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c84630ea481212b64fb2874ff19b506">&sect;&nbsp;</a></span>typeOf()</h2>
+<a id="ab42425d5076025d202f3cd286855e9ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab42425d5076025d202f3cd286855e9ce">&sect;&nbsp;</a></span>_xyl_finish()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* typeOf </td>
+          <td class="memname">void _xyl_finish </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_value.html">Value</a>&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>exitCode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This kills the program. </p>
+<p>This will be temporarily used for errors, before exceptions are implemented. </p>
+
+</div>
+</div>
+<a id="a68078793e7ac1680a048f02096e94d0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68078793e7ac1680a048f02096e94d0a">&sect;&nbsp;</a></span>_xyl_typeErrIfIncompatible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _xyl_typeErrIfIncompatible </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
+          <td class="paramname"><em>newVal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2662519d4ed0422423d5220652a08e68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2662519d4ed0422423d5220652a08e68">&sect;&nbsp;</a></span>_xyl_typeOf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* _xyl_typeOf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
           <td class="paramname"><em>val</em></td><td>)</td>
           <td></td>
         </tr>
@@ -178,22 +245,22 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f10cb8a910fe1c07dbd137607e9fc68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f10cb8a910fe1c07dbd137607e9fc68">&sect;&nbsp;</a></span>withType()</h2>
+<a id="a3453db0b5d211145dbcebaf236ae1001"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3453db0b5d211145dbcebaf236ae1001">&sect;&nbsp;</a></span>_xyl_withType()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_value.html">Value</a> withType </td>
+          <td class="memname"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> _xyl_withType </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_value.html">Value</a>&#160;</td>
-          <td class="paramname"><em>toBeConcretized</em>, </td>
+          <td class="paramtype"><a class="el" href="struct__xyl___value.html">_xyl_Value</a> *&#160;</td>
+          <td class="paramname"><em>toConcretize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="type_id_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="util_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a>&#160;</td>
           <td class="paramname"><em>concreteType</em>&#160;</td>
         </tr>
         <tr>

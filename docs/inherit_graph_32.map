@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$struct_value.html" title="Value" alt="" coords="5,5,60,32"/>
+<area shape="rect" id="node1" href="$class_type_info.html" title="Stores info about the type of something. " alt="" coords="5,5,79,32"/>
+<area shape="rect" id="node2" href="$class_definite_type_info.html" title="TypeInfo that can&#39;t be void. " alt="" coords="127,5,244,32"/>
+<area shape="rect" id="node3" href="$class_static_type_info.html" title="TypeInfo with a singular non&#45;void, non&#45;dynamic type. " alt="" coords="292,5,399,32"/>
 </map>

@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['lexer',['Lexer',['../class_lexer.html#ab2bb479a6dfbf79b6250d10f683ac3f3',1,'Lexer::Lexer(std::string code, std::string sourceOfCode)'],['../class_lexer.html#ae868294d65394f011a29ed122c883f6b',1,'Lexer::Lexer(const Lexer &amp;)=default']]],
-  ['literal',['Literal',['../class_t_t_1_1_literal.html#a01bd0ef82ddf6e2f864ea37cd355855f',1,'TT::Literal']]],
-  ['loadifpointer',['loadIfPointer',['../codegen_8cpp.html#a9077bfc05d41cbf631acb7c2b3b4d150',1,'codegen.cpp']]],
-  ['loopnode',['LoopNode',['../class_loop_node.html#aa4acfd7f28076437bde9b28a94539043',1,'LoopNode']]]
+  ['keyword',['Keyword',['../class_t_t_1_1_keyword.html#ad7c053a9aa430168228fd983d0402359',1,'TT::Keyword']]]
 ];

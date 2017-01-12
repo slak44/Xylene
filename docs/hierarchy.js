@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "_xyl_Value", "struct__xyl___value.html", null ],
     [ "AbstractId", "class_abstract_id.html", [
       [ "TypeId", "class_type_id.html", null ],
       [ "TypeListId", "class_type_list_id.html", null ]
@@ -86,7 +87,6 @@ var hierarchy =
         [ "StaticTypeInfo", "class_static_type_info.html", null ]
       ] ]
     ] ],
-    [ "Value", "struct_value.html", null ],
     [ "ValueWrapper", "class_value_wrapper.html", [
       [ "DeclarationWrapper", "class_declaration_wrapper.html", null ],
       [ "FunctionWrapper", "class_function_wrapper.html", null ],

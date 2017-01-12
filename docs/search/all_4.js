@@ -1,13 +1,12 @@
 var searchData=
 [
-  ['else',['ELSE',['../namespace_t_t.html#a8c90960b857b6f2959783e9d6cefc92b',1,'TT']]],
-  ['end',['END',['../namespace_t_t.html#a29eb8f7c6e20705c5616b1837d01c84a',1,'TT']]],
-  ['error',['Error',['../class_error.html',1,'Error'],['../class_error.html#a762829c9bf2e342df22feeed00bae081',1,'Error::Error()']]],
-  ['error_2ecpp',['error.cpp',['../error_8cpp.html',1,'']]],
-  ['error_2ehpp',['error.hpp',['../error_8hpp.html',1,'']]],
-  ['errordata',['ErrorData',['../error_8hpp.html#a18ad73221b586aadca1c9ba59417f99d',1,'error.hpp']]],
-  ['evalvalue',['evalValue',['../class_type_info.html#a4f85454f1feae1bcfb37cd55d78f9127',1,'TypeInfo']]],
-  ['exitcodes',['ExitCodes',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3',1,'main.cpp']]],
-  ['export',['EXPORT',['../namespace_t_t.html#a6dbad6f040e4f964b1d1628f429161e9',1,'TT']]],
-  ['expressionnode',['ExpressionNode',['../class_expression_node.html',1,'ExpressionNode'],['../class_expression_node.html#a2055a44e3ad4e258e43247ea24db6ed2',1,'ExpressionNode::ExpressionNode()']]]
+  ['data',['data',['../class_token.html#ad536a520dac03ae812f429b220e9808a',1,'Token']]],
+  ['declarationnode',['DeclarationNode',['../class_declaration_node.html',1,'DeclarationNode'],['../class_declaration_node.html#a4fefbdacb611532375580cb81281c8da',1,'DeclarationNode::DeclarationNode()']]],
+  ['declarationwrapper',['DeclarationWrapper',['../class_declaration_wrapper.html',1,'DeclarationWrapper'],['../class_declaration_wrapper.html#a8cd88f5718e0cbf1a59db90610b5bd38',1,'DeclarationWrapper::DeclarationWrapper()']]],
+  ['defaultcombine',['defaultCombine',['../util_8hpp.html#ac1410462b56482855358b5d5d81ae1ab',1,'util.hpp']]],
+  ['defaulttrace',['defaultTrace',['../trace_8hpp.html#acd22607a9f573fad8be6faf2400571aa',1,'trace.hpp']]],
+  ['define',['DEFINE',['../namespace_t_t.html#ad8a298b2d7b5cd49e659ddd1bf592a00',1,'TT']]],
+  ['definitetypeinfo',['DefiniteTypeInfo',['../class_definite_type_info.html',1,'DefiniteTypeInfo'],['../class_definite_type_info.html#ac060a546dce5d346047e283ac4080322',1,'DefiniteTypeInfo::DefiniteTypeInfo(TypeList evalValue)'],['../class_definite_type_info.html#adc7f001bed08fae019135385526d0d43',1,'DefiniteTypeInfo::DefiniteTypeInfo()'],['../class_definite_type_info.html#aa9d059b74c668302a41d6f227efbbee0',1,'DefiniteTypeInfo::DefiniteTypeInfo(std::nullptr_t voidType)=delete']]],
+  ['do',['DO',['../namespace_t_t.html#a4eb4713be0c73656ead8772233eb10a5',1,'TT']]],
+  ['dynptrcast',['dynPtrCast',['../struct_node.html#acb32bba381610f5a9a559ee089c61c27',1,'Node::dynPtrCast()'],['../struct_ptr_util.html#ac4d0a5ec217bf2771f420e8c8e3bfc74',1,'PtrUtil::dynPtrCast()']]]
 ];
