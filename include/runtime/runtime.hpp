@@ -14,6 +14,7 @@ extern "C" {
     UniqueIdentifier currentType;
   };
 
+  void* _xyl_dynAllocType(UniqueIdentifier typeId);
   bool _xyl_checkTypeCompat(_xyl_Value* val, _xyl_Value* newVal);
   const char* _xyl_typeOf(_xyl_Value* val);
   _xyl_Value _xyl_withType(_xyl_Value* toConcretize, UniqueIdentifier concreteType);

@@ -1,5 +1,11 @@
 #include "runtime/runtime.hpp"
 
+void* _xyl_dynAllocType(UniqueIdentifier typeId) {
+  // TODO fetch alloc size from type, and do the allocation
+  UNUSED(typeId);
+  return nullptr;
+}
+
 void _xyl_finish(const char* message, int exitCode) {
   println(message);
   std::exit(exitCode);
