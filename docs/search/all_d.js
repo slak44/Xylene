@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name',['name',['../class_abstract_id.html#acb2af4e64870306942aa5136eaafd2eb',1,'AbstractId::name()'],['../class_operator.html#a85d294f744238b2c8733e6d32d4e1c95',1,'Operator::Name()']]],
+  ['name',['Name',['../class_operator.html#a85d294f744238b2c8733e6d32d4e1c95',1,'Operator::Name()'],['../class_abstract_id.html#acb2af4e64870306942aa5136eaafd2eb',1,'AbstractId::name()']]],
   ['nametofunptr',['nameToFunPtr',['../runner_8hpp.html#a5e05d41aebefa74430b2973af66f743a',1,'runner.hpp']]],
   ['node',['Node',['../struct_node.html',1,'']]],
   ['node_3c_20blocknode_20_3e',['Node&lt; BlockNode &gt;',['../struct_node.html',1,'']]],

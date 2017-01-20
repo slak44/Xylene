@@ -14,7 +14,7 @@ var searchData=
   ['codegenfunction',['CodegenFunction',['../class_operator_codegen.html#afc210f22c08d3c5525ca6ebfdbec149e',1,'OperatorCodegen']]],
   ['col',['col',['../struct_position.html#abff90067890ce6b6329ce72e095b3c2e',1,'Position']]],
   ['collate',['collate',['../util_8hpp.html#afdf140bbd294efa7c5bb3061ac515225',1,'util.hpp']]],
-  ['compile',['compile',['../class_compiler.html#a4eb6d2076006863fc52116489c7b4ec8',1,'Compiler']]],
+  ['compile',['compile',['../class_module_compiler.html#aa50e38302425a339dcc14c7b529e2d2f',1,'ModuleCompiler::compile()'],['../class_compiler.html#a4eb6d2076006863fc52116489c7b4ec8',1,'Compiler::compile()']]],
   ['compiler',['Compiler',['../class_compiler.html',1,'Compiler'],['../class_compiler.html#ac383b20786143c84a99a09a5ddbe9cee',1,'Compiler::Compiler(fs::path rootScript, fs::path output)'],['../class_compiler.html#a812be8690fa6d333ec4c3b01a047ac40',1,'Compiler::Compiler(std::unique_ptr&lt; llvm::Module &gt;, fs::path rootScript, fs::path output)'],['../class_compiler.html#a630d18c336f29b66b27cf91c68df8e16',1,'Compiler::Compiler(const Compiler &amp;)=delete']]],
   ['compiler_2ecpp',['compiler.cpp',['../compiler_8cpp.html',1,'']]],
   ['compiler_2ehpp',['compiler.hpp',['../compiler_8hpp.html',1,'']]],
@@ -26,7 +26,7 @@ var searchData=
   ['constructs',['constructs',['../namespace_t_t.html#a8fe0395d7e705a01c3c0b8ac7ec869dc',1,'TT']]],
   ['contains',['contains',['../util_8hpp.html#a5b2998d0f98101452d2df3e43995f309',1,'util.hpp']]],
   ['continue',['CONTINUE',['../namespace_t_t.html#a6781bb7edf17d8d07b0a6624be234e33',1,'TT']]],
-  ['create',['create',['../class_module_compiler.html#a989dcefaa789a6a4a14578652da4bf6a',1,'ModuleCompiler::create(std::string moduleName, AST)'],['../class_module_compiler.html#aa47233fcdafad8d4937d5637c6684a02',1,'ModuleCompiler::create(ProgramData::TypeSet &amp;t, std::string moduleName, AST)'],['../class_type_id.html#a204102276389abdfe35e73421aad6da6',1,'TypeId::create()'],['../class_type_list_id.html#ac31bec7f1070c8bd6014b4a7bd14ac5f',1,'TypeListId::create()']]],
+  ['create',['create',['../class_module_compiler.html#aee8266892ee895098620e08560a1897b',1,'ModuleCompiler::create()'],['../class_type_id.html#a204102276389abdfe35e73421aad6da6',1,'TypeId::create()'],['../class_type_list_id.html#ac31bec7f1070c8bd6014b4a7bd14ac5f',1,'TypeListId::create()']]],
   ['createbasic',['createBasic',['../class_type_id.html#a8bb743bde3c3bade8deb96fbbb2016fb',1,'TypeId']]],
   ['current_5ffunction',['CURRENT_FUNCTION',['../util_8hpp.html#a84662874cf763c9001e3913fe20b3785',1,'util.hpp']]],
   ['currenttype',['currentType',['../class_value_wrapper.html#afd3fdf1ed44ca3f64618952d237cdfb7',1,'ValueWrapper::currentType()'],['../struct__xyl___value.html#a5eda64ab935a3c888ae32ab0a246bef5',1,'_xyl_Value::currentType()']]]
