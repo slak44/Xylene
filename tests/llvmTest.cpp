@@ -24,18 +24,20 @@ protected:
   }
   
   inline ModuleCompiler::Link compile(fs::path xmlFilePath) {
-    auto xpxTree = XMLParser::parse(xmlFile(xmlFilePath));
-    auto mc = ModuleCompiler::create(xmlFilePath, *xpxTree);
-    mc->visit();
+    auto mc = ModuleCompiler::create(
+      {}, xmlFilePath, XMLParser::parse(xmlFile(xmlFilePath)));
+    mc->addMainFunction();
+    mc->compile();
     if (printIr) mc->getModule()->dump();
     return mc;
   }
   
   inline void noThrowOnCompile(fs::path xmlFilePath) {
-    auto xpxTree = XMLParser::parse(xmlFile(xmlFilePath));
-    auto mc = ModuleCompiler::create(xmlFilePath, *xpxTree);
+    auto mc = ModuleCompiler::create(
+      {}, xmlFilePath, XMLParser::parse(xmlFile(xmlFilePath)));
+    mc->addMainFunction();
     try {
-      mc->visit();
+      mc->compile();
       if (printIr) mc->getModule()->dump();
     } catch (InternalError& err) {
       EXPECT_NO_THROW(throw err);

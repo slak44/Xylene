@@ -10,7 +10,7 @@
 XMLParseError::XMLParseError(std::string msg, ErrorData data):
   InternalError("XMLParseError", msg, data) {}
 
-std::unique_ptr<AST> XMLParser::parse(char* str) {
+AST XMLParser::parse(char* str) {
   XMLParser xpx = XMLParser();
   rapidxml::xml_document<char> doc;
   try {
@@ -27,10 +27,10 @@ std::unique_ptr<AST> XMLParser::parse(char* str) {
     METADATA_PAIRS,
     {"tag name", doc.first_node()->name()}
   });
-  return std::make_unique<AST>(AST(rootNode));
+  return AST(rootNode);
 }
 
-std::unique_ptr<AST> XMLParser::parse(rapidxml::file<char> xmlFile) {
+AST XMLParser::parse(rapidxml::file<char> xmlFile) {
   return parse(xmlFile.data());
 }
 

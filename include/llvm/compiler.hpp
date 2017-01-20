@@ -90,49 +90,31 @@ private:
   llvm::Module* module; ///< The module that is being created
   FunctionWrapper::Link entryPoint; ///< Entry point for module
   std::stack<FunctionWrapper::Link> functionStack; ///< Current function stack. Not a call stack
-  std::unique_ptr<AST> ast; ///< Source AST
+  AST ast; ///< Source AST
   
   /// Instance of OperatorCodegen
   std::unique_ptr<OperatorCodegen> codegen;
-
-  // TODO: eventually this and its create() should be dropped
-  /// Use the static factory \link create \endlink
-  ModuleCompiler(std::string moduleName, AST& ast);
   
-  /// This constructor expects the caller to initialize members manually
-  ModuleCompiler();
-  
-  /// Impl detail
-  void init(std::string moduleName, AST& ast);
+  ModuleCompiler(std::string moduleName, AST ast);
 public:
-  // TODO: should be removed along with its constructor
-  /**
-    \brief Create a ModuleCompiler.
-    
-    This is a static factory because std::enable_shared_from_this<ModuleCompiler>
-    requires a shared_ptr to already exist before being used.
-    This method guarantees that at least one such pointer exists.
-    It also handles creation of the OperatorCodegen, since that also requires a
-    shared_ptr of this. Calls addMainFunction.
-  */
-  static Link create(std::string moduleName, AST);
   /**
     Create a ModuleCompiler.
     
     This is a static factory because std::enable_shared_from_this<ModuleCompiler>
-    requires a shared_ptr to already exist before being used.
-    This method guarantees that at least one such pointer exists.
+    requires a shared_ptr to already exist before being used. This method guarantees
+    that at least one such pointer exists.
     It also handles creation of the OperatorCodegen, since that also requires a
     shared_ptr of this. 
     \param t reference to a globally shared set of types
   */
-  static Link create(ProgramData::TypeSet& t, std::string moduleName, AST);
+  static Link create(
+    const ProgramData::TypeSet& t, std::string moduleName, AST ast);
   
-  /// Add a main function and set it as the entry point for this module
+  /// Make this the root module, and add a main function
   void addMainFunction();
   
   /// Compile the AST. Call this before trying to retrieve the module.
-  void visit();
+  void compile();
   
   llvm::Module* getModule() const;
   llvm::Function* getEntryPoint() const;

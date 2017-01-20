@@ -10,10 +10,10 @@ Compiler::Compiler(fs::path rootScript, fs::path output):
   auto mc = ModuleCompiler::create(
     pd.types,
     "temp_module_name",
-    *TokenParser::parse(lx->getTokens())
+    TokenParser::parse(lx->getTokens())
   );
   mc->addMainFunction();
-  mc->visit();
+  mc->compile();
   pd.rootModule = std::unique_ptr<llvm::Module>(mc->getModule());
 }
 
@@ -77,28 +77,37 @@ fs::path Compiler::getOutputPath() const {
   return output;
 }
 
-void ModuleCompiler::init(std::string moduleName, AST& moduleAst) {
-  context = new llvm::LLVMContext();
-  integerType = llvm::IntegerType::get(*context, bitsPerInt);
-  floatType = llvm::Type::getDoubleTy(*context);
-  booleanType = llvm::Type::getInt1Ty(*context);
-  voidType = llvm::Type::getVoidTy(*context);
-  voidPtrType = llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8));
-  taggedUnionType = llvm::StructType::create(*context, {
+void ModuleCompiler::addMainFunction() {
+  llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
+  functionStack.push(std::make_shared<FunctionWrapper>(
+    llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module),
+    FunctionSignature("Integer", {}),
+    functionTid
+  ));
+  entryPoint = functionStack.top();
+}
+
+ModuleCompiler::ModuleCompiler(std::string moduleName, AST ast):
+  context(new llvm::LLVMContext()),
+  integerType(llvm::IntegerType::get(*context, bitsPerInt)),
+  floatType(llvm::Type::getDoubleTy(*context)),
+  voidType(llvm::Type::getVoidTy(*context)),
+  booleanType(llvm::Type::getInt1Ty(*context)),
+  voidPtrType(llvm::PointerType::getUnqual(llvm::IntegerType::get(*context, 8))),
+  taggedUnionType(llvm::StructType::create(*context, {
     voidPtrType, // Pointer to data
     integerType, // TypeListId with allowed types
     integerType, // TypeId with currently stored type
-  }, "tagged_union");
-  taggedUnionPtrType = llvm::PointerType::getUnqual(taggedUnionType);
-  voidTid = TypeId::createBasic("Void", voidType);
-  integerTid = TypeId::createBasic("Integer", integerType);
-  floatTid = TypeId::createBasic("Float", floatType);
-  booleanTid = TypeId::createBasic("Boolean", booleanType);
-  functionTid = TypeId::createBasic("Function", voidPtrType); // TODO
-  builder = std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context));
-  module = new llvm::Module(moduleName, *context);
-  ast = std::make_unique<AST>(moduleAst);
-  
+  }, "tagged_union")),
+  taggedUnionPtrType(llvm::PointerType::getUnqual(taggedUnionType)),
+  voidTid(TypeId::createBasic("Void", voidType)),
+  integerTid(TypeId::createBasic("Integer", integerType)),
+  floatTid(TypeId::createBasic("Float", floatType)),
+  booleanTid(TypeId::createBasic("Boolean", booleanType)),
+  functionTid(TypeId::createBasic("Function", voidPtrType)), // TODO
+  builder(std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context))),
+  module(new llvm::Module(moduleName, *context)),
+  ast(ast) {
   // Insert declarations for these functions in IR, they are linked in later
   constexpr const std::size_t rtFunCount = 4;
   constexpr const std::array<const char*, rtFunCount> runtimeFuncs = {
@@ -120,51 +129,22 @@ void ModuleCompiler::init(std::string moduleName, AST& moduleAst) {
     auto fun = llvm::Function::Create(
       funTys[i], llvm::Function::ExternalLinkage, runtimeFuncs[i], module);
     fun->deleteBody();
-    ast->getRoot()->blockFuncs.insert({
+    ast.getRoot()->blockFuncs.insert({
       std::string(runtimeFuncs[i]),
       std::make_shared<FunctionWrapper>(fun, FunctionSignature("", {}), functionTid)
     });
   }
 }
 
-void ModuleCompiler::addMainFunction() {
-  llvm::FunctionType* mainType = llvm::FunctionType::get(integerType, false);
-  functionStack.push(std::make_shared<FunctionWrapper>(
-    llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module),
-    FunctionSignature("Integer", {}),
-    functionTid
-  ));
-  entryPoint = functionStack.top();
-}
-
-ModuleCompiler::ModuleCompiler() {}
-
-ModuleCompiler::ModuleCompiler(std::string moduleName, AST& ast) {
-  init(moduleName, ast);
-  types = std::make_unique<ProgramData::TypeSet>(
-    ProgramData::TypeSet {
-      integerTid,
-      floatTid,
-      booleanTid,
-      functionTid
-    }
-  );
-  addMainFunction();
-  // Insert basic types in root block
-  ast.getRoot()->blockTypes = *types;
-}
-
-ModuleCompiler::Link ModuleCompiler::create(std::string moduleName, AST ast) {
-  auto thisThing = std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast));
-  thisThing->codegen = std::make_unique<OperatorCodegen>(OperatorCodegen(thisThing));
-  return thisThing;
-}
-
-ModuleCompiler::Link ModuleCompiler::create(ProgramData::TypeSet& types, std::string moduleName, AST ast) {
-  auto thisThing = std::make_shared<ModuleCompiler>(ModuleCompiler());
-  thisThing->init(moduleName, ast);
+ModuleCompiler::Link ModuleCompiler::create(
+  const ProgramData::TypeSet& types,
+  std::string moduleName,
+  AST ast
+) {
+  auto thisThing =
+    std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast));
   thisThing->types = std::make_unique<ProgramData::TypeSet>(types);
-  thisThing->ast->getRoot()->blockTypes = {
+  thisThing->ast.getRoot()->blockTypes = {
     thisThing->integerTid,
     thisThing->floatTid,
     thisThing->booleanTid,
@@ -174,8 +154,8 @@ ModuleCompiler::Link ModuleCompiler::create(ProgramData::TypeSet& types, std::st
   return thisThing;
 }
 
-void ModuleCompiler::visit() {
-  ast->getRoot()->visit(shared_from_this());
+void ModuleCompiler::compile() {
+  ast.getRoot()->visit(shared_from_this());
   // If the current block, which is the one that exits from main, has no terminator, add one
   if (!builder->GetInsertBlock()->getTerminator()) {
     builder->CreateRet(llvm::ConstantInt::get(integerType, 0));

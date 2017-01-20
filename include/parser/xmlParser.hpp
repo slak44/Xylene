@@ -79,9 +79,9 @@ private:
   inline XMLParser() {}
 public:
   /// Parse an XML string
-  static std::unique_ptr<AST> parse(char* str);
+  static AST parse(char* str);
   /// Parse an XML file
-  static std::unique_ptr<AST> parse(rapidxml::file<char> xmlFile);
+  static AST parse(rapidxml::file<char> xmlFile);
 };
 
 #endif

@@ -1,9 +1,9 @@
 #include "parser/tokenParser.hpp"
 
-std::unique_ptr<AST> TokenParser::parse(std::vector<Token> list) {
+AST TokenParser::parse(std::vector<Token> list) {
   TokenParser tp = TokenParser();
   tp.input = list;
-  return std::make_unique<AST>(AST(tp.block(ROOT_BLOCK)));
+  return AST(tp.block(ROOT_BLOCK));
 }
 
 Node<ExpressionNode>::Link TokenParser::exprFromCurrent() {

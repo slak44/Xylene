@@ -154,7 +154,7 @@ public:
   /**
     \brief Turn a list of tokens into an AST
   */
-  static std::unique_ptr<AST> parse(std::vector<Token> input);
+  static AST parse(std::vector<Token> input);
 };
 
 #endif

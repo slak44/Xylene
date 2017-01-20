@@ -19,7 +19,7 @@ protected:
   inline void test(std::string code, std::string xmlCodePath) {
     auto pxTr = TokenParser::parse(Lexer::tokenize(code, xmlCodePath)->getTokens());
     auto xpxTr = XMLParser::parse(xmlFile(xmlCodePath));
-    ASSERT_EQ(*pxTr, *xpxTr);
+    ASSERT_EQ(pxTr, xpxTr);
   }
 };
 
