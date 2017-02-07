@@ -614,17 +614,18 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   // if (func == nullptr) throw Error("SyntaxError", "Found return statement outside of function", node->getTrace());
   if (func == nullptr) func = Node<FunctionNode>::make(FunctionSignature("Integer", {}));
   
-  // If the sig and the value don't agree whether or not this is void, it means type mismatch
-  // (yes, the ^ is xor)
   auto returnType = func->getSignature().getReturnType();
-  if ((node->getValue() == nullptr) ^ returnType.isVoid()) {
-    throw Error("TypeError", funRetTyMismatch, node->getTrace());
-  }
+  
   // If both return types are void, return void
   if (node->getValue() == nullptr && returnType.isVoid()) {
     builder->CreateRetVoid();
     return;
   }
+  // If the sig and the value don't agree whether or not this is void, it means type mismatch
+  if ((node->getValue() == nullptr) != returnType.isVoid()) {
+    throw Error("TypeError", funRetTyMismatch, node->getTrace());
+  }
+  
   auto returnedValue = compileExpression(node->getValue());
   // If the returnedValue's type can't be found in the list of possible return types, get mad
   if (!isTypeAllowedIn(typeIdFromInfo(returnType, node), returnedValue->getCurrentType())) {
