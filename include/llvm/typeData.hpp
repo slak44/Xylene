@@ -104,12 +104,13 @@ private:
     */
     InstanceWrapper::Link initializerInstance = nullptr;
     
+    ValueWrapper::Link thisObject = nullptr;
     /**
       \brief Gets the pointer passed to the initializerInstance
       
       Only for normal initializers.
     */
-    ValueWrapper::Link getInitStructArg() const;
+    ValueWrapper::Link getInitStructArg();
   public:
     enum Kind {STATIC, NORMAL};
     TypeInitializer(TypeData& ty, Kind k);

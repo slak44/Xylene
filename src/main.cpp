@@ -23,7 +23,7 @@ enum ExitCodes: int {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #ifdef __clang__
-#pragma clang diagnostic ignored "-Wmissing-prototypes"
+  #pragma clang diagnostic ignored "-Wmissing-prototypes"
 #endif
 
 std::unique_ptr<AST> parseXML(fs::path filePath, std::string cliEval) {

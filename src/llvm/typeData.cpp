@@ -195,11 +195,9 @@ bool TypeData::TypeInitializer::exists() const {
   return initExists;
 }
 
-ValueWrapper::Link TypeData::TypeInitializer::getInitStructArg() const {
-  // TODO: make this a class member!!!!!!!!
-  static ValueWrapper::Link thisObject = nullptr;
+ValueWrapper::Link TypeData::TypeInitializer::getInitStructArg() {
   // This is only done once per initializer, since we only need a pointer and
-  // we can keep returning that one pointer
+  // we can keep returning that pointer after we got it
   if (thisObject == nullptr) {
     // Remember where we begin
     auto startingPosition = owner.mc->builder->GetInsertBlock();
