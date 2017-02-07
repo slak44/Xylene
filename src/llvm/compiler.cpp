@@ -606,16 +606,19 @@ void ModuleCompiler::visitBreakLoop(Node<BreakLoopNode>::Link node) {
 
 void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   static const auto funRetTyMismatch = "Function return type does not match return value";
+  
   auto func = node->findAbove<FunctionNode>();
-  // TODO: for now, don't strictly enforce this. Instead, these returns will exit from the main llvm func.
-  // There must be a better way to return an exit code than just using "return 0" in main
-  // Maybe link in "abort" and terminate the program with that,
-  // and keep this wonderful hack for tests, so it doesn't terminate the test executable
-  // if (func == nullptr) throw Error("SyntaxError", "Found return statement outside of function", node->getTrace());
-  if (func == nullptr) func = Node<FunctionNode>::make(FunctionSignature("Integer", {}));
+  // If defined, allow return statements outside functions, that end the program and
+  // return an exit code
+  #ifdef XYLENE_BLOCK_RETURN
+    if (func == nullptr)
+      func = Node<FunctionNode>::make(FunctionSignature("Integer", {}));
+  #else
+    if (func == nullptr) throw Error("SyntaxError",
+      "Found return statement outside of function", node->getTrace());
+  #endif
   
   auto returnType = func->getSignature().getReturnType();
-  
   // If both return types are void, return void
   if (node->getValue() == nullptr && returnType.isVoid()) {
     builder->CreateRetVoid();
