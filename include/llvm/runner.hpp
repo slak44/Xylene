@@ -29,6 +29,9 @@ private:
   ModuleCompiler::Link v;
 public:
   Runner(ModuleCompiler::Link v);
+  
+  void* dynAllocType(UniqueIdentifier typeId);
+  
   /// \return exit code of executed program
   int run();
 };

@@ -134,6 +134,8 @@ private:
   void visitMethod(Node<MethodNode>::Link node);
   void visitMember(Node<MemberNode>::Link node);
   
+  void insertRuntimeFuncDecls();
+  
   /// If the held value is a Boolean or can be converted to one
   bool canBeBoolean(ValueWrapper::Link) const;
   /// Convert simple value to tagged union with 1 type

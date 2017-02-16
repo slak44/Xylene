@@ -112,29 +112,31 @@ ModuleCompiler::ModuleCompiler(std::string moduleName, AST ast):
   builder(std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context))),
   module(new llvm::Module(moduleName, *context)),
   ast(ast) {
+  insertRuntimeFuncDecls();
+}
+
+void ModuleCompiler::insertRuntimeFuncDecls() {
   // Insert declarations for these functions in IR, they are linked in later
-  constexpr const std::size_t rtFunCount = 4;
-  constexpr const std::array<const char*, rtFunCount> runtimeFuncs = {
-    "_xyl_checkTypeCompat",
-    "_xyl_typeOf",
-    "_xyl_typeErrIfIncompatible",
-    "_xyl_finish"
-  };
   using FT = llvm::FunctionType;
-  using FunTyArgs = std::vector<llvm::Type*>;
-  const std::array<llvm::FunctionType*, rtFunCount> funTys {
-    FT::get(booleanType, FunTyArgs {taggedUnionPtrType, taggedUnionPtrType}, false),
-    FT::get(voidPtrType, FunTyArgs {taggedUnionPtrType}, false), // TODO return string type
-    FT::get(voidType, FunTyArgs {taggedUnionPtrType, taggedUnionPtrType}, false),
-    FT::get(voidType, FunTyArgs {voidPtrType, integerType}, false) // TODO arg1 is string type
+  const std::unordered_map<std::string, llvm::FunctionType*> rtFunMap {
+    {"_xyl_checkTypeCompat",
+      FT::get(booleanType, {taggedUnionPtrType, taggedUnionPtrType}, false)},
+    {"_xyl_typeOf", // TODO return string type, not void ptr
+      FT::get(voidPtrType, {taggedUnionPtrType}, false)},
+    {"_xyl_typeErrIfIncompatible",
+      FT::get(voidType, {taggedUnionPtrType, taggedUnionPtrType}, false)},
+    {"_xyl_finish", // TODO arg1 should be string type
+      FT::get(voidType, {voidPtrType, integerType}, false)},
+    {"_xyl_dynAllocType",
+      FT::get(voidPtrType, {integerType}, false)},
   };
-  for (std::size_t i = 0; i < rtFunCount; i++) {
-    if (module->getFunction(runtimeFuncs[i]) != nullptr) continue;
+  for (auto rtFun : rtFunMap) {
+    if (module->getFunction(rtFun.first) != nullptr) continue;
     auto fun = llvm::Function::Create(
-      funTys[i], llvm::Function::ExternalLinkage, runtimeFuncs[i], module);
+      rtFun.second, llvm::Function::ExternalLinkage, rtFun.first, module);
     fun->deleteBody();
     ast.getRoot()->blockFuncs.insert({
-      std::string(runtimeFuncs[i]),
+      rtFun.first,
       std::make_shared<FunctionWrapper>(fun, FunctionSignature("", {}), functionTid)
     });
   }
