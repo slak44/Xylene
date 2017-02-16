@@ -54,6 +54,7 @@ var searchData=
   ['gettypelist',['getTypeList',['../class_declaration_wrapper.html#a349c7673545e30d9b0ba9f607065a120',1,'DeclarationWrapper']]],
   ['gettypenamestring',['getTypeNameString',['../class_type_info.html#a152fb89ecc5fd81aa5a3184db0f9172c',1,'TypeInfo']]],
   ['gettypes',['getTypes',['../class_type_list_id.html#ace39c01d156e3a198a42382b45c4a027',1,'TypeListId']]],
+  ['gettypesetptr',['getTypeSetPtr',['../class_module_compiler.html#ac6c7ef011c47fcbbb161bf3f9d17a12c',1,'ModuleCompiler']]],
   ['getvalue',['getValue',['../class_value_wrapper.html#a967fde9f08a0aceb5c15c317f0a2522b',1,'ValueWrapper::getValue()'],['../class_function_wrapper.html#a8996dded92ffac63722a362e559ff286',1,'FunctionWrapper::getValue()']]],
   ['getvisibility',['getVisibility',['../class_constructor_node.html#a6200272b0e276227bf41ffe30f108032',1,'ConstructorNode::getVisibility()'],['../class_method_node.html#a5030d3cafe84d8b8482201037e472b4b',1,'MethodNode::getVisibility()'],['../class_member_node.html#a8e162858ef0f1e274ae4064cebb7378b',1,'MemberNode::getVisibility()']]]
 ];

@@ -6,6 +6,7 @@ var class_module_compiler =
     [ "create", "class_module_compiler.html#aee8266892ee895098620e08560a1897b", null ],
     [ "getEntryPoint", "class_module_compiler.html#a2c557804d565d8ad1ea0dcd21630a4fe", null ],
     [ "getModule", "class_module_compiler.html#ad952f21a51f3bd0ea1db652757e351c7", null ],
+    [ "getTypeSetPtr", "class_module_compiler.html#ac6c7ef011c47fcbbb161bf3f9d17a12c", null ],
     [ "InstanceWrapper", "class_module_compiler.html#aca1123bf97aa0cefedfb90514eb32a5d", null ],
     [ "OperatorCodegen", "class_module_compiler.html#aa7051afbbb1c3ad552a7abaa58bcb454", null ],
     [ "TypeData", "class_module_compiler.html#abd341e2e8583b3aa2dd00afdc53a6960", null ],

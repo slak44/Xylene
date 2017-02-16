@@ -123,10 +123,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af3f7de07c0f38f54c1d62245ee533b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa95fd3763b5904499ca879d64cb9bf22"><td class="memItemLeft" align="right" valign="top">virtual llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#aa95fd3763b5904499ca879d64cb9bf22">getAllocaType</a> () const =0</td></tr>
 <tr class="separator:aa95fd3763b5904499ca879d64cb9bf22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeec89e701e0eaf9ae762ab4330575e09"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#aeec89e701e0eaf9ae762ab4330575e09">operator==</a> (const <a class="el" href="class_abstract_id.html">AbstractId</a> &amp;rhs)</td></tr>
-<tr class="separator:aeec89e701e0eaf9ae762ab4330575e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f51917dbf6d9623d22b276d8894a685"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#a2f51917dbf6d9623d22b276d8894a685">operator!=</a> (const <a class="el" href="class_abstract_id.html">AbstractId</a> &amp;rhs)</td></tr>
-<tr class="separator:a2f51917dbf6d9623d22b276d8894a685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c39977b7fe02293bf8ca5557813a710"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#a1c39977b7fe02293bf8ca5557813a710">operator==</a> (const <a class="el" href="class_abstract_id.html">AbstractId</a> &amp;rhs) const</td></tr>
+<tr class="separator:a1c39977b7fe02293bf8ca5557813a710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8458e268e06b22fa18fab63d88da3f9e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#a8458e268e06b22fa18fab63d88da3f9e">operator!=</a> (const <a class="el" href="class_abstract_id.html">AbstractId</a> &amp;rhs) const</td></tr>
+<tr class="separator:a8458e268e06b22fa18fab63d88da3f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f0f6cf982d94785f4660bd27338f2fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#a6f0f6cf982d94785f4660bd27338f2fa">operator==</a> (const <a class="el" href="util_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a> &amp;rhs) const</td></tr>
+<tr class="separator:a6f0f6cf982d94785f4660bd27338f2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a996a15b2e20bd1c68c410179188f9889"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#a996a15b2e20bd1c68c410179188f9889">operator!=</a> (const <a class="el" href="util_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a> &amp;rhs) const</td></tr>
+<tr class="separator:a996a15b2e20bd1c68c410179188f9889"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -319,8 +323,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f51917dbf6d9623d22b276d8894a685"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f51917dbf6d9623d22b276d8894a685">&sect;&nbsp;</a></span>operator!=()</h2>
+<a id="a8458e268e06b22fa18fab63d88da3f9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8458e268e06b22fa18fab63d88da3f9e">&sect;&nbsp;</a></span>operator!=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -333,7 +337,7 @@ Protected Attributes</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_abstract_id.html">AbstractId</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -345,8 +349,34 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aeec89e701e0eaf9ae762ab4330575e09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeec89e701e0eaf9ae762ab4330575e09">&sect;&nbsp;</a></span>operator==()</h2>
+<a id="a996a15b2e20bd1c68c410179188f9889"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a996a15b2e20bd1c68c410179188f9889">&sect;&nbsp;</a></span>operator!=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AbstractId::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="util_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c39977b7fe02293bf8ca5557813a710"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c39977b7fe02293bf8ca5557813a710">&sect;&nbsp;</a></span>operator==() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -359,7 +389,33 @@ Protected Attributes</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_abstract_id.html">AbstractId</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6f0f6cf982d94785f4660bd27338f2fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f0f6cf982d94785f4660bd27338f2fa">&sect;&nbsp;</a></span>operator==() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AbstractId::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="util_8hpp.html#a430118f1b4415c76a823263d2a407a57">UniqueIdentifier</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
