@@ -84,7 +84,7 @@ private:
   TypeId::Link functionTid;
 
   /// Pointer to global type set
-  std::unique_ptr<ProgramData::TypeSet> types;
+  std::shared_ptr<ProgramData::TypeSet> types;
 
   std::unique_ptr<llvm::IRBuilder<>> builder; ///< Used to construct llvm instructions
   llvm::Module* module; ///< The module that is being created
@@ -118,6 +118,7 @@ public:
   
   llvm::Module* getModule() const;
   llvm::Function* getEntryPoint() const;
+  std::shared_ptr<ProgramData::TypeSet> getTypeSetPtr() const;
   
 private:
   void visitExpression(Node<ExpressionNode>::Link node);

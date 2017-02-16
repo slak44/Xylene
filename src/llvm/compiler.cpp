@@ -87,6 +87,10 @@ void ModuleCompiler::addMainFunction() {
   entryPoint = functionStack.top();
 }
 
+std::shared_ptr<ProgramData::TypeSet> ModuleCompiler::getTypeSetPtr() const {
+  return types;
+}
+
 ModuleCompiler::ModuleCompiler(std::string moduleName, AST ast):
   context(new llvm::LLVMContext()),
   integerType(llvm::IntegerType::get(*context, bitsPerInt)),
