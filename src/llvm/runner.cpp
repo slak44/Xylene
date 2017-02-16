@@ -34,8 +34,8 @@ int Runner::run() {
 
 void* Runner::dynAllocType(UniqueIdentifier typeId) {
   llvm::DataLayout d(v->getModule());
-  auto id = *std::find_if(ALL(*v->getTypeSetPtr().get()), [=](auto id) {
-    return *id == typeId;
+  auto id = *std::find_if(ALL(*v->getTypeSetPtr().get()), [=](auto tid) {
+    return *tid == typeId;
   });
   return std::malloc(d.getTypeAllocSize(id->getAllocaType()));
 }
