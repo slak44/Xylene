@@ -49,10 +49,17 @@ public:
   /// \returns what should llvm allocate for this id
   virtual llvm::Type* getAllocaType() const = 0;
   
-  inline bool operator==(const AbstractId& rhs) {
+  inline bool operator==(const AbstractId& rhs) const {
     return this->getId() == rhs.getId();
   }
-  inline bool operator!=(const AbstractId& rhs) {
+  inline bool operator!=(const AbstractId& rhs) const {
+    return !operator==(rhs);
+  }
+  
+  inline bool operator==(const UniqueIdentifier& rhs) const {
+    return this->getId() == rhs;
+  }
+  inline bool operator!=(const UniqueIdentifier& rhs) const {
     return !operator==(rhs);
   }
 };
