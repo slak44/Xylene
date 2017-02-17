@@ -493,7 +493,10 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
     insertRuntimeTypeCheck(declWrap, initValue);
     llvm::DataLayout d(module);
     uint64 size = d.getTypeAllocSize(initValue->getCurrentType()->getAllocaType());
-    builder->CreateStore(initValue->getValue(), insertDynAlloc(size, initValue));
+    auto dataPtr = insertDynAlloc(size, initValue);
+    builder->CreateStore(initValue->getValue(), dataPtr);
+    auto unionDataPtrLocation = builder->CreateConstGEP1_32(decl, 0);
+    builder->CreateStore(dataPtr, unionDataPtrLocation);
   } else {
     builder->CreateStore(initValue->getValue(), decl);
   }
