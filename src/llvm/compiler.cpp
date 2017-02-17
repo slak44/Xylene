@@ -424,8 +424,7 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
 }
 
 ValueWrapper::Link ModuleCompiler::boxPrimitive(ValueWrapper::Link p) {
-  if (p->getValue()->getType() == llvm::PointerType::getUnqual(taggedUnionType))
-    return p;
+  if (p->getValue()->getType() == taggedUnionType) return p;
   auto box = builder->CreateAlloca(taggedUnionType, nullptr, "boxPrimitive");
   // TODO: store value into the box
   return std::make_shared<ValueWrapper>(box, p->getCurrentType());
@@ -439,6 +438,16 @@ void ModuleCompiler::insertRuntimeTypeCheck(
     module->getFunction("_xyl_typeErrIfIncompatible"),
     {target->getValue(), boxPrimitive(newValue)->getValue()}
   );
+}
+
+llvm::Value* ModuleCompiler::insertDynAlloc(ValueWrapper::Link target) {
+  auto i8Ptr = builder->CreateCall(
+    module->getFunction("_xyl_dynAllocType"),
+    {llvm::ConstantInt::get(integerType, target->getCurrentType()->getId())}
+  );
+  auto properTypePtr = builder->CreateBitCast(
+    i8Ptr, llvm::PointerType::getUnqual(target->getCurrentType()->getAllocaType()));
+  return properTypePtr;
 }
 
 void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
@@ -470,7 +479,7 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
     enclosingBlock->blockScope.insert({node->getIdentifier(), declWrap});
   // If it failed, it means the decl already exists
   if (!inserted.second) throw Error("ReferenceError",
-      "Redefinition of " + node->getIdentifier(), node->getTrace());
+    "Redefinition of " + node->getIdentifier(), node->getTrace());
   
   // Handle initialization
   if (!node->hasInit()) return;
@@ -482,7 +491,7 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   }
   if (decl->getType() == llvm::PointerType::getUnqual(taggedUnionType)) {
     insertRuntimeTypeCheck(declWrap, initValue);
-    // TODO: at runtime, dynamically allocate the actual data here and store it
+    builder->CreateStore(initValue->getValue(), insertDynAlloc(initValue));
   } else {
     builder->CreateStore(initValue->getValue(), decl);
   }

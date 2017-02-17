@@ -134,16 +134,17 @@ private:
   void visitMethod(Node<MethodNode>::Link node);
   void visitMember(Node<MemberNode>::Link node);
   
+  /// Inserts declarations for some required runtime functions
   void insertRuntimeFuncDecls();
   
   /// If the held value is a Boolean or can be converted to one
   bool canBeBoolean(ValueWrapper::Link) const;
   /// Convert simple value to tagged union with 1 type
   ValueWrapper::Link boxPrimitive(ValueWrapper::Link p);
-  /**
-    \brief Inserts a call to the runtime '_xyl_typeErrIfIncompatible' function
-  */
+  /// Inserts a call to the runtime '_xyl_typeErrIfIncompatible' function
   void insertRuntimeTypeCheck(DeclarationWrapper::Link, ValueWrapper::Link);
+  /// Inserts a call to the runtime '_xyl_dynAllocType' function
+  llvm::Value* insertDynAlloc(ValueWrapper::Link);
   /**
     \brief Creates a pointer pointing to a specific function's argument
     

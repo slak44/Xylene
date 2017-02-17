@@ -117,13 +117,14 @@ int notReallyMain(int argc, const char* argv[]) {
     }
     
     if (printAST.getValue()) ast->print();
-    if (doNotRun.getValue()) return NORMAL_EXIT;
     
     auto mc = ModuleCompiler::create({}, "Command Line Module", *ast);
     mc->addMainFunction();
     mc->compile();
     if (printIR.getValue()) mc->getModule()->dump();
-        
+    
+    if (doNotRun.getValue()) return NORMAL_EXIT;    
+    
     if (runner.getValue() == "interpret") {
       return Runner(mc).run();
     } else if (runner.getValue() == "compile") {

@@ -33,6 +33,7 @@ int Runner::run() {
 }
 
 void* Runner::dynAllocType(UniqueIdentifier typeId) {
+  println(typeId);
   llvm::DataLayout d(v->getModule());
   auto id = *std::find_if(ALL(*v->getTypeSetPtr().get()), [=](auto tid) {
     return *tid == typeId;
