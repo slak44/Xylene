@@ -143,8 +143,8 @@ private:
   ValueWrapper::Link boxPrimitive(ValueWrapper::Link p);
   /// Inserts a call to the runtime '_xyl_typeErrIfIncompatible' function
   void insertRuntimeTypeCheck(DeclarationWrapper::Link, ValueWrapper::Link);
-  /// Inserts a call to the runtime '_xyl_dynAllocType' function
-  llvm::Value* insertDynAlloc(ValueWrapper::Link);
+  /// Inserts a call to malloc and returns a pointer with the ValueWrapper's type
+  llvm::Value* insertDynAlloc(uint64, ValueWrapper::Link);
   /**
     \brief Creates a pointer pointing to a specific function's argument
     

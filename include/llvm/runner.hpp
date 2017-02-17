@@ -14,7 +14,7 @@
 /// Maps runtime function names to pointers to those functions.
 const std::unordered_map<std::string, void*> nameToFunPtr {
   {"printC", reinterpret_cast<void*>(printC)},
-  {"_xyl_typeErrIfIncompatible", reinterpret_cast<void*>(_xyl_typeErrIfIncompatible)}
+  {"_xyl_typeErrIfIncompatible", reinterpret_cast<void*>(_xyl_typeErrIfIncompatible)},
 };
 
 /// exit code + stdout + stderr
@@ -29,8 +29,6 @@ private:
   ModuleCompiler::Link v;
 public:
   Runner(ModuleCompiler::Link v);
-  
-  void* dynAllocType(UniqueIdentifier typeId);
   
   /// \return exit code of executed program
   int run();

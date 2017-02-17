@@ -16,11 +16,6 @@ Runner::Runner(ModuleCompiler::Link v): v(v) {
     if (funPtr == nullptr) continue; // Function not used
     engine->addGlobalMapping(funPtr, pair.second);
   }
-  using namespace std::placeholders;
-  if (auto funPtr = v->getModule()->getFunction("_xyl_dynAllocType")) {
-    auto boundToThis = std::bind(&Runner::dynAllocType, this, _1);
-    engine->addGlobalMapping(funPtr, &boundToThis);
-  }
   engine->finalizeObject();
   if (onError != "") throw InternalError("ExecutionEngine error", {
     METADATA_PAIRS,
@@ -30,13 +25,4 @@ Runner::Runner(ModuleCompiler::Link v): v(v) {
 
 int Runner::run() {
   return engine->runFunctionAsMain(v->getEntryPoint(), {}, {});
-}
-
-void* Runner::dynAllocType(UniqueIdentifier typeId) {
-  println(typeId);
-  llvm::DataLayout d(v->getModule());
-  auto id = *std::find_if(ALL(*v->getTypeSetPtr().get()), [=](auto tid) {
-    return *tid == typeId;
-  });
-  return std::malloc(d.getTypeAllocSize(id->getAllocaType()));
 }

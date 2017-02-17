@@ -127,7 +127,7 @@ void ModuleCompiler::insertRuntimeFuncDecls() {
       FT::get(voidType, {taggedUnionPtrType, taggedUnionPtrType}, false)},
     {"_xyl_finish", // TODO arg1 should be string type
       FT::get(voidType, {voidPtrType, integerType}, false)},
-    {"_xyl_dynAllocType",
+    {"malloc",
       FT::get(voidPtrType, {integerType}, false)},
   };
   for (auto rtFun : rtFunMap) {
@@ -440,10 +440,10 @@ void ModuleCompiler::insertRuntimeTypeCheck(
   );
 }
 
-llvm::Value* ModuleCompiler::insertDynAlloc(ValueWrapper::Link target) {
+llvm::Value* ModuleCompiler::insertDynAlloc(uint64 size, ValueWrapper::Link target) {
   auto i8Ptr = builder->CreateCall(
-    module->getFunction("_xyl_dynAllocType"),
-    {llvm::ConstantInt::get(integerType, target->getCurrentType()->getId())}
+    module->getFunction("malloc"),
+    {llvm::ConstantInt::get(integerType, size)}
   );
   auto properTypePtr = builder->CreateBitCast(
     i8Ptr, llvm::PointerType::getUnqual(target->getCurrentType()->getAllocaType()));
@@ -491,7 +491,9 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   }
   if (decl->getType() == llvm::PointerType::getUnqual(taggedUnionType)) {
     insertRuntimeTypeCheck(declWrap, initValue);
-    builder->CreateStore(initValue->getValue(), insertDynAlloc(initValue));
+    llvm::DataLayout d(module);
+    uint64 size = d.getTypeAllocSize(initValue->getCurrentType()->getAllocaType());
+    builder->CreateStore(initValue->getValue(), insertDynAlloc(size, initValue));
   } else {
     builder->CreateStore(initValue->getValue(), decl);
   }
