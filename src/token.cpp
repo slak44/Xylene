@@ -69,5 +69,5 @@ std::string Token::toString() const {
   std::string tokData = isOp() ?
     "operator " + op().getName() :
     "data \"" + data + "\"";
-  return "Token " + type.toString() + ", " + tokData + ", " + trace.toString();
+  return fmt::format("Token {0}, {1}, {2}", type, tokData, trace);
 }

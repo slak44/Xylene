@@ -50,6 +50,10 @@ public:
   bool operator!=(const TypeInfo& rhs) const;
 };
 
+inline std::ostream& operator<<(std::ostream& os, const TypeInfo& ti) {
+  return os << ti.toString();
+}
+
 /**
   \brief TypeInfo that can't be void.
   
@@ -66,6 +70,10 @@ public:
   std::string toString() const;
 };
 
+inline std::ostream& operator<<(std::ostream& os, const DefiniteTypeInfo& dti) {
+  return os << dti.toString();
+}
+
 /**
   \brief TypeInfo with a singular non-void, non-dynamic type.
 */
@@ -80,6 +88,10 @@ public:
   
   std::string toString() const;
 };
+
+inline std::ostream& operator<<(std::ostream& os, const StaticTypeInfo& sti) {
+  return os << sti.toString();
+}
 
 /**
   \brief Signature for a function. Stores return type and argument types.
@@ -101,5 +113,9 @@ public:
   bool operator==(const FunctionSignature& rhs) const;
   bool operator!=(const FunctionSignature& rhs) const;
 };
+
+inline std::ostream& operator<<(std::ostream& os, const FunctionSignature& fs) {
+  return os << fs.toString();
+}
 
 #endif

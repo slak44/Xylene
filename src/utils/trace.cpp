@@ -11,7 +11,7 @@ const Position Range::getEnd() const noexcept {
 }
 
 std::string Range::toString() const noexcept {
-  return "from " + start.toString() + " to " + end.toString();
+  return fmt::format("from {0} to {1}", start, end);
 }
 
 Trace::Trace(std::string file, Range location): file(file), location(location) {}
@@ -27,5 +27,5 @@ const std::string& Trace::getFileName() const noexcept {
 
 std::string Trace::toString() const noexcept {
   if (isNullTrace) return "";
-  else return "found " + location.toString() + " in " + file;
+  else return fmt::format("found {0} in {1}", location, file);
 }

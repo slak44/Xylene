@@ -157,7 +157,7 @@ private:
 
   /// Utility function for creating some identifiers
   inline std::string nameFrom(std::string prefix, std::string nameOfThing) {
-    return prefix + "_" + node->getName() + "_" + nameOfThing;
+    return fmt::format("{0}_{1}_{2}", prefix, node->getName(), nameOfThing);
   }
 public:
   /**

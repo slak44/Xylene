@@ -105,7 +105,7 @@ void TypeData::finalize() {
   for (auto method : methods) {
     if (!method->isForeign()) {
       mc->functionStack.push(method->getFunction());
-      mc->compileBlock(method->getCodeBlock(), "method_" + method->getName() + "_entryBlock");
+      mc->compileBlock(method->getCodeBlock(), fmt::format("method_{}_entryBlock", method->getName()));
       mc->functionStack.pop();
     }
   }

@@ -187,4 +187,8 @@ inline std::ostream& operator<<(std::ostream& os, const Token& tok) {
   return os << tok.toString();
 }
 
+inline std::ostream& operator<<(std::ostream& os, const TokenType& tok) {
+  return os << tok.toString();
+}
+
 #endif

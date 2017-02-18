@@ -752,7 +752,7 @@ void ModuleCompiler::visitFunction(Node<FunctionNode>::Link node) {
     throw "Redefinition of function '{}'"_syntax(node->getIdentifier()) + node->getTrace();
   }
   // Only non-foreign functions have a block after them
-  if (!node->isForeign()) compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
+  if (!node->isForeign()) compileBlock(node->getCode(), fmt::format("fun_{}_entryBlock", node->getIdentifier()));
   functionStack.pop();
 }
 
@@ -896,7 +896,8 @@ void ModuleCompiler::visitMethod(Node<MethodNode>::Link node) {
     llvm::Function::Create(
       funType,
       llvm::Function::InternalLinkage,
-      std::string(node->isStatic() ? "static" : "") + "method_" + tyData->getName() + "_" + node->getIdentifier(),
+      fmt::format("{0}method_{1}_{2}",
+        node->isStatic() ? "static_" : "", tyData->getName(), node->getIdentifier()),
       module
     ),
     sig,
@@ -911,7 +912,7 @@ void ModuleCompiler::visitMethod(Node<MethodNode>::Link node) {
   // Normal methods are done in TypeData::finalize
   if (node->isStatic() && !node->isForeign()) {
     functionStack.push(funWrapper);
-    compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
+    compileBlock(node->getCode(), fmt::format("fun_{}_entryBlock", node->getIdentifier()));
     functionStack.pop();
   }
   tyData->addMethod(MethodData(node, node->getIdentifier(), funWrapper), node->isStatic());

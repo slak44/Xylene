@@ -3,6 +3,7 @@
 
 #include <stack>
 #include <algorithm>
+#include <fmt/format.h>
 
 #include "utils/util.hpp"
 
@@ -16,9 +17,13 @@ struct Position {
   inline Position(uint64 line, uint64 col): line(line), col(col) {}
   
   inline std::string toString() const noexcept {
-    return std::to_string(line) + ":" + std::to_string(col);
+    return fmt::format("{0}:{1}", line, col);
   }
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Position& pos) {
+  return os << pos.toString();
+}
 
 /**
   \brief Tracks a range from a position to another in a file.
@@ -36,6 +41,10 @@ public:
   
   std::string toString() const noexcept;
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Range& r) {
+  return os << r.toString();
+}
 
 /**
   \brief Stores debug information.
@@ -55,6 +64,10 @@ public:
   
   std::string toString() const noexcept;
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Trace& tr) {
+  return os << tr.toString();
+}
 
 /// Default trace object that has an empty range
 const Trace defaultTrace = Trace("<none>", Range(Position(0, 0), Position(0, 0)));

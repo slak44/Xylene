@@ -9,7 +9,7 @@
 class ParserTest: public ::testing::Test {
 protected:
   inline rapidxml::file<> xmlFile(std::string path) {
-    path = DATA_PARENT_DIR + ("/" + path);
+    path = fmt::format("{0}/{1}", DATA_PARENT_DIR, path);
     return rapidxml::file<>(path.c_str());
   }
 };

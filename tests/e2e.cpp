@@ -13,8 +13,8 @@ protected:
   inline ProgramResult compileAndRun(fs::path file) {
     std::string stdout, stderr;
     Process self(
-      std::string(FULL_PROGRAM_PATH) + " -f " +
-      (DATA_PARENT_DIR/file).c_str() + (printIr ? " --ir" : ""),
+      fmt::format("{0} -f {1} {2}",
+        QUOTE(FULL_PROGRAM_PATH), DATA_PARENT_DIR/file, printIr ? " --ir" : ""),
       "",
       [&stdout](const char* bytes, std::size_t) {
         stdout = bytes;

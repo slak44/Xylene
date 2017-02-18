@@ -48,8 +48,10 @@ protected:
   
   inline ProgramResult compileAndRun(fs::path xmlFilePath) {
     std::string stdout, stderr;
-    auto printIrSwitch = printIr ? " --ir" : "";
-    Process self(std::string(FULL_PROGRAM_PATH) + " --xml -f " + absoluteXmlPath(xmlFilePath) + printIrSwitch, "",
+    Process self(
+    fmt::format("{0} --xml -f {1} {2}",
+      QUOTE(FULL_PROGRAM_PATH), absoluteXmlPath(xmlFilePath), printIr ? "--ir" : ""),
+    "",
     [&stdout](const char* bytes, std::size_t) {
       stdout = bytes;
     },

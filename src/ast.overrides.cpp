@@ -142,33 +142,35 @@ void ExpressionNode::printTree(uint level) const {
 
 void DeclarationNode::printTree(uint level) const {
   printIndent(level);
-  println("Declaration Node: " + identifier + " (" + info.toString() + ")");
+  fmt::print("Declaration Node: {0} ({1})", identifier, info);
   if (notNull(0)) children[0]->printTree(level + 1);
 }
 
 void TypeNode::printTree(uint level) const {
   printIndent(level);
-  print("Type Node", name, inheritsFrom.size() ? "inherits from" + collate(inheritsFrom) : "\b", "\n");
+  fmt::print("Type Node: {0} {1}", name,
+    inheritsFrom.size() ? "inherits from" + collate(inheritsFrom) : "\b");
   for (auto& child : children) child->printTree(level + 1);
 }
 
 void ConstructorNode::printTree(uint level) const {
   printIndent(level);
-  print("Constructor Node with", getSignature().toString(), "\n");
+  fmt::print("Constructor Node: {}", getSignature());
   if (notNull(0)) getCode()->printTree(level + 1);
 }
 
 void MethodNode::printTree(uint level) const {
   printIndent(level);
-  print("Method Node", getIdentifier(), (isStatic() ? "(static)" : ""), "\n");
+  fmt::print("Method Node: {0} {1}", getIdentifier(), isStatic() ? "(static)" : "");
   printIndent(level);
-  println(getSignature().toString());
+  println(getSignature());
   if (notNull(0)) getCode()->printTree(level + 1);
 }
 
 void MemberNode::printTree(uint level) const {
   printIndent(level);
-  print("Member Node", getIdentifier(), "(" + getTypeInfo().toString() + ")", (isStatic() ? "(static)" : ""), "\n");
+  fmt::print("Member Node: {0} ({1}) {2}",
+    getIdentifier(), getTypeInfo(), isStatic() ? "(static)" : "");
   if (notNull(0)) children[0]->printTree(level + 1);
 }
 
@@ -182,7 +184,7 @@ void BranchNode::printTree(uint level) const {
 
 void LoopNode::printTree(uint level) const {
   printIndent(level);
-  println("Loop Node");
+  println("Loop Node:");
   if (notNull(0)) PRETTY_PRINT_FOR(0, Init)
   if (notNull(1)) PRETTY_PRINT_FOR(1, Condition)
   if (notNull(2)) PRETTY_PRINT_FOR(2, Update)
@@ -191,21 +193,19 @@ void LoopNode::printTree(uint level) const {
 
 void ReturnNode::printTree(uint level) const {
   printIndent(level);
-  println("Return Node");
+  println("Return Node:");
   if (notNull(0)) PRETTY_PRINT_FOR(0, Value)
 }
 
 void BreakLoopNode::printTree(uint level) const {
   printIndent(level);
-  println("Break Loop");
+  println("Break Loop:");
   for (auto& child : children) child->printTree(level + 1);
 }
 
 void FunctionNode::printTree(uint level) const {
   printIndent(level);
-  println("Function", isAnon() ? "<anonymous>" : ident);
-  printIndent(level);
-  println(this->sig.toString());
+  fmt::print("Function {0}: {1}", isAnon() ? "<anonymous>" : ident, sig);
   if (notNull(0)) {
     getCode()->printTree(level + 1);
   } else {

@@ -63,13 +63,10 @@ FunctionSignature::Arguments FunctionSignature::getArguments() const {
 }
 
 std::string FunctionSignature::toString() const {
-  std::string str = "FunctionSignature (";
-  str += "return: " + returnType.getTypeNameString();
-  str += ", arguments: " + collate(arguments, [](Arguments::value_type arg) {
-    return "(arg " + arg.first + ": " + arg.second.getTypeNameString() + ")";
+  auto args = collate(arguments, [](Arguments::value_type arg) {
+    return fmt::format("({0}: {1})", arg.first, arg.second.getTypeNameString());
   });
-  str += ")";
-  return str;
+  return fmt::format("FunctionSignature: return {0}, arguments {1}", returnType.getTypeNameString(), args);
 }
 
 bool FunctionSignature::operator==(const FunctionSignature& rhs) const {

@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <functional>
 #include <experimental/filesystem>
+#include <fmt/format.h>
+#include <fmt/ostream.h>
 
 namespace fs = std::experimental::filesystem;
 
@@ -23,6 +25,8 @@ namespace fs = std::experimental::filesystem;
 
 #define UNUSED(expr) (void)(expr)
 #define ALL(container) std::begin(container), std::end(container)
+#define QUOTE_IMPLEMENTATION(x) #x
+#define QUOTE(x) QUOTE_IMPLEMENTATION(x)
 
 #ifdef __clang__
   #pragma clang diagnostic push
@@ -152,8 +156,9 @@ struct Identity {
   }
 };
 
-static const auto defaultCombine =
-  [](std::string prev, std::string current) {return prev + ", " + current;};
+static const auto defaultCombine = [](std::string prev, std::string current) {
+  return fmt::format("{0}, {1}", prev, current);
+};
 
 /**
   \brief Collates a bunch of objects from Container into a string
