@@ -17,7 +17,7 @@ ValueWrapper::Link OperatorCodegen::findAndRunFun(Node<ExpressionNode>::Link nod
   if (std::find_if(ALL(operands), [&](auto op) {
     return op->getCurrentType() == mc->voidTid;
   }) != operands.end()) {
-    throw Error("TypeError", "Void cannot be used in expressions", node->getToken().trace);
+    throw "Void cannot be used in expressions"_type + node->getToken().trace;
   }
   // Check if it's a special case
   SpecialCodegenFunction func = getSpecialFun(node);
@@ -68,8 +68,7 @@ OperatorCodegen::CodegenFunction OperatorCodegen::getNormalFun(
   // Try to find the function in the TypeMap using the operand types
   auto funIt = opMapIt->second.find(types);
   if (funIt == opMapIt->second.end()) {
-    throw Error("TypeError",
-      "No operation available for given operands", node->getToken().trace);
+    throw "No operation available for given operands"_type + node->getToken().trace;
   }
   return funIt->second;
 }
@@ -341,14 +340,15 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
     {"Assignment", [=] SPECIAL_CODEGEN_SIG {
       auto varIdent = Node<ExpressionNode>::staticPtrCast(node)->at(0);
       DeclarationWrapper::Link decl = PtrUtil<DeclarationWrapper>::dynPtrCast(operands[0]);
-      if (decl == nullptr) throw Error("ReferenceError", "Cannot assign to this value", varIdent->getToken().trace);
+      if (decl == nullptr)
+        throw "Cannot assign to '{}'"_ref(varIdent->getToken().data) + varIdent->getToken().trace;
+      // TODO: make sure that this type check handles all cases properly and add types to err message
       // If the declaration doesn't allow this type, complain
       if (!isTypeAllowedIn(decl->getTypeList(), operands[1]->getCurrentType())) {
-        throw Error("TypeError",
-          "Type list of '" + varIdent->getToken().data +
-          "' does not contain type '" + operands[1]->getCurrentType()->getName() + "'",
-          varIdent->getToken().trace
-        );
+        throw "Value '{0}' does not allow assigning type '{1}'"_type(
+          varIdent->getToken().data,
+          operands[1]->getCurrentType()->getName()
+        ) + varIdent->getToken().trace;
       }
       if (decl->getTypeList()->storedTypeCount() > 1) {
         // TODO: reclaim the memory that this location points to !!!
@@ -367,7 +367,8 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
     }},
     {"Call", [=] SPECIAL_CODEGEN_SIG {
       if (operands[0]->getCurrentType() != mc->functionTid) {
-        throw Error("TypeError", "Attempt to call non-function", trace);
+        throw "Attempt to call non-function '{}'"_type(
+          Node<ExpressionNode>::staticPtrCast(node)->at(0)->getToken().data) + trace;
       }
       auto fw = PtrUtil<FunctionWrapper>::staticPtrCast(operands[0]);
       // Get a list of arguments to pass to CreateCall
@@ -390,11 +391,8 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
             mc->typeIdFromInfo(it->second, node),
             (*opIt)->getCurrentType())
           ) {
-          throw Error("TypeError",
-            "Function argument '" + it->first + "' has incompatible type with '" +
-            (*opIt)->getCurrentType()->getName() + "'",
-            trace
-          );
+          throw "Function argument '{0}' has incompatible type with '{1}'"_type(
+            it->first, (*opIt)->getCurrentType()->getName()) + trace;
         }
         args.push_back((*opIt)->getValue());
       }

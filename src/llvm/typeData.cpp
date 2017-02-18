@@ -37,11 +37,7 @@ void TypeData::validateName(std::string name) const {
   auto membersIt = std::find_if(ALL(members), matchesName);
   auto staticMembersIt = std::find_if(ALL(staticMembers), matchesName);
   if (membersIt != members.end() || staticMembersIt != staticMembers.end())
-    throw Error(
-      "SyntaxError",
-      "Duplicate symbol with name '" + name + "' in type " + node->getName(),
-      t
-    );
+    throw "Duplicate member '{0}' in type '{1}'"_syntax(name, node->getName()) + t;
 }
 
 void TypeData::addMember(MemberMetadata newMember, bool isStatic) {
@@ -60,7 +56,7 @@ void TypeData::addConstructor(ConstructorData c) {
     return false;
   });
   if (duplicateIt != constructors.end()) {
-    throw Error("ReferenceError", "Multiple constructors with same signature", c.getTrace());
+    throw "Multiple constructors with identical signature"_syntax + c.getTrace();
   }
   constructors.push_back(std::make_shared<ConstructorData>(c));
 }
@@ -78,8 +74,9 @@ void TypeData::finalize() {
     if (!mb->hasInit()) return;
     normalTi.insertCode([=](TypeInitializer& ref) {
       auto initValue = mc->compileExpression(mb->getInit());
+      // TODO: make sure that this type check handles all cases properly and add types to err message
       if (!isTypeAllowedIn(mc->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
-        throw Error("TypeError", "Member initialization does not match its type", mb->getInit()->getTrace());
+        throw "Member '{}' initialization does not match its type"_type(mb->getName()) + mb->getInit()->getTrace();
       }
       auto memberDecl = ref.getInitInstance()->getMember(mb->getName());
       mc->builder->CreateStore(initValue->getValue(), memberDecl->getValue());
@@ -98,8 +95,9 @@ void TypeData::finalize() {
     );
     if (!mb->hasInit()) return;
     auto initValue = mc->compileExpression(mb->getInit());
+    // TODO: make sure that this type check handles all cases properly and add types to err message
     if (!isTypeAllowedIn(mc->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
-      throw Error("TypeError", "Static member initialization does not match its type", mb->getInit()->getTrace());
+      throw "Static member '{}' initialization does not match its type"_type(mb->getName()) + mb->getInit()->getTrace();
     }
     mc->builder->CreateStore(initValue->getValue(), staticVar);
   });

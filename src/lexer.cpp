@@ -55,8 +55,7 @@ inline void Lexer::handleMultiLineComments() {
   if (current(2) == "/*") {
     skip(2); // Skip "/*"
     while (current(2) != "*/") {
-      if (isEOF()) throw Error("SyntaxError",
-        "Multi-line comment not closed", traceFrom(start));
+      if (isEOF()) throw "Multi-line comment not closed"_syntax + traceFrom(start);
       else if (isEOL()) nextLine();
       skip(1); // Skip characters one by one until we hit the end of the comment
     }
@@ -73,7 +72,7 @@ uint Lexer::readRadix() {
       case 'x': return 16;
       case 'b': return 2;
       case 'o': return 8;
-      default: throw Error("SyntaxError", "Invalid radix", traceFrom(zeroPos));
+      default: throw "Invalid radix"_syntax + traceFrom(zeroPos);
     }
   } else {
     return 10;
@@ -97,14 +96,14 @@ bool Lexer::isValidForRadix(char c, uint radix) const noexcept {
 
 Token Lexer::readNumber(uint radix) {
   Position start = getPos();
-  if (current() == '0' && std::isdigit(peekAhead(1))) throw Error("SyntaxError",
-    "Numbers cannot begin with '0'", Trace(sourceOfCode, Range(start, 1)));
+  if (current() == '0' && std::isdigit(peekAhead(1)))
+    throw "Numbers cannot begin with '0'"_syntax + traceFor(1);
   std::string number = "";
   bool isFloat = false;
   while (!isEOF()) {
     if (current() == '.') {
-      if (isFloat) throw Error("SyntaxError",
-        "Malformed float, multiple decimal points", traceFrom(start));
+      if (isFloat)
+        throw "multiple decimal points"_badfloat(number) + traceFrom(start);
       isFloat = true;
       number += current();
       skip(1);
@@ -112,16 +111,16 @@ Token Lexer::readNumber(uint radix) {
       number += current();
       skip(1);
     } else if (isIdentifierChar()) {
-      throw Error("SyntaxError", "Invalid character in a number", traceFrom(start));
+      throw "Invalid character in number: {}"_syntax(current()) + traceFrom(start);
     } else {
       break;
     }
   }
   noIncrement();
-  if (number.back() == '.') throw Error("SyntaxError",
-    "Malformed float, missing digits after decimal point", traceFrom(start));
-  if (radix != 10 && isFloat) throw Error("SyntaxError",
-    "Floating point numbers must be decimal", traceFrom(start));
+  if (number.back() == '.')
+    throw "missing digits after decimal point"_badfloat(number) + traceFrom(start);
+  if (radix != 10 && isFloat)
+    throw "floats must be decimal"_badfloat(number) + traceFrom(start);
   if (radix != 10)
     number = std::to_string(std::stoll(number, nullptr, static_cast<int>(radix)));
   return Token(isFloat ? TT::FLOAT : TT::INTEGER, number, traceFrom(start));
@@ -135,29 +134,34 @@ char Lexer::readEscapeSeq() {
   if (charIt != std::end(singleCharEscapeSeqences)) {
     return charIt->second;
   }
-  auto badEscape = Error("SyntaxError", "Invalid escape code", traceFrom(escChar));
+  auto badEscape = "Invalid escape code '{0}{1}'"_syntax;
   if (escapedChar == 'x') {
     // \x00 hex escape code
-    std::string hexNumber = "";
-    if (std::isxdigit(current())) hexNumber += current();
-    else throw badEscape;
-    if (std::isxdigit(peekAhead(1))) hexNumber += peekAhead(1);
-    else throw badEscape;
-    skip(2);
-    return static_cast<char>(std::stoi(hexNumber, nullptr, 16));
+    std::string hexNumber = std::string(1, current()) + peekAhead(1);
+    if (std::isxdigit(current()) && std::isxdigit(peekAhead(1))) {
+      skip(2);
+      println(hexNumber);
+      return static_cast<char>(std::stoi(hexNumber, nullptr, 16));
+    } else {
+      skip(2);
+      throw badEscape("\\x", hexNumber) + traceFrom(escChar);
+    }
   } else if (std::isdigit(escapedChar)) {
     // \000 octal escape code
-    std::string octalNumber = "";
-    if (isValidForRadix(escapedChar, 8)) octalNumber += escapedChar;
-    else throw badEscape;
-    if (isValidForRadix(current(), 8)) octalNumber += current();
-    else throw badEscape;
-    if (isValidForRadix(peekAhead(1), 8)) octalNumber += peekAhead(1);
-    else throw badEscape;
-    skip(2); // Skip only 2 because escapedChar is already skipped
-    return static_cast<char>(std::stoi(octalNumber, nullptr, 8));
+    std::string octalNumber = std::string(1, escapedChar) + current() + peekAhead(1);
+    if (
+      isValidForRadix(escapedChar, 8) &&
+      isValidForRadix(current(), 8) &&
+      isValidForRadix(peekAhead(1), 8)
+    ) {
+      skip(2); // Skip only 2 because escapedChar is already skipped
+      return static_cast<char>(std::stoi(octalNumber, nullptr, 8));
+    } else {
+      skip(2);
+      throw badEscape("\\", octalNumber) + traceFrom(escChar);
+    }
   }
-  throw badEscape;
+  throw badEscape("\\"s + escapedChar, "") + traceFrom(escChar);
 }
 
 void Lexer::processTokens() {
@@ -189,8 +193,8 @@ void Lexer::processTokens() {
       skip(1); // Skip the quote
       std::string str = "";
       while (current() != '"') {
-        if (isEOF()) throw Error("SyntaxError",
-          "String literal has unmatched quote", traceFrom(start));
+        if (isEOF())
+          throw "String literal has unmatched quote"_syntax + traceFrom(start);
         if (current() == '\\') {
           str += readEscapeSeq();
           continue;
@@ -201,6 +205,7 @@ void Lexer::processTokens() {
       tokens.push_back(Token(TT::STRING, str, traceFrom(start)));
       continue;
     }
+    // TODO: split into function
     // Check for constructs
     TokenType construct = TT::findConstruct(current());
     if (construct != TT::UNPROCESSED) {
@@ -210,9 +215,9 @@ void Lexer::processTokens() {
       if (construct == TT::PAREN_LEFT || construct == TT::CALL_BEGIN || construct == TT::SQPAREN_LEFT) {
         parenStack.push(constrTok);
       }
+      auto mismatchedParen = "Mismatched parenthesis"_syntax + constrTok.trace;
       if (construct == TT::PAREN_RIGHT || construct == TT::SQPAREN_RIGHT) {
-        if (parenStack.empty())
-          throw Error("SyntaxError", "Mismatched parenthesis", constrTok.trace);
+        if (parenStack.empty()) throw mismatchedParen;
         Token topOfStack = parenStack.top();
         parenStack.pop();
         if (topOfStack.type == TT::CALL_BEGIN) {
@@ -222,8 +227,7 @@ void Lexer::processTokens() {
           (topOfStack.type == TT::PAREN_LEFT && construct == TT::PAREN_RIGHT) ||
           (topOfStack.type == TT::SQPAREN_LEFT && construct == TT::SQPAREN_RIGHT) ||
           (topOfStack.type == TT::CALL_BEGIN && construct == TT::CALL_END);
-        if (!isMatched)
-          throw Error("SyntaxError", "Mismatched parenthesis", constrTok.trace);
+        if (!isMatched) throw mismatchedParen;
       }
       tokens.push_back(constrTok);
       continue;
@@ -274,7 +278,7 @@ void Lexer::processTokens() {
     Position identStart = getPos();
     while (isIdentifierChar()) {
       if (current() == '\\')
-        throw Error("SyntaxError", "Extraneous escape character", traceFor(1));
+        throw "Extraneous escape character '{}'"_syntax(peekAhead(1)) + traceFor(2);
       str += current();
       skip(1);
     }
@@ -298,7 +302,7 @@ void Lexer::processTokens() {
   }
   if (!parenStack.empty()) {
     // TODO: print error for each paren left in the stack
-    throw Error("SyntaxError", "Unmatched parenthesis", parenStack.top().trace);
+    throw "Unmatched parenthesis"_syntax + parenStack.top().trace;
   }
   tokens.push_back(Token(TT::FILE_END, traceFor(1)));
 }

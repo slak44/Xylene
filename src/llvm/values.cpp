@@ -76,11 +76,8 @@ DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
     idx++;
     return m->getName() == name;
   });
-  if (member == tyd->members.end()) throw Error(
-    "ReferenceError",
-    "No member named '" + name + "' in type " + currentType->getName(),
-    tyd->node->getTrace()
-  );
+  if (member == tyd->members.end())
+    throw "Cannot find member '{0}' in type '{1}'"_syntax(name, currentType->getName()) + tyd->node->getTrace();
   auto declMember = members.find(name);
   if (declMember == members.end()) {
     // Add it if it isn't there

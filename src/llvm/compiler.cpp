@@ -195,6 +195,7 @@ llvm::BasicBlock* ModuleCompiler::compileBlock(Node<BlockNode>::Link node, const
   llvm::BasicBlock* newBlock = llvm::BasicBlock::Create(*context, name, functionStack.top()->getValue());
   builder->SetInsertPoint(newBlock);
   for (auto& child : node->getChildren()) child->visit(shared_from_this());
+  // TODO: reduce indentation of this if
   // If the block lacks a terminator instruction, add one
   if (!newBlock->getTerminator()) {
     switch (node->getType()) {
@@ -220,7 +221,8 @@ llvm::BasicBlock* ModuleCompiler::compileBlock(Node<BlockNode>::Link node, const
         if (functionStack.top()->getValue()->getReturnType()->isVoidTy()) {
           builder->CreateRetVoid();
         } else {
-          throw Error("SyntaxError", "Function has non-void return type, but no return was found", node->getTrace());
+          auto retTyString = functionStack.top()->getSignature().getReturnType().getTypeNameString();
+          throw "Function has non-void return type '{}', but no return was found"_type(retTyString) + node->getTrace();
         }
         break;
     }
@@ -264,11 +266,8 @@ AbstractId::Link ModuleCompiler::typeIdFromInfo(TypeInfo ti, ASTNode::Link node)
     }
     return false;
   });
-  if (result == nullptr) throw Error(
-    "TypeError",
-    "Can't find type '" + ti.getTypeNameString() + "'",
-    node->getTrace()
-  );
+  if (result == nullptr)
+    throw "Can't find type '{}'"_type(ti.getTypeNameString()) + node->getTrace();
   return result;
 }
 
@@ -314,7 +313,7 @@ ValueWrapper::Link ModuleCompiler::valueFromIdentifier(Node<ExpressionNode>::Lin
     if (it != p->blockScope.end()) {
       ValueWrapper::Link vr = it->second;
       if (!vr->isInitialized())
-        throw Error("ReferenceError", "Use of uninitialized value", identifier->getToken().trace);
+        throw "Use of uninitialized value '{}'"_ref(name) + identifier->getToken().trace;
       return vr;
     }
     // If it's a function, return it
@@ -343,13 +342,13 @@ ValueWrapper::Link ModuleCompiler::valueFromIdentifier(Node<ExpressionNode>::Lin
       UNUSED(err);
     }
   }
-  throw Error("ReferenceError", "Cannot find '" + name + "' in this scope", identifier->getTrace());
+  throw "Cannot find '{}' in this scope"_syntax(name) + identifier->getTrace();
 }
 
 ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link node, IdentifierHandling how) {
   Token tok = node->getToken();
   if (how == AS_POINTER && tok.type != TT::IDENTIFIER && tok.type != TT::OPERATOR)
-    throw Error("ReferenceError", "Operator requires a mutable type", tok.trace);
+    throw "Operator requires a mutable type"_syntax + tok.trace;
   if (tok.isTerminal()) {
     switch (tok.type) {
       case TT::INTEGER: return std::make_shared<ValueWrapper>(
@@ -527,16 +526,16 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   auto inserted =
     enclosingBlock->blockScope.insert({node->getIdentifier(), declWrap});
   // If it failed, it means the decl already exists
-  if (!inserted.second) throw Error("ReferenceError",
-    "Redefinition of " + node->getIdentifier(), node->getTrace());
+  if (!inserted.second)
+    throw "Redefinition of identifier '{}'"_ref(node->getIdentifier()) + node->getTrace();
   
   // Handle initialization
   if (!node->hasInit()) return;
   ValueWrapper::Link initValue = compileExpression(node->getInit());
+  // TODO: make sure that this type check handles all cases properly and add types to err message
   // Check that the type of the initialization is allowed by the declaration
   if (!isTypeAllowedIn(id, initValue->getCurrentType())) {
-    throw Error("TypeError",
-      "Type of initialization is not allowed by declaration", node->getTrace());
+    throw "Type of initialization is not allowed by declaration"_type + node->getTrace();
   }
   if (decl->getType() == llvm::PointerType::getUnqual(taggedUnionType)) {
     assignToUnion(declWrap, initValue);
@@ -578,7 +577,7 @@ void ModuleCompiler::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
   llvm::BasicBlock* current = builder->GetInsertBlock();
   ValueWrapper::Link cond = compileExpression(node->getCondition());
   if (!canBeBoolean(cond)) {
-    throw Error("TypeError", "Expected boolean expression in if condition", node->getCondition()->getTrace());
+    throw "Expected boolean expression in if condition"_type + node->getCondition()->getTrace();
   }
   llvm::BasicBlock* success = compileBlock(node->getSuccessBlock(), "branchSuccess");
   // continueCurrent gets all the current block's instructions after the branch
@@ -634,7 +633,7 @@ void ModuleCompiler::visitLoop(Node<LoopNode>::Link node) {
   if (cond != nullptr) {
     auto condValue = compileExpression(cond);
     if (!canBeBoolean(condValue)) {
-      throw Error("TypeError", "Expected boolean expression in loop condition", cond->getTrace());
+      throw "Expected boolean expression in loop condition"_type + cond->getTrace();
     }
     // Go to the loop if true, end the loop otherwise
     builder->CreateCondBr(condValue->getValue(), loopBlock, loopAfter);
@@ -662,7 +661,8 @@ void ModuleCompiler::visitBreakLoop(Node<BreakLoopNode>::Link node) {
     if (Node<LoopNode>::dynPtrCast(n) != nullptr) return true;
     return false;
   });
-  if (parentLoopNode == nullptr) throw Error("SyntaxError", "Found break statement outside loop", node->getTrace());
+  if (parentLoopNode == nullptr)
+    throw "Found break statement outside loop"_syntax + node->getTrace();
   llvm::BasicBlock* exitBlock = Node<LoopNode>::staticPtrCast(parentLoopNode)->getExitBlock();
   builder->CreateBr(exitBlock);
 }
@@ -677,8 +677,8 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
     if (func == nullptr)
       func = Node<FunctionNode>::make(FunctionSignature("Integer", {}));
   #else
-    if (func == nullptr) throw Error("SyntaxError",
-      "Found return statement outside of function", node->getTrace());
+    if (func == nullptr)
+      throw "Found return statement outside of function"_syntax + node->getTrace();
   #endif
   
   auto returnType = func->getSignature().getReturnType();
@@ -689,13 +689,14 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   }
   // If the sig and the value don't agree whether or not this is void, it means type mismatch
   if ((node->getValue() == nullptr) != returnType.isVoid()) {
-    throw Error("TypeError", funRetTyMismatch, node->getTrace());
+    throw "{}"_type(funRetTyMismatch) + node->getTrace();
   }
   
   auto returnedValue = compileExpression(node->getValue());
+  // TODO: make sure that this type check handles all cases properly and add types to err message
   // If the returnedValue's type can't be found in the list of possible return types, get mad
   if (!isTypeAllowedIn(typeIdFromInfo(returnType, node), returnedValue->getCurrentType())) {
-    throw Error("TypeError", funRetTyMismatch, node->getTrace());
+    throw "{}"_type(funRetTyMismatch) + node->getTrace();
   }
   // TODO: this if block is a bit of a disaster, refactor
   if (functionStack.top()->getValue()->getReturnType() != returnedValue->getValue()->getType()) {
@@ -748,7 +749,7 @@ void ModuleCompiler::visitFunction(Node<FunctionNode>::Link node) {
   auto inserted = enclosingBlock->blockFuncs.insert({node->getIdentifier(), functionStack.top()});
   // If it failed, it means the function already exists
   if (!inserted.second) {
-    throw Error("ReferenceError", "Can't have 2 functions with the same name", node->getTrace());
+    throw "Redefinition of function '{}'"_syntax(node->getIdentifier()) + node->getTrace();
   }
   // Only non-foreign functions have a block after them
   if (!node->isForeign()) compileBlock(node->getCode(), "fun_" + node->getIdentifier() + "_entryBlock");
@@ -768,11 +769,7 @@ void ModuleCompiler::visitType(Node<TypeNode>::Link node) {
     else return false;
   });
   if (defBlock) {
-    throw Error(
-      "SyntaxError",
-      "Redefinition of type " + node->getName(),
-      node->getTrace()
-    );
+    throw "Redefinition of type '{}'"_syntax(node->getName()) + node->getTrace();
   }
   // Opaque struct, body gets added after members are processed
   // TODO: warning, these stupid StructTypes aren't uniqued, but their names are at

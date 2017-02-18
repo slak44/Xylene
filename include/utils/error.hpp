@@ -6,6 +6,7 @@
 #include <sstream>
 #include <map>
 #include <termcolor/termcolor.hpp>
+#include <fmt/format.h>
 
 #include "util.hpp"
 #include "trace.hpp"
@@ -15,16 +16,47 @@
 /**
   \brief Thrown when there is an issue in the user's code.
 */
-class Error: public std::runtime_error {
+class Error {
+private:
+  std::string message;
 public:
   /**
     \brief Create an error.
     \param errType appears in front of the message
     \param msg error message
-    \param trace where in the user's code this happened
   */
-  Error(std::string errType, std::string msg, Trace trace);
+  Error(std::string errType, std::string msg);
+    
+  /// Format the existing message
+  template <typename... Args>
+  Error& operator()(Args&&... args) {
+    message = fmt::format(message, std::forward<Args>(args)...);
+    return *this;
+  }
+
+  /// Attach a Trace to the error message. Literally appends the Trace text
+  Error& operator+(const Trace& rhs) {
+    message += "\n\t" + rhs.toString();
+    return *this;
+  }
+  
+  std::string what() const noexcept {
+    return message;
+  }
 };
+
+/// Define a new literal for Error types
+#define LITERAL_MACRO(literalSuffix, messagePrefix) \
+inline Error operator""_##literalSuffix(const char* msg, long unsigned int) noexcept { \
+  return Error(#messagePrefix, msg); \
+}
+
+LITERAL_MACRO(syntax, "Syntax error: ")
+LITERAL_MACRO(badfloat, "Syntax error: Malformed float '{0}', ")
+LITERAL_MACRO(type, "Type error: ")
+LITERAL_MACRO(ref, "Reference error: ")
+
+#undef LITERAL_MACRO
 
 /**
   \brief Maps a description of data to its content

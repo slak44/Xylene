@@ -24,6 +24,19 @@ namespace fs = std::experimental::filesystem;
 #define UNUSED(expr) (void)(expr)
 #define ALL(container) std::begin(container), std::end(container)
 
+#ifdef __clang__
+  #pragma clang diagnostic push
+  // This only pulls one thing in the global namespace
+  #pragma clang diagnostic ignored "-Wheader-hygiene"
+#endif
+  
+  /// For ""s string literal
+  using namespace std::literals::string_literals;
+
+#ifdef __clang__
+  #pragma clang diagnostic pop
+#endif
+
 using uint = unsigned int;
 using int64 = long long;
 using uint64 = unsigned long long;

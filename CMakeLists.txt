@@ -104,6 +104,19 @@ ExternalProject_Add(
 include_directories(SYSTEM ${TINY_PROC_LIB_PREFIX}/src)
 link_directories(${TINY_PROC_LIB_PREFIX}/src/tiny-process-library-build)
 
+set(FMT_LIB_PREFIX ${PROJECT_SOURCE_DIR}/libs/fmtlib)
+ExternalProject_Add(
+  fmtlib
+  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+  GIT_TAG 3.0.1
+  PREFIX ${FMT_LIB_PREFIX}
+  CMAKE_ARGS "-DFMT_TEST=OFF"
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
+)
+include_directories(SYSTEM ${FMT_LIB_PREFIX}/src/fmtlib/)
+link_directories(${FMT_LIB_PREFIX}/src/fmtlib-build/fmt)
+
 find_package(LLVM REQUIRED)
 include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
@@ -153,8 +166,8 @@ set(COMMON_SOURCES
   ${SRC_DIR}/runtime/runtime.cpp
   ${SRC_DIR}/runtime/io.cpp
 )
-set(COMMON_DEPS rapidxml termcolor tclap)
-set(COMMON_LINK_LIBS ${REQ_LLVM_LIBRARIES} stdc++fs)
+set(COMMON_DEPS rapidxml termcolor tclap fmtlib)
+set(COMMON_LINK_LIBS ${REQ_LLVM_LIBRARIES} stdc++fs fmt)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)

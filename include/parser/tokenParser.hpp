@@ -57,7 +57,7 @@ private:
       return true;
     } else {
       auto currentData = current().isOp() ? current().op().getSymbol() : current().data;
-      throw Error("SyntaxError", errorMessage + " (found: " + currentData + ")", current().trace);
+      throw "{0} (found: {1})"_syntax(errorMessage, currentData) + current().trace;
     }
   }
   /// Expect a semicolon \see expect

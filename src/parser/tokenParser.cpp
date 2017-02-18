@@ -230,7 +230,7 @@ Node<DeclarationNode>::Link TokenParser::declaration(bool throwIfEmpty) {
       return declarationFromTypes(types);
     }
   }
-  throw Error("SyntaxError", "Invalid declaration", current().trace);
+  throw "Invalid declaration"_syntax + current().trace;
 }
 
 Node<BranchNode>::Link TokenParser::ifStatement() {
@@ -249,7 +249,7 @@ Node<BranchNode>::Link TokenParser::ifStatement() {
     } else if (accept(TT::DO)) {
       branch->setFailiureBlock(block(CODE_BLOCK));
     } else {
-      throw Error("SyntaxError", "Else must be followed by a block or an if statement", current().trace);
+      throw "'else' must be followed by a 'do' or 'if'"_syntax + current().trace;
     }
   }
   return branch;
@@ -279,7 +279,7 @@ FunctionSignature::Arguments TokenParser::getSigArgs() {
       break;
     }
     if (!accept(",")) {
-      throw Error("SyntaxError", "Expected comma after function argument", current().trace);
+      throw "Expected comma after function argument '{}'"_syntax(current().data) + current().trace;
     }
     skip(); // The comma
   }
@@ -298,7 +298,9 @@ Node<FunctionNode>::Link TokenParser::function(bool isForeign) {
     ident = current().data;
     skip();
   }
-  if (isForeign && ident.empty()) throw Error("SyntaxError", "Foreign functions can't be anonymous", trace);
+  if (isForeign && ident.empty()) {
+    throw "Foreign functions can't be anonymous"_syntax + trace;
+  }
   // Has arguments
   if (accept(TT::SQPAREN_LEFT)) {
     skip();
@@ -378,7 +380,7 @@ Node<TypeNode>::Link TokenParser::type() {
   while (!accept(TT::END)) {
     if (accept(TT::FILE_END)) {
       skip(-1); // Go back to get a prettier trace
-      throw Error("SyntaxError", "Type body is not closed by 'end'", current().trace);
+      throw "Type '{}' body is not closed by 'end'"_syntax(identTok.data) + current().trace;
     }
     bool isStatic = false;
     bool isForeign = false;
@@ -386,26 +388,35 @@ Node<TypeNode>::Link TokenParser::type() {
     // Expect to see a visibility_specifier or static or foreign
     while (accept(TT::PUBLIC) || accept(TT::PRIVATE) || accept(TT::PROTECT) || accept(TT::STATIC) || accept(TT::FOREIGN)) {
       if (accept(TT::STATIC)) {
-        if (isStatic == true) throw Error("SyntaxError", "Cannot specify 'static' more than once", current().trace);
+        if (isStatic == true) {
+          throw "Cannot specify 'static' more than once"_syntax + current().trace;
+        }
         isStatic = true;
       } else if (accept(TT::FOREIGN)) {
-        if (isForeign == true) throw Error("SyntaxError", "Cannot specify 'foreign' more than once", current().trace);
+        if (isForeign == true) {
+          throw "Cannot specify 'foreign' more than once"_syntax + current().trace;
+        }
         isForeign = true;
       } else {
-        if (visibility != INVALID) throw Error("SyntaxError", "Cannot have more than one visibility specifier", current().trace);
+        if (visibility != INVALID) {
+          throw "Cannot have more than one visibility specifier"_syntax + current().trace;
+        }
         visibility = fromToken(current());
       }
       skip();
     }
     // Handle things that go in the body
     if (accept(TT::CONSTR)) {
-      if (isStatic) throw Error("SyntaxError", "Constructors can't be static", current().trace);
+      if (isStatic)
+        throw "Constructors can't be static"_syntax + current().trace;
       tn->addChild(constructor(visibility, isForeign));
     } else if (accept(TT::METHOD)) {
-      if (visibility == INVALID) throw Error("SyntaxError", "Methods require a visibility specifier", current().trace);
+      if (visibility == INVALID)
+        throw "Methods require a visibility specifier"_syntax + current().trace;
       tn->addChild(method(visibility, isStatic, isForeign));
     } else {
-      if (isForeign) throw Error("SyntaxError", "Member fields can't be foreign", current().trace);
+      if (isForeign)
+        throw "Member fields can't be foreign"_syntax + current().trace;
       tn->addChild(member(visibility, isStatic));
       expectSemi();
     }
