@@ -18,6 +18,7 @@ extern "C" {
   const char* _xyl_typeOf(_xyl_Value* val);
   _xyl_Value _xyl_withType(_xyl_Value* toConcretize, UniqueIdentifier concreteType);
   
+  // TODO: should add a more primitive-friendly version, like taking an tlid for param 2
   void _xyl_typeErrIfIncompatible(_xyl_Value* val, _xyl_Value* newVal);
   /**
     \brief This kills the program

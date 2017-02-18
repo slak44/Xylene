@@ -145,6 +145,10 @@ private:
   void insertRuntimeTypeCheck(DeclarationWrapper::Link, ValueWrapper::Link);
   /// Inserts a call to malloc and returns a pointer with the ValueWrapper's type
   llvm::Value* insertDynAlloc(uint64, ValueWrapper::Link);
+  // Store in the allowed type list field of a union
+  llvm::Value* storeTypeList(llvm::Value* taggedUnion, UniqueIdentifier typeList);
+  // Update all required fields in a union when assigning a new value
+  void assignToUnion(DeclarationWrapper::Link, ValueWrapper::Link);
   /**
     \brief Creates a pointer pointing to a specific function's argument
     

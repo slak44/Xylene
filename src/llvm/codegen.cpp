@@ -351,8 +351,10 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
         );
       }
       if (decl->getTypeList()->storedTypeCount() > 1) {
-        // TODO: Look where the data is, and store there
-        throw InternalError("Not Implemented", {METADATA_PAIRS});
+        // TODO: reclaim the memory that this location points to !!!
+        // auto oldDataPtrLocation =
+        //   mc->builder->CreateConstGEP1_32(operands[0]->getValue(), 0);
+        mc->assignToUnion(decl, operands[1]);
       } else {
         // Store into the variable
         mc->builder->CreateStore(operands[1]->getValue(), operands[0]->getValue());

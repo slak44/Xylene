@@ -450,6 +450,54 @@ llvm::Value* ModuleCompiler::insertDynAlloc(uint64 size, ValueWrapper::Link targ
   return properTypePtr;
 }
 
+llvm::Value* ModuleCompiler::storeTypeList(
+  llvm::Value* taggedUnion,
+  UniqueIdentifier typeList
+) {
+  if (taggedUnion->getType() != taggedUnionType->getPointerTo()) {
+    throw InternalError("Illegal argument, expected tagged union as value", {
+      METADATA_PAIRS,
+      {"wrong type", getAddressStringFrom(taggedUnion->getType())}
+    });
+  }
+  return builder->CreateStore(
+    llvm::ConstantInt::getSigned(integerType, static_cast<int64>(typeList)), 
+    builder->CreateBitCast(
+      builder->CreateConstGEP1_32(taggedUnion, 1),
+      integerType->getPointerTo()
+    )
+  );
+}
+
+void ModuleCompiler::assignToUnion(
+  DeclarationWrapper::Link unionWrapper,
+  ValueWrapper::Link newValue
+) {
+  insertRuntimeTypeCheck(unionWrapper, newValue);
+  llvm::DataLayout d(module);
+  uint64 size = d.getTypeAllocSize(newValue->getCurrentType()->getAllocaType());
+  auto dataPtr = insertDynAlloc(size, newValue);
+  // Store data in memory
+  builder->CreateStore(newValue->getValue(), dataPtr);
+  // Store ptr to data in union
+  builder->CreateStore(
+    dataPtr,
+    builder->CreateBitCast(
+      builder->CreateConstGEP1_32(unionWrapper->getValue(), 0),
+      dataPtr->getType()->getPointerTo()
+    )
+  );
+  // Update union current type
+  builder->CreateStore(
+    llvm::ConstantInt::getSigned(
+      integerType, static_cast<int64>(newValue->getCurrentType()->getId())),
+    builder->CreateBitCast(
+      builder->CreateConstGEP1_32(unionWrapper->getValue(), 2),
+      integerType->getPointerTo()
+    )
+  );
+}
+
 void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   Node<BlockNode>::Link enclosingBlock = node->findAbove<BlockNode>();
   llvm::Value* decl;
@@ -470,6 +518,7 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
     declTypes.insert(list);
     enclosingBlock->blockTypes.insert(list);
     decl = builder->CreateAlloca(taggedUnionType, nullptr, node->getIdentifier());
+    storeTypeList(decl, list->getId());
   }
   auto id = typeIdFromInfo(node->getTypeInfo(), node);
   auto declWrap = std::make_shared<DeclarationWrapper>(decl, id);
@@ -490,13 +539,7 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
       "Type of initialization is not allowed by declaration", node->getTrace());
   }
   if (decl->getType() == llvm::PointerType::getUnqual(taggedUnionType)) {
-    insertRuntimeTypeCheck(declWrap, initValue);
-    llvm::DataLayout d(module);
-    uint64 size = d.getTypeAllocSize(initValue->getCurrentType()->getAllocaType());
-    auto dataPtr = insertDynAlloc(size, initValue);
-    builder->CreateStore(initValue->getValue(), dataPtr);
-    auto unionDataPtrLocation = builder->CreateConstGEP1_32(decl, 0);
-    builder->CreateStore(dataPtr, unionDataPtrLocation);
+    assignToUnion(declWrap, initValue);
   } else {
     builder->CreateStore(initValue->getValue(), decl);
   }
@@ -654,15 +697,21 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   if (!isTypeAllowedIn(typeIdFromInfo(returnType, node), returnedValue->getCurrentType())) {
     throw Error("TypeError", funRetTyMismatch, node->getTrace());
   }
-  // This makes sure primitives get passed by value
+  // TODO: this if block is a bit of a disaster, refactor
   if (functionStack.top()->getValue()->getReturnType() != returnedValue->getValue()->getType()) {
-    auto ty = returnedValue->getCurrentType();
-    // TODO: there may be other types that need forceful pointer loading
-    // TODO: actually anything not an object should kinda be passed by value
-    bool needsLoading = ty == integerTid || ty == booleanTid || ty == floatTid;
-    if (returnedValue->hasPointerValue() && needsLoading) {
+    bool isUnion = returnedValue->getValue()->getType() == taggedUnionType->getPointerTo();
+    if (isUnion) {
       returnedValue->setValue(
-        builder->CreateLoad(returnedValue->getValue(), "loadForPrimitiveReturn"),
+        builder->CreateBitCast(
+          builder->CreateConstGEP1_32(returnedValue->getValue(), 0),
+          functionStack.top()->getValue()->getReturnType()->getPointerTo()
+        ),
+        returnedValue->getCurrentType()
+      );
+    }
+    if (returnedValue->hasPointerValue()) {
+      returnedValue->setValue(
+        builder->CreateLoad(returnedValue->getValue(), "loadPtrForReturn"),
         returnedValue->getCurrentType()
       );
     }
