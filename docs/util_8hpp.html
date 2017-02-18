@@ -100,10 +100,14 @@ $(document).ready(function(){initNavTree('util_8hpp.html','');});
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;experimental/filesystem&gt;</code><br />
+<code>#include &lt;fmt/format.h&gt;</code><br />
+<code>#include &lt;fmt/ostream.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for util.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="util_8hpp__incl.png" border="0" usemap="#xylene_2include_2utils_2util_8hpp" alt=""/></div>
+<map name="xylene_2include_2utils_2util_8hpp" id="xylene_2include_2utils_2util_8hpp">
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -166,6 +170,10 @@ Macros</h2></td></tr>
 <tr class="separator:aea1d71af1a30c261dbd16745c82e94ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fde0af84d5566911a450db1a8acb728"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8hpp.html#a0fde0af84d5566911a450db1a8acb728">ALL</a>(container)&#160;&#160;&#160;std::begin(container), std::end(container)</td></tr>
 <tr class="separator:a0fde0af84d5566911a450db1a8acb728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f500a81a3f783d97b5c0048da4ea342"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8hpp.html#a0f500a81a3f783d97b5c0048da4ea342">QUOTE_IMPLEMENTATION</a>(x)&#160;&#160;&#160;#x</td></tr>
+<tr class="separator:a0f500a81a3f783d97b5c0048da4ea342"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2117b58e19182dff91ad3558e650541d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8hpp.html#a2117b58e19182dff91ad3558e650541d">QUOTE</a>(x)&#160;&#160;&#160;<a class="el" href="util_8hpp.html#a0f500a81a3f783d97b5c0048da4ea342">QUOTE_IMPLEMENTATION</a>(x)</td></tr>
+<tr class="separator:a2117b58e19182dff91ad3558e650541d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -258,6 +266,42 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">#define CURRENT_FUNCTION&#160;&#160;&#160;__PRETTY_FUNCTION__</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2117b58e19182dff91ad3558e650541d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2117b58e19182dff91ad3558e650541d">&#9670;&nbsp;</a></span>QUOTE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QUOTE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x</td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="util_8hpp.html#a0f500a81a3f783d97b5c0048da4ea342">QUOTE_IMPLEMENTATION</a>(x)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0f500a81a3f783d97b5c0048da4ea342"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f500a81a3f783d97b5c0048da4ea342">&#9670;&nbsp;</a></span>QUOTE_IMPLEMENTATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QUOTE_IMPLEMENTATION</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x</td><td>)</td>
+          <td>&#160;&#160;&#160;#x</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -718,7 +762,7 @@ template&lt;typename T , typename... Args&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">  [](std::string prev, std::string current) {<span class="keywordflow">return</span> prev + <span class="stringliteral">&quot;, &quot;</span> + current;}</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= [](std::string prev, std::string current) {</div><div class="line">  <span class="keywordflow">return</span> fmt::format(<span class="stringliteral">&quot;{0}, {1}&quot;</span>, prev, current);</div><div class="line">}</div></div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

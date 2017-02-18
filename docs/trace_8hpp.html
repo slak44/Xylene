@@ -83,6 +83,7 @@ $(document).ready(function(){initNavTree('trace_8hpp.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">trace.hpp File Reference</div>  </div>
@@ -90,13 +91,14 @@ $(document).ready(function(){initNavTree('trace_8hpp.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &lt;stack&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;fmt/format.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="util_8hpp_source.html">utils/util.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for trace.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="trace_8hpp__incl.png" border="0" usemap="#xylene_2include_2utils_2trace_8hpp" alt=""/></div>
 <map name="xylene_2include_2utils_2trace_8hpp" id="xylene_2include_2utils_2trace_8hpp">
-<area shape="rect" id="node4" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="311,95,403,121"/>
+<area shape="rect" id="node5" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="567,95,659,121"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -151,12 +153,130 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores debug information.  <a href="class_trace.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a1540aab13425b5c373f40e23c4ad4196"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trace_8hpp.html#a1540aab13425b5c373f40e23c4ad4196">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="struct_position.html">Position</a> &amp;pos)</td></tr>
+<tr class="separator:a1540aab13425b5c373f40e23c4ad4196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cc96ff751554f59cb4e0710c393be87"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trace_8hpp.html#a4cc96ff751554f59cb4e0710c393be87">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="class_range.html">Range</a> &amp;r)</td></tr>
+<tr class="separator:a4cc96ff751554f59cb4e0710c393be87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe7fd21d916b2de0411c50b23ce68cf6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trace_8hpp.html#abe7fd21d916b2de0411c50b23ce68cf6">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="class_trace.html">Trace</a> &amp;tr)</td></tr>
+<tr class="separator:abe7fd21d916b2de0411c50b23ce68cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:acd22607a9f573fad8be6faf2400571aa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="class_trace.html">Trace</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trace_8hpp.html#acd22607a9f573fad8be6faf2400571aa">defaultTrace</a> = <a class="el" href="class_trace.html">Trace</a>(&quot;&lt;none&gt;&quot;, Range(<a class="el" href="struct_position.html">Position</a>(0, 0), <a class="el" href="struct_position.html">Position</a>(0, 0)))</td></tr>
 <tr class="memdesc:acd22607a9f573fad8be6faf2400571aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default trace object that has an empty range.  <a href="#acd22607a9f573fad8be6faf2400571aa">More...</a><br /></td></tr>
 <tr class="separator:acd22607a9f573fad8be6faf2400571aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a1540aab13425b5c373f40e23c4ad4196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1540aab13425b5c373f40e23c4ad4196">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_position.html">Position</a> &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4cc96ff751554f59cb4e0710c393be87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cc96ff751554f59cb4e0710c393be87">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_range.html">Range</a> &amp;&#160;</td>
+          <td class="paramname"><em>r</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abe7fd21d916b2de0411c50b23ce68cf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe7fd21d916b2de0411c50b23ce68cf6">&#9670;&nbsp;</a></span>operator<<() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_trace.html">Trace</a> &amp;&#160;</td>
+          <td class="paramname"><em>tr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="acd22607a9f573fad8be6faf2400571aa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd22607a9f573fad8be6faf2400571aa">&#9670;&nbsp;</a></span>defaultTrace</h2>

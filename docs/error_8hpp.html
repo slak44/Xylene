@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('error_8hpp.html','');});
 <code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
 <code>#include &lt;termcolor/termcolor.hpp&gt;</code><br />
+<code>#include &lt;fmt/format.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="util_8hpp_source.html">util.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="trace_8hpp_source.html">trace.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -101,8 +102,8 @@ Include dependency graph for error.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="error_8hpp__incl.png" border="0" usemap="#xylene_2include_2utils_2error_8hpp" alt=""/></div>
 <map name="xylene_2include_2utils_2error_8hpp" id="xylene_2include_2utils_2error_8hpp">
-<area shape="rect" id="node7" href="util_8hpp.html" title="util.hpp" alt="" coords="349,169,412,196"/>
-<area shape="rect" id="node15" href="trace_8hpp.html" title="trace.hpp" alt="" coords="371,95,446,121"/>
+<area shape="rect" id="node8" href="util_8hpp.html" title="util.hpp" alt="" coords="587,169,649,196"/>
+<area shape="rect" id="node17" href="trace_8hpp.html" title="trace.hpp" alt="" coords="798,95,873,121"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -156,6 +157,9 @@ Classes</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a1fec56baad5b8b1701cfc19d2d1c2f8e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a1fec56baad5b8b1701cfc19d2d1c2f8e">METADATA_PAIRS</a>&#160;&#160;&#160;{&quot;file&quot;, __FILE__}, {&quot;function&quot;, CURRENT_FUNCTION}, {&quot;line&quot;, std::to_string(__LINE__)}</td></tr>
 <tr class="separator:a1fec56baad5b8b1701cfc19d2d1c2f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a740adbed7da1caad1b61d9134b56b353"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="error_8hpp.html#a740adbed7da1caad1b61d9134b56b353">LITERAL_MACRO</a>(literalSuffix,  messagePrefix)</td></tr>
+<tr class="memdesc:a740adbed7da1caad1b61d9134b56b353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a new literal for <a class="el" href="class_error.html" title="Thrown when there is an issue in the user&#39;s code. ">Error</a> types.  <a href="#a740adbed7da1caad1b61d9134b56b353">More...</a><br /></td></tr>
+<tr class="separator:a740adbed7da1caad1b61d9134b56b353"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -164,6 +168,37 @@ Typedefs</h2></td></tr>
 <tr class="separator:a18ad73221b586aadca1c9ba59417f99d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a740adbed7da1caad1b61d9134b56b353"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a740adbed7da1caad1b61d9134b56b353">&#9670;&nbsp;</a></span>LITERAL_MACRO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LITERAL_MACRO</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">literalSuffix, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">messagePrefix&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">inline</span> <a class="code" href="class_error.html">Error</a> <span class="keyword">operator</span><span class="stringliteral">&quot;&quot;</span>_##literalSuffix(<span class="keyword">const</span> <span class="keywordtype">char</span>* msg, <span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>) noexcept { \</div><div class="line">  return <a class="code" href="class_error.html">Error</a>(#messagePrefix, msg); \</div><div class="line">}</div><div class="ttc" id="class_error_html"><div class="ttname"><a href="class_error.html">Error</a></div><div class="ttdoc">Thrown when there is an issue in the user&amp;#39;s code. </div><div class="ttdef"><b>Definition:</b> error.hpp:19</div></div>
+</div><!-- fragment -->
+<p>Define a new literal for <a class="el" href="class_error.html" title="Thrown when there is an issue in the user&#39;s code. ">Error</a> types. </p>
+
+</div>
+</div>
 <a id="a1fec56baad5b8b1701cfc19d2d1c2f8e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1fec56baad5b8b1701cfc19d2d1c2f8e">&#9670;&nbsp;</a></span>METADATA_PAIRS</h2>
 

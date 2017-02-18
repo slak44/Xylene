@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_lexer.html" title="Tokenizes input. " alt="" coords="5,5,59,32"/>
+<area shape="rect" id="node2" href="$class_internal_error.html" title="Thrown when something goes wrong in this program. " alt="" coords="151,5,241,32"/>
+<area shape="rect" id="node3" href="$class_x_m_l_parse_error.html" title="Thrown when an XML file can&#39;t be parsed. " alt="" coords="289,5,396,32"/>
 </map>
