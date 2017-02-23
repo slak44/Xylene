@@ -1,6 +1,6 @@
-<map id="xylene/include/llvm/typeData.hpp" name="xylene/include/llvm/typeData.hpp">
-<area shape="rect" id="node2" href="$compiler_8cpp.html" title="xylene/src/llvm/compiler.cpp" alt="" coords="5,95,192,121"/>
-<area shape="rect" id="node3" href="$type_data_8cpp.html" title="xylene/src/llvm/typeData.cpp" alt="" coords="216,95,405,121"/>
-<area shape="rect" id="node4" href="$type_id_8cpp.html" title="xylene/src/llvm/typeId.cpp" alt="" coords="429,95,603,121"/>
-<area shape="rect" id="node5" href="$values_8cpp.html" title="xylene/src/llvm/values.cpp" alt="" coords="627,95,802,121"/>
+<map id="open/xylene/include/llvm/typeData.hpp" name="open/xylene/include/llvm/typeData.hpp">
+<area shape="rect" id="node2" href="$compiler_8cpp.html" title="open/xylene/src/llvm\l/compiler.cpp" alt="" coords="5,95,148,136"/>
+<area shape="rect" id="node3" href="$type_data_8cpp.html" title="open/xylene/src/llvm\l/typeData.cpp" alt="" coords="172,95,315,136"/>
+<area shape="rect" id="node4" href="$type_id_8cpp.html" title="open/xylene/src/llvm\l/typeId.cpp" alt="" coords="339,95,481,136"/>
+<area shape="rect" id="node5" href="$values_8cpp.html" title="open/xylene/src/llvm\l/values.cpp" alt="" coords="505,95,648,136"/>
 </map>
