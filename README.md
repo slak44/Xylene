@@ -9,7 +9,7 @@ Documentation: https://slak44.github.io/Xylene/
 - cmake 3.6.1+
 - llvm 3.9.1
 
-Everything else is downloaded and installed before building.
+Everything else is downloaded and installed before building by cmake.
 
 ## Language Syntax
 
