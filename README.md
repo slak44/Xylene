@@ -1,6 +1,7 @@
 # Xylene
 
 A small toy programming language.
+
 Documentation: https://slak44.github.io/Xylene/
 
 ## Dependencies
@@ -13,9 +14,6 @@ Everything else is downloaded and installed before building.
 ## Language Syntax
 
 EBNF format of a program:
-Notes:
-- parenthesis must be matched
-- operators respect the precedence, fixity, associativity and arity defined in operator.cpp
 ```
 program = [ hashbang ], block ;
 block = { statement, ";" } ;
@@ -64,9 +62,12 @@ integer_literal = ? an integer value, see Lexer class for details ? ;
 float_literal = ? a floating point value, see Lexer class for details ?
 boolean_literal = "true" | "false" ;
 string_literal = ? quotation mark delimited string, see Lexer class for details ? ;
-ident = { ident_char } ;
-ident_char = ? see Lexer::isIdentifierChar ? ;
+ident = ? see Lexer::isIdentifierChar ? ;
 ```
+Notes:
+- parenthesis must be matched
+- operators respect the precedence, fixity, associativity and arity defined in operator.cpp
+
 TODO list:
 - strings
 - disallow declarations starting with `_xyl_`
