@@ -19,10 +19,12 @@ else()
   if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -pedantic -Wlogical-op -Wstrict-null-sentinel -Wnoexcept \
       -Wzero-as-null-pointer-constant -Wuseless-cast -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wfloat-equal -Wold-style-cast \
-      -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Woverloaded-virtual -Wredundant-decls -Wundef -Wstrict-overflow=5")
+      -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Woverloaded-virtual -Wredundant-decls -Wundef -Wstrict-overflow=5 \
+      -Wsuggest-override")
   elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libstdc++ -Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded \
-      -Wno-weak-vtables -Wno-global-constructors -Wno-exit-time-destructors -Wno-shadow-field-in-constructor -Wno-documentation-unknown-command -Wno-used-but-marked-unused")
+      -Wno-weak-vtables -Wno-global-constructors -Wno-exit-time-destructors -Wno-shadow-field-in-constructor -Wno-documentation-unknown-command -Wno-used-but-marked-unused \
+      -Winconsistent-missing-override")
   else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall")
   endif()
