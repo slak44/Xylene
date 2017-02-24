@@ -7,6 +7,7 @@ var class_type_id =
     [ "createBasic", "class_type_id.html#a8bb743bde3c3bade8deb96fbbb2016fb", null ],
     [ "getAllocaType", "class_type_id.html#a3d8bbe3e2f195fe7795b67b0db8cbc44", null ],
     [ "getTyData", "class_type_id.html#a4774345f8675fa5cc95de26c2e611b15", null ],
+    [ "isCompat", "class_type_id.html#a940d15e954c3c90bd49a704a9bc92b21", null ],
     [ "storedNames", "class_type_id.html#a5073d7cff91e2cb7c50d8d26f37dd421", null ],
     [ "storedTypeCount", "class_type_id.html#adef640495bac3010cd88681ed8cd46cb", null ]
 ];

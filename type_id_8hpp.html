@@ -84,7 +84,7 @@ $(document).ready(function(){initNavTree('type_id_8hpp.html','');});
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">typeId.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -155,48 +155,37 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacestd"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestd.html">std</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a702520d91997b405258f1b2948a67c7d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_id_8hpp.html#a702520d91997b405258f1b2948a67c7d">isTypeAllowedIn</a> (<a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> tl, <a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a> type)</td></tr>
-<tr class="memdesc:a702520d91997b405258f1b2948a67c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility function for checking if 2 types are compatible.  <a href="#a702520d91997b405258f1b2948a67c7d">More...</a><br /></td></tr>
-<tr class="separator:a702520d91997b405258f1b2948a67c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ac8e883bb3e1b25026b3f49f01bb7e090"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090">TypeCompat</a> { <a class="el" href="type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090ab16f25b8f73e588e512e98271bb0ed44">COMPATIBLE</a> = 1, 
+<a class="el" href="type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090a1d5787f0d18fdb7422615b7c08562710">INCOMPATIBLE</a> = 0, 
+<a class="el" href="type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090aaac65e0072e6ff1f4c3209d2fdd8730a">DYNAMIC</a> = 1 &lt;&lt; 5
+ }<tr class="memdesc:ac8e883bb3e1b25026b3f49f01bb7e090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type compatibility states.  <a href="type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:ac8e883bb3e1b25026b3f49f01bb7e090"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a702520d91997b405258f1b2948a67c7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a702520d91997b405258f1b2948a67c7d">&#9670;&nbsp;</a></span>isTypeAllowedIn()</h2>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ac8e883bb3e1b25026b3f49f01bb7e090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8e883bb3e1b25026b3f49f01bb7e090">&#9670;&nbsp;</a></span>TypeCompat</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool isTypeAllowedIn </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a>&#160;</td>
-          <td class="paramname"><em>tl</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">enum <a class="el" href="type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090">TypeCompat</a></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Utility function for checking if 2 types are compatible. </p>
+<p>Type compatibility states. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac8e883bb3e1b25026b3f49f01bb7e090ab16f25b8f73e588e512e98271bb0ed44"></a>COMPATIBLE&#160;</td><td class="fielddoc"><p>Can assign one to another. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac8e883bb3e1b25026b3f49f01bb7e090a1d5787f0d18fdb7422615b7c08562710"></a>INCOMPATIBLE&#160;</td><td class="fielddoc"><p>Can't assign one to another. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac8e883bb3e1b25026b3f49f01bb7e090aaac65e0072e6ff1f4c3209d2fdd8730a"></a>DYNAMIC&#160;</td><td class="fielddoc"><p>Cannot statically determine compatibility. </p>
+</td></tr>
+</table>
 
 </div>
 </div>

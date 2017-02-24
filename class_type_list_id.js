@@ -5,6 +5,7 @@ var class_type_list_id =
     [ "create", "class_type_list_id.html#ac31bec7f1070c8bd6014b4a7bd14ac5f", null ],
     [ "getAllocaType", "class_type_list_id.html#a984cb1030dff70f2016bf651e35ce7b5", null ],
     [ "getTypes", "class_type_list_id.html#ace39c01d156e3a198a42382b45c4a027", null ],
+    [ "isCompat", "class_type_list_id.html#adc50b411204270f3230264cbc3255534", null ],
     [ "storedNames", "class_type_list_id.html#ab9b9d3ab8307e33d0ac600b7f369e3d4", null ],
     [ "storedTypeCount", "class_type_list_id.html#a9149a081bedb220cd77e6d221dafd50f", null ]
 ];

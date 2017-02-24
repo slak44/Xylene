@@ -123,6 +123,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af3f7de07c0f38f54c1d62245ee533b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa95fd3763b5904499ca879d64cb9bf22"><td class="memItemLeft" align="right" valign="top">virtual llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#aa95fd3763b5904499ca879d64cb9bf22">getAllocaType</a> () const =0</td></tr>
 <tr class="separator:aa95fd3763b5904499ca879d64cb9bf22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab94a3cab5fcf9f718acfc04261e413eb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090">TypeCompat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#ab94a3cab5fcf9f718acfc04261e413eb">isCompat</a> (<a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a>) const =0</td></tr>
+<tr class="separator:ab94a3cab5fcf9f718acfc04261e413eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bf80fec22e63272057cfb5a325b5590"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#a8bf80fec22e63272057cfb5a325b5590">typeNames</a> () const</td></tr>
+<tr class="separator:a8bf80fec22e63272057cfb5a325b5590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c39977b7fe02293bf8ca5557813a710"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#a1c39977b7fe02293bf8ca5557813a710">operator==</a> (const <a class="el" href="class_abstract_id.html">AbstractId</a> &amp;rhs) const</td></tr>
 <tr class="separator:a1c39977b7fe02293bf8ca5557813a710"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8458e268e06b22fa18fab63d88da3f9e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_id.html#a8458e268e06b22fa18fab63d88da3f9e">operator!=</a> (const <a class="el" href="class_abstract_id.html">AbstractId</a> &amp;rhs) const</td></tr>
@@ -323,6 +327,35 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ab94a3cab5fcf9f718acfc04261e413eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab94a3cab5fcf9f718acfc04261e413eb">&#9670;&nbsp;</a></span>isCompat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090">TypeCompat</a> AbstractId::isCompat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_abstract_id.html#a0e8be3bcc7c0fb5c37a3771d02c9020a">AbstractId::Link</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>if the parameter can be assigned to this id </dd></dl>
+
+<p>Implemented in <a class="el" href="class_type_list_id.html#adc50b411204270f3230264cbc3255534">TypeListId</a>, and <a class="el" href="class_type_id.html#a940d15e954c3c90bd49a704a9bc92b21">TypeId</a>.</p>
+
+</div>
+</div>
 <a id="a8458e268e06b22fa18fab63d88da3f9e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8458e268e06b22fa18fab63d88da3f9e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/2]</span></h2>
 
@@ -480,6 +513,31 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>how many types are stored by this identifier </dd></dl>
 
 <p>Implemented in <a class="el" href="class_type_list_id.html#a9149a081bedb220cd77e6d221dafd50f">TypeListId</a>, and <a class="el" href="class_type_id.html#adef640495bac3010cd88681ed8cd46cb">TypeId</a>.</p>
+
+</div>
+</div>
+<a id="a8bf80fec22e63272057cfb5a325b5590"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bf80fec22e63272057cfb5a325b5590">&#9670;&nbsp;</a></span>typeNames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string AbstractId::typeNames </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['visibility',['Visibility',['../ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162',1,'ast.hpp']]]
+  ['typecompat',['TypeCompat',['../type_id_8hpp.html#ac8e883bb3e1b25026b3f49f01bb7e090',1,'typeId.hpp']]]
 ];

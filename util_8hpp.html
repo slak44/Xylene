@@ -223,10 +223,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a5bf584ced7714b095379d4a6a3997d59"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="util_8hpp.html#a5bf584ced7714b095379d4a6a3997d59">println</a> (T thing, Args... args)</td></tr>
 <tr class="memdesc:a5bf584ced7714b095379d4a6a3997d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print multiple things (with spaces in-between) to stdout with a trailing newline.  <a href="#a5bf584ced7714b095379d4a6a3997d59">More...</a><br /></td></tr>
 <tr class="separator:a5bf584ced7714b095379d4a6a3997d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b2998d0f98101452d2df3e43995f309"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a5b2998d0f98101452d2df3e43995f309"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="util_8hpp.html#a5b2998d0f98101452d2df3e43995f309">contains</a> (std::vector&lt; T &gt; vec, T item)</td></tr>
-<tr class="memdesc:a5b2998d0f98101452d2df3e43995f309"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the vector has the item in it.  <a href="#a5b2998d0f98101452d2df3e43995f309">More...</a><br /></td></tr>
-<tr class="separator:a5b2998d0f98101452d2df3e43995f309"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29fac651131744534fe0279bec8dc75"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:ac29fac651131744534fe0279bec8dc75"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="util_8hpp.html#ac29fac651131744534fe0279bec8dc75">includes</a> (Container c, typename Container::value_type item)</td></tr>
+<tr class="memdesc:ac29fac651131744534fe0279bec8dc75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an item can be found in a container.  <a href="#ac29fac651131744534fe0279bec8dc75">More...</a><br /></td></tr>
+<tr class="separator:ac29fac651131744534fe0279bec8dc75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83a8dc172fb60be1576b36388068b356"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:a83a8dc172fb60be1576b36388068b356"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="util_8hpp.html#a83a8dc172fb60be1576b36388068b356">includes</a> (Container c, std::function&lt; bool(typename Container::value_type)&gt; test)</td></tr>
+<tr class="memdesc:a83a8dc172fb60be1576b36388068b356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an item can be found in a container.  <a href="#a83a8dc172fb60be1576b36388068b356">More...</a><br /></td></tr>
+<tr class="separator:a83a8dc172fb60be1576b36388068b356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdf140bbd294efa7c5bb3061ac515225"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
 <tr class="memitem:afdf140bbd294efa7c5bb3061ac515225"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="util_8hpp.html#afdf140bbd294efa7c5bb3061ac515225">collate</a> (Container c, std::function&lt; std::string(typename Container::value_type)&gt; objToString=<a class="el" href="struct_identity.html">Identity</a>(), std::function&lt; std::string(std::string, std::string)&gt; combine=<a class="el" href="util_8hpp.html#ac1410462b56482855358b5d5d81ae1ab">defaultCombine</a>)</td></tr>
 <tr class="memdesc:afdf140bbd294efa7c5bb3061ac515225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates a bunch of objects from Container into a string.  <a href="#afdf140bbd294efa7c5bb3061ac515225">More...</a><br /></td></tr>
@@ -468,38 +472,6 @@ template&lt;typename Container &gt; </div>
 
 </div>
 </div>
-<a id="a5b2998d0f98101452d2df3e43995f309"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b2998d0f98101452d2df3e43995f309">&#9670;&nbsp;</a></span>contains()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool contains </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; T &gt;&#160;</td>
-          <td class="paramname"><em>vec</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>item</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checks if the vector has the item in it. </p>
-
-</div>
-</div>
 <a id="a8025ca4758bf291a0677d9c691fea381"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8025ca4758bf291a0677d9c691fea381">&#9670;&nbsp;</a></span>getAddressStringFrom()</h2>
 
@@ -517,6 +489,70 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Get a pretty address string from a pointer. </p>
+
+</div>
+</div>
+<a id="ac29fac651131744534fe0279bec8dc75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac29fac651131744534fe0279bec8dc75">&#9670;&nbsp;</a></span>includes() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Container &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool includes </td>
+          <td>(</td>
+          <td class="paramtype">Container&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">typename Container::value_type&#160;</td>
+          <td class="paramname"><em>item</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if an item can be found in a container. </p>
+
+</div>
+</div>
+<a id="a83a8dc172fb60be1576b36388068b356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83a8dc172fb60be1576b36388068b356">&#9670;&nbsp;</a></span>includes() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Container &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool includes </td>
+          <td>(</td>
+          <td class="paramtype">Container&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; bool(typename Container::value_type)&gt;&#160;</td>
+          <td class="paramname"><em>test</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if an item can be found in a container. </p>
 
 </div>
 </div>
