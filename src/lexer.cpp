@@ -140,7 +140,6 @@ char Lexer::readEscapeSeq() {
     std::string hexNumber = std::string(1, current()) + peekAhead(1);
     if (std::isxdigit(current()) && std::isxdigit(peekAhead(1))) {
       skip(2);
-      println(hexNumber);
       return static_cast<char>(std::stoi(hexNumber, nullptr, 16));
     } else {
       skip(2);
