@@ -342,14 +342,16 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
       DeclarationWrapper::Link decl = PtrUtil<DeclarationWrapper>::dynPtrCast(operands[0]);
       if (decl == nullptr)
         throw "Cannot assign to '{}'"_ref(varIdent->getToken().data) + varIdent->getToken().trace;
-      // TODO: make sure that this type check handles all cases properly and add types to err message
+      
       // If the declaration doesn't allow this type, complain
-      if (!isTypeAllowedIn(decl->getTypeList(), operands[1]->getCurrentType())) {
-        throw "Value '{0}' does not allow assigning type '{1}'"_type(
+      mc->typeCheck(decl->getCurrentType(), operands[1],
+        "Value '{0}' ({1}) does not allow assigning type '{2}'"_type(
           varIdent->getToken().data,
-          operands[1]->getCurrentType()->getName()
-        ) + varIdent->getToken().trace;
-      }
+          decl->getCurrentType()->typeNames(),
+          operands[1]->getCurrentType()->typeNames()
+        ) + varIdent->getToken().trace);
+      
+      // TODO: this needs work
       if (decl->getTypeList()->storedTypeCount() > 1) {
         // TODO: reclaim the memory that this location points to !!!
         // auto oldDataPtrLocation =
@@ -358,10 +360,9 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
       } else {
         // Store into the variable
         mc->builder->CreateStore(operands[1]->getValue(), operands[0]->getValue());
+        // TODO: what the fuck is this?
+        // decl->setValue(decl->getValue(), operands[1]->getCurrentType());
       }
-      // The value of the decl will remain the pointer to the var in memory,
-      // The type is changed to the newly assigned one
-      decl->setValue(decl->getValue(), operands[1]->getCurrentType());
       // Return the assigned value
       return operands[1];
     }},
@@ -387,13 +388,13 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
         );
       }
       for (auto it = arguments.begin(); it != arguments.end(); ++it, ++opIt) {
-        if (!isTypeAllowedIn(
-            mc->typeIdFromInfo(it->second, node),
-            (*opIt)->getCurrentType())
-          ) {
-          throw "Function argument '{0}' has incompatible type with '{1}'"_type(
-            it->first, (*opIt)->getCurrentType()->getName()) + trace;
-        }
+        auto argId = mc->typeIdFromInfo(it->second, node);
+        mc->typeCheck(argId, *opIt,
+          "Function argument '{0}' ({1}) has incompatible type with '{2}'"_type(
+            it->first,
+            argId->typeNames(),
+            (*opIt)->getCurrentType()->typeNames()
+          ) + trace);
         args.push_back((*opIt)->getValue());
       }
       AbstractId::Link ret;

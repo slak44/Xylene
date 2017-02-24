@@ -125,6 +125,8 @@ void ModuleCompiler::insertRuntimeFuncDecls() {
       FT::get(voidPtrType, {taggedUnionPtrType}, false)},
     {"_xyl_typeErrIfIncompatible",
       FT::get(voidType, {taggedUnionPtrType, taggedUnionPtrType}, false)},
+    {"_xyl_typeErrIfIncompatibleTid",
+      FT::get(voidType, {integerType, taggedUnionPtrType}, false)},
     {"_xyl_finish", // TODO arg1 should be string type
       FT::get(voidType, {voidPtrType, integerType}, false)},
     {"malloc",
@@ -422,8 +424,9 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
   }
 }
 
+// TODO: get rid of this, insertRuntimeTypeCheck should just do manual stuff for those
 ValueWrapper::Link ModuleCompiler::boxPrimitive(ValueWrapper::Link p) {
-  if (p->getValue()->getType() == taggedUnionType) return p;
+  if (p->getValue()->getType()->getPointerElementType() == taggedUnionType) return p;
   auto box = builder->CreateAlloca(taggedUnionType, nullptr, "boxPrimitive");
   // TODO: store value into the box
   return std::make_shared<ValueWrapper>(box, p->getCurrentType());
@@ -439,13 +442,23 @@ void ModuleCompiler::insertRuntimeTypeCheck(
   );
 }
 
+void ModuleCompiler::insertRuntimeTypeCheck(
+  AbstractId::Link target,
+  ValueWrapper::Link newValue
+) {
+  builder->CreateCall(
+    module->getFunction("_xyl_typeErrIfIncompatibleTid"),
+    {llvm::ConstantInt::get(integerType, target->getId()), boxPrimitive(newValue)->getValue()}
+  );
+}
+
 llvm::Value* ModuleCompiler::insertDynAlloc(uint64 size, ValueWrapper::Link target) {
   auto i8Ptr = builder->CreateCall(
     module->getFunction("malloc"),
     {llvm::ConstantInt::get(integerType, size)}
   );
   auto properTypePtr = builder->CreateBitCast(
-    i8Ptr, llvm::PointerType::getUnqual(target->getCurrentType()->getAllocaType()));
+    i8Ptr, target->getCurrentType()->getAllocaType()->getPointerTo());
   return properTypePtr;
 }
 
@@ -472,7 +485,6 @@ void ModuleCompiler::assignToUnion(
   DeclarationWrapper::Link unionWrapper,
   ValueWrapper::Link newValue
 ) {
-  insertRuntimeTypeCheck(unionWrapper, newValue);
   llvm::DataLayout d(module);
   uint64 size = d.getTypeAllocSize(newValue->getCurrentType()->getAllocaType());
   auto dataPtr = insertDynAlloc(size, newValue);
@@ -495,6 +507,19 @@ void ModuleCompiler::assignToUnion(
       integerType->getPointerTo()
     )
   );
+}
+
+void ModuleCompiler::typeCheck(AbstractId::Link allowedLhs, ValueWrapper::Link rhs, Error err) {
+  TypeCompat isCompat = allowedLhs->isCompat(rhs->getCurrentType());
+  // Statically check that the type of the initialization is allowed by the declaration
+  if (isCompat == INCOMPATIBLE) {
+    throw err;
+  } else if (isCompat == DYNAMIC) {
+    insertRuntimeTypeCheck(allowedLhs, rhs);
+  } else {
+    // If they're compatible, great
+    return;
+  }
 }
 
 void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
@@ -532,11 +557,11 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   // Handle initialization
   if (!node->hasInit()) return;
   ValueWrapper::Link initValue = compileExpression(node->getInit());
-  // TODO: make sure that this type check handles all cases properly and add types to err message
-  // Check that the type of the initialization is allowed by the declaration
-  if (!isTypeAllowedIn(id, initValue->getCurrentType())) {
-    throw "Type of initialization is not allowed by declaration"_type + node->getTrace();
-  }
+  
+  typeCheck(id, initValue,
+    "Type of initialization ({0}) is not allowed by declaration ({1})"_type(
+      initValue->getCurrentType()->typeNames(), id->typeNames()) + node->getTrace());
+
   if (decl->getType() == llvm::PointerType::getUnqual(taggedUnionType)) {
     assignToUnion(declWrap, initValue);
   } else {
@@ -693,12 +718,13 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   }
   
   auto returnedValue = compileExpression(node->getValue());
-  // TODO: make sure that this type check handles all cases properly and add types to err message
+  auto retId = typeIdFromInfo(returnType, node);
+  
   // If the returnedValue's type can't be found in the list of possible return types, get mad
-  if (!isTypeAllowedIn(typeIdFromInfo(returnType, node), returnedValue->getCurrentType())) {
-    throw "{}"_type(funRetTyMismatch) + node->getTrace();
-  }
-  // TODO: this if block is a bit of a disaster, refactor
+  typeCheck(retId, returnedValue,
+    "Function return type ({0}) does not match return value ({1})"_type(
+      retId->typeNames(), returnedValue->getCurrentType()->typeNames()) + node->getTrace());
+    
   if (functionStack.top()->getValue()->getReturnType() != returnedValue->getValue()->getType()) {
     bool isUnion = returnedValue->getValue()->getType() == taggedUnionType->getPointerTo();
     if (isUnion) {

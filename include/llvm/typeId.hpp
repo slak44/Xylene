@@ -13,6 +13,13 @@ namespace llvm {
 }
 class TypeData; 
 
+/// Type compatibility states
+enum TypeCompat {
+  COMPATIBLE = 1, ///< Can assign one to another
+  INCOMPATIBLE = 0, ///< Can't assign one to another
+  DYNAMIC = 1 << 5, ///< Cannot statically determine compatibility
+};
+
 /**
   \brief An abstract identifier with a name and a unique id.
 */
@@ -48,6 +55,12 @@ public:
   virtual TypeList storedNames() const = 0;
   /// \returns what should llvm allocate for this id
   virtual llvm::Type* getAllocaType() const = 0;
+  /// \returns if the parameter can be assigned to this id
+  virtual TypeCompat isCompat(AbstractId::Link) const = 0;
+  
+  inline std::string typeNames() const {
+    return collate(storedNames());
+  }
   
   inline bool operator==(const AbstractId& rhs) const {
     return this->getId() == rhs.getId();
@@ -119,6 +132,7 @@ public:
   }
   TypeList storedNames() const override;
   llvm::Type* getAllocaType() const override;
+  TypeCompat isCompat(AbstractId::Link) const override;
 };
 
 /**
@@ -144,15 +158,9 @@ public:
   }
   TypeList storedNames() const override;
   llvm::Type* getAllocaType() const override;
+  TypeCompat isCompat(AbstractId::Link) const override;
 };
 
 // TODO class AliasId: public AbstractId
-
-/// Utility function for checking if 2 types are compatible
-inline bool isTypeAllowedIn(AbstractId::Link tl, AbstractId::Link type) {
-  if (tl->storedTypeCount() == 1 || type->storedTypeCount() > 1) return tl == type;
-  auto tlid = PtrUtil<TypeListId>::staticPtrCast(tl);
-  return std::find(ALL(tlid->getTypes()), type) != tlid->getTypes().end();
-}
 
 #endif

@@ -3,7 +3,6 @@
 
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
-#include <llvm/ExecutionEngine/Interpreter.h>
 #include <llvm/ExecutionEngine/MCJIT.h>
 #include <llvm/Object/ObjectFile.h>
 #include <tuple>
@@ -15,6 +14,7 @@
 const std::unordered_map<std::string, void*> nameToFunPtr {
   {"printC", reinterpret_cast<void*>(printC)},
   {"_xyl_typeErrIfIncompatible", reinterpret_cast<void*>(_xyl_typeErrIfIncompatible)},
+  {"_xyl_typeErrIfIncompatibleTid", reinterpret_cast<void*>(_xyl_typeErrIfIncompatibleTid)},
 };
 
 /// exit code + stdout + stderr

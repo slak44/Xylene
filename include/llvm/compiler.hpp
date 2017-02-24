@@ -121,18 +121,18 @@ public:
   std::shared_ptr<ProgramData::TypeSet> getTypeSetPtr() const;
   
 private:
-  void visitExpression(Node<ExpressionNode>::Link node);
-  void visitDeclaration(Node<DeclarationNode>::Link node);
-  void visitBranch(Node<BranchNode>::Link node);
-  void visitLoop(Node<LoopNode>::Link node);  
-  void visitReturn(Node<ReturnNode>::Link node);
-  void visitBlock(Node<BlockNode>::Link node);
-  void visitBreakLoop(Node<BreakLoopNode>::Link node);
-  void visitFunction(Node<FunctionNode>::Link node);
-  void visitType(Node<TypeNode>::Link node);
-  void visitConstructor(Node<ConstructorNode>::Link node);
-  void visitMethod(Node<MethodNode>::Link node);
-  void visitMember(Node<MemberNode>::Link node);
+  void visitExpression(Node<ExpressionNode>::Link node) override;
+  void visitDeclaration(Node<DeclarationNode>::Link node) override;
+  void visitBranch(Node<BranchNode>::Link node) override;
+  void visitLoop(Node<LoopNode>::Link node) override;
+  void visitReturn(Node<ReturnNode>::Link node) override;
+  void visitBlock(Node<BlockNode>::Link node) override;
+  void visitBreakLoop(Node<BreakLoopNode>::Link node) override;
+  void visitFunction(Node<FunctionNode>::Link node) override;
+  void visitType(Node<TypeNode>::Link node) override;
+  void visitConstructor(Node<ConstructorNode>::Link node) override;
+  void visitMethod(Node<MethodNode>::Link node) override;
+  void visitMember(Node<MemberNode>::Link node) override;
   
   /// Inserts declarations for some required runtime functions
   void insertRuntimeFuncDecls();
@@ -141,8 +141,12 @@ private:
   bool canBeBoolean(ValueWrapper::Link) const;
   /// Convert simple value to tagged union with 1 type
   ValueWrapper::Link boxPrimitive(ValueWrapper::Link p);
+  /// Checks if assignment is allowed. Inserts IR
+  void typeCheck(AbstractId::Link, ValueWrapper::Link, Error);
   /// Inserts a call to the runtime '_xyl_typeErrIfIncompatible' function
   void insertRuntimeTypeCheck(DeclarationWrapper::Link, ValueWrapper::Link);
+  /// Inserts a call to the runtime '_xyl_typeErrIfIncompatibleTid' function
+  void insertRuntimeTypeCheck(AbstractId::Link, ValueWrapper::Link);
   /// Inserts a call to malloc and returns a pointer with the ValueWrapper's type
   llvm::Value* insertDynAlloc(uint64, ValueWrapper::Link);
   // Store in the allowed type list field of a union

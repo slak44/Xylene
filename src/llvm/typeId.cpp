@@ -37,6 +37,18 @@ TypeList TypeId::storedNames() const {
   return {name};
 }
 
+TypeCompat TypeId::isCompat(AbstractId::Link rhs) const {
+  if (rhs->storedTypeCount() == 1) {
+    return *rhs == *this ? COMPATIBLE : INCOMPATIBLE;
+  }
+  auto typeList = PtrUtil<TypeListId>::staticPtrCast(rhs);
+  // If the type list doesn't have lhs type in it, it's decidely incompatible
+  bool possibleCompat = includes(typeList->getTypes(), [=](auto ty) {
+    return *this == *ty;
+  });
+  return possibleCompat ? DYNAMIC : INCOMPATIBLE;
+}
+
 TypeListId::TypeListId(
   TypeName name,
   std::unordered_set<AbstractId::Link> types,
@@ -73,4 +85,23 @@ TypeList TypeListId::storedNames() const {
 
 llvm::Type* TypeListId::getAllocaType() const {
   return taggedUnionType;
+}
+
+TypeCompat TypeListId::isCompat(AbstractId::Link rhs) const {
+  if (rhs->storedTypeCount() == 1) {
+    return includes(types, rhs) ? COMPATIBLE : INCOMPATIBLE;
+  }
+  auto typeList = PtrUtil<TypeListId>::staticPtrCast(rhs);
+  bool possibleCompat = false;
+  // O(n * m) in theory, too small to care in practice
+  for (auto lhsTy : types) {
+    for (auto rhsTy : typeList->types) {
+      if (rhsTy == lhsTy) {
+        possibleCompat = true;
+        goto breakLoop;
+      }
+    }
+  }
+  breakLoop:
+  return possibleCompat ? DYNAMIC : INCOMPATIBLE;
 }

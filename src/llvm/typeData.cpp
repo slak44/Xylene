@@ -74,10 +74,13 @@ void TypeData::finalize() {
     if (!mb->hasInit()) return;
     normalTi.insertCode([=](TypeInitializer& ref) {
       auto initValue = mc->compileExpression(mb->getInit());
-      // TODO: make sure that this type check handles all cases properly and add types to err message
-      if (!isTypeAllowedIn(mc->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
-        throw "Member '{}' initialization does not match its type"_type(mb->getName()) + mb->getInit()->getTrace();
-      }
+      auto memberId = mc->typeIdFromInfo(mb->getTypeInfo(), mb->getInit());
+      mc->typeCheck(memberId, initValue,
+        "Member '{0}' initialization ({1}) does not match its type ({2})"_type(
+          mb->getName(),
+          initValue->getCurrentType()->typeNames(),
+          memberId->typeNames()
+        ) + mb->getInit()->getTrace());
       auto memberDecl = ref.getInitInstance()->getMember(mb->getName());
       mc->builder->CreateStore(initValue->getValue(), memberDecl->getValue());
       memberDecl->setValue(memberDecl->getValue(), initValue->getCurrentType());
@@ -95,10 +98,13 @@ void TypeData::finalize() {
     );
     if (!mb->hasInit()) return;
     auto initValue = mc->compileExpression(mb->getInit());
-    // TODO: make sure that this type check handles all cases properly and add types to err message
-    if (!isTypeAllowedIn(mc->typeIdFromInfo(mb->getTypeInfo(), mb->getInit()), initValue->getCurrentType())) {
-      throw "Static member '{}' initialization does not match its type"_type(mb->getName()) + mb->getInit()->getTrace();
-    }
+    auto sMemberId = mc->typeIdFromInfo(mb->getTypeInfo(), mb->getInit());
+    mc->typeCheck(sMemberId, initValue,
+      "Static member '{0}' initialization ({1}) does not match its type ({2})"_type(
+        mb->getName(),
+        initValue->getCurrentType()->typeNames(),
+        sMemberId->typeNames()
+      ) + mb->getInit()->getTrace());
     mc->builder->CreateStore(initValue->getValue(), staticVar);
   });
   staticTi.finalize();
