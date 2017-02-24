@@ -20,6 +20,10 @@ protected:
 
 const std::vector<Token> LexerTest::fileEnd {Token(TT::FILE_END, "", defaultTrace)};
 
+TEST_F(LexerTest, Hashbang) {
+  ASSERT_EQ(getTokens("#! not actually valid but should ignore this whole line"), fileEnd);
+}
+
 TEST_F(LexerTest, Identifier) {
   ASSERT_EQ(getTokens("hello")[0], Token(TT::IDENTIFIER, "hello", defaultTrace));
 }

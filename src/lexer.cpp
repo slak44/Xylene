@@ -169,6 +169,11 @@ void Lexer::processTokens() {
   // the paren is TT::PAREN_RIGHT or TT::CALL_END
   std::stack<Token> parenStack {};
   
+  // Ignore hashbang line
+  if (code[0] == '#' && code[1] == '!') {
+    while (!isEOL() && !isEOF()) skip(1);
+  }
+  
   for (; pos != code.length(); skip(1)) {
     // Comments
     if (current(2) == "//") {
