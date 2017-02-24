@@ -67,7 +67,7 @@ public:
   DefiniteTypeInfo();
   DefiniteTypeInfo(std::nullptr_t voidType) = delete;
   
-  std::string toString() const;
+  std::string toString() const override;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const DefiniteTypeInfo& dti) {
@@ -86,7 +86,7 @@ public:
   /// \copydoc StaticTypeInfo(std::string)
   StaticTypeInfo(const char* type);
   
-  std::string toString() const;
+  std::string toString() const override;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const StaticTypeInfo& sti) {
