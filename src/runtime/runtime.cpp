@@ -15,6 +15,13 @@ void _xyl_typeErrIfIncompatible(_xyl_Value* val, _xyl_Value* newVal) {
   }
 }
 
+void _xyl_typeErrIfIncompatibleTid(UniqueIdentifier allowed, _xyl_Value* newVal) {
+  // TODO
+  UNUSED(allowed);
+  UNUSED(newVal);
+  return;
+}
+
 bool _xyl_checkTypeCompat(_xyl_Value* val, _xyl_Value* newVal) {
   // TODO
   UNUSED(val);
