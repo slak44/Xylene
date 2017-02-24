@@ -104,10 +104,16 @@ void println(T thing, Args... args) {
   println(args...);
 }
 
-/// Checks if the vector has the item in it
-template<typename T>
-bool contains(std::vector<T> vec, T item) {
-  return std::find(vec.begin(), vec.end(), item) != vec.end();
+/// Checks if an item can be found in a container
+template<typename Container>
+bool includes(Container c, typename Container::value_type item) {
+  return std::find(c.begin(), c.end(), item) != c.end();
+}
+
+/// Checks if an item can be found in a container
+template<typename Container>
+bool includes(Container c, std::function<bool(typename Container::value_type)> test) {
+  return std::any_of(ALL(c), test);
 }
 
 /// Smart pointer utils
