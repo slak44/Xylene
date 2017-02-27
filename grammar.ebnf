@@ -1,0 +1,50 @@
+program = [ hashbang ], block ;
+hashbang = ? Unix hashbang ? ;
+block = { statement, ";" } ;
+statement =
+  declaration | function_decl | for_loop | while_loop | block | if_statement |
+  try_catch | throw_statement | expression | "break" | "continue" |
+  import_statement | export_statement | type_definition | native_fun_decl ;
+declaration = "define" | type_list, ident, [ "=", expression ] ;
+for_loop = "for", [ declaration, { ",", declaration } ], ";", [ expression ], ";",
+  [ expression, { ",", expression } ], "do", block, "end" ;
+while_loop = "while", expression, "do", block, "end" ;
+if_statement = "if", expression, "do", block,
+  [ "else", ( block, "end" ) | if_statement ] | "end" ;
+type_definition = "type", ident, [ "inherits", [ "from" ], type_list ],
+  "do", { contructor_definition | method_definition | member_definition }, "end" ;
+constructor_definition = [ visibility_specifier ], [ "foreign" ], "constructor",
+  argument_list, "do", block, "end" ;
+method_definition = visibility_specifier, [ "static" ], [ "foreign" ],
+  "method", function_signature, "do", block, "end" ;
+member_definition = [ visibility_specifier ], [ "static" ], declaration ;
+try_catch = "try", block, "catch", type_list, ident, "do", block, "end" ;
+throw_statement = "throw", expression ;
+import_statement = "import", ( ident, { ",", ident } ) | "all",
+  "from", ident, [ "as", ident ] ;
+export_statement = "export", ident, "as", ident ;
+typedef = "define", ident, "as", type_list ;
+function_decl = "function", function_signature, "do", block, "end" ;
+native_fun_decl = "foreign", "function", function_signature, ";" ;
+function_signature = [ ident ], argument_list, [ "=>", type_list ] ;
+visibility_specifier = "public" | "private" | "protected" ;
+type_list = ident, { ",", ident } ;
+argument = ( type_list, ident ) | ( ident, ":", type_list ) ;
+argument_list = { "[", argument, "]" } ;
+expression = primary, { binary_op, primary } ;
+(* Parenthesis, brackets and square brackets must be matched *)
+primary = { [ "(" ], { prefix_op }, [ "(" ] }, terminal | expression,
+  { [ ")" ], { postfix_op | function_call }, [ ")" ] } ;
+function_call = "(", [ expression, { ",", expression } ], ")" ;
+(* Operators respect the see Operator::list defined in operator.cpp *)
+binary_op = ? see Operator::list ? ;
+prefix_op = ? see Operator::list ? ;
+postfix_op = ? see Operator::list ? ;
+(* The Lexer class implementation has more details about terminals *)
+terminal =
+  integer_literal | float_literal | boolean_literal | string_literal | identifier ;
+integer_literal = ? an integer value ? ;
+float_literal = ? a floating point value ? ;
+boolean_literal = "true" | "false" ;
+string_literal = ? quotation mark delimited string ? ;
+ident = ? see Lexer::isIdentifierChar ? ;
