@@ -22,7 +22,9 @@ else()
       -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Woverloaded-virtual -Wredundant-decls -Wundef -Wstrict-overflow=5 \
       -Wsuggest-override")
   elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libstdc++ -Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded \
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libstdc++ \
+      -fshow-column -fcaret-diagnostics -fcolor-diagnostics \
+      -Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded \
       -Wno-weak-vtables -Wno-global-constructors -Wno-exit-time-destructors -Wno-shadow-field-in-constructor -Wno-documentation-unknown-command -Wno-used-but-marked-unused \
       -Winconsistent-missing-override")
   else()
