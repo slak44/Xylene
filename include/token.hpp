@@ -2,12 +2,18 @@
 #define TOKEN_HPP
 
 #include <string>
+#include <array>
 #include <algorithm>
 
 #include "utils/util.hpp"
 #include "utils/trace.hpp"
 #include "utils/error.hpp"
 #include "operator.hpp"
+
+#ifdef _MSC_VER
+  #undef FILE_END
+  #undef VOID
+#endif
 
 class TokenType {
 private:

@@ -120,7 +120,7 @@ include_directories(SYSTEM ${FMT_LIB_PREFIX}/src/fmtlib/)
 link_directories(${FMT_LIB_PREFIX}/src/fmtlib-build/fmt)
 
 find_package(LLVM REQUIRED)
-include_directories(${LLVM_INCLUDE_DIRS})
+include_directories(SYSTEM ${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
 llvm_map_components_to_libnames(
   REQ_LLVM_LIBRARIES

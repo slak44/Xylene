@@ -47,7 +47,7 @@ public:
 
 /// Define a new literal for Error types
 #define LITERAL_MACRO(literalSuffix, messagePrefix) \
-inline Error operator""_##literalSuffix(const char* msg, long unsigned int) noexcept { \
+inline Error operator""_##literalSuffix(const char* msg, std::size_t) noexcept { \
   return Error(#messagePrefix, msg); \
 }
 

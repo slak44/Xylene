@@ -82,7 +82,7 @@ BlockType BlockNode::getType() const {
 }
 
 ExpressionNode::ExpressionNode(Token token): tok(token) {
-  switch (tok.type) {
+  switch (int(tok.type)) {
     case TT::IDENTIFIER:
     case TT::OPERATOR:
     case TT::INTEGER:
