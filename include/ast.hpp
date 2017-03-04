@@ -91,6 +91,8 @@ public:
     \param pos which child. Supports negative positions that count from the end
   */
   Link at(int64 pos) const;
+  /// \copydoc at(int64)
+  Link at(std::size_t pos) const;
   
   void setParent(WeakLink newParent);
   WeakLink getParent() const;

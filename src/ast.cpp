@@ -39,6 +39,10 @@ ASTNode::Link ASTNode::at(int64 pos) const {
   return children.at(transformArrayIndex(pos));
 }
 
+ASTNode::Link ASTNode::at(std::size_t pos) const {
+  return children.at(pos);
+}
+
 void ASTNode::setParent(WeakLink newParent) {parent = newParent;}
 ASTNode::WeakLink ASTNode::getParent() const {return parent;}
 
@@ -60,7 +64,7 @@ ASTNode::Link ASTNode::findAbove(std::function<bool(Link)> isOk) const {
 bool ASTNode::operator==(const ASTNode& rhs) const {
   if (typeid(*this) != typeid(rhs)) return false;
   if (children.size() != rhs.getChildren().size()) return false;
-  for (int64 i = 0; i < static_cast<int64>(children.size()); i++) {
+  for (std::size_t i = 0; i < children.size(); i++) {
     if (this->at(i) == nullptr && rhs.at(i) == nullptr) continue;
     if (*(this->at(i)) != *(rhs.at(i))) return false;
   }
