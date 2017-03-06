@@ -3,9 +3,6 @@
 
 #include <llvm/IR/Function.h>
 
-namespace llvm {
-}
-
 #include "llvm/typeId.hpp"
 #include "utils/typeInfo.hpp"
 
