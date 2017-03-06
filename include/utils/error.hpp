@@ -16,16 +16,16 @@
 /**
   \brief Thrown when there is an issue in the user's code.
 */
-class Error {
+class Error: public std::exception {
 private:
   std::string message;
 public:
   /**
-    \brief Create an error.
+    \brief Create an error. Consider using the string literals defined below.
     \param errType appears in front of the message
     \param msg error message
   */
-  Error(std::string errType, std::string msg);
+  Error(std::string errType, std::string msg) noexcept;
     
   /// Format the existing message
   template <typename... Args>
@@ -35,13 +35,13 @@ public:
   }
 
   /// Attach a Trace to the error message. Literally appends the Trace text
-  Error& operator+(const Trace& rhs) {
+  Error& operator+(const Trace& rhs) noexcept {
     message += "\n\t" + rhs.toString();
     return *this;
   }
   
-  std::string what() const noexcept {
-    return message;
+  const char* what() const noexcept override {
+    return message.c_str();
   }
 };
 

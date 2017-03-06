@@ -1,6 +1,6 @@
 #include "utils/error.hpp"
 
-Error::Error(std::string errType, std::string msg): message(errType + msg) {}
+Error::Error(std::string errType, std::string msg) noexcept: message(errType + msg) {}
 
 std::string InternalError::buildErrorMessage(std::string errorName, std::string msg, const ErrorData& data) {
   using namespace termcolor;
