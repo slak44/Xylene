@@ -5,52 +5,19 @@ void ASTNode::addChild(Link child) {
   children.push_back(child);
 }
 
-ASTNode::Link ASTNode::removeChild(int64 pos) {
+ASTNode::Link ASTNode::removeChild(int64_t pos) {
   Link child = this->at(pos);
   child->setParent(WeakLink());
-  this->children.erase(children.begin() + static_cast<int64>(transformArrayIndex(pos)));
+  this->children.erase(std::next(std::begin(children), transformArrayIndex<int64_t>(pos)));
   return child;
 }
 
-std::size_t ASTNode::transformArrayIndex(int64 idx) const {
-  std::size_t res;
-  if (idx < 0) {
-    // Negative indices count from the end of the vector
-    int64 transPos = static_cast<int64>(children.size()) + idx;
-    if (transPos < 0 || transPos > static_cast<int64>(children.size())) {
-      throw InternalError("Index out of array bounds", {
-        METADATA_PAIRS,
-        {"index", std::to_string(idx)},
-        {"calculated", std::to_string(transPos)}
-      });
-    }
-    res = static_cast<std::size_t>(transPos);
-  } else {
-    res = static_cast<std::size_t>(idx);
-  }
-  return res;
-}
-
-ASTNode::Children ASTNode::getChildren() const {
-  return children;
-}
-
-ASTNode::Link ASTNode::at(int64 pos) const {
+ASTNode::Link ASTNode::at(int64_t pos) const {
   return children.at(transformArrayIndex(pos));
 }
 
 ASTNode::Link ASTNode::at(std::size_t pos) const {
   return children.at(pos);
-}
-
-void ASTNode::setParent(WeakLink newParent) {parent = newParent;}
-ASTNode::WeakLink ASTNode::getParent() const {return parent;}
-
-void ASTNode::setTrace(Trace newTrace) {
-  trace = newTrace;
-}
-Trace ASTNode::getTrace() const {
-  return trace;
 }
 
 ASTNode::Link ASTNode::findAbove(std::function<bool(Link)> isOk) const {
@@ -75,15 +42,11 @@ bool ASTNode::operator!=(const ASTNode& rhs) const {
   return !operator==(rhs);
 }
 
-NoMoreChildrenNode::NoMoreChildrenNode(std::size_t childrenCount) {
+NoMoreChildrenNode::NoMoreChildrenNode(std::size_t childrenCount) noexcept {
   children.resize(childrenCount, nullptr);
 }
 
 BlockNode::BlockNode(BlockType type): type(type) {}
-
-BlockType BlockNode::getType() const {
-  return type;
-}
 
 ExpressionNode::ExpressionNode(Token token): tok(token) {
   switch (int(tok.type)) {
@@ -98,52 +61,13 @@ ExpressionNode::ExpressionNode(Token token): tok(token) {
   }
 }
 
-std::shared_ptr<ExpressionNode> ExpressionNode::at(int64 pos) const {
+std::shared_ptr<ExpressionNode> ExpressionNode::at(int64_t pos) const {
   return std::dynamic_pointer_cast<ExpressionNode>(ASTNode::at(pos));
-}
-
-Token ExpressionNode::getToken() const {
-  return tok;
-}
-
-DeclarationNode::DeclarationNode(std::string identifier, TypeList typeList):
-  NoMoreChildrenNode(1), identifier(identifier), info(typeList) {}
-  
-std::string DeclarationNode::getIdentifier() const {
-  return identifier;
-}
-
-DefiniteTypeInfo DeclarationNode::getTypeInfo() const {
-  return info;
-}
-
-bool DeclarationNode::isDynamic() const {
-  return info.isDynamic();
-}
-
-bool DeclarationNode::hasInit() const {
-  return children[0] != nullptr;
 }
 
 TypeNode::TypeNode(std::string name, TypeList inheritsFrom):
   name(name),
   inheritsFrom(inheritsFrom) {}
-
-std::string TypeNode::getName() const {
-  return name;
-}
-
-TypeList TypeNode::getAncestors() const {
-  return inheritsFrom;
-}
-
-TypeId::Link TypeNode::getTid() const{
-  return tid;
-}
-
-void TypeNode::setTid(TypeId::Link newData) {
-  tid = newData;
-}
 
 void TypeNode::addChild(Link child) {
   if (
@@ -160,21 +84,6 @@ void TypeNode::addChild(Link child) {
   }
 }
 
-BranchNode::BranchNode(): NoMoreChildrenNode(3) {}
-
-LoopNode::LoopNode(): NoMoreChildrenNode(4) {}
-
-llvm::BasicBlock* LoopNode::getExitBlock() const {
-  return exitBlock;
-}
-void LoopNode::setExitBlock(llvm::BasicBlock* bb) {
-  this->exitBlock = bb;
-}
-
-ReturnNode::ReturnNode(): NoMoreChildrenNode(1) {}
-
-BreakLoopNode::BreakLoopNode(): NoMoreChildrenNode(0) {}
-
 FunctionNode::FunctionNode(std::string ident, FunctionSignature sig, bool foreign):
   NoMoreChildrenNode(1),
   ident(ident),
@@ -182,26 +91,9 @@ FunctionNode::FunctionNode(std::string ident, FunctionSignature sig, bool foreig
   foreign(foreign) {}
 FunctionNode::FunctionNode(FunctionSignature sig): FunctionNode("", sig, false) {}
 
-std::string FunctionNode::getIdentifier() const {
-  return ident;
-}
-const FunctionSignature& FunctionNode::getSignature() const {
-  return sig;
-}
-bool FunctionNode::isForeign() const {
-  return foreign;
-}
-bool FunctionNode::isAnon() const {
-  return ident.empty();
-}
-
 ConstructorNode::ConstructorNode(FunctionSignature::Arguments args, Visibility vis, bool isForeign):
   FunctionNode("constructor", FunctionSignature(nullptr, args), isForeign), vis(vis) {
   if (vis == INVALID) throw InternalError("Invalid visibility", {METADATA_PAIRS});
-}
-  
-Visibility ConstructorNode::getVisibility() const {
-  return vis;
 }
   
 MethodNode::MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM, bool isForeign):
@@ -209,24 +101,8 @@ MethodNode::MethodNode(std::string name, FunctionSignature sig, Visibility vis, 
   if (vis == INVALID) throw InternalError("Invalid visibility", {METADATA_PAIRS});
 }
   
-Visibility MethodNode::getVisibility() const {
-  return vis;
-}
-  
-bool MethodNode::isStatic() const {
-  return staticM;
-}
-
 MemberNode::MemberNode(std::string identifier, TypeList typeList, bool staticM, Visibility vis):
   DeclarationNode(identifier, typeList), staticM(staticM), vis(vis) {}
-
-bool MemberNode::isStatic() const {
-  return staticM;
-}
-
-Visibility MemberNode::getVisibility() const {
-  return vis;
-}
 
 /**
   \brief Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses

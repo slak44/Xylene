@@ -1,6 +1,8 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#include <cstdint>
+#include <iterator>
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -40,10 +42,6 @@ namespace fs = std::experimental::filesystem;
 #ifdef __clang__
   #pragma clang diagnostic pop
 #endif
-
-using uint = unsigned int;
-using int64 = long long;
-using uint64 = unsigned long long;
 
 /// Type for AbstractId's unique identifiers
 using UniqueIdentifier = std::size_t;
@@ -183,7 +181,7 @@ std::string collate(
   if (c.size() == 1) return objToString(*c.begin());
   if (c.size() >= 2) {
     std::string str = objToString(*c.begin());
-    std::for_each(++c.begin(), c.end(), [&](typename Container::value_type object) {
+    std::for_each(std::next(std::begin(c)), std::end(c), [&](typename Container::value_type object) {
       str = combine(str, objToString(object));
     });
     return str;

@@ -66,7 +66,7 @@ private:
   /// LLVM Context for this visitor
   llvm::LLVMContext* context;
 
-  static const uint bitsPerInt = 64;
+  static const unsigned bitsPerInt = 64;
 
   llvm::IntegerType* integerType;
   llvm::Type* floatType;
@@ -116,9 +116,17 @@ public:
   /// Compile the AST. Call this before trying to retrieve the module.
   void compile();
   
-  llvm::Module* getModule() const;
-  llvm::Function* getEntryPoint() const;
-  std::shared_ptr<ProgramData::TypeSet> getTypeSetPtr() const;
+  inline llvm::Module* getModule() const noexcept {
+    return module;
+  }
+
+  inline llvm::Function* getEntryPoint() const noexcept {
+    return entryPoint->getValue();
+  }
+  
+  inline std::shared_ptr<ProgramData::TypeSet> getTypeSetPtr() const noexcept {
+    return types;
+  }
   
 private:
   void visitExpression(Node<ExpressionNode>::Link node) override;
@@ -148,7 +156,7 @@ private:
   /// Inserts a call to the runtime '_xyl_typeErrIfIncompatibleTid' function
   void insertRuntimeTypeCheck(AbstractId::Link, ValueWrapper::Link);
   /// Inserts a call to malloc and returns a pointer with the ValueWrapper's type
-  llvm::Value* insertDynAlloc(uint64, ValueWrapper::Link);
+  llvm::Value* insertDynAlloc(uint64_t, ValueWrapper::Link);
   // Store in the allowed type list field of a union
   llvm::Value* storeTypeList(llvm::Value* taggedUnion, UniqueIdentifier typeList);
   // Update all required fields in a union when assigning a new value

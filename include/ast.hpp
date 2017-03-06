@@ -63,11 +63,30 @@ protected:
   Children children {}; ///< Branches/Leaves in the tree
   Trace trace = defaultTrace; ///< Where in the source was this found
   
-  static inline void printIndent(uint level) {
-    for (uint i = 0; i < level; i++) print("  ");
+  static inline void printIndent(unsigned level) noexcept {
+    for (unsigned i = 0; i < level; i++) print("  ");
   }
   
-  std::size_t transformArrayIndex(int64 idx) const;
+  template<typename ReturnType = std::size_t>
+  ReturnType transformArrayIndex(int64_t idx) const {
+    ReturnType res;
+    if (idx < 0) {
+      // Negative indices count from the end of the vector
+      int64_t transPos = static_cast<int64_t>(children.size()) + idx;
+      if (transPos < 0 || transPos > static_cast<int64_t>(children.size())) {
+        throw InternalError("Index out of array bounds", {
+          METADATA_PAIRS,
+          {"index", std::to_string(idx)},
+          {"calculated", std::to_string(transPos)}
+        });
+      }
+      res = static_cast<ReturnType>(transPos);
+    } else {
+      res = static_cast<ReturnType>(idx);
+    }
+    return res;
+  }
+  
 public:
   ASTNode() = default;
   ASTNode(const ASTNode&) = default;
@@ -82,23 +101,33 @@ public:
     \brief Remove a child and return it.
     \param pos which child. Supports negative positions that count from the end
   */
-  virtual Link removeChild(int64 pos);
+  virtual Link removeChild(int64_t pos);
   
   /// Get list of children
-  virtual Children getChildren() const;
+  virtual inline Children getChildren() const noexcept {
+    return children;
+  }
   /**
     \brief Get child at position
     \param pos which child. Supports negative positions that count from the end
   */
-  Link at(int64 pos) const;
+  Link at(int64_t pos) const;
   /// \copydoc at(int64)
   Link at(std::size_t pos) const;
   
-  void setParent(WeakLink newParent);
-  WeakLink getParent() const;
+  inline void setParent(WeakLink newParent) noexcept {
+    parent = newParent;
+  }
+  inline WeakLink getParent() const noexcept {
+    return parent;
+  }
   
-  void setTrace(Trace trace);
-  Trace getTrace() const;
+  inline void setTrace(Trace newTrace) noexcept {
+    trace = newTrace;
+  }
+  inline Trace getTrace() const noexcept {
+    return trace;
+  }
   
   /**
     \brief Traverse the tree upwards until a node satisfies the condition or until we hit the root
@@ -121,7 +150,7 @@ public:
   }
   
   /// Pretty printing for this node and all his children
-  virtual void printTree(uint level) const;
+  virtual void printTree(unsigned level) const noexcept;
   
   virtual bool operator==(const ASTNode& rhs) const;
   virtual bool operator!=(const ASTNode& rhs) const;
@@ -155,9 +184,11 @@ public:
   
   BlockNode(BlockType type);
   
-  BlockType getType() const;
+  inline BlockType getType() const noexcept {
+    return type;
+  }
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -179,11 +210,13 @@ public:
   ExpressionNode(Token token);
   
   /// Technically overrides ASTNode::at
-  std::shared_ptr<ExpressionNode> at(int64 pos) const;
+  std::shared_ptr<ExpressionNode> at(int64_t pos) const;
   /// Get stored Token
-  Token getToken() const;
+  inline Token getToken() const noexcept {
+    return tok;
+  }
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -204,11 +237,23 @@ private:
 public:
   TypeNode(std::string name, TypeList inheritsFrom = {});
   
-  std::string getName() const;
-  TypeList getAncestors() const;
+  /// Get the type name
+  inline std::string getName() const noexcept {
+    return name;
+  }
   
-  TypeId::Link getTid() const;
-  void setTid(TypeId::Link newData);
+  /// Get who is this inheriting from
+  inline TypeList getAncestors() const noexcept {
+    return inheritsFrom;
+  }
+
+  inline TypeId::Link getTid() const noexcept {
+    return tid;
+  }
+
+  inline void setTid(TypeId::Link newData) noexcept {
+    tid = newData;
+  }
   
   /**
     \brief Only accepts ConstructorNode, MethodNode or MemberNode.
@@ -216,7 +261,7 @@ public:
   */
   void addChild(Link child) override;
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -241,7 +286,7 @@ public:
   /**
     \param childrenCount does not have more than this many children
   */
-  NoMoreChildrenNode(std::size_t childrenCount);
+  NoMoreChildrenNode(std::size_t childrenCount) noexcept;
   
   /**
     \throws InternalError always throws, never use
@@ -249,7 +294,7 @@ public:
   void addChild(Link child) override;
   
   /// Utility to check if the childIndex'th child is not nullptr
-  bool inline notNull(uint childIndex) const {
+  inline bool notNull(unsigned childIndex) const noexcept {
     return children[childIndex] != nullptr;
   }
 };
@@ -268,21 +313,28 @@ public:
     \param identifier name of declared variable
     \param typeList what types are allowed to be stored in this variable
   */
-  DeclarationNode(std::string identifier, TypeList typeList);
+  DeclarationNode(std::string identifier, TypeList typeList) noexcept:
+    NoMoreChildrenNode(1), identifier(identifier), info(typeList) {}
     
   GET_SET_SIGS(ExpressionNode, Init)
   
-  /// Get string identifier
-  std::string getIdentifier() const;
-  /// Get DefiniteTypeInfo
-  DefiniteTypeInfo getTypeInfo() const;
+  inline std::string getIdentifier() const noexcept {
+    return identifier;
+  }
+
+  inline DefiniteTypeInfo getTypeInfo() const noexcept {
+    return info;
+  }
+
+  inline bool isDynamic() const noexcept {
+    return info.isDynamic();
+  }
+
+  inline bool hasInit() const noexcept {
+    return children[0] != nullptr;
+  }
   
-  /// Has dynamic type
-  bool isDynamic() const;
-  /// Has initialization
-  bool hasInit() const;
-  
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -300,7 +352,7 @@ public:
 */
 class BranchNode: public NoMoreChildrenNode {
 public:
-  BranchNode();
+  BranchNode() noexcept: NoMoreChildrenNode(3) {}
   
   GET_SET_SIGS(ExpressionNode, Condition)
   GET_SET_SIGS(BlockNode, SuccessBlock)
@@ -308,7 +360,7 @@ public:
   SET_SIG(BlockNode, FailiureBlock)
   SET_SIG(BranchNode, FailiureBlock)
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -329,17 +381,21 @@ private:
   /// Used by the break statement
   llvm::BasicBlock* exitBlock;
 public:
-  LoopNode();
+  LoopNode() noexcept: NoMoreChildrenNode(4) {}
   
   GET_SET_SIGS(DeclarationNode, Init)
   GET_SET_SIGS(ExpressionNode, Condition)
   GET_SET_SIGS(ExpressionNode, Update)
   GET_SET_SIGS(BlockNode, Code)
   
-  llvm::BasicBlock* getExitBlock() const;
-  void setExitBlock(llvm::BasicBlock* bb);
+  inline llvm::BasicBlock* getExitBlock() const noexcept {
+    return exitBlock;
+  }
+  inline void setExitBlock(llvm::BasicBlock* bb) noexcept {
+    this->exitBlock = bb;
+  }
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -351,11 +407,11 @@ public:
 */
 class ReturnNode: public NoMoreChildrenNode {
 public:
-  ReturnNode();
+  ReturnNode() noexcept: NoMoreChildrenNode(1) {}
   
   GET_SET_SIGS(ExpressionNode, Value)
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -367,9 +423,9 @@ public:
 */
 class BreakLoopNode: public NoMoreChildrenNode {
 public:
-  BreakLoopNode();
+  BreakLoopNode() noexcept: NoMoreChildrenNode(0) {}
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -389,12 +445,20 @@ public:
   
   GET_SET_SIGS(BlockNode, Code)
   
-  std::string getIdentifier() const;
-  const FunctionSignature& getSignature() const;
-  bool isForeign() const;
-  bool isAnon() const;
+  inline std::string getIdentifier() const noexcept {
+    return ident;
+  }
+  inline const FunctionSignature& getSignature() const noexcept {
+    return sig;
+  }
+  inline bool isForeign() const noexcept {
+    return foreign;
+  }
+  inline bool isAnon() const noexcept {
+    return ident.empty();
+  }
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -434,9 +498,11 @@ private:
 public:
   ConstructorNode(FunctionSignature::Arguments constructorArgs, Visibility vis = PUBLIC, bool isForeign = false);
   
-  Visibility getVisibility() const;
+  inline Visibility getVisibility() const noexcept {
+    return vis;
+  }
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -456,10 +522,15 @@ private:
 public:
   MethodNode(std::string name, FunctionSignature sig, Visibility vis, bool staticM = false, bool isForeign = false);
   
-  Visibility getVisibility() const;
-  bool isStatic() const;
+  inline Visibility getVisibility() const noexcept {
+    return vis;
+  }
+    
+  inline bool isStatic() const noexcept {
+    return staticM;
+  }
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -480,10 +551,15 @@ public:
   /// \copydoc DeclarationNode(std::string,TypeList)
   MemberNode(std::string identifier, TypeList typeList, bool staticM = false, Visibility vis = PRIVATE);
   
-  bool isStatic() const;
-  Visibility getVisibility() const;
+  inline bool isStatic() const noexcept {
+    return staticM;
+  }
+
+  inline Visibility getVisibility() const noexcept {
+    return vis;
+  }
   
-  void printTree(uint level) const override;
+  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;

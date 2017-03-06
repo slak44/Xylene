@@ -122,44 +122,44 @@ VISITOR_VISIT_IMPL_FOR(Member)
   children[childIndex]->printTree(level + 1);\
 }
 
-void ASTNode::printTree(uint level) const {
+void ASTNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   println("Base ASTNode");
   for (auto& child : children) child->printTree(level + 1);
 }
 
-void BlockNode::printTree(uint level) const {
+void BlockNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   println("Block Node:", type);
   for (auto& child : children) child->printTree(level + 1);
 }
 
-void ExpressionNode::printTree(uint level) const {
+void ExpressionNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   println("Expression Node:", tok);
   for (auto& child : children) child->printTree(level + 1);
 }
 
-void DeclarationNode::printTree(uint level) const {
+void DeclarationNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   fmt::print("Declaration Node: {0} ({1})", identifier, info);
   if (notNull(0)) children[0]->printTree(level + 1);
 }
 
-void TypeNode::printTree(uint level) const {
+void TypeNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   fmt::print("Type Node: {0} {1}", name,
     inheritsFrom.size() ? "inherits from" + collate(inheritsFrom) : "\b");
   for (auto& child : children) child->printTree(level + 1);
 }
 
-void ConstructorNode::printTree(uint level) const {
+void ConstructorNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   fmt::print("Constructor Node: {}", getSignature());
   if (notNull(0)) getCode()->printTree(level + 1);
 }
 
-void MethodNode::printTree(uint level) const {
+void MethodNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   fmt::print("Method Node: {0} {1}", getIdentifier(), isStatic() ? "(static)" : "");
   printIndent(level);
@@ -167,14 +167,14 @@ void MethodNode::printTree(uint level) const {
   if (notNull(0)) getCode()->printTree(level + 1);
 }
 
-void MemberNode::printTree(uint level) const {
+void MemberNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   fmt::print("Member Node: {0} ({1}) {2}",
     getIdentifier(), getTypeInfo(), isStatic() ? "(static)" : "");
   if (notNull(0)) children[0]->printTree(level + 1);
 }
 
-void BranchNode::printTree(uint level) const {
+void BranchNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   println("Branch Node:");
   PRETTY_PRINT_FOR(0, Condition)
@@ -182,7 +182,7 @@ void BranchNode::printTree(uint level) const {
   if (notNull(2)) PRETTY_PRINT_FOR(2, Failiure)
 }
 
-void LoopNode::printTree(uint level) const {
+void LoopNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   println("Loop Node:");
   if (notNull(0)) PRETTY_PRINT_FOR(0, Init)
@@ -191,19 +191,19 @@ void LoopNode::printTree(uint level) const {
   if (notNull(3)) PRETTY_PRINT_FOR(3, Code)
 }
 
-void ReturnNode::printTree(uint level) const {
+void ReturnNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   println("Return Node:");
   if (notNull(0)) PRETTY_PRINT_FOR(0, Value)
 }
 
-void BreakLoopNode::printTree(uint level) const {
+void BreakLoopNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   println("Break Loop:");
   for (auto& child : children) child->printTree(level + 1);
 }
 
-void FunctionNode::printTree(uint level) const {
+void FunctionNode::printTree(unsigned level) const noexcept {
   printIndent(level);
   fmt::print("Function {0}: {1}", isAnon() ? "<anonymous>" : ident, sig);
   if (notNull(0)) {

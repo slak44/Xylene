@@ -75,23 +75,23 @@ private:
     RequireReferenceList refList = {false, false, false}
   );
 public:
-  Symbol getSymbol() const;
-  int getPrec() const;
-  Name getName() const;
-  Associativity getAssociativity() const;
-  Arity getArity() const;
-  Fixity getFixity() const;
-  RequireReferenceList getRefList() const;
+  inline Symbol getSymbol() const noexcept {return symbol;}
+  inline int getPrec() const noexcept {return precedence;}
+  inline Name getName() const noexcept {return name;}
+  inline Associativity getAssociativity() const noexcept {return associativity;}
+  inline Arity getArity() const noexcept {return arity;}
+  inline Fixity getFixity() const noexcept {return fixity;}
+  inline RequireReferenceList getRefList() const noexcept {return refList;}
+
+  inline bool hasSymbol(Symbol s) const noexcept {return s == symbol;}
+  inline bool hasPrec(int p) const noexcept {return p == precedence;}
+  inline bool hasName(Name n) const noexcept {return n == name;}
+  inline bool hasAsoc(Associativity a) const noexcept {return a == associativity;}
+  inline bool hasArity(Arity a) const noexcept {return a == arity;}
+  inline bool hasFixity(Fixity f) const noexcept {return f == fixity;}
   
-  bool hasSymbol(Symbol) const;
-  bool hasPrec(int) const;
-  bool hasName(Name) const;
-  bool hasAsoc(Associativity) const;
-  bool hasArity(Arity) const;
-  bool hasFixity(Fixity) const;
-  
-  bool operator==(const Operator& rhs) const;
-  bool operator!=(const Operator& rhs) const;
+  bool operator==(const Operator& rhs) const noexcept;
+  bool operator!=(const Operator& rhs) const noexcept;
   
   /**
     \brief Complete Operator list. All instances of this class can be found here
@@ -103,7 +103,7 @@ public:
   static const std::unordered_set<char> operatorCharacters;
   
   /// Find an Operator::Index from an Operator::Name
-  static Operator::Index find(Name name);
+  static Index find(Name name);
 };
 
 #endif

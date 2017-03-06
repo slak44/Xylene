@@ -40,9 +40,9 @@ private:
   std::string sourceOfCode;
   std::vector<Token> tokens {};
   
-  uint64 pos = 0;
-  uint64 currentLine = 1;
-  uint64 currentLinePos = 0;
+  uint64_t pos = 0;
+  uint64_t currentLine = 1;
+  uint64_t currentLinePos = 0;
   
   /// Get character at current position
   inline char current() const {
@@ -52,15 +52,15 @@ private:
     \brief Get multiple characters starting at the current position
     \param charCount how many should be retrieved
   */
-  inline std::string current(uint charCount) const {
+  inline std::string current(unsigned charCount) const {
     return code.substr(pos, charCount);
   }
   /// Get a character this many indices ahead
-  inline char peekAhead(uint ahead) const {
+  inline char peekAhead(unsigned ahead) const {
     return code[pos + ahead];
   }
   /// Skip a number of chars, usually just advances to the next one
-  inline void skip(uint64 skipped) {
+  inline void skip(uint64_t skipped) {
     pos += skipped;
     currentLinePos += skipped;
     if (pos >= code.length()) pos = code.length();
@@ -83,19 +83,19 @@ private:
     currentLine++;
   }
   /// Get a Position object to the current location
-  inline const Position getPos() const {
+  inline Position getPos() const noexcept {
     return Position(currentLine, currentLinePos);
   }
   /// Make a range from the argument to the current position
-  inline const Range rangeFrom(const Position start) const {
+  inline Range rangeFrom(Position start) const noexcept {
     return Range(start, getPos());
   }
   /// Make a trace from the argument to the current position
-  inline const Trace traceFrom(const Position start) const {
+  inline Trace traceFrom(Position start) const noexcept {
     return Trace(sourceOfCode, rangeFrom(start));
   }
   /// Make a trace n characters long
-  inline const Trace traceFor(uint n) const {
+  inline Trace traceFor(unsigned n) const noexcept {
     return Trace(sourceOfCode, Range(getPos(), n));
   }
 
@@ -116,18 +116,18 @@ private:
   /// Disambiguate between parens and calls, on the current token
   TokenType determineParenBeginType() const noexcept;
   
-  bool isValidForRadix(char c, uint radix) const noexcept;
+  bool isValidForRadix(char c, unsigned radix) const noexcept;
   /**
     \brief Look for a radix at the current position, eg the '0x' in 0xAAA
     \returns the radix found (2, 16, etc)
   */
-  uint readRadix();
+  unsigned readRadix();
   /**
     \brief Look for a number at the current position
     \param radix the number's radix
     \returns a token with TT::INTEGER or TT::FLOAT, with its data field in decimal
   */
-  Token readNumber(uint radix);
+  Token readNumber(unsigned radix);
   /**
     \brief Look for an escape sequence (assumes that the \\ was skipped)
     \returns whatever was escaped
@@ -147,16 +147,29 @@ public:
   */
   static std::unique_ptr<Lexer> tokenize(std::string code, std::string sourceOfCode);
   
-  Token operator[](std::size_t) const;
+  inline Token operator[](std::size_t at) const noexcept {
+    return tokens[at];
+  }
   
   /// Get input code
-  const std::string& getCode() const noexcept;
-  /// Get output tokens
-  const std::vector<Token>& getTokens() const noexcept;
+  inline const std::string& getCode() const noexcept {
+    return code;
+  }
+  
+  /// Get lexed tokens
+  inline std::vector<Token> getTokens() const noexcept {
+    return tokens;
+  }
+
   /// Get total line count
-  uint64 getLineCount() const noexcept;
-  /// Get the where the code is from
-  std::string getCodeSource() const noexcept;
+  inline uint64_t getLineCount() const noexcept {
+    return tokens.empty() ? 0 : currentLine;
+  }
+
+  /// Where the code came from
+  inline std::string getCodeSource() const noexcept {
+    return sourceOfCode;
+  }
 };
 
 #endif

@@ -28,7 +28,9 @@ public:
   constexpr bool operator==(const TokenType& rhs) const {return index == rhs.index;}
   constexpr bool operator!=(const TokenType& rhs) const {return !operator==(rhs);}
   
-  std::string toString() const;
+  inline std::string toString() const noexcept {
+    return prettyName;
+  }
 };
 
 /**
@@ -46,7 +48,9 @@ namespace TT {
   public:
     constexpr explicit Keyword(int idx, const char* data): TokenType(idx, data) {}
     
-    std::string getKeyword() const;
+    inline std::string getKeyword() const noexcept {
+      return prettyName;
+    }
   };
 
   class Construct: public TokenType {
@@ -56,7 +60,9 @@ namespace TT {
     constexpr explicit Construct(char c, int idx, const char* prettyName):
       TokenType(idx, prettyName), data(c) {}
 
-    char getData() const;
+    inline char getData() const noexcept {
+      return data;
+    }
   };
   
   constexpr Literal INTEGER(100, "Integer");
@@ -154,8 +160,8 @@ namespace TT {
   };
   
   TokenType findByPrettyName(std::string);
-  TokenType findConstruct(char);
-  TokenType findKeyword(std::string);
+  TokenType findConstruct(char) noexcept;
+  TokenType findKeyword(std::string) noexcept;
 }
 
 /**
@@ -169,31 +175,46 @@ public:
   Trace trace; ///< At what line of the input was this Token encountered
   
   /// Create a non-operator Token.
-  Token(TokenType type, std::string data, Trace trace);
+  Token(TokenType type, std::string data, Trace trace) noexcept:
+    type(type), data(data), trace(trace) {}
   /// Create an operator Token.
-  Token(TokenType type, Operator::Index idx, Trace trace);
+  Token(TokenType type, Operator::Index idx, Trace trace) noexcept:
+    type(type), idx(idx), trace(trace) {}
   /// Create a Token without initializing any data.
-  Token(TokenType type, Trace trace);
+  Token(TokenType type, Trace trace) noexcept:
+    type(type), trace(trace) {}
   
   /// Matches identifiers and literals
-  bool isTerminal() const;
+  inline bool isTerminal() const noexcept {
+    return type == TT::IDENTIFIER ||
+      type == TT::INTEGER ||
+      type == TT::FLOAT ||
+      type == TT::STRING ||
+      type == TT::BOOLEAN;
+  }
   /// Matches operators
-  bool isOp() const;
+  inline bool isOp() const noexcept {
+    return type == TT::OPERATOR;
+  }
   
   /// Get the stored operator
   Operator op() const;
     
-  bool operator==(const Token& tok) const;
-  bool operator!=(const Token& tok) const;
+  inline bool operator==(const Token& tok) const noexcept {
+    return type == tok.type && data == tok.data && idx == tok.idx;
+  }
+  inline bool operator!=(const Token& tok) const noexcept {
+    return !operator==(tok);
+  }
   
-  std::string toString() const;
+  std::string toString() const noexcept;
 };
 
-inline std::ostream& operator<<(std::ostream& os, const Token& tok) {
+inline std::ostream& operator<<(std::ostream& os, const Token& tok) noexcept {
   return os << tok.toString();
 }
 
-inline std::ostream& operator<<(std::ostream& os, const TokenType& tok) {
+inline std::ostream& operator<<(std::ostream& os, const TokenType& tok) noexcept {
   return os << tok.toString();
 }
 

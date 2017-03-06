@@ -47,33 +47,37 @@ protected:
   AbstractId(const AbstractId&) = default;
   virtual ~AbstractId() {}
 public:
-  virtual UniqueIdentifier getId() const;
-  virtual TypeName getName() const;
-  
+  inline virtual UniqueIdentifier getId() const noexcept {
+    return id;
+  }
+  inline virtual TypeName getName() const noexcept {
+    return name;
+  }
+
   /// \returns how many types are stored by this identifier
-  virtual std::size_t storedTypeCount() const = 0;
+  virtual std::size_t storedTypeCount() const noexcept = 0;
   /// \returns names of the types stored by this identifier
-  virtual TypeList storedNames() const = 0;
+  virtual TypeList storedNames() const noexcept = 0;
   /// \returns what should llvm allocate for this id
-  virtual llvm::Type* getAllocaType() const = 0;
+  virtual llvm::Type* getAllocaType() const noexcept = 0;
   /// \returns if the parameter can be assigned to this id
   virtual TypeCompat isCompat(AbstractId::Link) const = 0;
   
-  inline std::string typeNames() const {
+  inline std::string typeNames() const noexcept {
     return collate(storedNames());
   }
   
-  inline bool operator==(const AbstractId& rhs) const {
+  inline bool operator==(const AbstractId& rhs) const noexcept {
     return this->getId() == rhs.getId();
   }
-  inline bool operator!=(const AbstractId& rhs) const {
+  inline bool operator!=(const AbstractId& rhs) const noexcept {
     return !operator==(rhs);
   }
   
-  inline bool operator==(const UniqueIdentifier& rhs) const {
+  inline bool operator==(const UniqueIdentifier& rhs) const noexcept {
     return this->getId() == rhs;
   }
-  inline bool operator!=(const UniqueIdentifier& rhs) const {
+  inline bool operator!=(const UniqueIdentifier& rhs) const noexcept {
     return !operator==(rhs);
   }
 };
@@ -84,7 +88,7 @@ namespace std {
   struct hash<AbstractId> {
     using argument_type = AbstractId;
     using result_type = size_t;
-    size_t operator()(const AbstractId& tid) const {
+    size_t operator()(const AbstractId& tid) const noexcept {
       // These ids are unique, so they should work well as hashes
       return tid.getId();
     }
@@ -93,7 +97,7 @@ namespace std {
   struct hash<vector<AbstractId::Link>> {
     using argument_type = vector<AbstractId::Link>;
     using result_type = size_t;
-    size_t operator()(const vector<AbstractId::Link>& vec) const {
+    size_t operator()(const vector<AbstractId::Link>& vec) const noexcept {
       size_t seed = vec.size();
       for (auto e : vec) {
         seed ^= e->getId() + 0x9e3779b9 + (seed << 6) + (seed >> 2);
@@ -126,14 +130,20 @@ public:
   static Link createBasic(TypeName, llvm::Type*);
   
   /// \returns associated TypeData* or nullptr if this type is basic
-  TypeData* getTyData() const;
+  inline TypeData* getTyData() const noexcept {
+    return tyData;
+  }
   
-  virtual inline std::size_t storedTypeCount() const override {
+  inline std::size_t storedTypeCount() const noexcept override {
     return 1;
   }
-  TypeList storedNames() const override;
-  llvm::Type* getAllocaType() const override;
-  TypeCompat isCompat(AbstractId::Link) const override;
+
+  inline TypeList storedNames() const noexcept override {
+    return {name};
+  }
+  
+  llvm::Type* getAllocaType() const noexcept override;
+  TypeCompat isCompat(AbstractId::Link) const noexcept override;
 };
 
 /**
@@ -152,14 +162,17 @@ public:
   static Link create(TypeName, std::unordered_set<AbstractId::Link>, llvm::StructType*);
   
   /// \returns list of types in this list
-  std::unordered_set<AbstractId::Link> getTypes() const;
+  inline std::unordered_set<AbstractId::Link> getTypes() const noexcept {
+    return types;
+  }
   
-  virtual inline std::size_t storedTypeCount() const override {
+  inline std::size_t storedTypeCount() const noexcept override {
     return types.size();
   }
-  TypeList storedNames() const override;
-  llvm::Type* getAllocaType() const override;
-  TypeCompat isCompat(AbstractId::Link) const override;
+  
+  TypeList storedNames() const noexcept override;
+  llvm::Type* getAllocaType() const noexcept override;
+  TypeCompat isCompat(AbstractId::Link) const noexcept override;
 };
 
 // TODO class AliasId: public AbstractId

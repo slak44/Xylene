@@ -87,10 +87,6 @@ void ModuleCompiler::addMainFunction() {
   entryPoint = functionStack.top();
 }
 
-std::shared_ptr<ProgramData::TypeSet> ModuleCompiler::getTypeSetPtr() const {
-  return types;
-}
-
 ModuleCompiler::ModuleCompiler(std::string moduleName, AST ast):
   context(new llvm::LLVMContext()),
   integerType(llvm::IntegerType::get(*context, bitsPerInt)),
@@ -178,14 +174,6 @@ void ModuleCompiler::compile() {
       {"error", rso.str()}
     });
   }
-}
-
-llvm::Module* ModuleCompiler::getModule() const {
-  return module;
-}
-
-llvm::Function* ModuleCompiler::getEntryPoint() const {
-  return entryPoint->getValue();
 }
 
 void ModuleCompiler::visitBlock(Node<BlockNode>::Link node) {
@@ -452,7 +440,7 @@ void ModuleCompiler::insertRuntimeTypeCheck(
   );
 }
 
-llvm::Value* ModuleCompiler::insertDynAlloc(uint64 size, ValueWrapper::Link target) {
+llvm::Value* ModuleCompiler::insertDynAlloc(uint64_t size, ValueWrapper::Link target) {
   auto i8Ptr = builder->CreateCall(
     module->getFunction("malloc"),
     {llvm::ConstantInt::get(integerType, size)}
@@ -473,7 +461,7 @@ llvm::Value* ModuleCompiler::storeTypeList(
     });
   }
   return builder->CreateStore(
-    llvm::ConstantInt::getSigned(integerType, static_cast<int64>(typeList)), 
+    llvm::ConstantInt::get(integerType, typeList, false),
     builder->CreateBitCast(
       builder->CreateConstGEP1_32(taggedUnion, 1),
       integerType->getPointerTo()
@@ -486,7 +474,7 @@ void ModuleCompiler::assignToUnion(
   ValueWrapper::Link newValue
 ) {
   llvm::DataLayout d(module);
-  uint64 size = d.getTypeAllocSize(newValue->getCurrentType()->getAllocaType());
+  auto size = d.getTypeAllocSize(newValue->getCurrentType()->getAllocaType());
   auto dataPtr = insertDynAlloc(size, newValue);
   // Store data in memory
   builder->CreateStore(newValue->getValue(), dataPtr);
@@ -500,8 +488,7 @@ void ModuleCompiler::assignToUnion(
   );
   // Update union current type
   builder->CreateStore(
-    llvm::ConstantInt::getSigned(
-      integerType, static_cast<int64>(newValue->getCurrentType()->getId())),
+    llvm::ConstantInt::get(integerType, newValue->getCurrentType()->getId(), false),
     builder->CreateBitCast(
       builder->CreateConstGEP1_32(unionWrapper->getValue(), 2),
       integerType->getPointerTo()

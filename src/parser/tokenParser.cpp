@@ -28,7 +28,7 @@ Node<ExpressionNode>::Link TokenParser::parseCircumfixGroup(Token begin) {
   // Circumfix groups are guaranteed to be matched correctly by the lexer, so we only
   // need to keep track of how many times is our group opened. When we close
   // begin's group, beginOccurrences will be 0, because the begin token is skipped
-  uint beginOccurrences = 1;
+  unsigned beginOccurrences = 1;
   const int beginPos = static_cast<int>(pos);
   std::size_t tokensInGroup = 0;
   while (beginOccurrences > 0) {

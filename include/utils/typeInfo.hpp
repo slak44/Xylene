@@ -22,35 +22,44 @@ protected:
   }
 public:
   /// Store only one type. Convenience constructor.
-  TypeInfo(TypeName);
+  TypeInfo(TypeName type) noexcept: evalValue(TypeList({type})) {}
   /// \copydoc TypeInfo(TypeName)
-  TypeInfo(const char*);
+  TypeInfo(const char* type) noexcept: TypeInfo(std::string(type)) {}
   /// Store a list of types. If list is empty, the type is dynamic.
-  TypeInfo(TypeList evalValue);
+  TypeInfo(TypeList evalValue) noexcept: evalValue(evalValue) {}
   /// Construct TypeInfo for a void type.
-  TypeInfo(std::nullptr_t voidType);
+  TypeInfo(std::nullptr_t voidType) noexcept: isVoidType(true) {UNUSED(voidType);}
   /// Construct a dynamic TypeInfo (can have any type).
-  TypeInfo();
+  TypeInfo() noexcept: evalValue({}) {}
   
   virtual ~TypeInfo() {}
   TypeInfo(const TypeInfo&) = default;
   TypeInfo& operator=(const TypeInfo&) = default;
   
-  TypeList getEvalTypeList() const;
+  inline TypeList getEvalTypeList() const {
+    throwIfVoid();
+    return evalValue;
+  }
   
-  bool isDynamic() const;
-  bool isVoid() const;
+  inline bool isDynamic() const {
+    throwIfVoid();
+    return evalValue.size() == 0;
+  }
+
+  inline bool isVoid() const noexcept {
+    return isVoidType;
+  }
   
   /// Get a string representation of the held types
-  std::string getTypeNameString() const;
+  std::string getTypeNameString() const noexcept;
   
-  virtual std::string toString() const;
+  virtual std::string toString() const noexcept;
   
-  bool operator==(const TypeInfo& rhs) const;
-  bool operator!=(const TypeInfo& rhs) const;
+  bool operator==(const TypeInfo& rhs) const noexcept;
+  bool operator!=(const TypeInfo& rhs) const noexcept;
 };
 
-inline std::ostream& operator<<(std::ostream& os, const TypeInfo& ti) {
+inline std::ostream& operator<<(std::ostream& os, const TypeInfo& ti) noexcept {
   return os << ti.toString();
 }
 
@@ -67,10 +76,10 @@ public:
   DefiniteTypeInfo();
   DefiniteTypeInfo(std::nullptr_t voidType) = delete;
   
-  std::string toString() const override;
+  std::string toString() const noexcept override;
 };
 
-inline std::ostream& operator<<(std::ostream& os, const DefiniteTypeInfo& dti) {
+inline std::ostream& operator<<(std::ostream& os, const DefiniteTypeInfo& dti) noexcept {
   return os << dti.toString();
 }
 
@@ -86,10 +95,10 @@ public:
   /// \copydoc StaticTypeInfo(std::string)
   StaticTypeInfo(const char* type);
   
-  std::string toString() const override;
+  std::string toString() const noexcept override;
 };
 
-inline std::ostream& operator<<(std::ostream& os, const StaticTypeInfo& sti) {
+inline std::ostream& operator<<(std::ostream& os, const StaticTypeInfo& sti) noexcept {
   return os << sti.toString();
 }
 
@@ -105,16 +114,24 @@ private:
 public:
   FunctionSignature(TypeInfo returnType, Arguments arguments);
   
-  TypeInfo getReturnType() const;
-  Arguments getArguments() const;
-  
-  std::string toString() const;
-  
-  bool operator==(const FunctionSignature& rhs) const;
-  bool operator!=(const FunctionSignature& rhs) const;
-};
+  inline TypeInfo getReturnType() const noexcept {
+    return returnType;
+  }
 
-inline std::ostream& operator<<(std::ostream& os, const FunctionSignature& fs) {
+  inline Arguments getArguments() const noexcept {
+    return arguments;
+  }
+  
+  std::string toString() const noexcept;
+  
+  inline bool operator==(const FunctionSignature& rhs) const noexcept {
+    return returnType == rhs.returnType && arguments == rhs.arguments;
+  }
+  inline bool operator!=(const FunctionSignature& rhs) const noexcept {
+    return !operator==(rhs);
+  }};
+
+inline std::ostream& operator<<(std::ostream& os, const FunctionSignature& fs) noexcept {
   return os << fs.toString();
 }
 

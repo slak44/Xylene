@@ -21,22 +21,7 @@ Operator::Operator(
   }
 }
   
-Operator::Symbol Operator::getSymbol() const {return symbol;}
-int Operator::getPrec() const {return precedence;}
-Operator::Name Operator::getName() const {return name;}
-Associativity Operator::getAssociativity() const {return associativity;}
-Arity Operator::getArity() const {return arity;}
-Fixity Operator::getFixity() const {return fixity;}
-Operator::RequireReferenceList Operator::getRefList() const {return refList;}
-
-bool Operator::hasSymbol(Operator::Symbol s) const {return s == symbol;}
-bool Operator::hasPrec(int p) const {return p == precedence;}
-bool Operator::hasName(Operator::Name n) const {return n == name;}
-bool Operator::hasAsoc(Associativity a) const {return a == associativity;}
-bool Operator::hasArity(Arity a) const {return a == arity;}
-bool Operator::hasFixity(Fixity f) const {return f == fixity;}
-
-bool Operator::operator==(const Operator& rhs) const {
+bool Operator::operator==(const Operator& rhs) const noexcept {
   return symbol == rhs.symbol &&
     precedence == rhs.precedence &&
     name == rhs.name &&
@@ -45,14 +30,16 @@ bool Operator::operator==(const Operator& rhs) const {
     fixity == rhs.fixity &&
     refList == rhs.refList;
 }
-bool Operator::operator!=(const Operator& rhs) const {
+bool Operator::operator!=(const Operator& rhs) const noexcept {
   return !operator==(rhs);
 }
 
-/// Assignment requires that the first operand is mutable
-static const Operator::RequireReferenceList assignmentList {true, false};
-/// Some unary operators (eg ++) mutate their operand
-static const Operator::RequireReferenceList unaryOps {true};
+namespace {
+  /// Assignment requires that the first operand is mutable
+  const Operator::RequireReferenceList assignmentList {true, false};
+  /// Some unary operators (eg ++) mutate their operand
+  const Operator::RequireReferenceList unaryOps {true};
+}
 
 const std::vector<Operator> Operator::list {
   Operator("==", 7, "Equality"),

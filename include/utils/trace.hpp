@@ -11,17 +11,17 @@
   \brief Tracks a position in a file.
 */
 struct Position {
-  uint64 line;
-  uint64 col;
+  uint64_t line;
+  uint64_t col;
   
-  inline Position(uint64 line, uint64 col): line(line), col(col) {}
+  inline constexpr Position(uint64_t line, uint64_t col) noexcept: line(line), col(col) {}
   
   inline std::string toString() const noexcept {
     return fmt::format("{0}:{1}", line, col);
   }
 };
 
-inline std::ostream& operator<<(std::ostream& os, const Position& pos) {
+inline std::ostream& operator<<(std::ostream& os, const Position& pos) noexcept {
   return os << pos.toString();
 }
 
@@ -33,16 +33,22 @@ private:
   Position start;
   Position end;
 public:
-  Range(Position start, Position end);
-  Range(Position where, uint charCount);
+  inline constexpr Range(Position start, Position end) noexcept: start(start), end(end) {}
+  inline constexpr Range(Position where, unsigned charCount) noexcept: start(where), end(Position(where.line, where.col + charCount)) {}
   
-  const Position getStart() const noexcept;
-  const Position getEnd() const noexcept;
+  inline constexpr Position getStart() const noexcept {
+    return start;
+  }
+  inline constexpr Position getEnd() const noexcept {
+    return end;
+  }
   
-  std::string toString() const noexcept;
+  inline std::string toString() const noexcept {
+    return fmt::format("from {0} to {1}", start, end);
+  }
 };
 
-inline std::ostream& operator<<(std::ostream& os, const Range& r) {
+inline std::ostream& operator<<(std::ostream& os, const Range& r) noexcept {
   return os << r.toString();
 }
 
@@ -56,16 +62,23 @@ private:
   Range location;
   // std::stack<?FunctionData?> stack; TODO
 public:
-  Trace(std::string file, Range location);
-  Trace(std::nullptr_t);
+  inline Trace(std::string file, Range location) noexcept: file(file), location(location) {}
+  inline Trace(std::nullptr_t) noexcept: isNullTrace(true), location(Range(Position(0, 0), 0)) {}
   
-  const Range getRange() const noexcept;
-  const std::string& getFileName() const noexcept;
+  inline Range getRange() const noexcept {
+    return location;
+  }
+  inline std::string getFileName() const noexcept {
+    return file;
+  }
   
-  std::string toString() const noexcept;
+  inline std::string toString() const noexcept {
+    if (isNullTrace) return "";
+    else return fmt::format("found {0} in {1}", location, file);
+  }
 };
 
-inline std::ostream& operator<<(std::ostream& os, const Trace& tr) {
+inline std::ostream& operator<<(std::ostream& os, const Trace& tr) noexcept {
   return os << tr.toString();
 }
 

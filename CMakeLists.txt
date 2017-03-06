@@ -151,7 +151,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 set(COMMON_SOURCES
   ${SRC_DIR}/utils/util.cpp
-  ${SRC_DIR}/utils/trace.cpp
   ${SRC_DIR}/utils/error.cpp
   ${SRC_DIR}/utils/typeInfo.cpp
   ${SRC_DIR}/operator.cpp

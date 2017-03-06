@@ -63,7 +63,7 @@ inline void Lexer::handleMultiLineComments() {
   }
 }
 
-uint Lexer::readRadix() {
+unsigned Lexer::readRadix() {
   if (current() == '0' && isalpha(peekAhead(1))) {
     Position zeroPos = getPos();
     auto radixIdent = peekAhead(1);
@@ -83,7 +83,7 @@ uint Lexer::readRadix() {
 // It doesn't matter for these comparisons
 #pragma GCC diagnostic ignored "-Wsign-compare"
 
-bool Lexer::isValidForRadix(char c, uint radix) const noexcept {
+bool Lexer::isValidForRadix(char c, unsigned radix) const noexcept {
   if (radix == 0) return false;
   if (radix <= 10 && c >= '0' && c < '0' + radix) return true;
   if (c >= '0' && c <= '9') return true;
@@ -94,7 +94,7 @@ bool Lexer::isValidForRadix(char c, uint radix) const noexcept {
 
 #pragma GCC diagnostic pop
 
-Token Lexer::readNumber(uint radix) {
+Token Lexer::readNumber(unsigned radix) {
   Position start = getPos();
   if (current() == '0' && std::isdigit(peekAhead(1)))
     throw "Numbers cannot begin with '0'"_syntax + traceFor(1);
@@ -187,7 +187,7 @@ void Lexer::processTokens() {
     if (std::isspace(current())) continue;
     // Check for number literals
     if (std::isdigit(current())) {
-      uint radix = readRadix();
+      unsigned radix = readRadix();
       tokens.push_back(readNumber(radix));
       continue;
     }
@@ -309,25 +309,4 @@ void Lexer::processTokens() {
     throw "Unmatched parenthesis"_syntax + parenStack.top().trace;
   }
   tokens.push_back(Token(TT::FILE_END, traceFor(1)));
-}
-
-Token Lexer::operator[](std::size_t at) const {
-  return tokens[at];
-}
-
-const std::string& Lexer::getCode() const noexcept {
-  return code;
-}
-
-const std::vector<Token>& Lexer::getTokens() const noexcept {
-  return tokens;
-}
-
-uint64 Lexer::getLineCount() const noexcept {
-  if (tokens.empty()) return 0;
-  return currentLine;
-}
-
-std::string Lexer::getCodeSource() const noexcept {
-  return sourceOfCode;
 }

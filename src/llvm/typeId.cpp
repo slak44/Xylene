@@ -1,14 +1,6 @@
 #include "llvm/typeId.hpp"
 #include "llvm/typeData.hpp"
 
-UniqueIdentifier AbstractId::getId() const {
-  return id;
-}
-
-TypeName AbstractId::getName() const {
-  return name;
-}
-
 TypeId::TypeId(TypeData* tyData): tyData(tyData) {
   name = tyData->getName();
 }
@@ -24,20 +16,12 @@ std::shared_ptr<TypeId> TypeId::createBasic(TypeName name, llvm::Type* ty) {
   return std::make_shared<TypeId>(TypeId(name, ty));
 }
 
-TypeData* TypeId::getTyData() const {
-  return tyData;
-}
-
-llvm::Type* TypeId::getAllocaType() const {
+llvm::Type* TypeId::getAllocaType() const noexcept {
   if (basicTy) return basicTy;
   else return tyData->getStructTy();
 }
 
-TypeList TypeId::storedNames() const {
-  return {name};
-}
-
-TypeCompat TypeId::isCompat(AbstractId::Link rhs) const {
+TypeCompat TypeId::isCompat(AbstractId::Link rhs) const noexcept {
   if (rhs->storedTypeCount() == 1) {
     return *rhs == *this ? COMPATIBLE : INCOMPATIBLE;
   }
@@ -71,11 +55,7 @@ TypeListId::Link TypeListId::create(
   return std::make_shared<TypeListId>(TypeListId(n, v, t));
 }
 
-std::unordered_set<AbstractId::Link> TypeListId::getTypes() const {
-  return types;
-}
-
-TypeList TypeListId::storedNames() const {
+TypeList TypeListId::storedNames() const noexcept {
   TypeList names;
   std::for_each(ALL(types), [&](AbstractId::Link id) {
     names.insert(id->getName());
@@ -83,11 +63,11 @@ TypeList TypeListId::storedNames() const {
   return names;
 }
 
-llvm::Type* TypeListId::getAllocaType() const {
+llvm::Type* TypeListId::getAllocaType() const noexcept {
   return taggedUnionType;
 }
 
-TypeCompat TypeListId::isCompat(AbstractId::Link rhs) const {
+TypeCompat TypeListId::isCompat(AbstractId::Link rhs) const noexcept {
   if (rhs->storedTypeCount() == 1) {
     return includes(types, rhs) ? COMPATIBLE : INCOMPATIBLE;
   }

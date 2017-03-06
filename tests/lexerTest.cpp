@@ -8,7 +8,7 @@
 class LexerTest: public ::testing::Test {
 protected:
   std::unique_ptr<Lexer> lx;
-  const std::vector<Token>& getTokens(std::string code) {
+  std::vector<Token> getTokens(std::string code) {
     lx = Lexer::tokenize(code, "<lexer-test>");
     return lx->getTokens();
   }
