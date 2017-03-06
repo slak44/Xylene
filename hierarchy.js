@@ -32,7 +32,9 @@ var hierarchy =
       ] ],
       [ "ModuleCompiler", "class_module_compiler.html", null ]
     ] ],
-    [ "Error", "class_error.html", null ],
+    [ "exception", null, [
+      [ "Error", "class_error.html", null ]
+    ] ],
     [ "FunctionSignature", "class_function_signature.html", null ],
     [ "std::hash< AbstractId >", "structstd_1_1hash_3_01_abstract_id_01_4.html", null ],
     [ "std::hash< vector< AbstractId::Link > >", "structstd_1_1hash_3_01vector_3_01_abstract_id_1_1_link_01_4_01_4.html", null ],

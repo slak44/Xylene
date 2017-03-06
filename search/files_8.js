@@ -4,7 +4,6 @@ var searchData=
   ['token_2ehpp',['token.hpp',['../token_8hpp.html',1,'']]],
   ['tokenparser_2ecpp',['tokenParser.cpp',['../token_parser_8cpp.html',1,'']]],
   ['tokenparser_2ehpp',['tokenParser.hpp',['../token_parser_8hpp.html',1,'']]],
-  ['trace_2ecpp',['trace.cpp',['../trace_8cpp.html',1,'']]],
   ['trace_2ehpp',['trace.hpp',['../trace_8hpp.html',1,'']]],
   ['typedata_2ecpp',['typeData.cpp',['../type_data_8cpp.html',1,'']]],
   ['typedata_2ehpp',['typeData.hpp',['../type_data_8hpp.html',1,'']]],

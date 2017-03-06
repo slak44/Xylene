@@ -1,7 +1,7 @@
 var struct_position =
 [
-    [ "Position", "struct_position.html#a84a1f2f14203ee8283398811562e5350", null ],
+    [ "Position", "struct_position.html#aeb1e7d1694f9095cb926b1bb2246e679", null ],
     [ "toString", "struct_position.html#a898d96dc168c02365de0966e6797b18f", null ],
-    [ "col", "struct_position.html#abff90067890ce6b6329ce72e095b3c2e", null ],
-    [ "line", "struct_position.html#a188e34bf052a700e6483471b4d00269e", null ]
+    [ "col", "struct_position.html#a8d504f0372e809088573d61e3cd73850", null ],
+    [ "line", "struct_position.html#a33c5ff0358fc839baba8a5e0c0fafcd6", null ]
 ];

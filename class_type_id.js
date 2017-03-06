@@ -5,9 +5,9 @@ var class_type_id =
     [ "TypeId", "class_type_id.html#af140701edfacafb3741edda6dc94decd", null ],
     [ "create", "class_type_id.html#a204102276389abdfe35e73421aad6da6", null ],
     [ "createBasic", "class_type_id.html#a8bb743bde3c3bade8deb96fbbb2016fb", null ],
-    [ "getAllocaType", "class_type_id.html#a3d8bbe3e2f195fe7795b67b0db8cbc44", null ],
-    [ "getTyData", "class_type_id.html#a4774345f8675fa5cc95de26c2e611b15", null ],
-    [ "isCompat", "class_type_id.html#a940d15e954c3c90bd49a704a9bc92b21", null ],
-    [ "storedNames", "class_type_id.html#a5073d7cff91e2cb7c50d8d26f37dd421", null ],
-    [ "storedTypeCount", "class_type_id.html#adef640495bac3010cd88681ed8cd46cb", null ]
+    [ "getAllocaType", "class_type_id.html#a402a22753a4f8ae320d0e79e8a25c265", null ],
+    [ "getTyData", "class_type_id.html#a9cadba6ec26e9e7ec6ced5c8201b740b", null ],
+    [ "isCompat", "class_type_id.html#abbad0a50cfc0c38418316ef080be9c3f", null ],
+    [ "storedNames", "class_type_id.html#ad8016dd37a30aa369752d3467c9c4973", null ],
+    [ "storedTypeCount", "class_type_id.html#a759ea507fb9868233f49be3f170c4b60", null ]
 ];

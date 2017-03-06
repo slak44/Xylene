@@ -8,6 +8,6 @@ var dir_d612b803ecabf4a52a1367cdf291ab62 =
     [ "ast.overrides.cpp", "ast_8overrides_8cpp.html", "ast_8overrides_8cpp" ],
     [ "lexer.cpp", "lexer_8cpp.html", null ],
     [ "main.cpp", "main_8cpp.html", "main_8cpp" ],
-    [ "operator.cpp", "operator_8cpp.html", "operator_8cpp" ],
+    [ "operator.cpp", "operator_8cpp.html", null ],
     [ "token.cpp", "token_8cpp.html", null ]
 ];

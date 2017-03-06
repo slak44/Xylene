@@ -195,8 +195,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1cd22d3803bc055ec10fff80a12178c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4e87e3c7a5a21a34e074cd699b20a6c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="class_token_type.html">TokenType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_t_t.html#af4e87e3c7a5a21a34e074cd699b20a6c">UNPROCESSED</a> (0, &quot;Unprocessed?&quot;)</td></tr>
 <tr class="separator:af4e87e3c7a5a21a34e074cd699b20a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f89b0584d90d21bc780e112a4859ba1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_token_type.html">TokenType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_t_t.html#a1f89b0584d90d21bc780e112a4859ba1">findConstruct</a> (char)</td></tr>
-<tr class="separator:a1f89b0584d90d21bc780e112a4859ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52c42958cd59fd0cb4c7c17076b1308d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_token_type.html">TokenType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_t_t.html#a52c42958cd59fd0cb4c7c17076b1308d">findConstruct</a> (char) noexcept</td></tr>
+<tr class="separator:a52c42958cd59fd0cb4c7c17076b1308d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -208,8 +208,8 @@ Variables</h2></td></tr>
 <tr class="separator:abb68104e21ec2351cd79b2422d27581f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55d3faba06a8fc8ab64ec1df56713b80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_token_type.html">TokenType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_t_t.html#a55d3faba06a8fc8ab64ec1df56713b80">findByPrettyName</a> (std::string)</td></tr>
 <tr class="separator:a55d3faba06a8fc8ab64ec1df56713b80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac46e9f7fdc23f5b7c51cc8fd0294efed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_token_type.html">TokenType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_t_t.html#ac46e9f7fdc23f5b7c51cc8fd0294efed">findKeyword</a> (std::string)</td></tr>
-<tr class="separator:ac46e9f7fdc23f5b7c51cc8fd0294efed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7574f0fe8b34927bbfaf129da71be2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_token_type.html">TokenType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_t_t.html#af7574f0fe8b34927bbfaf129da71be2b">findKeyword</a> (std::string) noexcept</td></tr>
+<tr class="separator:af7574f0fe8b34927bbfaf129da71be2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="namespace_t_t.html">TT</a> stands for <a class="el" href="class_token_type.html">TokenType</a>, because a namespace can't have the same name as a class These identifiers inside are all caps because they are pretending to be enum values </p>
@@ -647,11 +647,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a1f89b0584d90d21bc780e112a4859ba1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f89b0584d90d21bc780e112a4859ba1">&#9670;&nbsp;</a></span>findConstruct()</h2>
+<a id="a52c42958cd59fd0cb4c7c17076b1308d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52c42958cd59fd0cb4c7c17076b1308d">&#9670;&nbsp;</a></span>findConstruct()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_token_type.html">TokenType</a> TT::findConstruct </td>
@@ -661,6 +664,11 @@ Variables</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1560,11 +1568,11 @@ Variables</h2></td></tr>
 <div class="ttc" id="namespace_t_t_html_a2bc3956c46f9c145dd8390d541b66559"><div class="ttname"><a href="namespace_t_t.html#a2bc3956c46f9c145dd8390d541b66559">TT::SEMI</a></div><div class="ttdeci">constexpr Construct SEMI(';', 300, &quot;Semicolon&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_a0cc502fae62a2d6edbae1ff2802b9316"><div class="ttname"><a href="namespace_t_t.html#a0cc502fae62a2d6edbae1ff2802b9316">TT::QUESTION</a></div><div class="ttdeci">constexpr Construct QUESTION('?', 302, &quot;Question mark&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_a05a7dbbbed473a8d5f9906fda5f1796f"><div class="ttname"><a href="namespace_t_t.html#a05a7dbbbed473a8d5f9906fda5f1796f">TT::FOR</a></div><div class="ttdeci">constexpr Keyword FOR(213, &quot;for&quot;)</div></div>
-<div class="ttc" id="ast_8hpp_html_a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf"><div class="ttname"><a href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf">PUBLIC</a></div><div class="ttdef"><b>Definition:</b> ast.hpp:409</div></div>
+<div class="ttc" id="ast_8hpp_html_a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf"><div class="ttname"><a href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf">PUBLIC</a></div><div class="ttdef"><b>Definition:</b> ast.hpp:473</div></div>
 <div class="ttc" id="namespace_t_t_html_a6dbad6f040e4f964b1d1628f429161e9"><div class="ttname"><a href="namespace_t_t.html#a6dbad6f040e4f964b1d1628f429161e9">TT::EXPORT</a></div><div class="ttdeci">constexpr Keyword EXPORT(203, &quot;export&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_af14ab1a5c06fd56c3452c5da86edb6f4"><div class="ttname"><a href="namespace_t_t.html#af14ab1a5c06fd56c3452c5da86edb6f4">TT::PAREN_LEFT</a></div><div class="ttdeci">constexpr Construct PAREN_LEFT('(', 303, &quot;Left parenthesis&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_a115c899634bb917df07e3d5ce90c515a"><div class="ttname"><a href="namespace_t_t.html#a115c899634bb917df07e3d5ce90c515a">TT::PROTECT</a></div><div class="ttdeci">constexpr Keyword PROTECT(225, &quot;protected&quot;)</div></div>
-<div class="ttc" id="ast_8hpp_html_a53d6f8ccb0015ea020228de41cfd2162a0f0fd409954c4ec858e4cd7594059792"><div class="ttname"><a href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162a0f0fd409954c4ec858e4cd7594059792">PRIVATE</a></div><div class="ttdef"><b>Definition:</b> ast.hpp:409</div></div>
+<div class="ttc" id="ast_8hpp_html_a53d6f8ccb0015ea020228de41cfd2162a0f0fd409954c4ec858e4cd7594059792"><div class="ttname"><a href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162a0f0fd409954c4ec858e4cd7594059792">PRIVATE</a></div><div class="ttdef"><b>Definition:</b> ast.hpp:473</div></div>
 <div class="ttc" id="namespace_t_t_html_a29eb8f7c6e20705c5616b1837d01c84a"><div class="ttname"><a href="namespace_t_t.html#a29eb8f7c6e20705c5616b1837d01c84a">TT::END</a></div><div class="ttdeci">constexpr Keyword END(209, &quot;end&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_a32bfda0abfa3510c8595c150046a1109"><div class="ttname"><a href="namespace_t_t.html#a32bfda0abfa3510c8595c150046a1109">TT::INTEGER</a></div><div class="ttdeci">constexpr Literal INTEGER(100, &quot;Integer&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_ace956369729a41c0e9819a06f2e9df33"><div class="ttname"><a href="namespace_t_t.html#ace956369729a41c0e9819a06f2e9df33">TT::FUNCTION</a></div><div class="ttdeci">constexpr Keyword FUNCTION(206, &quot;function&quot;)</div></div>
@@ -1637,16 +1645,24 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ac46e9f7fdc23f5b7c51cc8fd0294efed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac46e9f7fdc23f5b7c51cc8fd0294efed">&#9670;&nbsp;</a></span>findKeyword</h2>
+<a id="af7574f0fe8b34927bbfaf129da71be2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7574f0fe8b34927bbfaf129da71be2b">&#9670;&nbsp;</a></span>findKeyword</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_token_type.html">TokenType</a> TT::findKeyword</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1666,10 +1682,10 @@ Variables</h2></td></tr>
 <div class="ttc" id="namespace_t_t_html_a12c1674f03b9163a17e062eebf664b86"><div class="ttname"><a href="namespace_t_t.html#a12c1674f03b9163a17e062eebf664b86">TT::BREAK</a></div><div class="ttdeci">constexpr Keyword BREAK(214, &quot;break&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_a5083d346aaf46df8a315ac59e0437cf0"><div class="ttname"><a href="namespace_t_t.html#a5083d346aaf46df8a315ac59e0437cf0">TT::TRY</a></div><div class="ttdeci">constexpr Keyword TRY(228, &quot;try&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_a05a7dbbbed473a8d5f9906fda5f1796f"><div class="ttname"><a href="namespace_t_t.html#a05a7dbbbed473a8d5f9906fda5f1796f">TT::FOR</a></div><div class="ttdeci">constexpr Keyword FOR(213, &quot;for&quot;)</div></div>
-<div class="ttc" id="ast_8hpp_html_a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf"><div class="ttname"><a href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf">PUBLIC</a></div><div class="ttdef"><b>Definition:</b> ast.hpp:409</div></div>
+<div class="ttc" id="ast_8hpp_html_a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf"><div class="ttname"><a href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf">PUBLIC</a></div><div class="ttdef"><b>Definition:</b> ast.hpp:473</div></div>
 <div class="ttc" id="namespace_t_t_html_a6dbad6f040e4f964b1d1628f429161e9"><div class="ttname"><a href="namespace_t_t.html#a6dbad6f040e4f964b1d1628f429161e9">TT::EXPORT</a></div><div class="ttdeci">constexpr Keyword EXPORT(203, &quot;export&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_a115c899634bb917df07e3d5ce90c515a"><div class="ttname"><a href="namespace_t_t.html#a115c899634bb917df07e3d5ce90c515a">TT::PROTECT</a></div><div class="ttdeci">constexpr Keyword PROTECT(225, &quot;protected&quot;)</div></div>
-<div class="ttc" id="ast_8hpp_html_a53d6f8ccb0015ea020228de41cfd2162a0f0fd409954c4ec858e4cd7594059792"><div class="ttname"><a href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162a0f0fd409954c4ec858e4cd7594059792">PRIVATE</a></div><div class="ttdef"><b>Definition:</b> ast.hpp:409</div></div>
+<div class="ttc" id="ast_8hpp_html_a53d6f8ccb0015ea020228de41cfd2162a0f0fd409954c4ec858e4cd7594059792"><div class="ttname"><a href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162a0f0fd409954c4ec858e4cd7594059792">PRIVATE</a></div><div class="ttdef"><b>Definition:</b> ast.hpp:473</div></div>
 <div class="ttc" id="namespace_t_t_html_a29eb8f7c6e20705c5616b1837d01c84a"><div class="ttname"><a href="namespace_t_t.html#a29eb8f7c6e20705c5616b1837d01c84a">TT::END</a></div><div class="ttdeci">constexpr Keyword END(209, &quot;end&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_ace956369729a41c0e9819a06f2e9df33"><div class="ttname"><a href="namespace_t_t.html#ace956369729a41c0e9819a06f2e9df33">TT::FUNCTION</a></div><div class="ttdeci">constexpr Keyword FUNCTION(206, &quot;function&quot;)</div></div>
 <div class="ttc" id="namespace_t_t_html_a81a5b942712caa89f6e6c908299768f3"><div class="ttname"><a href="namespace_t_t.html#a81a5b942712caa89f6e6c908299768f3">TT::RETURN</a></div><div class="ttdeci">constexpr Keyword RETURN(207, &quot;return&quot;)</div></div>
