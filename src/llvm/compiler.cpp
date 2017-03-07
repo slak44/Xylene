@@ -421,7 +421,7 @@ ValueWrapper::Link ModuleCompiler::boxPrimitive(ValueWrapper::Link p) {
 }
 
 void ModuleCompiler::insertRuntimeTypeCheck(
-  DeclarationWrapper::Link target,
+  ValueWrapper::Link target,
   ValueWrapper::Link newValue
 ) {
   builder->CreateCall(
@@ -470,7 +470,7 @@ llvm::Value* ModuleCompiler::storeTypeList(
 }
 
 void ModuleCompiler::assignToUnion(
-  DeclarationWrapper::Link unionWrapper,
+  ValueWrapper::Link unionWrapper,
   ValueWrapper::Link newValue
 ) {
   llvm::DataLayout d(module);
@@ -532,7 +532,7 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
     storeTypeList(decl, list->getId());
   }
   auto id = typeIdFromInfo(node->getTypeInfo(), node);
-  auto declWrap = std::make_shared<DeclarationWrapper>(decl, id);
+  auto declWrap = std::make_shared<ValueWrapper>(decl, id);
   
   // Add to scope
   auto inserted =

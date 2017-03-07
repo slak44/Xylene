@@ -43,15 +43,6 @@ llvm::Function* FunctionWrapper::getValue() const {
   return static_cast<llvm::Function*>(llvmValue);
 }
 
-DeclarationWrapper::DeclarationWrapper(
-  llvm::Value* decl,
-  AbstractId::Link id
-): ValueWrapper(decl, id), tlid(PtrUtil<TypeListId>::staticPtrCast(id)) {}
-
-TypeListId::Link DeclarationWrapper::getTypeList() const {
-  return tlid;
-}
-
 InstanceWrapper::InstanceWrapper(
   llvm::Value* instance,
   TypeId::Link tid
@@ -62,7 +53,7 @@ InstanceWrapper::InstanceWrapper(
   );
 }
 
-DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
+ValueWrapper::Link InstanceWrapper::getMember(std::string name) {
   TypeData* tyd = PtrUtil<TypeId>::staticPtrCast(currentType)->getTyData();
   if (tyd->dataType->isOpaque())
     throw InternalError("Member was accessed before struct body was added", {
@@ -88,7 +79,7 @@ DeclarationWrapper::Link InstanceWrapper::getMember(std::string name) {
       "gep_" + name
     );
     auto id = tyd->mc->typeIdFromInfo((*member)->getTypeInfo(), tyd->node);
-    return members[name] = std::make_shared<DeclarationWrapper>(gep, id);
+    return members[name] = std::make_shared<ValueWrapper>(gep, id);
   } else {
     return members[name];
   }

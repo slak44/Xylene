@@ -49,27 +49,6 @@ public:
 };
 
 /**
-  \brief Holds the value pointing to the declared variable, its current type, and its
-  list of allowed types
-*/
-class DeclarationWrapper: public ValueWrapper {
-public:
-  using Link = std::shared_ptr<DeclarationWrapper>;
-private:
-  TypeListId::Link tlid = nullptr;
-public:
-  /**
-    \brief Create a DeclarationWrapper
-    \param decl an AllocaInst
-    \param allowed either a TypeListId or a TypeId of what is allowed to be assigned
-    to this
-  */
-  DeclarationWrapper(llvm::Value* decl, AbstractId::Link allowed);
-  
-  TypeListId::Link getTypeList() const;
-};
-
-/**
   \brief Stores an instance of a user type.
 */
 class InstanceWrapper: public ValueWrapper {
@@ -77,12 +56,12 @@ public:
   using Link = std::shared_ptr<InstanceWrapper>;
 private:
   /// Maps member names to their declaration
-  std::map<std::string, DeclarationWrapper::Link> members {};
+  std::map<std::string, ValueWrapper::Link> members {};
 public:
   InstanceWrapper(llvm::Value*, TypeId::Link current);
   
   /// Get a pointer to the member with the specified name
-  DeclarationWrapper::Link getMember(std::string name);
+  ValueWrapper::Link getMember(std::string name);
 };
 
 #endif

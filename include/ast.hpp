@@ -19,7 +19,7 @@ namespace llvm {
 }
 
 class TypeData;
-class DeclarationWrapper;
+class ValueWrapper;
 class FunctionWrapper;
 
 class ASTVisitor;
@@ -176,7 +176,7 @@ private:
   BlockType type;
 public:
   /// Maps identifiers to their declaration (contains current value/type)
-  std::map<std::string, std::shared_ptr<DeclarationWrapper>> blockScope {};
+  std::map<std::string, std::shared_ptr<ValueWrapper>> blockScope {};
   /// Maps function names to their respective FunctionWrapper
   std::map<std::string, std::shared_ptr<FunctionWrapper>> blockFuncs {};
   /// List of types defined in this block

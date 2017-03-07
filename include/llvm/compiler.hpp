@@ -152,7 +152,7 @@ private:
   /// Checks if assignment is allowed. Inserts IR
   void typeCheck(AbstractId::Link, ValueWrapper::Link, Error);
   /// Inserts a call to the runtime '_xyl_typeErrIfIncompatible' function
-  void insertRuntimeTypeCheck(DeclarationWrapper::Link, ValueWrapper::Link);
+  void insertRuntimeTypeCheck(ValueWrapper::Link target, ValueWrapper::Link);
   /// Inserts a call to the runtime '_xyl_typeErrIfIncompatibleTid' function
   void insertRuntimeTypeCheck(AbstractId::Link, ValueWrapper::Link);
   /// Inserts a call to malloc and returns a pointer with the ValueWrapper's type
@@ -160,7 +160,7 @@ private:
   // Store in the allowed type list field of a union
   llvm::Value* storeTypeList(llvm::Value* taggedUnion, UniqueIdentifier typeList);
   // Update all required fields in a union when assigning a new value
-  void assignToUnion(DeclarationWrapper::Link, ValueWrapper::Link);
+  void assignToUnion(ValueWrapper::Link to, ValueWrapper::Link from);
   /**
     \brief Creates a pointer pointing to a specific function's argument
     

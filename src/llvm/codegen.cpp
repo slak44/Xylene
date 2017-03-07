@@ -339,7 +339,7 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
   specialCodegenMap({
     {"Assignment", [=] SPECIAL_CODEGEN_SIG {
       auto varIdent = Node<ExpressionNode>::staticPtrCast(node)->at(0);
-      DeclarationWrapper::Link decl = PtrUtil<DeclarationWrapper>::dynPtrCast(operands[0]);
+      ValueWrapper::Link decl = PtrUtil<ValueWrapper>::dynPtrCast(operands[0]);
       if (decl == nullptr)
         throw "Cannot assign to '{}'"_ref(varIdent->getToken().data) + varIdent->getToken().trace;
       
@@ -352,7 +352,7 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
         ) + varIdent->getToken().trace);
       
       // TODO: this needs work
-      if (decl->getTypeList()->storedTypeCount() > 1) {
+      if (decl->getCurrentType()->storedTypeCount() > 1) {
         // TODO: reclaim the memory that this location points to !!!
         // auto oldDataPtrLocation =
         //   mc->builder->CreateConstGEP1_32(operands[0]->getValue(), 0);
