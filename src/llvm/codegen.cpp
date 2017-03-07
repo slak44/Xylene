@@ -3,10 +3,10 @@
 using CmpPred = llvm::CmpInst::Predicate;
 
 static ValueWrapper::Link loadIfPointer(std::unique_ptr<llvm::IRBuilder<>>& builder, ValueWrapper::Link maybePointer) {
-  if (llvm::dyn_cast_or_null<llvm::PointerType>(maybePointer->getValue()->getType())) {
+  if (llvm::dyn_cast_or_null<llvm::PointerType>(maybePointer->val->getType())) {
     return std::make_shared<ValueWrapper>(
-      builder->CreateLoad(maybePointer->getValue(), "loadIfPointer"),
-      maybePointer->getCurrentType()
+      builder->CreateLoad(maybePointer->val, "loadIfPointer"),
+      maybePointer->ty
     );
   }
   return maybePointer;
@@ -15,7 +15,7 @@ static ValueWrapper::Link loadIfPointer(std::unique_ptr<llvm::IRBuilder<>>& buil
 ValueWrapper::Link OperatorCodegen::findAndRunFun(Node<ExpressionNode>::Link node, ValueList operands) {
   // We don't take too kindly to void types around here...
   if (std::find_if(ALL(operands), [&](auto op) {
-    return op->getCurrentType() == mc->voidTid;
+    return op->ty == mc->voidTid;
   }) != operands.end()) {
     throw "Void cannot be used in expressions"_type + node->getToken().trace;
   }
@@ -31,7 +31,7 @@ ValueWrapper::Link OperatorCodegen::findAndRunFun(Node<ExpressionNode>::Link nod
   // Map an operand to a std::string representing its type
   std::transform(ALL(operands), operandTypes.begin(), [&](ValueWrapper::Link val) {
     processedOperands.push_back(loadIfPointer(mc->builder, val));
-    return val->getCurrentType();
+    return val->ty;
   });
   return getNormalFun(node, operandTypes)(processedOperands, operands, node->getToken().trace);
 }
@@ -74,7 +74,7 @@ OperatorCodegen::CodegenFunction OperatorCodegen::getNormalFun(
 }
 
 /// Convenience macro for getting 2 values for a binary operator
-#define BIN_VALUES operands[0]->getValue(), operands[1]->getValue()
+#define BIN_VALUES operands[0]->val, operands[1]->val
 
 /**
   \brief Define repetitive arithmetic ops easily.
@@ -133,17 +133,13 @@ static inline ValueWrapper::Link boolVal(TypeId::Link b, llvm::Value* v) {
   return boolVal(mc->booleanTid, mc->builder->CreateICmp(intCmpPred, BIN_VALUES, "intcmp" opTextName));\
 }},\
 {{mc->integerTid, mc->floatTid}, [=] CODEGEN_SIG {\
-  operands[0]->setValue(\
-    mc->builder->CreateSIToFP(operands[0]->getValue(), mc->floatType, "SItoFPconv"),\
-    mc->floatTid\
-  );\
+  operands[0]->val = mc->builder->CreateSIToFP(operands[0]->val, mc->floatType, "SItoFPconv");\
+  operands[0]->ty = mc->floatTid;\
   return boolVal(mc->booleanTid, mc->builder->CreateFCmp(fltCmpPred, BIN_VALUES, "intfltcmp" opTextName));\
 }},\
 {{mc->floatTid, mc->integerTid}, [=] CODEGEN_SIG {\
-  operands[1]->setValue(\
-    mc->builder->CreateSIToFP(operands[1]->getValue(), mc->floatType, "SItoFPconv"),\
-    mc->floatTid\
-  );\
+  operands[1]->val = mc->builder->CreateSIToFP(operands[1]->val, mc->floatType, "SItoFPconv");\
+  operands[1]->ty = mc->floatTid;\
   return boolVal(mc->booleanTid, mc->builder->CreateFCmp(fltCmpPred, BIN_VALUES, "fltintcmp" opTextName));\
 }},\
 {{mc->floatTid, mc->floatTid}, [=] CODEGEN_SIG {\
@@ -177,9 +173,9 @@ static llvm::Constant* getOne(std::string ofWhat, llvm::Type* intTy, llvm::Type*
 */
 #define POSTFIX_OP_FUN(builderMethod, type, opTextName) \
 {{type}, [=] CODEGEN_SIG {\
-  auto initial = mc->builder->CreateLoad(rawOperands[0]->getValue(), "postfix" opTextName "load");\
+  auto initial = mc->builder->CreateLoad(rawOperands[0]->val, "postfix" opTextName "load");\
   auto changed = mc->builder->Create##builderMethod(initial, getOne(type->getName(), mc->integerType, mc->floatType), "int" opTextName);\
-  mc->builder->CreateStore(changed, rawOperands[0]->getValue());\
+  mc->builder->CreateStore(changed, rawOperands[0]->val);\
   return std::make_shared<ValueWrapper>(initial, type);\
 }}
 
@@ -191,9 +187,9 @@ static llvm::Constant* getOne(std::string ofWhat, llvm::Type* intTy, llvm::Type*
 */
 #define PREFIX_OP_FUN(builderMethod, type, opTextName) \
 {{type}, [=] CODEGEN_SIG {\
-  auto initial = mc->builder->CreateLoad(rawOperands[0]->getValue(), "prefix" opTextName "load");\
+  auto initial = mc->builder->CreateLoad(rawOperands[0]->val, "prefix" opTextName "load");\
   auto changed = mc->builder->Create##builderMethod(initial, getOne(type->getName(), mc->integerType, mc->floatType), "int" opTextName);\
-  return std::make_shared<ValueWrapper>(mc->builder->CreateStore(changed, rawOperands[0]->getValue()), type);\
+  return std::make_shared<ValueWrapper>(mc->builder->CreateStore(changed, rawOperands[0]->val), type);\
 }}
 
 /**
@@ -219,7 +215,7 @@ static llvm::Constant* getOne(std::string ofWhat, llvm::Type* intTy, llvm::Type*
 #define BITWISE_NOT_PAIR(forType, typeName, opTextName) \
 {{forType}, [=] CODEGEN_SIG {\
   return std::make_shared<ValueWrapper>(\
-    mc->builder->CreateNot(operands[0]->getValue(), typeName opTextName "not"),\
+    mc->builder->CreateNot(operands[0]->val, typeName opTextName "not"),\
     forType\
   );\
 }}
@@ -267,13 +263,13 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
     {"Unary -", {
       {{mc->integerTid}, [=] CODEGEN_SIG {
         return std::make_shared<ValueWrapper>(
-          mc->builder->CreateNeg(operands[0]->getValue(), "negateint"),
+          mc->builder->CreateNeg(operands[0]->val, "negateint"),
           mc->integerTid
         );
       }},
       {{mc->floatTid}, [=] CODEGEN_SIG {
         return std::make_shared<ValueWrapper>(
-          mc->builder->CreateFNeg(operands[0]->getValue(), "negateflt"),
+          mc->builder->CreateFNeg(operands[0]->val, "negateflt"),
           mc->floatTid
         );
       }}
@@ -344,22 +340,22 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
         throw "Cannot assign to '{}'"_ref(varIdent->getToken().data) + varIdent->getToken().trace;
       
       // If the declaration doesn't allow this type, complain
-      mc->typeCheck(decl->getCurrentType(), operands[1],
+      mc->typeCheck(decl->ty, operands[1],
         "Value '{0}' ({1}) does not allow assigning type '{2}'"_type(
           varIdent->getToken().data,
-          decl->getCurrentType()->typeNames(),
-          operands[1]->getCurrentType()->typeNames()
+          decl->ty->typeNames(),
+          operands[1]->ty->typeNames()
         ) + varIdent->getToken().trace);
       
       // TODO: this needs work
-      if (decl->getCurrentType()->storedTypeCount() > 1) {
+      if (decl->ty->storedTypeCount() > 1) {
         // TODO: reclaim the memory that this location points to !!!
         // auto oldDataPtrLocation =
         //   mc->builder->CreateConstGEP1_32(operands[0]->getValue(), 0);
         mc->assignToUnion(decl, operands[1]);
       } else {
         // Store into the variable
-        mc->builder->CreateStore(operands[1]->getValue(), operands[0]->getValue());
+        mc->builder->CreateStore(operands[1]->val, operands[0]->val);
         // TODO: what the fuck is this?
         // decl->setValue(decl->getValue(), operands[1]->getCurrentType());
       }
@@ -367,7 +363,7 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
       return operands[1];
     }},
     {"Call", [=] SPECIAL_CODEGEN_SIG {
-      if (operands[0]->getCurrentType() != mc->functionTid) {
+      if (operands[0]->ty != mc->functionTid) {
         throw "Attempt to call non-function '{}'"_type(
           Node<ExpressionNode>::staticPtrCast(node)->at(0)->getToken().data) + trace;
       }
@@ -393,9 +389,9 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
           "Function argument '{0}' ({1}) has incompatible type with '{2}'"_type(
             it->first,
             argId->typeNames(),
-            (*opIt)->getCurrentType()->typeNames()
+            (*opIt)->ty->typeNames()
           ) + trace);
-        args.push_back((*opIt)->getValue());
+        args.push_back((*opIt)->val);
       }
       AbstractId::Link ret;
       if (fw->getSignature().getReturnType().isVoid()) ret = mc->voidTid;

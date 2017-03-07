@@ -230,7 +230,7 @@ void ModuleCompiler::visitExpression(Node<ExpressionNode>::Link node) {
 
 bool ModuleCompiler::canBeBoolean(ValueWrapper::Link val) const {
   // TODO: value might be convertible to boolean, check for that as well
-  return val->getCurrentType() == booleanTid;
+  return val->ty == booleanTid;
 }
 
 llvm::Type* ModuleCompiler::typeFromInfo(TypeInfo ti, ASTNode::Link node) {
@@ -320,7 +320,7 @@ ValueWrapper::Link ModuleCompiler::valueFromIdentifier(Node<ExpressionNode>::Lin
     Node<TypeNode>::Link type = Node<TypeNode>::staticPtrCast(parentFun->getParent().lock());
     auto thisObj = getPtrForArgument(type->getTid(), functionStack.top(), 0);
     InstanceWrapper::Link thisInstance = std::make_shared<InstanceWrapper>(
-      thisObj->getValue(),
+      thisObj->val,
       type->getTid()
     );
     try {
@@ -414,10 +414,10 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
 
 // TODO: get rid of this, insertRuntimeTypeCheck should just do manual stuff for those
 ValueWrapper::Link ModuleCompiler::boxPrimitive(ValueWrapper::Link p) {
-  if (p->getValue()->getType()->getPointerElementType() == taggedUnionType) return p;
+  if (p->val->getType()->getPointerElementType() == taggedUnionType) return p;
   auto box = builder->CreateAlloca(taggedUnionType, nullptr, "boxPrimitive");
   // TODO: store value into the box
-  return std::make_shared<ValueWrapper>(box, p->getCurrentType());
+  return std::make_shared<ValueWrapper>(box, p->ty);
 }
 
 void ModuleCompiler::insertRuntimeTypeCheck(
@@ -426,7 +426,7 @@ void ModuleCompiler::insertRuntimeTypeCheck(
 ) {
   builder->CreateCall(
     module->getFunction("_xyl_typeErrIfIncompatible"),
-    {target->getValue(), boxPrimitive(newValue)->getValue()}
+    {target->val, boxPrimitive(newValue)->val}
   );
 }
 
@@ -436,7 +436,7 @@ void ModuleCompiler::insertRuntimeTypeCheck(
 ) {
   builder->CreateCall(
     module->getFunction("_xyl_typeErrIfIncompatibleTid"),
-    {llvm::ConstantInt::get(integerType, target->getId()), boxPrimitive(newValue)->getValue()}
+    {llvm::ConstantInt::get(integerType, target->getId()), boxPrimitive(newValue)->val}
   );
 }
 
@@ -446,7 +446,7 @@ llvm::Value* ModuleCompiler::insertDynAlloc(uint64_t size, ValueWrapper::Link ta
     {llvm::ConstantInt::get(integerType, size)}
   );
   auto properTypePtr = builder->CreateBitCast(
-    i8Ptr, target->getCurrentType()->getAllocaType()->getPointerTo());
+    i8Ptr, target->ty->getAllocaType()->getPointerTo());
   return properTypePtr;
 }
 
@@ -474,30 +474,30 @@ void ModuleCompiler::assignToUnion(
   ValueWrapper::Link newValue
 ) {
   llvm::DataLayout d(module);
-  auto size = d.getTypeAllocSize(newValue->getCurrentType()->getAllocaType());
+  auto size = d.getTypeAllocSize(newValue->ty->getAllocaType());
   auto dataPtr = insertDynAlloc(size, newValue);
   // Store data in memory
-  builder->CreateStore(newValue->getValue(), dataPtr);
+  builder->CreateStore(newValue->val, dataPtr);
   // Store ptr to data in union
   builder->CreateStore(
     dataPtr,
     builder->CreateBitCast(
-      builder->CreateConstGEP1_32(unionWrapper->getValue(), 0),
+      builder->CreateConstGEP1_32(unionWrapper->val, 0),
       dataPtr->getType()->getPointerTo()
     )
   );
   // Update union current type
   builder->CreateStore(
-    llvm::ConstantInt::get(integerType, newValue->getCurrentType()->getId(), false),
+    llvm::ConstantInt::get(integerType, newValue->ty->getId(), false),
     builder->CreateBitCast(
-      builder->CreateConstGEP1_32(unionWrapper->getValue(), 2),
+      builder->CreateConstGEP1_32(unionWrapper->val, 2),
       integerType->getPointerTo()
     )
   );
 }
 
 void ModuleCompiler::typeCheck(AbstractId::Link allowedLhs, ValueWrapper::Link rhs, Error err) {
-  TypeCompat isCompat = allowedLhs->isCompat(rhs->getCurrentType());
+  TypeCompat isCompat = allowedLhs->isCompat(rhs->ty);
   // Statically check that the type of the initialization is allowed by the declaration
   if (isCompat == INCOMPATIBLE) {
     throw err;
@@ -547,12 +547,12 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   
   typeCheck(id, initValue,
     "Type of initialization ({0}) is not allowed by declaration ({1})"_type(
-      initValue->getCurrentType()->typeNames(), id->typeNames()) + node->getTrace());
+      initValue->ty->typeNames(), id->typeNames()) + node->getTrace());
 
   if (decl->getType() == llvm::PointerType::getUnqual(taggedUnionType)) {
     assignToUnion(declWrap, initValue);
   } else {
-    builder->CreateStore(initValue->getValue(), decl);
+    builder->CreateStore(initValue->val, decl);
   }
 }
 
@@ -599,7 +599,7 @@ void ModuleCompiler::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
   if (node->getFailiureBlock() == nullptr) {
     // Does not have else clauses
     builder->SetInsertPoint(current);
-    builder->CreateCondBr(cond->getValue(), success, continueCurrent);
+    builder->CreateCondBr(cond->val, success, continueCurrent);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   }
   auto blockFailNode = Node<BlockNode>::dynPtrCast(node->getFailiureBlock());
@@ -614,7 +614,7 @@ void ModuleCompiler::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     }
     // Add the branch
     builder->SetInsertPoint(current);
-    builder->CreateCondBr(cond->getValue(), success, failiure);
+    builder->CreateCondBr(cond->val, success, failiure);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   } else {
     // Has else-if as failiure
@@ -622,7 +622,7 @@ void ModuleCompiler::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     builder->SetInsertPoint(nextBranch);
     compileBranch(Node<BranchNode>::dynPtrCast(node->getFailiureBlock()), continueCurrent);
     builder->SetInsertPoint(current);
-    builder->CreateCondBr(cond->getValue(), success, nextBranch);
+    builder->CreateCondBr(cond->val, success, nextBranch);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
   }
 }
@@ -648,7 +648,7 @@ void ModuleCompiler::visitLoop(Node<LoopNode>::Link node) {
       throw "Expected boolean expression in loop condition"_type + cond->getTrace();
     }
     // Go to the loop if true, end the loop otherwise
-    builder->CreateCondBr(condValue->getValue(), loopBlock, loopAfter);
+    builder->CreateCondBr(condValue->val, loopBlock, loopAfter);
   } else {
     // There is no condition; unconditionally jump
     builder->CreateBr(loopBlock);
@@ -710,27 +710,21 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   // If the returnedValue's type can't be found in the list of possible return types, get mad
   typeCheck(retId, returnedValue,
     "Function return type ({0}) does not match return value ({1})"_type(
-      retId->typeNames(), returnedValue->getCurrentType()->typeNames()) + node->getTrace());
+      retId->typeNames(), returnedValue->ty->typeNames()) + node->getTrace());
     
-  if (functionStack.top()->getValue()->getReturnType() != returnedValue->getValue()->getType()) {
-    bool isUnion = returnedValue->getValue()->getType() == taggedUnionType->getPointerTo();
+  if (functionStack.top()->getValue()->getReturnType() != returnedValue->val->getType()) {
+    bool isUnion = returnedValue->val->getType() == taggedUnionType->getPointerTo();
     if (isUnion) {
-      returnedValue->setValue(
-        builder->CreateBitCast(
-          builder->CreateConstGEP1_32(returnedValue->getValue(), 0),
-          functionStack.top()->getValue()->getReturnType()->getPointerTo()
-        ),
-        returnedValue->getCurrentType()
+      returnedValue->val = builder->CreateBitCast(
+        builder->CreateConstGEP1_32(returnedValue->val, 0),
+        functionStack.top()->getValue()->getReturnType()->getPointerTo()
       );
     }
     if (returnedValue->hasPointerValue()) {
-      returnedValue->setValue(
-        builder->CreateLoad(returnedValue->getValue(), "loadPtrForReturn"),
-        returnedValue->getCurrentType()
-      );
+      returnedValue->val = builder->CreateLoad(returnedValue->val, "loadPtrForReturn");
     }
   }
-  builder->CreateRet(returnedValue->getValue());
+  builder->CreateRet(returnedValue->val);
 }
 
 void ModuleCompiler::visitFunction(Node<FunctionNode>::Link node) {

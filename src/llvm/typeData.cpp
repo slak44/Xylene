@@ -78,12 +78,12 @@ void TypeData::finalize() {
       mc->typeCheck(memberId, initValue,
         "Member '{0}' initialization ({1}) does not match its type ({2})"_type(
           mb->getName(),
-          initValue->getCurrentType()->typeNames(),
+          initValue->ty->typeNames(),
           memberId->typeNames()
         ) + mb->getInit()->getTrace());
       auto memberDecl = ref.getInitInstance()->getMember(mb->getName());
-      mc->builder->CreateStore(initValue->getValue(), memberDecl->getValue());
-      memberDecl->setValue(memberDecl->getValue(), initValue->getCurrentType());
+      mc->builder->CreateStore(initValue->val, memberDecl->val);
+      memberDecl->ty = initValue->ty;
     });
   });
   normalTi.finalize();
@@ -102,10 +102,10 @@ void TypeData::finalize() {
     mc->typeCheck(sMemberId, initValue,
       "Static member '{0}' initialization ({1}) does not match its type ({2})"_type(
         mb->getName(),
-        initValue->getCurrentType()->typeNames(),
+        initValue->ty->typeNames(),
         sMemberId->typeNames()
       ) + mb->getInit()->getTrace());
-    mc->builder->CreateStore(initValue->getValue(), staticVar);
+    mc->builder->CreateStore(initValue->val, staticVar);
   });
   staticTi.finalize();
   for (auto method : methods) {
@@ -131,7 +131,7 @@ void TypeData::finalize() {
       if (normalTi.exists()) {
         mc->builder->CreateCall(
           normalTi.getInit()->getValue(),
-          {thisPtrRef->getValue()}
+          {thisPtrRef->val}
         );
       }
       for (auto& child : constr->getCodeBlock()->getChildren()) child->visit(mc);
@@ -232,7 +232,7 @@ void TypeData::TypeInitializer::finalize() {
   // If normal init
   if (init->getValue()->getArgumentList().size() > 0) {
     initializerInstance = std::make_shared<InstanceWrapper>(
-      getInitStructArg()->getValue(),
+      getInitStructArg()->val,
       owner.node->getTid()
     );
   }

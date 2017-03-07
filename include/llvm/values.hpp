@@ -10,26 +10,24 @@
   \brief Holds a llvm::Value* and the type it currently carries
 */
 class ValueWrapper {
-friend class ModuleCompiler;
 public:
   using Link = std::shared_ptr<ValueWrapper>;
-protected:
-  llvm::Value* llvmValue;
-  AbstractId::Link currentType;
-public:
-  ValueWrapper(llvm::Value* value, AbstractId::Link tid);
-  ValueWrapper(std::pair<llvm::Value*, AbstractId::Link> pair);
   
-  inline virtual ~ValueWrapper() {}
+  llvm::Value* val;
+  AbstractId::Link ty;
+  
+  ValueWrapper(llvm::Value* val, AbstractId::Link ty) noexcept: val(val), ty(ty) {}
+  
+  virtual ~ValueWrapper() {}
   
   /// If the value is nullptr
-  bool isInitialized() const;
+  inline bool isInitialized() const noexcept {
+    return val != nullptr && ty->getAllocaType() != nullptr;
+  }
   /// If the llvm::Type of the value is a pointer type
-  bool hasPointerValue() const;
-  
-  llvm::Value* getValue() const;
-  AbstractId::Link getCurrentType() const;
-  void setValue(llvm::Value* newVal, AbstractId::Link newType);
+  inline bool hasPointerValue() const noexcept {
+    return isInitialized() && val->getType()->isPointerTy();
+  }
 };
 
 /**
