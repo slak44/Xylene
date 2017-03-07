@@ -87,7 +87,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "ValueWrapper", "class_value_wrapper.html", [
-      [ "DeclarationWrapper", "class_declaration_wrapper.html", null ],
       [ "FunctionWrapper", "class_function_wrapper.html", null ],
       [ "InstanceWrapper", "class_instance_wrapper.html", null ]
     ] ],

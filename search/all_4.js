@@ -2,7 +2,6 @@ var searchData=
 [
   ['data',['data',['../class_token.html#ad536a520dac03ae812f429b220e9808a',1,'Token']]],
   ['declarationnode',['DeclarationNode',['../class_declaration_node.html',1,'DeclarationNode'],['../class_declaration_node.html#acea9e82e076612900170f462c36b1c03',1,'DeclarationNode::DeclarationNode()']]],
-  ['declarationwrapper',['DeclarationWrapper',['../class_declaration_wrapper.html',1,'DeclarationWrapper'],['../class_declaration_wrapper.html#a8cd88f5718e0cbf1a59db90610b5bd38',1,'DeclarationWrapper::DeclarationWrapper()']]],
   ['defaultcombine',['defaultCombine',['../util_8hpp.html#ac1410462b56482855358b5d5d81ae1ab',1,'util.hpp']]],
   ['defaulttrace',['defaultTrace',['../trace_8hpp.html#acd22607a9f573fad8be6faf2400571aa',1,'trace.hpp']]],
   ['define',['DEFINE',['../namespace_t_t.html#ad8a298b2d7b5cd49e659ddd1bf592a00',1,'TT']]],

@@ -15,7 +15,6 @@ var searchData=
   ['getcode',['getCode',['../class_lexer.html#ad69696b61c840ba9901876a8e946ea52',1,'Lexer']]],
   ['getcodeblock',['getCodeBlock',['../class_method_data.html#aa843e1df38e825924135b1fb7cba0a1c',1,'MethodData::getCodeBlock()'],['../class_constructor_data.html#af7a3590ff560a0a0ce200c3f6bc30570',1,'ConstructorData::getCodeBlock()']]],
   ['getcodesource',['getCodeSource',['../class_lexer.html#a2657d4395a5ba1f518135d53dfe8c414',1,'Lexer']]],
-  ['getcurrenttype',['getCurrentType',['../class_value_wrapper.html#ac0d03efab6cbb024968a9420ee4d6eeb',1,'ValueWrapper']]],
   ['getdata',['getData',['../class_t_t_1_1_construct.html#ad5f2df726633f27ba9435bc0af128789',1,'TT::Construct']]],
   ['getend',['getEnd',['../class_range.html#a9c9770f947e3145375d031fefa884948',1,'Range']]],
   ['getentrypoint',['getEntryPoint',['../class_module_compiler.html#a8154a04fc853a1ab316fad2670eaa8c0',1,'ModuleCompiler']]],
@@ -29,7 +28,7 @@ var searchData=
   ['getinit',['getInit',['../class_member_metadata.html#ad13133b130381c36739a152d8baca789',1,'MemberMetadata::getInit()'],['../class_type_data.html#a0c8c811574c0d776aa50ea48422d85b0',1,'TypeData::getInit()']]],
   ['getkeyword',['getKeyword',['../class_t_t_1_1_keyword.html#ad574c36fdefc626808f4922db62494fc',1,'TT::Keyword']]],
   ['getlinecount',['getLineCount',['../class_lexer.html#a4fcbe8dbf8cb3080ab6290208fabc485',1,'Lexer']]],
-  ['getmember',['getMember',['../class_instance_wrapper.html#a825121feafc92f7bfb5cd4a09d07584d',1,'InstanceWrapper']]],
+  ['getmember',['getMember',['../class_instance_wrapper.html#a0d2ac9fefd05fb0dcab060dee0e3a0d7',1,'InstanceWrapper']]],
   ['getmodule',['getModule',['../class_module_compiler.html#a50fb5ace3be8b5c3d85f942d369b1fed',1,'ModuleCompiler']]],
   ['getname',['getName',['../class_type_node.html#ae9199e2d10aa3644d8430b1b0b0cc26a',1,'TypeNode::getName()'],['../class_member_metadata.html#a72e9af31f6109791b3ff1e1d0ae02d4d',1,'MemberMetadata::getName()'],['../class_method_data.html#a4b44d76a9e0169cca7f5118d9463e81f',1,'MethodData::getName()'],['../class_type_data.html#ac16b0d2c8f4444049614a006a4a234b7',1,'TypeData::getName()'],['../class_abstract_id.html#a375c00d7a1e8afcdc7c474c1e332a7d3',1,'AbstractId::getName()'],['../class_operator.html#adb395b44a53ad3498928d6d896087ccf',1,'Operator::getName()']]],
   ['getnode',['getNode',['../class_member_metadata.html#a68b34751812c43a33cfe24315d9c1a6e',1,'MemberMetadata']]],
@@ -55,10 +54,9 @@ var searchData=
   ['gettydata',['getTyData',['../class_type_id.html#a9cadba6ec26e9e7ec6ced5c8201b740b',1,'TypeId']]],
   ['gettype',['getType',['../class_block_node.html#ad6bd9d08b0c4eb5b2a849ac45c43d69e',1,'BlockNode']]],
   ['gettypeinfo',['getTypeInfo',['../class_declaration_node.html#a61544a1321fa3fa36c9b2e15a93c6806',1,'DeclarationNode::getTypeInfo()'],['../class_member_metadata.html#a43d63f5fcc90b7061b86f9afae89e69d',1,'MemberMetadata::getTypeInfo()']]],
-  ['gettypelist',['getTypeList',['../class_declaration_wrapper.html#a349c7673545e30d9b0ba9f607065a120',1,'DeclarationWrapper']]],
   ['gettypenamestring',['getTypeNameString',['../class_type_info.html#ab8a59a2f85ad2c615d1f032beb0acbb9',1,'TypeInfo']]],
   ['gettypes',['getTypes',['../class_type_list_id.html#a111a88ca931c535db94567222bb320bf',1,'TypeListId']]],
   ['gettypesetptr',['getTypeSetPtr',['../class_module_compiler.html#a1fe2597580065b67624ca3535d368c67',1,'ModuleCompiler']]],
-  ['getvalue',['getValue',['../class_value_wrapper.html#a967fde9f08a0aceb5c15c317f0a2522b',1,'ValueWrapper::getValue()'],['../class_function_wrapper.html#a8996dded92ffac63722a362e559ff286',1,'FunctionWrapper::getValue()']]],
+  ['getvalue',['getValue',['../class_function_wrapper.html#a8996dded92ffac63722a362e559ff286',1,'FunctionWrapper']]],
   ['getvisibility',['getVisibility',['../class_constructor_node.html#a36bee07e34677d8b571f7d0c54670312',1,'ConstructorNode::getVisibility()'],['../class_method_node.html#a5dcd7357174263d6a7a392b41f5087df',1,'MethodNode::getVisibility()'],['../class_member_node.html#a2ac9a290086f2bf912e1115a9e94785c',1,'MemberNode::getVisibility()']]]
 ];

@@ -12,7 +12,6 @@ var dir_98d739c9dde11a4c5e5c4d63e78d924e =
     [ "values.hpp", "values_8hpp.html", [
       [ "ValueWrapper", "class_value_wrapper.html", "class_value_wrapper" ],
       [ "FunctionWrapper", "class_function_wrapper.html", "class_function_wrapper" ],
-      [ "DeclarationWrapper", "class_declaration_wrapper.html", "class_declaration_wrapper" ],
       [ "InstanceWrapper", "class_instance_wrapper.html", "class_instance_wrapper" ]
     ] ]
 ];

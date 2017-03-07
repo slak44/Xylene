@@ -28,5 +28,5 @@ var searchData=
   ['create',['create',['../class_module_compiler.html#aee8266892ee895098620e08560a1897b',1,'ModuleCompiler::create()'],['../class_type_id.html#a204102276389abdfe35e73421aad6da6',1,'TypeId::create()'],['../class_type_list_id.html#ac31bec7f1070c8bd6014b4a7bd14ac5f',1,'TypeListId::create()']]],
   ['createbasic',['createBasic',['../class_type_id.html#a8bb743bde3c3bade8deb96fbbb2016fb',1,'TypeId']]],
   ['current_5ffunction',['CURRENT_FUNCTION',['../util_8hpp.html#a84662874cf763c9001e3913fe20b3785',1,'util.hpp']]],
-  ['currenttype',['currentType',['../class_value_wrapper.html#afd3fdf1ed44ca3f64618952d237cdfb7',1,'ValueWrapper::currentType()'],['../struct__xyl___value.html#a5eda64ab935a3c888ae32ab0a246bef5',1,'_xyl_Value::currentType()']]]
+  ['currenttype',['currentType',['../struct__xyl___value.html#a5eda64ab935a3c888ae32ab0a246bef5',1,'_xyl_Value']]]
 ];

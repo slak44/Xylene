@@ -1,15 +1,10 @@
 var class_value_wrapper =
 [
     [ "Link", "class_value_wrapper.html#af8376ad2826e52866d1acfda0fa2e702", null ],
-    [ "ValueWrapper", "class_value_wrapper.html#a78bfd50db316003488bb5bf9a6d2dc7e", null ],
-    [ "ValueWrapper", "class_value_wrapper.html#a38c9b62a07e6ed139f507be9c3ec74ad", null ],
+    [ "ValueWrapper", "class_value_wrapper.html#ae407b66e95662aa3d9aefeaaa07bc4b9", null ],
     [ "~ValueWrapper", "class_value_wrapper.html#a1097c096e606caa2682d898e9a44ec21", null ],
-    [ "getCurrentType", "class_value_wrapper.html#ac0d03efab6cbb024968a9420ee4d6eeb", null ],
-    [ "getValue", "class_value_wrapper.html#a967fde9f08a0aceb5c15c317f0a2522b", null ],
-    [ "hasPointerValue", "class_value_wrapper.html#a955003547faeb4cb09afd1b4c57dfaba", null ],
-    [ "isInitialized", "class_value_wrapper.html#a6813d22e1a7245e8373c0dd51fdcf2bf", null ],
-    [ "setValue", "class_value_wrapper.html#a795f429f58d302b09c18de1eb4e7d05b", null ],
-    [ "ModuleCompiler", "class_value_wrapper.html#a75084bbd17ad41e609d2db3359127fdd", null ],
-    [ "currentType", "class_value_wrapper.html#afd3fdf1ed44ca3f64618952d237cdfb7", null ],
-    [ "llvmValue", "class_value_wrapper.html#afcd4fd19764a7ad73318a9a7f2116eb7", null ]
+    [ "hasPointerValue", "class_value_wrapper.html#a3ccbc85aeca9947e76f81b3204cfac69", null ],
+    [ "isInitialized", "class_value_wrapper.html#ac1eb8ed84f9be0f99ef6c7179c5acb51", null ],
+    [ "ty", "class_value_wrapper.html#a486956c7a699e60a7ef68edd86439368", null ],
+    [ "val", "class_value_wrapper.html#ad6d5f08e80a64fa87a8e0ccc259f7727", null ]
 ];

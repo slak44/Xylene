@@ -6,7 +6,6 @@ var searchData=
   ['setparent',['setParent',['../class_a_s_t_node.html#a8364648a730e8ca159a594b04a1efcab',1,'ASTNode']]],
   ['settid',['setTid',['../class_type_node.html#adcc66eaae8b47345b46aad25173bf327',1,'TypeNode']]],
   ['settrace',['setTrace',['../class_a_s_t_node.html#a5b166c50a1da8b5ab1c8dbef2c3ec077',1,'ASTNode']]],
-  ['setvalue',['setValue',['../class_value_wrapper.html#a795f429f58d302b09c18de1eb4e7d05b',1,'ValueWrapper']]],
   ['split',['split',['../util_8cpp.html#a5ec5407b8d7f28fd0aa7699dbe16c448',1,'split(const std::string &amp;str, char delim):&#160;util.cpp'],['../util_8hpp.html#a5ec5407b8d7f28fd0aa7699dbe16c448',1,'split(const std::string &amp;str, char delim):&#160;util.cpp']]],
   ['sqparen_5fleft',['SQPAREN_LEFT',['../namespace_t_t.html#aa7ec1ac51107fea6a53e3fe0db87e2f4',1,'TT']]],
   ['sqparen_5fright',['SQPAREN_RIGHT',['../namespace_t_t.html#a222ba1d271c996589c11a333184fe136',1,'TT']]],

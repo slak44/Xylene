@@ -6,7 +6,7 @@ var searchData=
   ['bitwise_5fnot_5fpair',['BITWISE_NOT_PAIR',['../codegen_8cpp.html#a0a60f60c92235becc6fb4f690f915d01',1,'codegen.cpp']]],
   ['blockfuncs',['blockFuncs',['../class_block_node.html#a8d0c0435024b91a72346453e739bfc2e',1,'BlockNode']]],
   ['blocknode',['BlockNode',['../class_block_node.html',1,'BlockNode'],['../class_block_node.html#ad3ed3631997e21c040c0aec7faac3db4',1,'BlockNode::BlockNode()']]],
-  ['blockscope',['blockScope',['../class_block_node.html#a3ec7a2ac6a3d6b3a3cc7cc2cdb431875',1,'BlockNode']]],
+  ['blockscope',['blockScope',['../class_block_node.html#a01848cb5546ce8344c2fecd7cced5856',1,'BlockNode']]],
   ['blocktype',['BlockType',['../ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3',1,'ast.hpp']]],
   ['blocktypes',['blockTypes',['../class_block_node.html#a56bd47e02603f1cd8395411e24ff09d1',1,'BlockNode']]],
   ['boolean',['BOOLEAN',['../namespace_t_t.html#ada331b55b3acbc80772b4b58c455e382',1,'TT']]],

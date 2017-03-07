@@ -14,7 +14,6 @@ var annotated_dup =
     [ "ConstructorData", "class_constructor_data.html", "class_constructor_data" ],
     [ "ConstructorNode", "class_constructor_node.html", "class_constructor_node" ],
     [ "DeclarationNode", "class_declaration_node.html", "class_declaration_node" ],
-    [ "DeclarationWrapper", "class_declaration_wrapper.html", "class_declaration_wrapper" ],
     [ "DefiniteTypeInfo", "class_definite_type_info.html", "class_definite_type_info" ],
     [ "Error", "class_error.html", "class_error" ],
     [ "ExpressionNode", "class_expression_node.html", "class_expression_node" ],
