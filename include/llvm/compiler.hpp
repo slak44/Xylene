@@ -87,7 +87,7 @@ private:
   std::shared_ptr<ProgramData::TypeSet> types;
 
   std::unique_ptr<llvm::IRBuilder<>> builder; ///< Used to construct llvm instructions
-  llvm::Module* module; ///< The module that is being created
+  llvm::Module* module = nullptr; ///< The module that is being created
   FunctionWrapper::Link entryPoint; ///< Entry point for module
   std::stack<FunctionWrapper::Link> functionStack; ///< Current function stack. Not a call stack
   AST ast; ///< Source AST
