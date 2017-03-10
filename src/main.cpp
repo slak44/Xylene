@@ -118,8 +118,7 @@ int notReallyMain(int argc, const char* argv[]) {
     
     if (printAST.getValue()) ast->print();
     
-    auto mc = ModuleCompiler::create({}, "Command Line Module", *ast);
-    mc->addMainFunction();
+    auto mc = ModuleCompiler::create({}, "Command Line Module", *ast, true);
     mc->compile();
     if (printIR.getValue()) mc->getModule()->dump();
     

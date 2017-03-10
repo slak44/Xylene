@@ -106,12 +106,10 @@ public:
     It also handles creation of the OperatorCodegen, since that also requires a
     shared_ptr of this. 
     \param t reference to a globally shared set of types
+    \param isRoot if this is the root module
   */
   static Link create(
-    const ProgramData::TypeSet& t, std::string moduleName, AST ast);
-  
-  /// Make this the root module, and add a main function
-  void addMainFunction();
+    const ProgramData::TypeSet& t, std::string moduleName, AST ast, bool isRoot);
   
   /// Compile the AST. Call this before trying to retrieve the module.
   void compile();
@@ -127,7 +125,6 @@ public:
   inline std::shared_ptr<ProgramData::TypeSet> getTypeSetPtr() const noexcept {
     return types;
   }
-  
 private:
   void visitExpression(Node<ExpressionNode>::Link node) override;
   void visitDeclaration(Node<DeclarationNode>::Link node) override;
@@ -141,6 +138,9 @@ private:
   void visitConstructor(Node<ConstructorNode>::Link node) override;
   void visitMethod(Node<MethodNode>::Link node) override;
   void visitMember(Node<MemberNode>::Link node) override;
+  
+  /// Add a main function to this module
+  void addMainFunction();
   
   /// Inserts declarations for some required runtime functions
   void insertRuntimeFuncDecls();

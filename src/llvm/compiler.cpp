@@ -10,9 +10,9 @@ Compiler::Compiler(fs::path rootScript, fs::path output):
   auto mc = ModuleCompiler::create(
     pd.types,
     "temp_module_name",
-    TokenParser::parse(lx->getTokens())
+    TokenParser::parse(lx->getTokens()),
+    true
   );
-  mc->addMainFunction();
   mc->compile();
   pd.rootModule = std::unique_ptr<llvm::Module>(mc->getModule());
 }
@@ -143,7 +143,8 @@ void ModuleCompiler::insertRuntimeFuncDecls() {
 ModuleCompiler::Link ModuleCompiler::create(
   const ProgramData::TypeSet& types,
   std::string moduleName,
-  AST ast
+  AST ast,
+  bool isRoot
 ) {
   auto thisThing =
     std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast));
@@ -155,6 +156,7 @@ ModuleCompiler::Link ModuleCompiler::create(
     thisThing->functionTid
   };
   thisThing->codegen = std::make_unique<OperatorCodegen>(OperatorCodegen(thisThing));
+  if (isRoot) thisThing->addMainFunction();
   return thisThing;
 }
 

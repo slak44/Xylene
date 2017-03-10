@@ -25,8 +25,7 @@ protected:
   
   inline ModuleCompiler::Link compile(fs::path xmlFilePath) {
     auto mc = ModuleCompiler::create(
-      {}, xmlFilePath, XMLParser::parse(xmlFile(xmlFilePath)));
-    mc->addMainFunction();
+      {}, xmlFilePath, XMLParser::parse(xmlFile(xmlFilePath)), true);
     mc->compile();
     if (printIr) mc->getModule()->dump();
     return mc;
@@ -34,8 +33,7 @@ protected:
   
   inline void noThrowOnCompile(fs::path xmlFilePath) {
     auto mc = ModuleCompiler::create(
-      {}, xmlFilePath, XMLParser::parse(xmlFile(xmlFilePath)));
-    mc->addMainFunction();
+      {}, xmlFilePath, XMLParser::parse(xmlFile(xmlFilePath)), true);
     try {
       mc->compile();
       if (printIr) mc->getModule()->dump();
