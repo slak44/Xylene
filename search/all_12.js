@@ -2,6 +2,7 @@ var searchData=
 [
   ['safeopname',['safeOpName',['../codegen_8cpp.html#a34c6053c4ab1544701660206bf7bbb47',1,'codegen.cpp']]],
   ['semi',['SEMI',['../namespace_t_t.html#a2bc3956c46f9c145dd8390d541b66559',1,'TT']]],
+  ['serializetypeset',['serializeTypeSet',['../class_module_compiler.html#a818ae801663ff338d616d1c7bf2ef95d',1,'ModuleCompiler']]],
   ['set_5ffor',['SET_FOR',['../ast_8cpp.html#a9f2db2cf3bd1860db9cf4f8e8974e1db',1,'ast.cpp']]],
   ['set_5fsig',['SET_SIG',['../ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639',1,'ast.hpp']]],
   ['setexitblock',['setExitBlock',['../class_loop_node.html#aa6f766df5e8c0b1d813666978bd0fe4b',1,'LoopNode']]],

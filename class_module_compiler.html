@@ -120,12 +120,12 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a60d6a16615275e8bd2919c6114147113"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module_compiler.html#a60d6a16615275e8bd2919c6114147113">addMainFunction</a> ()</td></tr>
-<tr class="memdesc:a60d6a16615275e8bd2919c6114147113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make this the root module, and add a main function.  <a href="#a60d6a16615275e8bd2919c6114147113">More...</a><br /></td></tr>
-<tr class="separator:a60d6a16615275e8bd2919c6114147113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa50e38302425a339dcc14c7b529e2d2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module_compiler.html#aa50e38302425a339dcc14c7b529e2d2f">compile</a> ()</td></tr>
 <tr class="memdesc:aa50e38302425a339dcc14c7b529e2d2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile the <a class="el" href="class_a_s_t.html" title="Stores an abstract syntax tree of a program. ">AST</a>. Call this before trying to retrieve the module.  <a href="#aa50e38302425a339dcc14c7b529e2d2f">More...</a><br /></td></tr>
 <tr class="separator:aa50e38302425a339dcc14c7b529e2d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a818ae801663ff338d616d1c7bf2ef95d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module_compiler.html#a818ae801663ff338d616d1c7bf2ef95d">serializeTypeSet</a> ()</td></tr>
+<tr class="memdesc:a818ae801663ff338d616d1c7bf2ef95d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store the global RTTI in this module.  <a href="#a818ae801663ff338d616d1c7bf2ef95d">More...</a><br /></td></tr>
+<tr class="separator:a818ae801663ff338d616d1c7bf2ef95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50fb5ace3be8b5c3d85f942d369b1fed"><td class="memItemLeft" align="right" valign="top">llvm::Module *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module_compiler.html#a50fb5ace3be8b5c3d85f942d369b1fed">getModule</a> () const noexcept</td></tr>
 <tr class="separator:a50fb5ace3be8b5c3d85f942d369b1fed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8154a04fc853a1ab316fad2670eaa8c0"><td class="memItemLeft" align="right" valign="top">llvm::Function *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module_compiler.html#a8154a04fc853a1ab316fad2670eaa8c0">getEntryPoint</a> () const noexcept</td></tr>
@@ -142,8 +142,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aee8266892ee895098620e08560a1897b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_module_compiler.html#a5f947641cd735fea279135e905e14bbb">Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module_compiler.html#aee8266892ee895098620e08560a1897b">create</a> (const <a class="el" href="class_program_data.html#a155ae87fa3fda8bc5eb647711ace44c4">ProgramData::TypeSet</a> &amp;t, std::string moduleName, <a class="el" href="class_a_s_t.html">AST</a> ast)</td></tr>
-<tr class="separator:aee8266892ee895098620e08560a1897b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a535c99667a61c59b12d9df0bdc54edd7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_module_compiler.html#a5f947641cd735fea279135e905e14bbb">Link</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module_compiler.html#a535c99667a61c59b12d9df0bdc54edd7">create</a> (const <a class="el" href="class_program_data.html#a155ae87fa3fda8bc5eb647711ace44c4">ProgramData::TypeSet</a> &amp;t, std::string moduleName, <a class="el" href="class_a_s_t.html">AST</a> ast, bool isRoot)</td></tr>
+<tr class="separator:a535c99667a61c59b12d9df0bdc54edd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -174,25 +174,6 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a60d6a16615275e8bd2919c6114147113"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60d6a16615275e8bd2919c6114147113">&#9670;&nbsp;</a></span>addMainFunction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ModuleCompiler::addMainFunction </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Make this the root module, and add a main function. </p>
-
-</div>
-</div>
 <a id="aa50e38302425a339dcc14c7b529e2d2f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa50e38302425a339dcc14c7b529e2d2f">&#9670;&nbsp;</a></span>compile()</h2>
 
@@ -212,8 +193,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="aee8266892ee895098620e08560a1897b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee8266892ee895098620e08560a1897b">&#9670;&nbsp;</a></span>create()</h2>
+<a id="a535c99667a61c59b12d9df0bdc54edd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a535c99667a61c59b12d9df0bdc54edd7">&#9670;&nbsp;</a></span>create()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -237,7 +218,13 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_a_s_t.html">AST</a>&#160;</td>
-          <td class="paramname"><em>ast</em>&#160;</td>
+          <td class="paramname"><em>ast</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isRoot</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -255,6 +242,7 @@ Friends</h2></td></tr>
 <p>This is a static factory because std::enable_shared_from_this&lt;ModuleCompiler&gt; requires a shared_ptr to already exist before being used. This method guarantees that at least one such pointer exists. It also handles creation of the <a class="el" href="class_operator_codegen.html" title="Used to generate IR for operators. ">OperatorCodegen</a>, since that also requires a shared_ptr of this. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">t</td><td>reference to a globally shared set of types </td></tr>
+    <tr><td class="paramname">isRoot</td><td>if this is the root module </td></tr>
   </table>
   </dd>
 </dl>
@@ -333,6 +321,25 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a818ae801663ff338d616d1c7bf2ef95d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a818ae801663ff338d616d1c7bf2ef95d">&#9670;&nbsp;</a></span>serializeTypeSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ModuleCompiler::serializeTypeSet </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Store the global RTTI in this module. </p>
 
 </div>
 </div>
