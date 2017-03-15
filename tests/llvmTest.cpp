@@ -1,26 +1,16 @@
 #include <sstream>
 #include <gtest/gtest.h>
 #include <rapidxml_utils.hpp>
-#include <experimental/filesystem>
-#include <tiny-process-library/process.hpp>
 
+#include "test.hpp"
 #include "llvm/compiler.hpp"
 #include "llvm/runner.hpp"
 #include "parser/xmlParser.hpp"
 
-extern "C" bool printIr;
-
-namespace fs = std::experimental::filesystem;
-
-class LLVMCompilerTest: public ::testing::Test {
+class LLVMCompilerTest: public ::testing::Test, public ExternalProcessCompiler {
 protected:
-  inline std::string absoluteXmlPath(fs::path relativePath) {
-    fs::path dataParentDir = DATA_PARENT_DIR/relativePath;
-    return dataParentDir;
-  }
-  
-  inline rapidxml::file<> xmlFile(fs::path path) {
-    return rapidxml::file<>(absoluteXmlPath(path).c_str());
+  inline rapidxml::file<> xmlFile(fs::path relativePath) {
+    return rapidxml::file<>((DATA_PARENT_DIR / relativePath).c_str());
   }
   
   inline ModuleCompiler::Link compile(fs::path xmlFilePath) {
@@ -42,22 +32,6 @@ protected:
       println(err.what());
       mc->getModule()->dump();
     }
-  }
-  
-  inline ProgramResult compileAndRun(fs::path xmlFilePath) {
-    std::string stdout, stderr;
-    Process self(
-    fmt::format("{0} --xml -f {1} {2}",
-      QUOTE(FULL_PROGRAM_PATH), absoluteXmlPath(xmlFilePath), printIr ? "--ir" : ""),
-    "",
-    [&stdout](const char* bytes, std::size_t) {
-      stdout = bytes;
-    },
-    [&stderr](const char* bytes, std::size_t) {
-      stderr = bytes;
-    });
-    auto exitCode = self.get_exit_status();
-    return {exitCode, stdout, stderr};
   }
 };
 
@@ -95,7 +69,10 @@ TEST_F(LLVMCompilerTest, Functions) {
   noThrowOnCompile("data/llvm/functions/function.xml");
   noThrowOnCompile("data/llvm/functions/no_args.xml");
   noThrowOnCompile("data/llvm/functions/void_ret.xml");
-  EXPECT_EQ(compileAndRun("data/llvm/functions/foreign.xml"), ProgramResult({0, "A", ""}));
+  if (spawnProcs) EXPECT_EQ(
+    compileAndRun("data/llvm/functions/foreign.xml", "--xml"),
+    ProgramResult({0, "A", ""})
+  );
 }
 
 TEST_F(LLVMCompilerTest, UserTypes) {
