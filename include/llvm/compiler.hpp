@@ -152,6 +152,7 @@ private:
   
   /// If the held value is a Boolean or can be converted to one
   bool canBeBoolean(ValueWrapper::Link) const;
+  // TODO: this should not be necessary
   /// Convert simple value to tagged union with 1 type
   ValueWrapper::Link boxPrimitive(ValueWrapper::Link p);
   /// Checks if assignment is allowed. Inserts IR
