@@ -87,7 +87,7 @@ void ModuleCompiler::addMainFunction() {
   entryPoint = functionStack.top();
 }
 
-ModuleCompiler::ModuleCompiler(std::string moduleName, AST ast):
+ModuleCompiler::ModuleCompiler(std::string moduleName, AST ast, bool isRoot):
   context(new llvm::LLVMContext()),
   integerType(llvm::IntegerType::get(*context, bitsPerInt)),
   floatType(llvm::Type::getDoubleTy(*context)),
@@ -107,7 +107,8 @@ ModuleCompiler::ModuleCompiler(std::string moduleName, AST ast):
   functionTid(TypeId::createBasic("Function", voidPtrType)), // TODO
   builder(std::make_unique<llvm::IRBuilder<>>(llvm::IRBuilder<>(*context))),
   module(new llvm::Module(moduleName, *context)),
-  ast(ast) {
+  ast(ast),
+  isRoot(isRoot) {
   insertRuntimeFuncDecls();
 }
 
@@ -147,7 +148,7 @@ ModuleCompiler::Link ModuleCompiler::create(
   bool isRoot
 ) {
   auto thisThing =
-    std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast));
+    std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast, isRoot));
   thisThing->types = std::make_unique<ProgramData::TypeSet>(types);
   thisThing->ast.getRoot()->blockTypes = {
     thisThing->integerTid,
@@ -176,6 +177,46 @@ void ModuleCompiler::compile() {
       {"error", rso.str()}
     });
   }
+  serializeTypeSet();
+}
+
+void ModuleCompiler::serializeTypeSet() {
+  for (auto tid : *types) {
+    // Array is null terminated
+    auto arrayType = llvm::ArrayType::get(integerType, tid->storedTypeCount());
+    // Stores tid value + array of tids in case it's a type list
+    auto rttiInfoType = llvm::StructType::create(*context, {
+      integerType,
+      arrayType
+    });
+    std::vector<llvm::Constant*> containedTys;
+    containedTys.reserve(tid->storedTypeCount() + 1); // +1 for the null termination
+    if (tid->storedTypeCount() > 1) {
+      auto tlid = PtrUtil<TypeListId>::dynPtrCast(tid);
+      std::transform(ALL(tlid->getTypes()), std::begin(containedTys), [&](auto id) {
+        return llvm::ConstantInt::get(integerType, id->getId(), false);
+      });
+    }
+    containedTys.push_back(llvm::ConstantInt::get(integerType, 0, false));
+    auto rtti = new llvm::GlobalVariable(
+      *module,
+      rttiInfoType,
+      true, // Global is constant
+      llvm::GlobalValue::LinkageTypes::ExternalLinkage,
+      0, // Only set initializer if in root
+      fmt::format("_xyl_rtti_{0}", tid->getName()), // TODO: name mangling for collisions
+      nullptr,
+      llvm::GlobalValue::ThreadLocalMode::NotThreadLocal,
+      0,
+      !isRoot // isExternallyInitialized is true for non-roots
+    );
+    if (isRoot) {
+      auto id = llvm::ConstantInt::get(integerType, tid->getId(), false);
+      auto array = llvm::ConstantArray::get(arrayType, containedTys);
+      auto rttiStruct = llvm::ConstantStruct::get(rttiInfoType, id, array, nullptr);
+      rtti->setInitializer(rttiStruct);
+    }
+  }  
 }
 
 void ModuleCompiler::visitBlock(Node<BlockNode>::Link node) {

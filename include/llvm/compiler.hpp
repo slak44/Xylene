@@ -95,7 +95,9 @@ private:
   /// Instance of OperatorCodegen
   std::unique_ptr<OperatorCodegen> codegen;
   
-  ModuleCompiler(std::string moduleName, AST ast);
+  bool isRoot;
+  
+  ModuleCompiler(std::string moduleName, AST, bool isRoot);
 public:
   /**
     Create a ModuleCompiler.
@@ -113,6 +115,9 @@ public:
   
   /// Compile the AST. Call this before trying to retrieve the module.
   void compile();
+  
+  /// Store the global RTTI in this module
+  void serializeTypeSet();
   
   inline llvm::Module* getModule() const noexcept {
     return module;
