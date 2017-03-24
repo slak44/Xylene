@@ -63,10 +63,6 @@ protected:
   Children children {}; ///< Branches/Leaves in the tree
   Trace trace = defaultTrace; ///< Where in the source was this found
   
-  static inline void printIndent(unsigned level) noexcept {
-    for (unsigned i = 0; i < level; i++) print("  ");
-  }
-  
   template<typename ReturnType = std::size_t>
   ReturnType transformArrayIndex(int64_t idx) const {
     ReturnType res;
@@ -148,10 +144,7 @@ public:
       })
     );
   }
-  
-  /// Pretty printing for this node and all his children
-  virtual void printTree(unsigned level) const noexcept;
-  
+    
   virtual bool operator==(const ASTNode& rhs) const;
   virtual bool operator!=(const ASTNode& rhs) const;
   
@@ -188,8 +181,6 @@ public:
     return type;
   }
   
-  void printTree(unsigned level) const noexcept override;
-  
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
   
@@ -215,8 +206,6 @@ public:
   inline Token getToken() const noexcept {
     return tok;
   }
-  
-  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -260,8 +249,6 @@ public:
     \throws InternalError if other types try to be inserted
   */
   void addChild(Link child) override;
-  
-  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -334,8 +321,6 @@ public:
     return children[0] != nullptr;
   }
   
-  void printTree(unsigned level) const noexcept override;
-  
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
   
@@ -359,8 +344,6 @@ public:
   GET_SIG(ASTNode, FailiureBlock)
   SET_SIG(BlockNode, FailiureBlock)
   SET_SIG(BranchNode, FailiureBlock)
-  
-  void printTree(unsigned level) const noexcept override;
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -395,8 +378,6 @@ public:
     this->exitBlock = bb;
   }
   
-  void printTree(unsigned level) const noexcept override;
-  
   void visit(ASTVisitorLink visitor) override;
 };
 
@@ -411,8 +392,6 @@ public:
   
   GET_SET_SIGS(ExpressionNode, Value)
   
-  void printTree(unsigned level) const noexcept override;
-  
   void visit(ASTVisitorLink visitor) override;
 };
 
@@ -424,8 +403,6 @@ public:
 class BreakLoopNode: public NoMoreChildrenNode {
 public:
   BreakLoopNode() noexcept: NoMoreChildrenNode(0) {}
-  
-  void printTree(unsigned level) const noexcept override;
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -457,8 +434,7 @@ public:
   inline bool isAnon() const noexcept {
     return ident.empty();
   }
-  
-  void printTree(unsigned level) const noexcept override;
+
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -502,8 +478,6 @@ public:
     return vis;
   }
   
-  void printTree(unsigned level) const noexcept override;
-  
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
   
@@ -529,8 +503,6 @@ public:
   inline bool isStatic() const noexcept {
     return staticM;
   }
-  
-  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -558,8 +530,6 @@ public:
   inline Visibility getVisibility() const noexcept {
     return vis;
   }
-  
-  void printTree(unsigned level) const noexcept override;
   
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
@@ -592,7 +562,8 @@ public:
 /**
   \see VISITOR_VISIT_IMPL_FOR
 */
-#define PURE_VIRTUAL_VISIT(nodeName) virtual void visit##nodeName(Node<nodeName##Node>::Link node) = 0;
+#define PURE_VIRTUAL_VISIT(nodeName) \
+virtual void visit##nodeName(Node<nodeName##Node>::Link node) = 0;
 
 /**
   \brief Abstract class for visiting nodes on an AST.
@@ -617,5 +588,42 @@ public:
 };
 
 #undef PURE_VIRTUAL_VISIT
+
+class ASTPrinter: public ASTVisitor, public std::enable_shared_from_this<ASTPrinter> {
+private:
+  void visitExpression(Node<ExpressionNode>::Link node) override;
+  void visitDeclaration(Node<DeclarationNode>::Link node) override;
+  void visitBranch(Node<BranchNode>::Link node) override;
+  void visitLoop(Node<LoopNode>::Link node) override;
+  void visitReturn(Node<ReturnNode>::Link node) override;
+  void visitBlock(Node<BlockNode>::Link node) override;
+  void visitBreakLoop(Node<BreakLoopNode>::Link node) override;
+  void visitFunction(Node<FunctionNode>::Link node) override;
+  void visitType(Node<TypeNode>::Link node) override;
+  void visitConstructor(Node<ConstructorNode>::Link node) override;
+  void visitMethod(Node<MethodNode>::Link node) override;
+  void visitMember(Node<MemberNode>::Link node) override;
+  
+  unsigned level = 0;
+  
+protected:
+  ASTPrinter() = default;
+  ASTPrinter(const ASTPrinter&) = default;
+  
+  static inline void printIndent(unsigned level) noexcept {
+    for (unsigned i = 0; i < level; i++) ::print("  ");
+  }
+  
+  void printSubtree(ASTNode::Link node) {
+    level++;
+    for (auto& child : node->getChildren()) child->visit(shared_from_this());
+    level--;
+  }
+  
+public:
+  static void print(ASTNode::Link node) {
+    node->visit(std::shared_ptr<ASTPrinter>(new ASTPrinter()));
+  }
+};
 
 #endif
