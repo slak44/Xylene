@@ -181,6 +181,13 @@ void ModuleCompiler::compile() {
 }
 
 void ModuleCompiler::serializeTypeSet() {
+  /*
+    TODO: do we really want all of this?
+    when doing a runtime type check, the type list to compare against should be constant
+    so theoretically, we can hardcode typelists where we do the checks
+    
+    is rtti even necessary?
+  */
   for (auto tid : *types) {
     // Array is null terminated
     auto arrayType = llvm::ArrayType::get(integerType, tid->storedTypeCount());
