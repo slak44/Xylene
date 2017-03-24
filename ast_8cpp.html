@@ -115,6 +115,12 @@ Macros</h2></td></tr>
 <tr class="memitem:a96bf598044dc4e144f71ea438014fc42"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8cpp.html#a96bf598044dc4e144f71ea438014fc42">GET_SET_FOR</a>(srcNode,  childIndex,  nameOf,  linkType)</td></tr>
 <tr class="memdesc:a96bf598044dc4e144f71ea438014fc42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macros for easy implementation of getters and setters for <a class="el" href="class_no_more_children_node.html" title="ASTNode with fixed children count. ">NoMoreChildrenNode</a> subclasses.  <a href="#a96bf598044dc4e144f71ea438014fc42">More...</a><br /></td></tr>
 <tr class="separator:a96bf598044dc4e144f71ea438014fc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3450fe18e7d2d50d74986704d30545a0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8cpp.html#a3450fe18e7d2d50d74986704d30545a0">VISITOR_VISIT_IMPL_FOR</a>(nodeName)</td></tr>
+<tr class="memdesc:a3450fe18e7d2d50d74986704d30545a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to help implement the 'visit' functions in each node.  <a href="#a3450fe18e7d2d50d74986704d30545a0">More...</a><br /></td></tr>
+<tr class="separator:a3450fe18e7d2d50d74986704d30545a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dc400e46425539258901c624871c4e1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8cpp.html#a5dc400e46425539258901c624871c4e1">PRETTY_PRINT_FOR</a>(childIndex,  nameOf)</td></tr>
+<tr class="memdesc:a5dc400e46425539258901c624871c4e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro for easy printing of <a class="el" href="class_no_more_children_node.html" title="ASTNode with fixed children count. ">NoMoreChildrenNode</a> children.  <a href="#a5dc400e46425539258901c624871c4e1">More...</a><br /></td></tr>
+<tr class="separator:a5dc400e46425539258901c624871c4e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a45b30b90695c27e50c2d6f8a5410b093"></a>
@@ -207,7 +213,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="ast_8cpp.html#a45b30b90695c27e50c2d6f8a5410b093">GET_FOR</a>(srcNode, childIndex, nameOf, linkType) \</div><div class="line">SET_FOR(srcNode, childIndex, nameOf, linkType)</div><div class="ttc" id="ast_8cpp_html_a45b30b90695c27e50c2d6f8a5410b093"><div class="ttname"><a href="ast_8cpp.html#a45b30b90695c27e50c2d6f8a5410b093">GET_FOR</a></div><div class="ttdeci">#define GET_FOR(srcNode, childIndex, nameOf, linkType)</div><div class="ttdoc">Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses. </div><div class="ttdef"><b>Definition:</b> ast.cpp:116</div></div>
+<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="ast_8cpp.html#a45b30b90695c27e50c2d6f8a5410b093">GET_FOR</a>(srcNode, childIndex, nameOf, linkType) \</div><div class="line">SET_FOR(srcNode, childIndex, nameOf, linkType)</div><div class="ttc" id="ast_8cpp_html_a45b30b90695c27e50c2d6f8a5410b093"><div class="ttname"><a href="ast_8cpp.html#a45b30b90695c27e50c2d6f8a5410b093">GET_FOR</a></div><div class="ttdeci">#define GET_FOR(srcNode, childIndex, nameOf, linkType)</div><div class="ttdoc">Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses. </div><div class="ttdef"><b>Definition:</b> ast.cpp:121</div></div>
 </div><!-- fragment -->
 <p>Macros for easy implementation of getters and setters for <a class="el" href="class_no_more_children_node.html" title="ASTNode with fixed children count. ">NoMoreChildrenNode</a> subclasses. </p>
 <p>Omologues exist in header to provide signatures for these implementations </p><dl class="params"><dt>Parameters</dt><dd>
@@ -219,6 +225,36 @@ Macros</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a5dc400e46425539258901c624871c4e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dc400e46425539258901c624871c4e1">&#9670;&nbsp;</a></span>PRETTY_PRINT_FOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRETTY_PRINT_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">childIndex, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">nameOf&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">{\</div><div class="line">  level++;\</div><div class="line">  printIndent(level);\</div><div class="line">  println(#nameOf<span class="stringliteral">&quot;:&quot;</span>);\</div><div class="line">  node-&gt;getChildren()[childIndex]-&gt;visit(shared_from_this());\</div><div class="line">  level--;\</div><div class="line">}</div></div><!-- fragment -->
+<p>Macro for easy printing of <a class="el" href="class_no_more_children_node.html" title="ASTNode with fixed children count. ">NoMoreChildrenNode</a> children. </p>
 
 </div>
 </div>
@@ -267,6 +303,34 @@ Macros</h2></td></tr>
     <tr><td class="paramname">childIndex</td><td>index for the child (because number of children is fixed on NoMoreChildrenNodes) </td></tr>
     <tr><td class="paramname">nameOf</td><td>name for getter/setter (get##nameOf and set##nameOf) </td></tr>
     <tr><td class="paramname">linkType</td><td>type of child </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3450fe18e7d2d50d74986704d30545a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3450fe18e7d2d50d74986704d30545a0">&#9670;&nbsp;</a></span>VISITOR_VISIT_IMPL_FOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define VISITOR_VISIT_IMPL_FOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">nodeName</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordtype">void</span> nodeName##Node::visit(<a class="code" href="ast_8hpp.html#a5242bb806f94354e670b85544ec9d70a">ASTVisitorLink</a> visitor) {\</div><div class="line">  auto shared = this-&gt;shared_from_this();\</div><div class="line">  visitor-&gt;visit##nodeName(<a class="code" href="struct_node.html">Node&lt;nodeName##Node&gt;::staticPtrCast</a>(shared));\</div><div class="line">}</div><div class="ttc" id="ast_8hpp_html_a5242bb806f94354e670b85544ec9d70a"><div class="ttname"><a href="ast_8hpp.html#a5242bb806f94354e670b85544ec9d70a">ASTVisitorLink</a></div><div class="ttdeci">PtrUtil&lt; ASTVisitor &gt;::Link ASTVisitorLink</div><div class="ttdef"><b>Definition:</b> ast.hpp:26</div></div>
+<div class="ttc" id="struct_node_html"><div class="ttname"><a href="struct_node.html">Node</a></div><div class="ttdoc">Utility class for managing smart pointers of ASTNode subclasses. </div><div class="ttdef"><b>Definition:</b> ast.hpp:35</div></div>
+</div><!-- fragment -->
+<p>Macro to help implement the 'visit' functions in each node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nodeName</td><td>name of node class, without '<a class="el" href="struct_node.html" title="Utility class for managing smart pointers of ASTNode subclasses. ">Node</a>' at the end, eg Loop, not <a class="el" href="class_loop_node.html" title="Represents a loop. ">LoopNode</a> </td></tr>
   </table>
   </dd>
 </dl>

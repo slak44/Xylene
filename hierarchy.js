@@ -7,6 +7,7 @@ var hierarchy =
     ] ],
     [ "AST", "class_a_s_t.html", null ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", [
+      [ "ASTPrinter", "class_a_s_t_printer.html", null ],
       [ "ModuleCompiler", "class_module_compiler.html", null ]
     ] ],
     [ "Compiler", "class_compiler.html", null ],
@@ -30,6 +31,7 @@ var hierarchy =
         ] ],
         [ "TypeNode", "class_type_node.html", null ]
       ] ],
+      [ "ASTPrinter", "class_a_s_t_printer.html", null ],
       [ "ModuleCompiler", "class_module_compiler.html", null ]
     ] ],
     [ "exception", null, [

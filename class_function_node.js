@@ -8,6 +8,5 @@ var class_function_node =
     [ "isForeign", "class_function_node.html#a784f1b4ceb65cf7ba54ab3850584cd85", null ],
     [ "operator!=", "class_function_node.html#abfa8b465e0d9d564eb3e575edfc19774", null ],
     [ "operator==", "class_function_node.html#a2ff6aa4f525b05e31eea3cdb4a93f6c8", null ],
-    [ "printTree", "class_function_node.html#a77c23e00942fd5b9aa3873dc9f9defe8", null ],
     [ "visit", "class_function_node.html#a25215170a1cc6a16aee171097840c7a5", null ]
 ];

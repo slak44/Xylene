@@ -121,9 +121,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae8ff8ee6557996003556db93b49aee8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36bee07e34677d8b571f7d0c54670312"><td class="memItemLeft" align="right" valign="top"><a class="el" href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162">Visibility</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_constructor_node.html#a36bee07e34677d8b571f7d0c54670312">getVisibility</a> () const noexcept</td></tr>
 <tr class="separator:a36bee07e34677d8b571f7d0c54670312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6ecc98ebf2d1dcab34e87066f4009e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_constructor_node.html#ae6ecc98ebf2d1dcab34e87066f4009e6">printTree</a> (unsigned level) const noexcept override</td></tr>
-<tr class="memdesc:ae6ecc98ebf2d1dcab34e87066f4009e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pretty printing for this node and all his children.  <a href="#ae6ecc98ebf2d1dcab34e87066f4009e6">More...</a><br /></td></tr>
-<tr class="separator:ae6ecc98ebf2d1dcab34e87066f4009e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac451706d26459d14f99b80bc5cb1b9f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_constructor_node.html#ac451706d26459d14f99b80bc5cb1b9f5">operator==</a> (const <a class="el" href="class_a_s_t_node.html">ASTNode</a> &amp;rhs) const override</td></tr>
 <tr class="separator:ac451706d26459d14f99b80bc5cb1b9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a045a56b36cf742a000db2b7eddf806eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_constructor_node.html#a045a56b36cf742a000db2b7eddf806eb">operator!=</a> (const <a class="el" href="class_a_s_t_node.html">ASTNode</a> &amp;rhs) const override</td></tr>
@@ -198,9 +195,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a6622f7ccaa6de28181a0195ba63e897e inherit pro_methods_class_a_s_t_node"><td class="memTemplParams" colspan="2">template&lt;typename ReturnType  = std::size_t&gt; </td></tr>
 <tr class="memitem:a6622f7ccaa6de28181a0195ba63e897e inherit pro_methods_class_a_s_t_node"><td class="memTemplItemLeft" align="right" valign="top">ReturnType&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a6622f7ccaa6de28181a0195ba63e897e">transformArrayIndex</a> (int64_t idx) const</td></tr>
 <tr class="separator:a6622f7ccaa6de28181a0195ba63e897e inherit pro_methods_class_a_s_t_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_static_methods_class_a_s_t_node"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_class_a_s_t_node')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="class_a_s_t_node.html">ASTNode</a></td></tr>
-<tr class="memitem:a15fa681baf0fc4dadf4b77dd03895732 inherit pro_static_methods_class_a_s_t_node"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a15fa681baf0fc4dadf4b77dd03895732">printIndent</a> (unsigned level) noexcept</td></tr>
-<tr class="separator:a15fa681baf0fc4dadf4b77dd03895732 inherit pro_static_methods_class_a_s_t_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_a_s_t_node"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_a_s_t_node')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_a_s_t_node.html">ASTNode</a></td></tr>
 <tr class="memitem:af38fa36ff556efde8be4d62d2b14520a inherit pro_attribs_class_a_s_t_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_s_t_node.html#af060da7729d9ce42e6b018594697b716">WeakLink</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#af38fa36ff556efde8be4d62d2b14520a">parent</a> = <a class="el" href="class_a_s_t_node.html#af060da7729d9ce42e6b018594697b716">WeakLink</a>()</td></tr>
 <tr class="memdesc:af38fa36ff556efde8be4d62d2b14520a inherit pro_attribs_class_a_s_t_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parent in the tree.  <a href="class_a_s_t_node.html#af38fa36ff556efde8be4d62d2b14520a">More...</a><br /></td></tr>
@@ -332,36 +326,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ae6ecc98ebf2d1dcab34e87066f4009e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6ecc98ebf2d1dcab34e87066f4009e6">&#9670;&nbsp;</a></span>printTree()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ConstructorNode::printTree </td>
-          <td>(</td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>level</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pretty printing for this node and all his children. </p>
-
-<p>Reimplemented from <a class="el" href="class_function_node.html#a77c23e00942fd5b9aa3873dc9f9defe8">FunctionNode</a>.</p>
-
-</div>
-</div>
 <a id="a9d07ef5dc7143f66b978daaa9ae40c1c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d07ef5dc7143f66b978daaa9ae40c1c">&#9670;&nbsp;</a></span>visit()</h2>
 
@@ -393,7 +357,6 @@ Additional Inherited Members</h2></td></tr>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>open/xylene/include/<a class="el" href="ast_8hpp_source.html">ast.hpp</a></li>
 <li>open/xylene/src/<a class="el" href="ast_8cpp.html">ast.cpp</a></li>
-<li>open/xylene/src/<a class="el" href="ast_8overrides_8cpp.html">ast.overrides.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

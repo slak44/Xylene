@@ -5,6 +5,5 @@ var class_member_node =
     [ "isStatic", "class_member_node.html#ac46a26994c396d6b42dd9ec192c3dc92", null ],
     [ "operator!=", "class_member_node.html#a2f889d6855eaf1e105c195bb0552ddb3", null ],
     [ "operator==", "class_member_node.html#a1495742edf1124fd026ea823f178faf2", null ],
-    [ "printTree", "class_member_node.html#aa1567e7ff52544e7b72cc1353797d522", null ],
     [ "visit", "class_member_node.html#a5a3e97a96a72cf609d5b7f3439384ffb", null ]
 ];

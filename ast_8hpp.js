@@ -17,6 +17,7 @@ var ast_8hpp =
     [ "MemberNode", "class_member_node.html", "class_member_node" ],
     [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", "class_a_s_t_visitor" ],
+    [ "ASTPrinter", "class_a_s_t_printer.html", "class_a_s_t_printer" ],
     [ "GET_SET_SIGS", "ast_8hpp.html#ad6003bd0cb5d23a158c81606911c0724", null ],
     [ "GET_SIG", "ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2", null ],
     [ "PURE_VIRTUAL_VISIT", "ast_8hpp.html#a888c3d926d3f7297490480900556e769", null ],

@@ -7,6 +7,5 @@ var class_declaration_node =
     [ "isDynamic", "class_declaration_node.html#a5c8ae47940c43dc4a54ad2edd15fcaf5", null ],
     [ "operator!=", "class_declaration_node.html#a3a63ce4889e151e1e776fb784a548843", null ],
     [ "operator==", "class_declaration_node.html#a0e4831945d0380fc1ad63c5942752a91", null ],
-    [ "printTree", "class_declaration_node.html#af39effb00666f94fdb89cb73d8304c8f", null ],
     [ "visit", "class_declaration_node.html#a47f0089caee0633301593ed9e82e1843", null ]
 ];

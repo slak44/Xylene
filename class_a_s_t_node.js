@@ -16,8 +16,6 @@ var class_a_s_t_node =
     [ "getTrace", "class_a_s_t_node.html#a16c40ff509a763b16af11e3cbc03bd1d", null ],
     [ "operator!=", "class_a_s_t_node.html#adb0b2d01835f8423d925ed47715b1706", null ],
     [ "operator==", "class_a_s_t_node.html#a8fc036294111d15ed1889fe8890ba4a4", null ],
-    [ "printIndent", "class_a_s_t_node.html#a15fa681baf0fc4dadf4b77dd03895732", null ],
-    [ "printTree", "class_a_s_t_node.html#adbb319bc1b1b756118eeea87d9e29b3c", null ],
     [ "removeChild", "class_a_s_t_node.html#a0dd06a70dc137db53ff43b1d77d505cc", null ],
     [ "setParent", "class_a_s_t_node.html#a8364648a730e8ca159a594b04a1efcab", null ],
     [ "setTrace", "class_a_s_t_node.html#a5b166c50a1da8b5ab1c8dbef2c3ec077", null ],

@@ -128,9 +128,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a226b3321e40bb3c54934185e610ee3b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_node.html#a226b3321e40bb3c54934185e610ee3b2">addChild</a> (<a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">Link</a> child) override</td></tr>
 <tr class="memdesc:a226b3321e40bb3c54934185e610ee3b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only accepts <a class="el" href="class_constructor_node.html" title="Represents a constructor. ">ConstructorNode</a>, <a class="el" href="class_method_node.html" title="Represents a method. ">MethodNode</a> or <a class="el" href="class_member_node.html" title="Represents a member declaration. ">MemberNode</a>.  <a href="#a226b3321e40bb3c54934185e610ee3b2">More...</a><br /></td></tr>
 <tr class="separator:a226b3321e40bb3c54934185e610ee3b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67e099037fc6437918e4900173259315"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_node.html#a67e099037fc6437918e4900173259315">printTree</a> (unsigned level) const noexcept override</td></tr>
-<tr class="memdesc:a67e099037fc6437918e4900173259315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pretty printing for this node and all his children.  <a href="#a67e099037fc6437918e4900173259315">More...</a><br /></td></tr>
-<tr class="separator:a67e099037fc6437918e4900173259315"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a609183b7856070c156ecb89846f9f87d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_node.html#a609183b7856070c156ecb89846f9f87d">operator==</a> (const <a class="el" href="class_a_s_t_node.html">ASTNode</a> &amp;rhs) const override</td></tr>
 <tr class="separator:a609183b7856070c156ecb89846f9f87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a017d7476b5c6898d5868396c4fc415"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_type_node.html#a5a017d7476b5c6898d5868396c4fc415">operator!=</a> (const <a class="el" href="class_a_s_t_node.html">ASTNode</a> &amp;rhs) const override</td></tr>
@@ -184,9 +181,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a6622f7ccaa6de28181a0195ba63e897e inherit pro_methods_class_a_s_t_node"><td class="memTemplParams" colspan="2">template&lt;typename ReturnType  = std::size_t&gt; </td></tr>
 <tr class="memitem:a6622f7ccaa6de28181a0195ba63e897e inherit pro_methods_class_a_s_t_node"><td class="memTemplItemLeft" align="right" valign="top">ReturnType&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a6622f7ccaa6de28181a0195ba63e897e">transformArrayIndex</a> (int64_t idx) const</td></tr>
 <tr class="separator:a6622f7ccaa6de28181a0195ba63e897e inherit pro_methods_class_a_s_t_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_static_methods_class_a_s_t_node"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_class_a_s_t_node')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="class_a_s_t_node.html">ASTNode</a></td></tr>
-<tr class="memitem:a15fa681baf0fc4dadf4b77dd03895732 inherit pro_static_methods_class_a_s_t_node"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a15fa681baf0fc4dadf4b77dd03895732">printIndent</a> (unsigned level) noexcept</td></tr>
-<tr class="separator:a15fa681baf0fc4dadf4b77dd03895732 inherit pro_static_methods_class_a_s_t_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_a_s_t_node"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_a_s_t_node')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_a_s_t_node.html">ASTNode</a></td></tr>
 <tr class="memitem:af38fa36ff556efde8be4d62d2b14520a inherit pro_attribs_class_a_s_t_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_s_t_node.html#af060da7729d9ce42e6b018594697b716">WeakLink</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#af38fa36ff556efde8be4d62d2b14520a">parent</a> = <a class="el" href="class_a_s_t_node.html#af060da7729d9ce42e6b018594697b716">WeakLink</a>()</td></tr>
 <tr class="memdesc:af38fa36ff556efde8be4d62d2b14520a inherit pro_attribs_class_a_s_t_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parent in the tree.  <a href="class_a_s_t_node.html#af38fa36ff556efde8be4d62d2b14520a">More...</a><br /></td></tr>
@@ -402,36 +396,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a67e099037fc6437918e4900173259315"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67e099037fc6437918e4900173259315">&#9670;&nbsp;</a></span>printTree()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TypeNode::printTree </td>
-          <td>(</td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>level</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pretty printing for this node and all his children. </p>
-
-<p>Reimplemented from <a class="el" href="class_a_s_t_node.html#adbb319bc1b1b756118eeea87d9e29b3c">ASTNode</a>.</p>
-
-</div>
-</div>
 <a id="adcc66eaae8b47345b46aad25173bf327"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adcc66eaae8b47345b46aad25173bf327">&#9670;&nbsp;</a></span>setTid()</h2>
 
@@ -489,7 +453,6 @@ Additional Inherited Members</h2></td></tr>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>open/xylene/include/<a class="el" href="ast_8hpp_source.html">ast.hpp</a></li>
 <li>open/xylene/src/<a class="el" href="ast_8cpp.html">ast.cpp</a></li>
-<li>open/xylene/src/<a class="el" href="ast_8overrides_8cpp.html">ast.overrides.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

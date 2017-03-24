@@ -85,7 +85,6 @@ $(document).ready(function(){initNavTree('class_a_s_t_node.html','');});
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_a_s_t_node-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -172,9 +171,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa15addd0c2a2a0edb6e0fb5de113dce6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="struct_node.html">Node</a>&lt; T &gt;::<a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">Link</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#aa15addd0c2a2a0edb6e0fb5de113dce6">findAbove</a> () const</td></tr>
 <tr class="memdesc:aa15addd0c2a2a0edb6e0fb5de113dce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse the tree upwards until a node that matches the type in the template is found.  <a href="#aa15addd0c2a2a0edb6e0fb5de113dce6">More...</a><br /></td></tr>
 <tr class="separator:aa15addd0c2a2a0edb6e0fb5de113dce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbb319bc1b1b756118eeea87d9e29b3c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#adbb319bc1b1b756118eeea87d9e29b3c">printTree</a> (unsigned level) const noexcept</td></tr>
-<tr class="memdesc:adbb319bc1b1b756118eeea87d9e29b3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pretty printing for this node and all his children.  <a href="#adbb319bc1b1b756118eeea87d9e29b3c">More...</a><br /></td></tr>
-<tr class="separator:adbb319bc1b1b756118eeea87d9e29b3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fc036294111d15ed1889fe8890ba4a4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a8fc036294111d15ed1889fe8890ba4a4">operator==</a> (const <a class="el" href="class_a_s_t_node.html">ASTNode</a> &amp;rhs) const</td></tr>
 <tr class="separator:a8fc036294111d15ed1889fe8890ba4a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb0b2d01835f8423d925ed47715b1706"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#adb0b2d01835f8423d925ed47715b1706">operator!=</a> (const <a class="el" href="class_a_s_t_node.html">ASTNode</a> &amp;rhs) const</td></tr>
@@ -187,11 +183,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a6622f7ccaa6de28181a0195ba63e897e"><td class="memTemplParams" colspan="2">template&lt;typename ReturnType  = std::size_t&gt; </td></tr>
 <tr class="memitem:a6622f7ccaa6de28181a0195ba63e897e"><td class="memTemplItemLeft" align="right" valign="top">ReturnType&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a6622f7ccaa6de28181a0195ba63e897e">transformArrayIndex</a> (int64_t idx) const</td></tr>
 <tr class="separator:a6622f7ccaa6de28181a0195ba63e897e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
-Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a15fa681baf0fc4dadf4b77dd03895732"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#a15fa681baf0fc4dadf4b77dd03895732">printIndent</a> (unsigned level) noexcept</td></tr>
-<tr class="separator:a15fa681baf0fc4dadf4b77dd03895732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -595,62 +586,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a15fa681baf0fc4dadf4b77dd03895732"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15fa681baf0fc4dadf4b77dd03895732">&#9670;&nbsp;</a></span>printIndent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void ASTNode::printIndent </td>
-          <td>(</td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>level</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="adbb319bc1b1b756118eeea87d9e29b3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbb319bc1b1b756118eeea87d9e29b3c">&#9670;&nbsp;</a></span>printTree()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ASTNode::printTree </td>
-          <td>(</td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>level</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pretty printing for this node and all his children. </p>
-
-<p>Reimplemented in <a class="el" href="class_member_node.html#aa1567e7ff52544e7b72cc1353797d522">MemberNode</a>, <a class="el" href="class_method_node.html#a124eb3a92018da251f29c470326113a3">MethodNode</a>, <a class="el" href="class_constructor_node.html#ae6ecc98ebf2d1dcab34e87066f4009e6">ConstructorNode</a>, <a class="el" href="class_function_node.html#a77c23e00942fd5b9aa3873dc9f9defe8">FunctionNode</a>, <a class="el" href="class_break_loop_node.html#a83c015d70c8aab35b800216f10b3b95e">BreakLoopNode</a>, <a class="el" href="class_return_node.html#a5cba52d956413911661ed603a1696d69">ReturnNode</a>, <a class="el" href="class_loop_node.html#a3084a23362266bf7a0a873130feeb7d9">LoopNode</a>, <a class="el" href="class_branch_node.html#ab21786dec3201f7fc31356c0d017e4bf">BranchNode</a>, <a class="el" href="class_declaration_node.html#af39effb00666f94fdb89cb73d8304c8f">DeclarationNode</a>, <a class="el" href="class_type_node.html#a67e099037fc6437918e4900173259315">TypeNode</a>, <a class="el" href="class_expression_node.html#ab3bde7ed5f1d178c8e0d67bd7af96842">ExpressionNode</a>, and <a class="el" href="class_block_node.html#a948f46de1a6a6cf1dc56b78bba4298c6">BlockNode</a>.</p>
-
-</div>
-</div>
 <a id="a0dd06a70dc137db53ff43b1d77d505cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0dd06a70dc137db53ff43b1d77d505cc">&#9670;&nbsp;</a></span>removeChild()</h2>
 
@@ -869,7 +804,6 @@ template&lt;typename ReturnType  = std::size_t&gt; </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>open/xylene/include/<a class="el" href="ast_8hpp_source.html">ast.hpp</a></li>
 <li>open/xylene/src/<a class="el" href="ast_8cpp.html">ast.cpp</a></li>
-<li>open/xylene/src/<a class="el" href="ast_8overrides_8cpp.html">ast.overrides.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

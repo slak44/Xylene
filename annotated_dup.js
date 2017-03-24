@@ -6,6 +6,7 @@ var annotated_dup =
     [ "AbstractId", "class_abstract_id.html", "class_abstract_id" ],
     [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "ASTNode", "class_a_s_t_node.html", "class_a_s_t_node" ],
+    [ "ASTPrinter", "class_a_s_t_printer.html", "class_a_s_t_printer" ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", "class_a_s_t_visitor" ],
     [ "BlockNode", "class_block_node.html", "class_block_node" ],
     [ "BranchNode", "class_branch_node.html", "class_branch_node" ],
