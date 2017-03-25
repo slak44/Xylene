@@ -88,7 +88,7 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
       auto codeBlock = node->first_node("block");
       if (codeBlock == nullptr)
         throw XMLParseError("Method missing code block", {METADATA_PAIRS});
-      f->setCode(Node<BlockNode>::staticPtrCast(parseXMLNode(codeBlock)));
+      f->code(Node<BlockNode>::staticPtrCast(parseXMLNode(codeBlock)));
     }
   };
   auto getVisibility = [node, &safeAttr]() -> Visibility {
@@ -113,7 +113,7 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     auto retNode = Node<ReturnNode>::make();
     auto val = node->first_node("expr");
     if (val != nullptr)
-      retNode->setValue(Node<ExpressionNode>::dynPtrCast(parseXMLNode(val)));
+      retNode->value(Node<ExpressionNode>::dynPtrCast(parseXMLNode(val)));
     return retNode;
   } else if (name == "expr") {
     TokenType tokenType = TT::findByPrettyName(requiredAttr("type"));
@@ -141,7 +141,7 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     }
     auto expr = node->first_node("expr");
     if (expr != nullptr) {
-      decl->setInit(Node<ExpressionNode>::dynPtrCast(parseXMLNode(expr)));
+      decl->init(Node<ExpressionNode>::dynPtrCast(parseXMLNode(expr)));
     }
     return decl;
   } else if (name == "branch") {
@@ -149,39 +149,33 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
     auto cond = node->first_node();
     if (cond == nullptr)
       throw XMLParseError("Missing condition in branch", {METADATA_PAIRS});
-    branch->setCondition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
+    branch->condition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
     auto success = cond->next_sibling();
     if (success == nullptr)
       throw XMLParseError("Missing success node in branch", {METADATA_PAIRS});
-    branch->setSuccessBlock(Node<BlockNode>::dynPtrCast(parseXMLNode(success)));
+    branch->success(Node<BlockNode>::dynPtrCast(parseXMLNode(success)));
     auto blockFailiure = success->next_sibling("block");
     if (blockFailiure != nullptr) {
-      branch->setFailiureBlock(
-        Node<BlockNode>::dynPtrCast(parseXMLNode(blockFailiure)));
+      branch->failiure<BlockNode>(Node<BlockNode>::dynPtrCast(parseXMLNode(blockFailiure)));
     }
     auto branchFailiure = success->next_sibling("branch");
     if (branchFailiure != nullptr) {
-      branch->setFailiureBlock(
-        Node<BranchNode>::dynPtrCast(parseXMLNode(branchFailiure)));
+      branch->failiure<BranchNode>(Node<BranchNode>::dynPtrCast(parseXMLNode(branchFailiure)));
     }
     return branch;
   } else if (name == "loop") {
     auto loop = Node<LoopNode>::make();
-    auto init = node->first_node("loop_init");
-    if (init != nullptr) {
-      loop->setInit(Node<DeclarationNode>::dynPtrCast(parseXMLNode(init)));
+    for (auto init = node->first_node("loop_init"); init; init = init->next_sibling("loop_init")) {
+      loop->addInit(Node<DeclarationNode>::dynPtrCast(parseXMLNode(init)));
     }
-    auto cond = node->first_node("loop_condition");
-    if (cond != nullptr) {
-      loop->setCondition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
+    if (auto cond = node->first_node("loop_condition")) {
+      loop->condition(Node<ExpressionNode>::dynPtrCast(parseXMLNode(cond)));
     }
-    auto update = node->first_node("loop_update");
-    if (update != nullptr) {
-      loop->setUpdate(Node<ExpressionNode>::dynPtrCast(parseXMLNode(update)));
+    for (auto upd = node->first_node("loop_update"); upd; upd = upd->next_sibling("loop_update")) {
+      loop->addUpdate(Node<ExpressionNode>::dynPtrCast(parseXMLNode(upd)));
     }
-    auto code = node->first_node("block");
-    if (code != nullptr) {
-      loop->setCode(Node<BlockNode>::dynPtrCast(parseXMLNode(code)));
+    if (auto code = node->first_node("block")) {
+      loop->code(Node<BlockNode>::dynPtrCast(parseXMLNode(code)));
     }
     return loop;
   } else if (
@@ -212,7 +206,7 @@ ASTNode::Link XMLParser::parseXMLNode(rapidxml::xml_node<>* node) {
       ident, TypeList(ALL(types)), boolAttr("static"), getVisibility());
     auto init = node->first_node("expr");
     if (init != nullptr) {
-      member->setInit(Node<ExpressionNode>::staticPtrCast(parseXMLNode(init)));
+      member->init(Node<ExpressionNode>::staticPtrCast(parseXMLNode(init)));
     }
     return member;
   } else if (name == "method") {

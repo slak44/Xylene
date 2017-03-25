@@ -13,11 +13,11 @@ ASTNode::Link ASTNode::removeChild(int64_t pos) {
 }
 
 ASTNode::Link ASTNode::at(int64_t pos) const {
-  return children.at(transformArrayIndex(pos));
+  return getChildren().at(transformArrayIndex(pos));
 }
 
 ASTNode::Link ASTNode::at(std::size_t pos) const {
-  return children.at(pos);
+  return getChildren().at(pos);
 }
 
 ASTNode::Link ASTNode::findAbove(std::function<bool(Link)> isOk) const {
@@ -30,8 +30,8 @@ ASTNode::Link ASTNode::findAbove(std::function<bool(Link)> isOk) const {
 
 bool ASTNode::operator==(const ASTNode& rhs) const {
   if (typeid(*this) != typeid(rhs)) return false;
-  if (children.size() != rhs.getChildren().size()) return false;
-  for (std::size_t i = 0; i < children.size(); i++) {
+  if (getChildren().size() != rhs.getChildren().size()) return false;
+  for (std::size_t i = 0; i < getChildren().size(); i++) {
     if (this->at(i) == nullptr && rhs.at(i) == nullptr) continue;
     if (*(this->at(i)) != *(rhs.at(i))) return false;
   }
@@ -110,51 +110,6 @@ MemberNode::MemberNode(std::string identifier, TypeList typeList, bool staticM, 
   DeclarationNode(identifier, typeList), staticM(staticM), vis(vis) {}
 
 /**
-  \brief Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses
-  
-  Omologues exist in header to provide signatures for these implementations
-  \param srcNode name of subclass
-  \param childIndex index for the child (because number of children is fixed on NoMoreChildrenNodes)
-  \param nameOf name for getter/setter (get##nameOf and set##nameOf)
-  \param linkType type of child
-*/
-#define GET_FOR(srcNode, childIndex, nameOf, linkType) \
-Node<linkType>::Link srcNode::get##nameOf() const {\
-  return Node<linkType>::staticPtrCast(children[childIndex]);\
-}
-/// \copydoc GET_FOR
-#define SET_FOR(srcNode, childIndex, nameOf, linkType) \
-void srcNode::set##nameOf(std::shared_ptr<linkType> newNode) {\
-  newNode->setParent(shared_from_this());\
-  children[childIndex] = newNode;\
-}
-/// \copydoc GET_FOR
-#define GET_SET_FOR(srcNode, childIndex, nameOf, linkType) \
-GET_FOR(srcNode, childIndex, nameOf, linkType) \
-SET_FOR(srcNode, childIndex, nameOf, linkType)
-
-GET_SET_FOR(DeclarationNode, 0, Init, ExpressionNode)
-
-GET_SET_FOR(BranchNode, 0, Condition, ExpressionNode)
-GET_SET_FOR(BranchNode, 1, SuccessBlock, BlockNode)
-GET_FOR(BranchNode, 2, FailiureBlock, ASTNode)
-SET_FOR(BranchNode, 2, FailiureBlock, BlockNode)
-SET_FOR(BranchNode, 2, FailiureBlock, BranchNode)
-
-GET_SET_FOR(LoopNode, 0, Init, DeclarationNode)
-GET_SET_FOR(LoopNode, 1, Condition, ExpressionNode)
-GET_SET_FOR(LoopNode, 2, Update, ExpressionNode)
-GET_SET_FOR(LoopNode, 3, Code, BlockNode)
-
-GET_SET_FOR(ReturnNode, 0, Value, ExpressionNode)
-
-GET_SET_FOR(FunctionNode, 0, Code, BlockNode)
-
-#undef GET_FOR
-#undef SET_FOR
-#undef GET_SET_FOR
-
-/**
   \brief Macro to help implement the 'visit' functions in each node
   \param nodeName name of node class, without 'Node' at the end, eg Loop, not LoopNode
 */
@@ -185,7 +140,7 @@ VISITOR_VISIT_IMPL_FOR(Member)
 AST::AST(Node<BlockNode>::Link lk): root(lk) {}
 
 void AST::print() const {
-  ASTPrinter::print(root);
+  println(ASTPrinter::print(root));
 }
 
 Node<BlockNode>::Link AST::getRoot() const {
@@ -203,100 +158,108 @@ bool AST::operator!=(const AST& rhs) const {
 // Printer
 
 /// Macro for easy printing of NoMoreChildrenNode children
-#define PRETTY_PRINT_FOR(childIndex, nameOf) \
-{\
-  level++;\
-  printIndent(level);\
-  println(#nameOf":");\
-  node->getChildren()[childIndex]->visit(shared_from_this());\
-  level--;\
-}
+#define PRETTY_PRINT_FOR(child, nameOf) \
+level++;\
+printIndent();\
+println(nameOf":");\
+child->visit(shared_from_this());\
+level--;
 
 void ASTPrinter::visitBlock(Node<BlockNode>::Link node) {
-  printIndent(level);
-  println("Block Node:", node->getType());
+  printIndent();
+  println(fmt::format("Block Node: {}", node->getType()));
   printSubtree(node);
 }
 
 void ASTPrinter::visitExpression(Node<ExpressionNode>::Link node) {
-  printIndent(level);
-  println("Expression Node:", node->getToken());
+  printIndent();
+  println(fmt::format("Expression Node: {}", node->getToken()));
   printSubtree(node);
 }
 
 void ASTPrinter::visitDeclaration(Node<DeclarationNode>::Link node) {
-  printIndent(level);
-  fmt::print("Declaration Node: {0} ({1})\n", node->getIdentifier(), node->getTypeInfo());
+  printIndent();
+  println(fmt::format("Declaration Node: {0} ({1})", node->getIdentifier(), node->getTypeInfo()));
   if (node->notNull(0)) printSubtree(node);
 }
 
 void ASTPrinter::visitType(Node<TypeNode>::Link node) {
-  printIndent(level);
-  fmt::print("Type Node: {0} {1}\n", node->getName(),
-    node->getAncestors().size() ? "inherits from" + collate(node->getAncestors()) : "\b");
+  printIndent();
+  println(fmt::format("Type Node: {0} {1}", node->getName(),
+    node->getAncestors().size() ? "inherits from" + collate(node->getAncestors()) : "\b"));
   printSubtree(node);
 }
 
 void ASTPrinter::visitConstructor(Node<ConstructorNode>::Link node) {
-  printIndent(level);
-  fmt::print("Constructor Node: {}\n", node->getSignature());
+  printIndent();
+  println(fmt::format("Constructor Node: {}", node->getSignature()));
   if (node->notNull(0)) printSubtree(node);
 }
 
 void ASTPrinter::visitMethod(Node<MethodNode>::Link node) {
-  printIndent(level);
-  fmt::print("Method Node: {0} {1}\n",
-    node->getIdentifier(), node->isStatic() ? "(static)" : "");
-  printIndent(level);
-  println(node->getSignature());
+  printIndent();
+  println(fmt::format("Method Node: {0} {1}",
+    node->getIdentifier(), node->isStatic() ? "(static)" : ""));
+  printIndent();
+  println(node->getSignature().toString());
   if (node->notNull(0)) printSubtree(node);
 }
 
 void ASTPrinter::visitMember(Node<MemberNode>::Link node) {
-  printIndent(level);
-  fmt::print("Member Node: {0} ({1}) {2}\n",
-    node->getIdentifier(), node->getTypeInfo(), node->isStatic() ? "(static)" : "");
+  printIndent();
+  println(fmt::format("Member Node: {0} ({1}) {2}",
+    node->getIdentifier(), node->getTypeInfo(), node->isStatic() ? "(static)" : ""));
   if (node->notNull(0)) printSubtree(node);
 }
 
 void ASTPrinter::visitBranch(Node<BranchNode>::Link node) {
-  printIndent(level);
+  printIndent();
   println("Branch Node:");
-  PRETTY_PRINT_FOR(0, Condition)
-  PRETTY_PRINT_FOR(1, Success)
-  if (node->notNull(2)) PRETTY_PRINT_FOR(2, Failiure)
+  PRETTY_PRINT_FOR(node->condition(), "Condition");
+  PRETTY_PRINT_FOR(node->success(), "Success");
+  PRETTY_PRINT_FOR(node->getChildren()[2], "Failiure");
 }
 
 void ASTPrinter::visitLoop(Node<LoopNode>::Link node) {
-  printIndent(level);
+  printIndent();
   println("Loop Node:");
-  if (node->notNull(0)) PRETTY_PRINT_FOR(0, Init)
-  if (node->notNull(1)) PRETTY_PRINT_FOR(1, Condition)
-  if (node->notNull(2)) PRETTY_PRINT_FOR(2, Update)
-  if (node->notNull(3)) PRETTY_PRINT_FOR(3, Code)
+  for (auto init : node->inits()) {
+    PRETTY_PRINT_FOR(init, "Init");
+  }
+  if (node->condition() != nullptr) {
+    PRETTY_PRINT_FOR(node->condition(), "Condition");
+  }
+  for (auto upd : node->updates()) {
+    PRETTY_PRINT_FOR(upd, "Update");
+  }
+  if (node->code() != nullptr) {
+    PRETTY_PRINT_FOR(node->code(), "Code");
+  }
 }
 
 void ASTPrinter::visitReturn(Node<ReturnNode>::Link node) {
-  printIndent(level);
+  printIndent();
   println("Return Node:");
-  if (node->notNull(0)) PRETTY_PRINT_FOR(0, Value)
+  if (node->value() != nullptr) PRETTY_PRINT_FOR(node->value(), "Value");
 }
 
 void ASTPrinter::visitBreakLoop(Node<BreakLoopNode>::Link node) {
-  printIndent(level);
+  printIndent();
   println("Break Loop:");
   printSubtree(node);
 }
 
 void ASTPrinter::visitFunction(Node<FunctionNode>::Link node) {
-  printIndent(level);
-  fmt::print("Function {0}: {1}\n",
-    node->isAnon() ? "<anonymous>" : node->getIdentifier(), node->getSignature());
-  if (node->notNull(0)) {
-    PRETTY_PRINT_FOR(0, Code)
+  printIndent();
+  println(fmt::format("Function {0}: {1}",
+    node->isAnon() ? "<anonymous>" : node->getIdentifier(), node->getSignature()));
+  if (node->code() != nullptr) {
+    PRETTY_PRINT_FOR(node->code(), "Code");
   } else {
-    printIndent(level + 1);
+    level++;
+    printIndent();
     println("<foreign>");
+    level--;
   }
 }
 

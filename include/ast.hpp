@@ -7,6 +7,8 @@
 #include <typeinfo>
 #include <unordered_set>
 
+#include <variant.hpp>
+
 #include "utils/util.hpp"
 #include "utils/error.hpp"
 #include "utils/typeInfo.hpp"
@@ -68,8 +70,8 @@ protected:
     ReturnType res;
     if (idx < 0) {
       // Negative indices count from the end of the vector
-      int64_t transPos = static_cast<int64_t>(children.size()) + idx;
-      if (transPos < 0 || transPos > static_cast<int64_t>(children.size())) {
+      int64_t transPos = static_cast<int64_t>(getChildren().size()) + idx;
+      if (transPos < 0 || transPos > static_cast<int64_t>(getChildren().size())) {
         throw InternalError("Index out of array bounds", {
           METADATA_PAIRS,
           {"index", std::to_string(idx)},
@@ -99,7 +101,11 @@ public:
   */
   virtual Link removeChild(int64_t pos);
   
-  /// Get list of children
+  /**
+    \brief Get list of children
+    
+    This method is not guaranteed to return the private member 'children'.
+  */
   virtual inline Children getChildren() const noexcept {
     return children;
   }
@@ -256,15 +262,6 @@ public:
   void visit(ASTVisitorLink visitor) override;
 };
 
-/// \see GET_FOR
-#define GET_SIG(linkType, nameOf) Node<linkType>::Link get##nameOf() const;
-/// \see SET_FOR
-#define SET_SIG(linkType, nameOf) void set##nameOf(std::shared_ptr<linkType> newNode);
-/// \see GET_SET_FOR
-#define GET_SET_SIGS(linkType, nameOf) \
-GET_SIG(linkType, nameOf) \
-SET_SIG(linkType, nameOf)
-
 /**
   \brief ASTNode with fixed children count.
 */
@@ -282,19 +279,22 @@ public:
   
   /// Utility to check if the childIndex'th child is not nullptr
   inline bool notNull(unsigned childIndex) const noexcept {
-    return children[childIndex] != nullptr;
+    return getChildren()[childIndex] != nullptr;
   }
 };
 
 /**
   \brief Stores metadata about a declaration.
   
-  Can have one ExpressionNode child representing initialization. Check using hasInit.
+  Can have one ExpressionNode child representing initialization.
 */
 class DeclarationNode: public NoMoreChildrenNode {
 private:
   std::string identifier;
   DefiniteTypeInfo info;
+  /// Optional initialization. Only child of DeclarationNode
+  Node<ExpressionNode>::Link _init = nullptr;
+  
 public:
   /**
     \param identifier name of declared variable
@@ -302,8 +302,19 @@ public:
   */
   DeclarationNode(std::string identifier, TypeList typeList) noexcept:
     NoMoreChildrenNode(1), identifier(identifier), info(typeList) {}
-    
-  GET_SET_SIGS(ExpressionNode, Init)
+  
+  inline Node<ExpressionNode>::Link init() const noexcept {
+    return _init;
+  }
+  
+  inline void init(Node<ExpressionNode>::Link init) noexcept {
+    init->setParent(shared_from_this());
+    _init = init;
+  }
+  
+  inline Children getChildren() const noexcept override {
+    return {_init};
+  }
   
   inline std::string getIdentifier() const noexcept {
     return identifier;
@@ -318,7 +329,7 @@ public:
   }
 
   inline bool hasInit() const noexcept {
-    return children[0] != nullptr;
+    return _init != nullptr;
   }
   
   bool operator==(const ASTNode& rhs) const override;
@@ -333,17 +344,61 @@ public:
   Has 3 children:
     - Condition - ExpressionNode
     - SuccessBlock - BlockNode
-    - FailiureBlock - BlockNode or BranchNode
+    - FailiureBlock - BlockNode or BranchNode (optional)
 */
 class BranchNode: public NoMoreChildrenNode {
+private:
+  /// Branch condition
+  Node<ExpressionNode>::Link _condition = nullptr;
+  /// Code to run when condition is true
+  Node<BlockNode>::Link _success = nullptr;
+  /// Either code or another branch to be ran when the condition is false
+  mpark::variant<
+    Node<BlockNode>::Link,
+    std::shared_ptr<BranchNode>,
+    std::nullptr_t
+  > _failiure = nullptr;
+
 public:
   BranchNode() noexcept: NoMoreChildrenNode(3) {}
   
-  GET_SET_SIGS(ExpressionNode, Condition)
-  GET_SET_SIGS(BlockNode, SuccessBlock)
-  GET_SIG(ASTNode, FailiureBlock)
-  SET_SIG(BlockNode, FailiureBlock)
-  SET_SIG(BranchNode, FailiureBlock)
+  inline Node<ExpressionNode>::Link condition() const noexcept {
+    return _condition;
+  }
+  
+  inline void condition(Node<ExpressionNode>::Link condition) noexcept {
+    condition->setParent(shared_from_this());
+    _condition = condition;
+  }
+  
+  inline Node<BlockNode>::Link success() const noexcept {
+    return _success;
+  }
+  
+  inline void success(Node<BlockNode>::Link success) noexcept {
+    success->setParent(shared_from_this());
+    _success = success;
+  }
+  
+  inline decltype(_failiure) failiure() const noexcept {
+    return _failiure;
+  }
+  
+  template<typename T>
+  inline void failiure(typename Node<T>::Link failiure) noexcept {
+    failiure->setParent(shared_from_this());
+    _failiure = failiure;
+  }
+  
+  inline Children getChildren() const noexcept override {
+    Node<ASTNode>::Link fail = nullptr;
+    if (mpark::holds_alternative<0>(_failiure)) {
+      fail = Node<ASTNode>::dynPtrCast(mpark::get<0>(_failiure));
+    } else if (mpark::holds_alternative<1>(_failiure)) {
+      fail = Node<ASTNode>::dynPtrCast(mpark::get<1>(_failiure));
+    }
+    return {_condition, _success, fail};
+  }
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -352,9 +407,9 @@ public:
   \brief Represents a loop.
   
   Has 4 children:
-    - Init - DeclarationNode
-    - Condition - ExpressionNode
-    - Update - ExpressionNode
+    - Init - DeclarationNode (optional)
+    - Condition - ExpressionNode (optional)
+    - Update - ExpressionNode (optional)
     - Code - BlockNode
   Example on a for loop:
   for Init; Condition; Update Code
@@ -363,13 +418,59 @@ class LoopNode: public NoMoreChildrenNode {
 private:
   /// Used by the break statement
   llvm::BasicBlock* exitBlock;
+  std::vector<Node<DeclarationNode>::Link> _inits = {};
+  Node<ExpressionNode>::Link _condition = nullptr;
+  std::vector<Node<ExpressionNode>::Link> _updates = {};
+  Node<BlockNode>::Link _code = nullptr;
+
 public:
   LoopNode() noexcept: NoMoreChildrenNode(4) {}
   
-  GET_SET_SIGS(DeclarationNode, Init)
-  GET_SET_SIGS(ExpressionNode, Condition)
-  GET_SET_SIGS(ExpressionNode, Update)
-  GET_SET_SIGS(BlockNode, Code)
+  inline Node<ExpressionNode>::Link condition() const noexcept {
+    return _condition;
+  }
+  
+  inline void condition(Node<ExpressionNode>::Link condition) noexcept {
+    condition->setParent(shared_from_this());
+    _condition = condition;
+  }
+  
+  inline Node<BlockNode>::Link code() const noexcept {
+    return _code;
+  }
+  
+  inline void code(Node<BlockNode>::Link code) noexcept {
+    code->setParent(shared_from_this());
+    _code = code;
+  }
+  
+  inline decltype(_inits) inits() const noexcept {
+    return _inits;
+  }
+  
+  inline void addInit(Node<DeclarationNode>::Link init) noexcept {
+    init->setParent(shared_from_this());
+    _inits.push_back(init);
+  }
+  
+  inline decltype(_updates) updates() const noexcept {
+    return _updates;
+  }
+  
+  inline void addUpdate(Node<ExpressionNode>::Link upd) noexcept {
+    upd->setParent(shared_from_this());
+    _updates.push_back(upd);
+  }
+  
+  inline Children getChildren() const noexcept override {
+    Children c;
+    c.reserve(_inits.size() + 1 + _updates.size() + 1);
+    c.insert(std::end(c), ALL(_inits));
+    c.push_back(_condition);
+    c.insert(std::end(c), ALL(_updates));
+    c.push_back(_code);
+    return c;
+  }
   
   inline llvm::BasicBlock* getExitBlock() const noexcept {
     return exitBlock;
@@ -387,10 +488,24 @@ public:
   Can have an ExpressionNode to be returned.
 */
 class ReturnNode: public NoMoreChildrenNode {
+private:
+  Node<ExpressionNode>::Link _value = nullptr;
+  
 public:
   ReturnNode() noexcept: NoMoreChildrenNode(1) {}
   
-  GET_SET_SIGS(ExpressionNode, Value)
+  inline Node<ExpressionNode>::Link value() const noexcept {
+    return _value;
+  }
+  
+  inline void value(Node<ExpressionNode>::Link value) noexcept {
+    value->setParent(shared_from_this());
+    _value = value;
+  }
+  
+  inline Children getChildren() const noexcept override {
+    return {_value};
+  }
   
   void visit(ASTVisitorLink visitor) override;
 };
@@ -415,12 +530,25 @@ private:
   std::string ident;
   FunctionSignature sig;
   bool foreign;
+  Node<BlockNode>::Link _code = nullptr;
+  
 public:
   FunctionNode(FunctionSignature sig);
   /// \param ident if empty, behaves just like FunctionNode(FunctionSignature)
   FunctionNode(std::string ident, FunctionSignature sig, bool foreign = false);
   
-  GET_SET_SIGS(BlockNode, Code)
+  inline Node<BlockNode>::Link code() const noexcept {
+    return _code;
+  }
+  
+  inline void code(Node<BlockNode>::Link code) noexcept {
+    code->setParent(shared_from_this());
+    _code = code;
+  }
+  
+  inline Children getChildren() const noexcept override {
+    return {_code};
+  }
   
   inline std::string getIdentifier() const noexcept {
     return ident;
@@ -435,7 +563,6 @@ public:
     return ident.empty();
   }
 
-  
   bool operator==(const ASTNode& rhs) const override;
   bool operator!=(const ASTNode& rhs) const override;
   
@@ -605,13 +732,22 @@ private:
   void visitMember(Node<MemberNode>::Link node) override;
   
   unsigned level = 0;
+  std::string text = "";
   
 protected:
   ASTPrinter() = default;
   ASTPrinter(const ASTPrinter&) = default;
   
-  static inline void printIndent(unsigned level) noexcept {
-    for (unsigned i = 0; i < level; i++) ::print("  ");
+  inline void printIndent() noexcept {
+    for (unsigned i = 0; i < level; i++) text += "  ";
+  }
+  
+  inline void print(std::string s) {
+    text += s;
+  }
+  
+  inline void println(std::string s) {
+    text += s + '\n';
   }
   
   void printSubtree(ASTNode::Link node) {
@@ -621,9 +757,15 @@ protected:
   }
   
 public:
-  static void print(ASTNode::Link node) {
-    node->visit(std::shared_ptr<ASTPrinter>(new ASTPrinter()));
+  inline static std::string print(ASTNode::Link node) {
+    auto printer = std::shared_ptr<ASTPrinter>(new ASTPrinter());
+    node->visit(printer);
+    return printer->text;
   }
 };
+
+inline std::ostream& operator<<(std::ostream& out, AST ast) noexcept {
+  return out << ASTPrinter::print(ast.getRoot());
+}
 
 #endif

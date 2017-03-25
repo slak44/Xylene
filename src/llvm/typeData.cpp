@@ -274,7 +274,7 @@ bool MemberMetadata::hasInit() const {
 }
 
 Node<ExpressionNode>::Link MemberMetadata::getInit() const {
-  return mem->getInit();
+  return mem->init();
 }
 
 Node<MemberNode>::Link MemberMetadata::getNode() const {
@@ -303,7 +303,7 @@ Trace MethodData::getTrace() const {
 }
 
 Node<BlockNode>::Link MethodData::getCodeBlock() const {
-  return meth->getCode();
+  return meth->code();
 }
 
 bool MethodData::isForeign() const {
@@ -323,7 +323,7 @@ Trace ConstructorData::getTrace() const {
 }
 
 Node<BlockNode>::Link ConstructorData::getCodeBlock() const {
-  return constr->getCode();
+  return constr->code();
 }
 
 bool ConstructorData::isForeign() const {

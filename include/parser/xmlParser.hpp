@@ -38,7 +38,7 @@ public:
   - \c branch: maps to a BranchNode
     - children: an expr node that is the condition, a success block, and either a failiure block or another branch node
   - \c loop: maps to a LoopNode
-    - children: one or none of each node: loop_init, loop_condition, loop_update. A block is mandatory
+    - children: A block is mandatory, condition is optional, can have multiple inits/updates
   - \c loop_init: only inside a loop tag
     - children: one expr node
   - \c loop_condition: only inside a loop tag

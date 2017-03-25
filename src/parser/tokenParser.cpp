@@ -195,7 +195,7 @@ Node<DeclarationNode>::Link TokenParser::declarationFromTypes(TypeList typeList)
   // Do initialization only if it exists
   if (accept("=")) {
     skip();
-    decl->setInit(expression());
+    decl->init(expression());
   }
   return decl;
 }
@@ -236,18 +236,18 @@ Node<DeclarationNode>::Link TokenParser::declaration(bool throwIfEmpty) {
 Node<BranchNode>::Link TokenParser::ifStatement() {
   auto branch = Node<BranchNode>::make();
   branch->setTrace(current().trace);
-  branch->setCondition(expression());
-  branch->setSuccessBlock(block(IF_BLOCK));
+  branch->condition(expression());
+  branch->success(block(IF_BLOCK));
   skip(-1); // Go back to the block termination token
   if (accept(TT::ELSE)) {
     skip();
     // Else-if structure
     if (accept(TT::IF)) {
       skip();
-      branch->setFailiureBlock(ifStatement());
+      branch->failiure<BranchNode>(ifStatement());
     // Simple else block
     } else if (accept(TT::DO)) {
-      branch->setFailiureBlock(block(CODE_BLOCK));
+      branch->failiure<BlockNode>(block(CODE_BLOCK));
     } else {
       throw "'else' must be followed by a 'do' or 'if'"_syntax + current().trace;
     }
@@ -314,7 +314,7 @@ Node<FunctionNode>::Link TokenParser::function(bool isForeign) {
   auto func = Node<FunctionNode>::make(ident, FunctionSignature(returnType == nullptr ? nullptr : *returnType, args), isForeign);
   func->setTrace(trace);
   // Only non-foreign functions have code bodies
-  if (!isForeign) func->setCode(block(FUNCTION_BLOCK));
+  if (!isForeign) func->code(block(FUNCTION_BLOCK));
   // Foreign declarations end in semicolon
   if (isForeign) expectSemi();
   return func;
@@ -334,7 +334,7 @@ Node<ConstructorNode>::Link TokenParser::constructor(Visibility vis, bool isFore
   if (isForeign) {
     expectSemi();
   } else {
-    constr->setCode(block(FUNCTION_BLOCK));    
+    constr->code(block(FUNCTION_BLOCK));
   }
   return constr;
 }
@@ -347,7 +347,7 @@ Node<MethodNode>::Link TokenParser::method(Visibility vis, bool isStatic, bool i
   if (isForeign) {
     expectSemi();
   } else {
-    methNode->setCode(Node<BlockNode>::staticPtrCast(parsedAsFunc->removeChild(0)));
+    methNode->code(parsedAsFunc->code());
   }
   return methNode;
 }
@@ -357,7 +357,8 @@ Node<MemberNode>::Link TokenParser::member(Visibility vis, bool isStatic) {
   auto parsedAsDecl = declaration();
   auto mbNode = Node<MemberNode>::make(parsedAsDecl->getIdentifier(), parsedAsDecl->getTypeInfo().getEvalTypeList(), isStatic, vis == INVALID ? PRIVATE : vis);
   mbNode->setTrace(mbTrace);
-  if (parsedAsDecl->getChildren().size() > 0) mbNode->setInit(Node<ExpressionNode>::staticPtrCast(parsedAsDecl->removeChild(0)));
+  if (parsedAsDecl->getChildren().size() > 0)
+    mbNode->init(parsedAsDecl->init());
   return mbNode;
 }
 
@@ -434,19 +435,44 @@ ASTNode::Link TokenParser::statement() {
     auto loop = Node<LoopNode>::make();
     loop->setTrace(current().trace);
     skip(); // Skip "for"
-    loop->setInit(declaration(false));
+    // TODO: multiple decls
+    loop->addInit(declaration(false));
     expectSemi();
-    loop->setCondition(expression(false));
+    loop->condition(expression(false));
     expectSemi();
-    loop->setUpdate(expression(false));
-    loop->setCode(block(CODE_BLOCK));
+    // Tree with commas and updates
+    auto updates = expression(false);
+    loop->code(block(CODE_BLOCK));
+    // No updates to parse
+    if (updates == nullptr) {
+      return loop;
+    }
+    // No comma tree means we have only one update
+    if (!updates->getToken().op().hasSymbol(",")) {
+      loop->addUpdate(updates);
+      return loop;
+    }
+    // Parse comma tree
+    std::vector<Node<ExpressionNode>::Link> splitUpdates;
+    while (updates->getToken().op().hasSymbol(",")) {
+      splitUpdates.push_back(updates->at(1));
+      if (!updates->at(0)->getToken().op().hasSymbol(",")) break;
+      updates = updates->at(0);
+    }
+    // Bottom of the tree has another update instead of a comma
+    splitUpdates.push_back(updates->at(0));
+    // The above process adds the upds in reverse, so flip the vector
+    std::reverse(ALL(splitUpdates));
+    for (auto upd : splitUpdates) {
+      loop->addUpdate(upd);
+    }
     return loop;
   } if (accept(TT::WHILE)) {
     skip(); // Skip "while"
     auto loop = Node<LoopNode>::make();
     loop->setTrace(current().trace);
-    loop->setCondition(expression());
-    loop->setCode(block(CODE_BLOCK));
+    loop->condition(expression());
+    loop->code(block(CODE_BLOCK));
     return loop;
   } else if (accept(TT::DO)) {
     return block(CODE_BLOCK);
@@ -479,7 +505,7 @@ ASTNode::Link TokenParser::statement() {
     expectSemi();
     auto retNode = Node<ReturnNode>::make();
     retNode->setTrace(trace);
-    if (retValue != nullptr) retNode->setValue(retValue);
+    if (retValue != nullptr) retNode->value(retValue);
     return retNode;
   } else if (accept(TT::FUNCTION)) {
     return function();

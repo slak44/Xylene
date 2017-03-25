@@ -43,7 +43,7 @@ EBNF grammar can be found [here](https://github.com/slak44/Xylene/blob/master/gr
   - interfaces?
   - abstract types?
   - enums (Java-like?)
-- for loop: multiple declarations & multiple update expressions
+- for loop: multiple declarations, fix ambiguous grammar
 - properly define an identifier
 - prefix notation in arguments
 - allow default type for method definitions?

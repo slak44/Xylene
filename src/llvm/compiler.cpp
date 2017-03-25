@@ -109,6 +109,11 @@ ModuleCompiler::ModuleCompiler(std::string moduleName, AST ast, bool isRoot):
   module(new llvm::Module(moduleName, *context)),
   ast(ast),
   isRoot(isRoot) {
+  ast.getRoot()->blockTypes.insert({
+    integerTid,
+    floatTid,
+    booleanTid
+  });
   insertRuntimeFuncDecls();
 }
 
@@ -426,14 +431,17 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
         operands.push_back(compileExpression(lastNode, AS_VALUE));
       // Only go through args if it isn't a no-op, because that means we have no args
       } else if (!lastNode->getToken().op().hasName("No-op")) {
-        while (lastNode->at(1)->getToken().op().hasSymbol(",")) {
+        while (lastNode->getToken().op().hasSymbol(",")) {
           // TODO might need to change these AS_VALUE for complex objects
-          operands.push_back(compileExpression(lastNode->at(0), AS_VALUE));
-          lastNode = lastNode->at(1);
+          operands.push_back(compileExpression(lastNode->at(1), AS_VALUE));
+          if (
+            lastNode->at(0)->getToken().type != TT::OPERATOR ||
+            !lastNode->at(0)->getToken().op().hasSymbol(",")
+          ) break;
+          lastNode = lastNode->at(0);
         }
-        // The last comma's args are not processed in the loop
+        // The last comma's arg 2 is not processed in the loop
         operands.push_back(compileExpression(lastNode->at(0), AS_VALUE));
-        operands.push_back(compileExpression(lastNode->at(1), AS_VALUE));
       }
     } else {
       // Recursively compute all the operands
@@ -593,7 +601,7 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   
   // Handle initialization
   if (!node->hasInit()) return;
-  ValueWrapper::Link initValue = compileExpression(node->getInit());
+  ValueWrapper::Link initValue = compileExpression(node->init());
   
   typeCheck(id, initValue,
     "Type of initialization ({0}) is not allowed by declaration ({1})"_type(
@@ -637,25 +645,26 @@ void ModuleCompiler::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
   };
   bool usesBranchAfter = false;
   llvm::BasicBlock* current = builder->GetInsertBlock();
-  ValueWrapper::Link cond = compileExpression(node->getCondition());
+  ValueWrapper::Link cond = compileExpression(node->condition());
   if (!canBeBoolean(cond)) {
-    throw "Expected boolean expression in if condition"_type + node->getCondition()->getTrace();
+    throw "Expected boolean expression in if condition"_type + node->condition()->getTrace();
   }
-  llvm::BasicBlock* success = compileBlock(node->getSuccessBlock(), "branchSuccess");
+  llvm::BasicBlock* success = compileBlock(node->success(), "branchSuccess");
   // continueCurrent gets all the current block's instructions after the branch
   // Unless the branch jumps or returns somewhere, continueCurrent is always executed
   llvm::BasicBlock* continueCurrent = surrounding != nullptr ?
     surrounding : llvm::BasicBlock::Create(*context, "branchAfter", functionStack.top()->getValue());
-  if (node->getFailiureBlock() == nullptr) {
-    // Does not have else clauses
+  if (mpark::holds_alternative<std::nullptr_t>(node->failiure())) {
+    // Failiure is nullptr, does not have else clauses
     builder->SetInsertPoint(current);
     builder->CreateCondBr(cond->val, success, continueCurrent);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
-  }
-  auto blockFailNode = Node<BlockNode>::dynPtrCast(node->getFailiureBlock());
-  if (blockFailNode != nullptr) {
-    // Has an else block as failiure
-    llvm::BasicBlock* failiure = compileBlock(blockFailNode, "branchFailiure");
+  } else if (mpark::holds_alternative<Node<BlockNode>::Link>(node->failiure())) {
+    // Failiure is BlockNode, has an else block
+    llvm::BasicBlock* failiure = compileBlock(
+      mpark::get<Node<BlockNode>::Link>(node->failiure()),
+      "branchFailiure"
+    );
     // Jump back to continueCurrent after the branch is done, to execute the rest of the block, unless there already is a terminator
     if (!failiure->getTerminator()) {
       builder->SetInsertPoint(failiure);
@@ -666,20 +675,23 @@ void ModuleCompiler::compileBranch(Node<BranchNode>::Link node, llvm::BasicBlock
     builder->SetInsertPoint(current);
     builder->CreateCondBr(cond->val, success, failiure);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
-  } else {
-    // Has else-if as failiure
+  } else if (mpark::holds_alternative<Node<BranchNode>::Link>(node->failiure())) {
+    // Failiure is BranchNode, has else-if
     llvm::BasicBlock* nextBranch = llvm::BasicBlock::Create(*context, "branchNext", functionStack.top()->getValue());
     builder->SetInsertPoint(nextBranch);
-    compileBranch(Node<BranchNode>::dynPtrCast(node->getFailiureBlock()), continueCurrent);
+    compileBranch(mpark::get<Node<BranchNode>::Link>(node->failiure()), continueCurrent);
     builder->SetInsertPoint(current);
     builder->CreateCondBr(cond->val, success, nextBranch);
     return handleBranchExit(continueCurrent, success, usesBranchAfter);
+  } else {
+    throw InternalError("Unhandled type for variant", {METADATA_PAIRS});
   }
 }
 
 void ModuleCompiler::visitLoop(Node<LoopNode>::Link node) {
-  auto init = node->getInit();
-  if (init != nullptr) this->visitDeclaration(init);
+  for (auto init : node->inits()) {
+    visitDeclaration(init);
+  }
   // Make the block where we go after we're done with the loopBlock
   auto loopAfter = llvm::BasicBlock::Create(*context, "loopAfter", functionStack.top()->getValue());
   // Make sure break statements know where to go
@@ -691,8 +703,7 @@ void ModuleCompiler::visitLoop(Node<LoopNode>::Link node) {
   // Go to the condtion
   builder->CreateBr(loopCondition);
   builder->SetInsertPoint(loopCondition);
-  auto cond = node->getCondition();
-  if (cond != nullptr) {
+  if (auto cond = node->condition()) {
     auto condValue = compileExpression(cond);
     if (!canBeBoolean(condValue)) {
       throw "Expected boolean expression in loop condition"_type + cond->getTrace();
@@ -705,13 +716,13 @@ void ModuleCompiler::visitLoop(Node<LoopNode>::Link node) {
   }
   // Add the code to the loopBlock
   builder->SetInsertPoint(loopBlock);
-  auto code = node->getCode();
-  for (auto& child : code->getChildren()) {
+  for (auto& child : node->code()->getChildren()) {
     child->visit(shared_from_this());
   }
-  // Also add the update expr at the end of the loopBlock
-  auto update = node->getUpdate();
-  if (update != nullptr) compileExpression(update);
+  // Also add the update exprs at the end of the loopBlock
+  for (auto update : node->updates()) {
+    compileExpression(update);
+  }
   // Jump back to the condition to see what we do next
   builder->CreateBr(loopCondition);
   // Keep inserting instructions after the loop
@@ -745,16 +756,16 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   
   auto returnType = func->getSignature().getReturnType();
   // If both return types are void, return void
-  if (node->getValue() == nullptr && returnType.isVoid()) {
+  if (node->value() == nullptr && returnType.isVoid()) {
     builder->CreateRetVoid();
     return;
   }
   // If the sig and the value don't agree whether or not this is void, it means type mismatch
-  if ((node->getValue() == nullptr) != returnType.isVoid()) {
+  if ((node->value() == nullptr) != returnType.isVoid()) {
     throw "{}"_type(funRetTyMismatch) + node->getTrace();
   }
   
-  auto returnedValue = compileExpression(node->getValue());
+  auto returnedValue = compileExpression(node->value());
   auto retId = typeIdFromInfo(returnType, node);
   
   // If the returnedValue's type can't be found in the list of possible return types, get mad
@@ -809,7 +820,7 @@ void ModuleCompiler::visitFunction(Node<FunctionNode>::Link node) {
     throw "Redefinition of function '{}'"_syntax(node->getIdentifier()) + node->getTrace();
   }
   // Only non-foreign functions have a block after them
-  if (!node->isForeign()) compileBlock(node->getCode(), fmt::format("fun_{}_entryBlock", node->getIdentifier()));
+  if (!node->isForeign()) compileBlock(node->code(), fmt::format("fun_{}_entryBlock", node->getIdentifier()));
   functionStack.pop();
 }
 
@@ -969,7 +980,7 @@ void ModuleCompiler::visitMethod(Node<MethodNode>::Link node) {
   // Normal methods are done in TypeData::finalize
   if (node->isStatic() && !node->isForeign()) {
     functionStack.push(funWrapper);
-    compileBlock(node->getCode(), fmt::format("fun_{}_entryBlock", node->getIdentifier()));
+    compileBlock(node->code(), fmt::format("fun_{}_entryBlock", node->getIdentifier()));
     functionStack.pop();
   }
   tyData->addMethod(MethodData(node, node->getIdentifier(), funWrapper), node->isStatic());
