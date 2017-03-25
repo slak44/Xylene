@@ -22,7 +22,7 @@ else()
       -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Woverloaded-virtual -Wredundant-decls -Wundef -Wstrict-overflow=5 \
       -Wsuggest-override")
   elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libstdc++ \
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -stdlib=libstdc++ \
       -fshow-column -fcaret-diagnostics -fcolor-diagnostics \
       -Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded \
       -Wno-weak-vtables -Wno-global-constructors -Wno-exit-time-destructors -Wno-shadow-field-in-constructor -Wno-documentation-unknown-command -Wno-used-but-marked-unused \
@@ -121,6 +121,18 @@ ExternalProject_Add(
 include_directories(SYSTEM ${FMT_LIB_PREFIX}/src/fmtlib/)
 link_directories(${FMT_LIB_PREFIX}/src/fmtlib-build/fmt)
 
+set(VARIANT_PREFIX ${PROJECT_SOURCE_DIR}/libs/variant)
+ExternalProject_Add(
+  variant
+  GIT_REPOSITORY https://github.com/mpark/variant.git
+  GIT_TAG v1.0.0
+  PREFIX ${VARIANT_PREFIX}
+  UPDATE_COMMAND ""
+  INSTALL_COMMAND ""
+)
+include_directories(SYSTEM ${VARIANT_PREFIX}/src/variant/include/)
+include_directories(SYSTEM ${VARIANT_PREFIX}/src/variant/include/mpark/)
+
 find_package(LLVM REQUIRED)
 include_directories(SYSTEM ${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
@@ -168,7 +180,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/runtime/runtime.cpp
   ${SRC_DIR}/runtime/io.cpp
 )
-set(COMMON_DEPS rapidxml termcolor tclap fmtlib)
+set(COMMON_DEPS rapidxml termcolor tclap fmtlib variant)
 set(COMMON_LINK_LIBS ${REQ_LLVM_LIBRARIES} stdc++fs fmt)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
