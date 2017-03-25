@@ -1,0 +1,20 @@
+<!--
+function add [Integer x] => Integer do return x + 1; end
+add(42);
+-->
+<block type="root">
+  <function ident="add" return="Integer" args="x:Integer">
+    <block type="function">
+      <return>
+        <expr type="Operator" value="Add">
+          <expr type="Identifier" value="x"/>
+          <expr type="Integer" value="1"/>
+        </expr>
+      </return>
+    </block>
+  </function>
+  <expr type="Operator" value="Call">
+    <expr type="Integer" value="42"/>
+    <expr type="Identifier" value="add"/>
+  </expr>
+</block>

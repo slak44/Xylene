@@ -19,7 +19,7 @@ protected:
   inline void test(std::string code, std::string xmlCodePath) {
     auto pxTr = TokenParser::parse(Lexer::tokenize(code, xmlCodePath)->getTokens());
     auto xpxTr = XMLParser::parse(xmlFile(xmlCodePath));
-    ASSERT_EQ(pxTr, xpxTr);
+    EXPECT_EQ(pxTr, xpxTr);
   }
 };
 
@@ -84,10 +84,25 @@ TEST_F(ParserCompareTest, Declarations) {
 
 TEST_F(ParserCompareTest, ForLoop) {
   test(R"code(
+    for define x = 1; x < 3; do
+      1+1;
+    end
+  )code", "data/parser/for_loops/no_updates.xml");
+  test(R"code(
     for define x = 1; x < 3; ++x do
       1+1;
     end
-  )code", "data/parser/for_loop.xml");
+  )code", "data/parser/for_loops/for_loop.xml");
+  test(R"code(
+    for define x = 1; x < 6; ++x, ++x do
+      1+1;
+    end
+  )code", "data/parser/for_loops/2_updates.xml");
+  test(R"code(
+    for define x = 1; x < 6; ++x, ++x, --x do
+      1+1;
+    end
+  )code", "data/parser/for_loops/3_updates.xml");
 }
 
 TEST_F(ParserCompareTest, ReturnStatement) {

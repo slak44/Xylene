@@ -1,0 +1,23 @@
+<!--
+function add [Integer x, Integer y] => Integer do return x + y; end
+add(42, 6714);
+-->
+<block type="root">
+  <function ident="add" return="Integer" args="x:Integer,y:Integer">
+    <block type="function">
+      <return>
+        <expr type="Operator" value="Add">
+          <expr type="Identifier" value="x"/>
+          <expr type="Identifier" value="y"/>
+        </expr>
+      </return>
+    </block>
+  </function>
+  <expr type="Operator" value="Call">
+    <expr type="Operator" value="Comma">
+      <expr type="Integer" value="42"/>
+      <expr type="Integer" value="6714"/>
+    </expr>
+    <expr type="Identifier" value="add"/>
+  </expr>
+</block>

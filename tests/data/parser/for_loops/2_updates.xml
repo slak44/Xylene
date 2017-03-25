@@ -1,0 +1,36 @@
+<!--
+for define x = 1; x < 6; ++x, ++x do
+  1+1;
+end
+-->
+<block type="root">
+  <loop>
+    <loop_init>
+      <decl ident="x" dynamic="true">
+        <expr type="Integer" value="1"/>
+      </decl>
+    </loop_init>
+    <loop_condition>
+      <expr type="Operator" value="Less">
+        <expr type="Identifier" value="x"/>
+        <expr type="Integer" value="6"/>
+      </expr>
+    </loop_condition>
+    <loop_update>
+      <expr type="Operator" value="Prefix ++">
+        <expr type="Identifier" value="x"/>
+      </expr>
+    </loop_update>
+    <loop_update>
+      <expr type="Operator" value="Prefix ++">
+        <expr type="Identifier" value="x"/>
+      </expr>
+    </loop_update>
+    <block type="code">
+      <expr type="Operator" value="Add">
+        <expr type="Integer" value="1"/>
+        <expr type="Integer" value="1"/>
+      </expr>
+    </block>
+  </loop>
+</block>
