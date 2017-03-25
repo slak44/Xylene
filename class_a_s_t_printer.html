@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('class_a_s_t_printer.html','');});
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="class_a_s_t_printer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ASTPrinter Class Reference</div>  </div>
@@ -111,8 +110,8 @@ Collaboration diagram for ASTPrinter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a8ca4de82456fef9d73a63e5febc2464d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_printer.html#a8ca4de82456fef9d73a63e5febc2464d">print</a> (<a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a> node)</td></tr>
-<tr class="separator:a8ca4de82456fef9d73a63e5febc2464d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bbb85cd6c978fc0c9bfa01008b1a3fc"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_printer.html#a1bbb85cd6c978fc0c9bfa01008b1a3fc">print</a> (<a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a> node)</td></tr>
+<tr class="separator:a1bbb85cd6c978fc0c9bfa01008b1a3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -120,13 +119,14 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a8b1d119731a3504ee14a2e3245f8612a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a7d106071db66d7c34ec78d91c6b12a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_printer.html#a4a7d106071db66d7c34ec78d91c6b12a">ASTPrinter</a> (const <a class="el" href="class_a_s_t_printer.html">ASTPrinter</a> &amp;)=default</td></tr>
 <tr class="separator:a4a7d106071db66d7c34ec78d91c6b12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab76626d298b05145f5e8de13b9384b2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_printer.html#ab76626d298b05145f5e8de13b9384b2b">printIndent</a> () noexcept</td></tr>
+<tr class="separator:ab76626d298b05145f5e8de13b9384b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad11a91e620d1174ebd0eed107dbea830"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_printer.html#ad11a91e620d1174ebd0eed107dbea830">print</a> (std::string s)</td></tr>
+<tr class="separator:ad11a91e620d1174ebd0eed107dbea830"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa179918612e5d374281cf3beb9b08ca3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_printer.html#aa179918612e5d374281cf3beb9b08ca3">println</a> (std::string s)</td></tr>
+<tr class="separator:aa179918612e5d374281cf3beb9b08ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76607c18d0a4174409b9c317b6744567"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_printer.html#a76607c18d0a4174409b9c317b6744567">printSubtree</a> (<a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a> node)</td></tr>
 <tr class="separator:a76607c18d0a4174409b9c317b6744567"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
-Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:abe047ab872340fc7ad95a75294a7faa2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_printer.html#abe047ab872340fc7ad95a75294a7faa2">printIndent</a> (unsigned level) noexcept</td></tr>
-<tr class="separator:abe047ab872340fc7ad95a75294a7faa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -191,8 +191,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8ca4de82456fef9d73a63e5febc2464d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ca4de82456fef9d73a63e5febc2464d">&#9670;&nbsp;</a></span>print()</h2>
+<a id="ad11a91e620d1174ebd0eed107dbea830"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad11a91e620d1174ebd0eed107dbea830">&#9670;&nbsp;</a></span>print() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,7 +201,33 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void ASTPrinter::print </td>
+          <td class="memname">void ASTPrinter::print </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1bbb85cd6c978fc0c9bfa01008b1a3fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bbb85cd6c978fc0c9bfa01008b1a3fc">&#9670;&nbsp;</a></span>print() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::string ASTPrinter::print </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_a_s_t_node.html#a7cff078f66e24b419036d8241531b1df">ASTNode::Link</a>&#160;</td>
           <td class="paramname"><em>node</em></td><td>)</td>
@@ -217,8 +243,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="abe047ab872340fc7ad95a75294a7faa2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe047ab872340fc7ad95a75294a7faa2">&#9670;&nbsp;</a></span>printIndent()</h2>
+<a id="ab76626d298b05145f5e8de13b9384b2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab76626d298b05145f5e8de13b9384b2b">&#9670;&nbsp;</a></span>printIndent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,16 +253,41 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void ASTPrinter::printIndent </td>
+          <td class="memname">void ASTPrinter::printIndent </td>
           <td>(</td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>level</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa179918612e5d374281cf3beb9b08ca3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa179918612e5d374281cf3beb9b08ca3">&#9670;&nbsp;</a></span>println()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ASTPrinter::println </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

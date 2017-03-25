@@ -18,10 +18,7 @@ var ast_8hpp =
     [ "AST", "class_a_s_t.html", "class_a_s_t" ],
     [ "ASTVisitor", "class_a_s_t_visitor.html", "class_a_s_t_visitor" ],
     [ "ASTPrinter", "class_a_s_t_printer.html", "class_a_s_t_printer" ],
-    [ "GET_SET_SIGS", "ast_8hpp.html#ad6003bd0cb5d23a158c81606911c0724", null ],
-    [ "GET_SIG", "ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2", null ],
     [ "PURE_VIRTUAL_VISIT", "ast_8hpp.html#a888c3d926d3f7297490480900556e769", null ],
-    [ "SET_SIG", "ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639", null ],
     [ "ASTNodeLink", "ast_8hpp.html#a1ed31a4c40e190659839704db912b5ac", null ],
     [ "ASTVisitorLink", "ast_8hpp.html#a5242bb806f94354e670b85544ec9d70a", null ],
     [ "BlockType", "ast_8hpp.html#a54420623f26ab6bb61042b41cccf37a3", [
@@ -36,5 +33,6 @@ var ast_8hpp =
       [ "PUBLIC", "ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162ae81e3f79af4b80e22c6b86d63ea397bf", null ],
       [ "INVALID", "ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162aef2863a469df3ea6871d640e3669a2f2", null ]
     ] ],
-    [ "fromToken", "ast_8hpp.html#a96e4e082dee95cfddbec476c120b0d20", null ]
+    [ "fromToken", "ast_8hpp.html#a96e4e082dee95cfddbec476c120b0d20", null ],
+    [ "operator<<", "ast_8hpp.html#a09549dfb2c6f53d9f93136ecc4350043", null ]
 ];

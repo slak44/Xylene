@@ -5,6 +5,8 @@ var searchData=
   ['import',['IMPORT',['../namespace_t_t.html#aa11b241521315fb4cb9edde71e173d3e',1,'TT']]],
   ['includes',['includes',['../util_8hpp.html#ac29fac651131744534fe0279bec8dc75',1,'includes(Container c, typename Container::value_type item):&#160;util.hpp'],['../util_8hpp.html#a83a8dc172fb60be1576b36388068b356',1,'includes(Container c, std::function&lt; bool(typename Container::value_type)&gt; test):&#160;util.hpp']]],
   ['inherits',['INHERITS',['../namespace_t_t.html#a7eac467353867552d5d72b8f8fc9f61b',1,'TT']]],
+  ['init',['init',['../class_declaration_node.html#a2a44ad5155ae9a17440b761686ddef01',1,'DeclarationNode::init() const noexcept'],['../class_declaration_node.html#a34b228829b6b4d4db4278674739306ef',1,'DeclarationNode::init(Node&lt; ExpressionNode &gt;::Link init) noexcept']]],
+  ['inits',['inits',['../class_loop_node.html#a10124d491e0f35774329dfab8ca627c7',1,'LoopNode']]],
   ['instancewrapper',['InstanceWrapper',['../class_instance_wrapper.html#adf11e64b5eaa88f36275df84fedd4bf4',1,'InstanceWrapper']]],
   ['integer',['INTEGER',['../namespace_t_t.html#a32bfda0abfa3510c8595c150046a1109',1,'TT']]],
   ['internalerror',['InternalError',['../class_internal_error.html#accf8495bf6917b7685a69c390c69a91c',1,'InternalError::InternalError(std::string errorName, std::string msg, const ErrorData &amp;data)'],['../class_internal_error.html#a18662d967c3c5b3b18b9c11f1a75e28f',1,'InternalError::InternalError(std::string msg, const ErrorData &amp;data)']]],

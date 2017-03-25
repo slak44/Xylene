@@ -12,6 +12,8 @@ var searchData=
   ['index',['Index',['../class_operator.html#a0e02c7147b4a46e028625a4f2b96088c',1,'Operator']]],
   ['infix',['INFIX',['../operator_8hpp.html#af19b770f6e2116426144b702159f3bb0a26ec03728fe7587ebb517811960c1b4e',1,'operator.hpp']]],
   ['inherits',['INHERITS',['../namespace_t_t.html#a7eac467353867552d5d72b8f8fc9f61b',1,'TT']]],
+  ['init',['init',['../class_declaration_node.html#a2a44ad5155ae9a17440b761686ddef01',1,'DeclarationNode::init() const noexcept'],['../class_declaration_node.html#a34b228829b6b4d4db4278674739306ef',1,'DeclarationNode::init(Node&lt; ExpressionNode &gt;::Link init) noexcept']]],
+  ['inits',['inits',['../class_loop_node.html#a10124d491e0f35774329dfab8ca627c7',1,'LoopNode']]],
   ['instancewrapper',['InstanceWrapper',['../class_instance_wrapper.html',1,'InstanceWrapper'],['../class_module_compiler.html#aca1123bf97aa0cefedfb90514eb32a5d',1,'ModuleCompiler::InstanceWrapper()'],['../class_type_data.html#aca1123bf97aa0cefedfb90514eb32a5d',1,'TypeData::InstanceWrapper()'],['../class_instance_wrapper.html#adf11e64b5eaa88f36275df84fedd4bf4',1,'InstanceWrapper::InstanceWrapper()']]],
   ['integer',['INTEGER',['../namespace_t_t.html#a32bfda0abfa3510c8595c150046a1109',1,'TT']]],
   ['internal_5ferror',['INTERNAL_ERROR',['../main_8cpp.html#a398f3b94d2c5301cda699ea1f4611bb3aa6160da3d147c897d800efe3a69c941e',1,'main.cpp']]],

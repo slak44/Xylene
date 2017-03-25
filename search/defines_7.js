@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['quote',['QUOTE',['../util_8hpp.html#a2117b58e19182dff91ad3558e650541d',1,'util.hpp']]],
-  ['quote_5fimplementation',['QUOTE_IMPLEMENTATION',['../util_8hpp.html#a0f500a81a3f783d97b5c0048da4ea342',1,'util.hpp']]]
+  ['special_5fcodegen_5fsig',['SPECIAL_CODEGEN_SIG',['../compiler_8hpp.html#aae0ebaf3b9632f07c1fc5ac8154dc595',1,'compiler.hpp']]]
 ];

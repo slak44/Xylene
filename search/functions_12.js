@@ -15,5 +15,6 @@ var searchData=
   ['statictypeinfo',['StaticTypeInfo',['../class_static_type_info.html#aeecbf59f961098e4e76d81cc497d8b80',1,'StaticTypeInfo::StaticTypeInfo(std::string type)'],['../class_static_type_info.html#a43a89cbed5fbbc055dfa4bce8f87bc40',1,'StaticTypeInfo::StaticTypeInfo(const char *type)']]],
   ['storednames',['storedNames',['../class_abstract_id.html#ac9405cb7c363a81e60f05292d34f433e',1,'AbstractId::storedNames()'],['../class_type_id.html#ad8016dd37a30aa369752d3467c9c4973',1,'TypeId::storedNames()'],['../class_type_list_id.html#a77141970672bfc6d536517805d1e8bbd',1,'TypeListId::storedNames()']]],
   ['storedtypecount',['storedTypeCount',['../class_abstract_id.html#aae1ff1b621b03ba0ea1b0eec189acd25',1,'AbstractId::storedTypeCount()'],['../class_type_id.html#a759ea507fb9868233f49be3f170c4b60',1,'TypeId::storedTypeCount()'],['../class_type_list_id.html#a021f4024c8347b7da5374d6982f023ac',1,'TypeListId::storedTypeCount()']]],
-  ['string',['STRING',['../namespace_t_t.html#a15cf87600178ad2b45caad9707f5b144',1,'TT']]]
+  ['string',['STRING',['../namespace_t_t.html#a15cf87600178ad2b45caad9707f5b144',1,'TT']]],
+  ['success',['success',['../class_branch_node.html#aa8a0e4f03de942892aa1f054d3823f3b',1,'BranchNode::success() const noexcept'],['../class_branch_node.html#a9e33846557e903967c4221c51457260f',1,'BranchNode::success(Node&lt; BlockNode &gt;::Link success) noexcept']]]
 ];

@@ -2,6 +2,9 @@ var class_function_node =
 [
     [ "FunctionNode", "class_function_node.html#ae2b30cf5f1d98d4bb2abcb67540fdf4a", null ],
     [ "FunctionNode", "class_function_node.html#a1262f1c485d46f6334994a1bae1cc435", null ],
+    [ "code", "class_function_node.html#af12cbe21c11280c239d9573c41eb3b2a", null ],
+    [ "code", "class_function_node.html#a6402a3b8bd28eee9cf3a5819f8690e0d", null ],
+    [ "getChildren", "class_function_node.html#aa5e25b77a6b7d149553e1a6925a7062f", null ],
     [ "getIdentifier", "class_function_node.html#a7aa8f79c7d698b0513634d7e1d606f77", null ],
     [ "getSignature", "class_function_node.html#a78a83f98af09484cb0987802abe3087f", null ],
     [ "isAnon", "class_function_node.html#ad0339d037ae071ac6b33839245d6a288", null ],

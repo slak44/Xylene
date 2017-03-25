@@ -1,6 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_token_type.html" title="TokenType" alt="" coords="5,56,91,83"/>
-<area shape="rect" id="node2" href="$class_t_t_1_1_construct.html" title="TT::Construct" alt="" coords="139,5,237,32"/>
-<area shape="rect" id="node3" href="$class_t_t_1_1_keyword.html" title="TT::Keyword" alt="" coords="141,56,235,83"/>
-<area shape="rect" id="node4" href="$class_t_t_1_1_literal.html" title="TT::Literal" alt="" coords="149,107,227,133"/>
+<area shape="rect" id="node1" href="$class_token_parser.html" title="Parses a list of tokens, and produces an AST. " alt="" coords="5,5,100,32"/>
 </map>

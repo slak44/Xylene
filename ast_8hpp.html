@@ -97,6 +97,7 @@ $(document).ready(function(){initNavTree('ast_8hpp.html','');});
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;typeinfo&gt;</code><br />
 <code>#include &lt;unordered_set&gt;</code><br />
+<code>#include &lt;variant.hpp&gt;</code><br />
 <code>#include &quot;<a class="el" href="util_8hpp_source.html">utils/util.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="error_8hpp_source.html">utils/error.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="type_info_8hpp_source.html">utils/typeInfo.hpp</a>&quot;</code><br />
@@ -107,13 +108,13 @@ Include dependency graph for ast.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="ast_8hpp__incl.png" border="0" usemap="#open_2xylene_2include_2ast_8hpp" alt=""/></div>
 <map name="open_2xylene_2include_2ast_8hpp" id="open_2xylene_2include_2ast_8hpp">
-<area shape="rect" id="node7" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="990,393,1082,420"/>
-<area shape="rect" id="node17" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="718,244,818,271"/>
-<area shape="rect" id="node23" href="type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="95,169,217,196"/>
-<area shape="rect" id="node24" href="token_8hpp.html" title="token.hpp" alt="" coords="927,95,1006,121"/>
-<area shape="rect" id="node28" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="1360,169,1469,196"/>
-<area shape="rect" id="node21" href="trace_8hpp.html" title="trace.hpp" alt="" coords="907,319,981,345"/>
-<area shape="rect" id="node26" href="operator_8hpp.html" title="operator.hpp" alt="" coords="963,169,1055,196"/>
+<area shape="rect" id="node8" href="util_8hpp.html" title="utils/util.hpp" alt="" coords="990,393,1082,420"/>
+<area shape="rect" id="node18" href="error_8hpp.html" title="utils/error.hpp" alt="" coords="718,244,818,271"/>
+<area shape="rect" id="node24" href="type_info_8hpp.html" title="utils/typeInfo.hpp" alt="" coords="95,169,217,196"/>
+<area shape="rect" id="node25" href="token_8hpp.html" title="token.hpp" alt="" coords="929,95,1007,121"/>
+<area shape="rect" id="node29" href="type_id_8hpp.html" title="llvm/typeId.hpp" alt="" coords="1360,169,1469,196"/>
+<area shape="rect" id="node22" href="trace_8hpp.html" title="trace.hpp" alt="" coords="907,319,981,345"/>
+<area shape="rect" id="node27" href="operator_8hpp.html" title="operator.hpp" alt="" coords="963,169,1055,196"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -204,12 +205,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a50e7b4077d96b981b6e5fd7792e0b3c2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a>(linkType,  nameOf)&#160;&#160;&#160;<a class="el" href="struct_node.html">Node</a>&lt;linkType&gt;::Link get##nameOf() const;</td></tr>
-<tr class="separator:a50e7b4077d96b981b6e5fd7792e0b3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0d6541bd1c370ad92eaa279ef43a639"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8hpp.html#af0d6541bd1c370ad92eaa279ef43a639">SET_SIG</a>(linkType,  nameOf)&#160;&#160;&#160;void set##nameOf(std::shared_ptr&lt;linkType&gt; newNode);</td></tr>
-<tr class="separator:af0d6541bd1c370ad92eaa279ef43a639"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6003bd0cb5d23a158c81606911c0724"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8hpp.html#ad6003bd0cb5d23a158c81606911c0724">GET_SET_SIGS</a>(linkType,  nameOf)</td></tr>
-<tr class="separator:ad6003bd0cb5d23a158c81606911c0724"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a888c3d926d3f7297490480900556e769"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8hpp.html#a888c3d926d3f7297490480900556e769">PURE_VIRTUAL_VISIT</a>(nodeName)&#160;&#160;&#160;virtual void visit##nodeName(<a class="el" href="struct_node.html">Node</a>&lt;nodeName##<a class="el" href="struct_node.html">Node</a>&gt;::Link node) = 0;</td></tr>
 <tr class="separator:a888c3d926d3f7297490480900556e769"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -242,67 +237,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a96e4e082dee95cfddbec476c120b0d20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="ast_8hpp.html#a53d6f8ccb0015ea020228de41cfd2162">Visibility</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8hpp.html#a96e4e082dee95cfddbec476c120b0d20">fromToken</a> (<a class="el" href="class_token.html">Token</a> t)</td></tr>
 <tr class="memdesc:a96e4e082dee95cfddbec476c120b0d20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get visibility from token.  <a href="#a96e4e082dee95cfddbec476c120b0d20">More...</a><br /></td></tr>
 <tr class="separator:a96e4e082dee95cfddbec476c120b0d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09549dfb2c6f53d9f93136ecc4350043"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ast_8hpp.html#a09549dfb2c6f53d9f93136ecc4350043">operator&lt;&lt;</a> (std::ostream &amp;out, <a class="el" href="class_a_s_t.html">AST</a> ast) noexcept</td></tr>
+<tr class="separator:a09549dfb2c6f53d9f93136ecc4350043"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ad6003bd0cb5d23a158c81606911c0724"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6003bd0cb5d23a158c81606911c0724">&#9670;&nbsp;</a></span>GET_SET_SIGS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define GET_SET_SIGS</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">linkType, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">nameOf&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a>(linkType, nameOf) \</div><div class="line">SET_SIG(linkType, nameOf)</div><div class="ttc" id="ast_8hpp_html_a50e7b4077d96b981b6e5fd7792e0b3c2"><div class="ttname"><a href="ast_8hpp.html#a50e7b4077d96b981b6e5fd7792e0b3c2">GET_SIG</a></div><div class="ttdeci">#define GET_SIG(linkType, nameOf)</div><div class="ttdef"><b>Definition:</b> ast.hpp:260</div></div>
-</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#a96bf598044dc4e144f71ea438014fc42" title="Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses. ">GET_SET_FOR</a> </dd></dl>
-
-</div>
-</div>
-<a id="a50e7b4077d96b981b6e5fd7792e0b3c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50e7b4077d96b981b6e5fd7792e0b3c2">&#9670;&nbsp;</a></span>GET_SIG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define GET_SIG</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">linkType, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">nameOf&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;<a class="el" href="struct_node.html">Node</a>&lt;linkType&gt;::Link get##nameOf() const;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#a45b30b90695c27e50c2d6f8a5410b093" title="Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses. ">GET_FOR</a> </dd></dl>
-
-</div>
-</div>
 <a id="a888c3d926d3f7297490480900556e769"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a888c3d926d3f7297490480900556e769">&#9670;&nbsp;</a></span>PURE_VIRTUAL_VISIT</h2>
 
@@ -319,35 +257,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#a3450fe18e7d2d50d74986704d30545a0" title="Macro to help implement the &#39;visit&#39; functions in each node. ">VISITOR_VISIT_IMPL_FOR</a> </dd></dl>
-
-</div>
-</div>
-<a id="af0d6541bd1c370ad92eaa279ef43a639"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0d6541bd1c370ad92eaa279ef43a639">&#9670;&nbsp;</a></span>SET_SIG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SET_SIG</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">linkType, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">nameOf&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;void set##nameOf(std::shared_ptr&lt;linkType&gt; newNode);</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="ast_8cpp.html#a9f2db2cf3bd1860db9cf4f8e8974e1db" title="Macros for easy implementation of getters and setters for NoMoreChildrenNode subclasses. ">SET_FOR</a> </dd></dl>
 
 </div>
 </div>
@@ -457,6 +366,42 @@ Functions</h2></td></tr>
 
 <p>Get visibility from token. </p>
 <p>Defaults to INVALID if token doesn't specify a visibility. </p>
+
+</div>
+</div>
+<a id="a09549dfb2c6f53d9f93136ecc4350043"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09549dfb2c6f53d9f93136ecc4350043">&#9670;&nbsp;</a></span>operator<<()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_a_s_t.html">AST</a>&#160;</td>
+          <td class="paramname"><em>ast</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

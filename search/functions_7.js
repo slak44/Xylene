@@ -7,7 +7,7 @@ var searchData=
   ['getarguments',['getArguments',['../class_function_signature.html#a28d04e8c4829029d8219f4536cceff46',1,'FunctionSignature']]],
   ['getarity',['getArity',['../class_operator.html#a2a0115170b6d26d7f9d8e5cbec4aaa75',1,'Operator']]],
   ['getassociativity',['getAssociativity',['../class_operator.html#a257abe92ec430a8506d4d85a523fe9a4',1,'Operator']]],
-  ['getchildren',['getChildren',['../class_a_s_t_node.html#a522e458406377ffc7b60b1f0a316f87a',1,'ASTNode']]],
+  ['getchildren',['getChildren',['../class_a_s_t_node.html#a522e458406377ffc7b60b1f0a316f87a',1,'ASTNode::getChildren()'],['../class_declaration_node.html#a95920101d42a7a326e5a5268d4b32ead',1,'DeclarationNode::getChildren()'],['../class_branch_node.html#ae319d93ffca6582903550c2783473aa6',1,'BranchNode::getChildren()'],['../class_loop_node.html#aef806725ca4f742405723290985d3716',1,'LoopNode::getChildren()'],['../class_return_node.html#ab901b06f132e2baf1a216f4f8929a059',1,'ReturnNode::getChildren()'],['../class_function_node.html#aa5e25b77a6b7d149553e1a6925a7062f',1,'FunctionNode::getChildren()']]],
   ['getcode',['getCode',['../class_lexer.html#ad69696b61c840ba9901876a8e946ea52',1,'Lexer']]],
   ['getcodeblock',['getCodeBlock',['../class_method_data.html#aa843e1df38e825924135b1fb7cba0a1c',1,'MethodData::getCodeBlock()'],['../class_constructor_data.html#af7a3590ff560a0a0ce200c3f6bc30570',1,'ConstructorData::getCodeBlock()']]],
   ['getcodesource',['getCodeSource',['../class_lexer.html#a2657d4395a5ba1f518135d53dfe8c414',1,'Lexer']]],

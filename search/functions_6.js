@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['failiure',['failiure',['../class_branch_node.html#a8590965d7d04233aaea55f791aee2afc',1,'BranchNode::failiure() const noexcept'],['../class_branch_node.html#ac4d33cb2e15e1b6cd2e0ea1310d39ba3',1,'BranchNode::failiure(typename Node&lt; T &gt;::Link failiure) noexcept']]],
   ['fat_5farrow',['FAT_ARROW',['../namespace_t_t.html#a3ad9eca9e0c5e62e2c1587ae2b67a52c',1,'TT']]],
   ['file_5fend',['FILE_END',['../namespace_t_t.html#add74f18f5a0c4afe0a3a73f51d26d3a8',1,'TT']]],
   ['finalize',['finalize',['../class_type_data.html#abe40f4bf6631f3a0c927eafef3a577af',1,'TypeData']]],

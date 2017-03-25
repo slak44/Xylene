@@ -57,6 +57,9 @@ var hierarchy =
     [ "PtrUtil< ConstructorNode >", "struct_ptr_util.html", [
       [ "Node< ConstructorNode >", "struct_node.html", null ]
     ] ],
+    [ "PtrUtil< ExpressionNode >", "struct_ptr_util.html", [
+      [ "Node< ExpressionNode >", "struct_node.html", null ]
+    ] ],
     [ "PtrUtil< MemberNode >", "struct_ptr_util.html", [
       [ "Node< MemberNode >", "struct_node.html", null ]
     ] ],
