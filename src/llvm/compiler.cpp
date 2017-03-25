@@ -695,7 +695,7 @@ void ModuleCompiler::visitLoop(Node<LoopNode>::Link node) {
   // Make the block where we go after we're done with the loopBlock
   auto loopAfter = llvm::BasicBlock::Create(*context, "loopAfter", functionStack.top()->getValue());
   // Make sure break statements know where to go
-  node->setExitBlock(loopAfter);
+  node->exitBlock = loopAfter;
   // Make the block that will be looped
   auto loopBlock = llvm::BasicBlock::Create(*context, "loopBlock", functionStack.top()->getValue());
   // Make the block that checks the loop condition
@@ -736,7 +736,7 @@ void ModuleCompiler::visitBreakLoop(Node<BreakLoopNode>::Link node) {
   });
   if (parentLoopNode == nullptr)
     throw "Found break statement outside loop"_syntax + node->getTrace();
-  llvm::BasicBlock* exitBlock = Node<LoopNode>::staticPtrCast(parentLoopNode)->getExitBlock();
+  llvm::BasicBlock* exitBlock = Node<LoopNode>::staticPtrCast(parentLoopNode)->exitBlock;
   builder->CreateBr(exitBlock);
 }
 

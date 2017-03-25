@@ -416,14 +416,15 @@ public:
 */
 class LoopNode: public NoMoreChildrenNode {
 private:
-  /// Used by the break statement
-  llvm::BasicBlock* exitBlock;
   std::vector<Node<DeclarationNode>::Link> _inits = {};
   Node<ExpressionNode>::Link _condition = nullptr;
   std::vector<Node<ExpressionNode>::Link> _updates = {};
   Node<BlockNode>::Link _code = nullptr;
 
 public:
+  /// Used by the break statement
+  llvm::BasicBlock* exitBlock;
+  
   LoopNode() noexcept: NoMoreChildrenNode(4) {}
   
   inline Node<ExpressionNode>::Link condition() const noexcept {
@@ -470,13 +471,6 @@ public:
     c.insert(std::end(c), ALL(_updates));
     c.push_back(_code);
     return c;
-  }
-  
-  inline llvm::BasicBlock* getExitBlock() const noexcept {
-    return exitBlock;
-  }
-  inline void setExitBlock(llvm::BasicBlock* bb) noexcept {
-    this->exitBlock = bb;
   }
   
   void visit(ASTVisitorLink visitor) override;
