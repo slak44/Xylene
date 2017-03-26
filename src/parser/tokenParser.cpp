@@ -70,7 +70,7 @@ Node<ExpressionNode>::Link TokenParser::parsePostfix(Node<ExpressionNode>::Link 
   Node<ExpressionNode>::Link base;
   // Check if there are any postfix operators around (function calls are postfix ops)
   while (accept(POSTFIX) || accept(TT::CALL_BEGIN)) {
-    decltype(base) newOp;
+    Node<ExpressionNode>::Link newOp;
     if (accept(POSTFIX)) {
       newOp = exprFromCurrent();
       skip();
