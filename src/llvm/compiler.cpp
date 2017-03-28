@@ -424,24 +424,11 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
       // Second arg to calls is the thing being called
       // Should be a pointer
       operands.push_back(compileExpression(node->at(1), AS_POINTER));
-      // Compute arguments and add them too
-      auto lastNode = node->at(0);
-      // If it's not an comma, it means this func call only has one argument
-      if (!(lastNode->getToken().isOp() && lastNode->getToken().op().hasSymbol(","))) {
-        operands.push_back(compileExpression(lastNode, AS_VALUE));
-      // Only go through args if it isn't a no-op, because that means we have no args
-      } else if (!lastNode->getToken().op().hasName("No-op")) {
-        while (lastNode->getToken().op().hasSymbol(",")) {
-          // TODO might need to change these AS_VALUE for complex objects
-          operands.push_back(compileExpression(lastNode->at(1), AS_VALUE));
-          if (
-            lastNode->at(0)->getToken().type != TT::OPERATOR ||
-            !lastNode->at(0)->getToken().op().hasSymbol(",")
-          ) break;
-          lastNode = lastNode->at(0);
-        }
-        // The last comma's arg 2 is not processed in the loop
-        operands.push_back(compileExpression(lastNode->at(0), AS_VALUE));
+      auto args = node->at(0);
+      // Add args
+      for (std::size_t i = 0; i < args->getChildren().size(); i++) {
+        // TODO might need to change these AS_VALUE for complex objects
+        operands.push_back(compileExpression(args->at(static_cast<int64_t>(i)), AS_VALUE));
       }
     } else {
       // Recursively compute all the operands

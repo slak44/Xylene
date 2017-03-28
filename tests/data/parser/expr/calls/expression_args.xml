@@ -3,7 +3,7 @@ a(1+1, 3 * (5 + 5));
 -->
 <block type="root">
   <expr type="Operator" value="Call">
-    <expr type="Operator" value="Comma">
+    <expr type="Operator" value="Call arguments">
       <expr type="Operator" value="Add">
         <expr type="Integer" value="1"/>
         <expr type="Integer" value="1"/>

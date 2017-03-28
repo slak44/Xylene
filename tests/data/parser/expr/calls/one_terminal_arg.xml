@@ -3,7 +3,9 @@ a(42);
 -->
 <block type="root">
   <expr type="Operator" value="Call">
-    <expr type="Integer" value="42"/>
+    <expr type="Operator" value="Call arguments">
+      <expr type="Integer" value="42"/>
+    </expr>
     <expr type="Identifier" value="a"/>
   </expr>
 </block>

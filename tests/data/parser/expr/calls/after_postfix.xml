@@ -4,7 +4,7 @@
 <block type="root">
   <expr type="Operator" value="Unary -">
     <expr type="Operator" value="Call">
-      <expr type="Operator" value="No-op"/>
+      <expr type="Operator" value="Call arguments"/>
       <expr type="Operator" value="Postfix ++">
         <expr type="Identifier" value="a"/>
       </expr>

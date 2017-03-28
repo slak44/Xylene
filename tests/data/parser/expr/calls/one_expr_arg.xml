@@ -3,9 +3,11 @@ a(1+1);
 -->
 <block type="root">
   <expr type="Operator" value="Call">
-    <expr type="Operator" value="Add">
-      <expr type="Integer" value="1"/>
-      <expr type="Integer" value="1"/>
+    <expr type="Operator" value="Call arguments">
+      <expr type="Operator" value="Add">
+        <expr type="Integer" value="1"/>
+        <expr type="Integer" value="1"/>
+      </expr>
     </expr>
     <expr type="Identifier" value="a"/>
   </expr>

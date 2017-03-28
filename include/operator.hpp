@@ -23,7 +23,8 @@ enum Arity: int {
   NULLARY = 0,
   UNARY = 1,
   BINARY = 2, ///< The default
-  TERNARY = 3
+  TERNARY = 3,
+  POLYADIC = 9999 // 2+ operands
 };
 
 /// Represents where this operator is placed with respect to his operands.

@@ -17,11 +17,9 @@ add(42, 6714, 2);
     </block>
   </function>
   <expr type="Operator" value="Call">
-    <expr type="Operator" value="Comma">
-      <expr type="Operator" value="Comma">
-        <expr type="Integer" value="42"/>
-        <expr type="Integer" value="6714"/>
-      </expr>
+    <expr type="Operator" value="Call arguments">
+      <expr type="Integer" value="42"/>
+      <expr type="Integer" value="6714"/>
       <expr type="Integer" value="2"/>
     </expr>
     <expr type="Identifier" value="add"/>

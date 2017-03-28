@@ -365,7 +365,7 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
     {"Call", [=] SPECIAL_CODEGEN_SIG {
       if (operands[0]->ty != mc->functionTid) {
         throw "Attempt to call non-function '{}'"_type(
-          Node<ExpressionNode>::staticPtrCast(node)->at(0)->getToken().data) + trace;
+          Node<ExpressionNode>::staticPtrCast(node)->at(1)->getToken().data) + trace;
       }
       auto fw = PtrUtil<FunctionWrapper>::staticPtrCast(operands[0]);
       // Get a list of arguments to pass to CreateCall
@@ -374,13 +374,10 @@ OperatorCodegen::OperatorCodegen(ModuleCompiler::Link mc):
       auto opIt = operands.begin() + 1;
       auto arguments = fw->getSignature().getArguments();
       if (operands.size() - 1 != arguments.size()) {
-        throw InternalError(
-          "Operand count mismatches func sig argument count",
-          {
-            METADATA_PAIRS,
-            {"ops", std::to_string(operands.size() - 1)},
-            {"args", std::to_string(arguments.size())},
-          }
+        throw "Expected {0} arguments for function '{1}' ({2} provided)"_ref(
+          arguments.size(),
+          Node<ExpressionNode>::staticPtrCast(node)->at(1)->getToken().data,
+          operands.size() - 1
         );
       }
       for (auto it = arguments.begin(); it != arguments.end(); ++it, ++opIt) {

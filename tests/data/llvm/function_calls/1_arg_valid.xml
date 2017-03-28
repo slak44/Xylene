@@ -14,7 +14,9 @@ add(42);
     </block>
   </function>
   <expr type="Operator" value="Call">
-    <expr type="Integer" value="42"/>
+    <expr type="Operator" value="Call arguments">
+      <expr type="Integer" value="42"/>
+    </expr>
     <expr type="Identifier" value="add"/>
   </expr>
 </block>

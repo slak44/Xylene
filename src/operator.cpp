@@ -96,10 +96,10 @@ const std::vector<Operator> Operator::list {
   // These don't get matched by the lexer as operators, their symbols get matched as
   // constructs. The expressions using those are created in the parser
   Operator("[]", 13, "Subscript", ASSOCIATE_FROM_LEFT, BINARY, CIRCUMFIX, {true, false}),
-  // Call op will contain argument tree with commas + name of function
+  // Second operand to call is the thing being called, first is arguments to call
   Operator("()", 13, "Call", ASSOCIATE_FROM_LEFT, BINARY, POSTFIX, {false, true}),
   Operator("?:", 1, "Conditional", ASSOCIATE_FROM_LEFT, TERNARY, CIRCUMFIX),
-  Operator(" ", 0, "No-op", ASSOCIATE_FROM_LEFT, NULLARY)
+  Operator(" ", 0, "Call arguments", ASSOCIATE_FROM_LEFT, POLYADIC)
 };
 
 const std::unordered_set<char> Operator::operatorCharacters = std::accumulate(
