@@ -21,6 +21,7 @@ EBNF grammar can be found [here](https://github.com/slak44/Xylene/blob/master/gr
   - byte arrays
   - maybe UnsafeString for user input?
 - modules, import, export
+- .. range operator
 - type system
   - unit type?
   - bottom type?
@@ -44,6 +45,7 @@ EBNF grammar can be found [here](https://github.com/slak44/Xylene/blob/master/gr
   - abstract types?
   - enums (Java-like?)
 - for loop: multiple declarations, fix ambiguous grammar
+  - for each loop
 - properly define an identifier
 - prefix notation in arguments
 - allow default type for method definitions?

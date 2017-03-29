@@ -1,0 +1,36 @@
+/*
+Turing complete celullar automata
+Many features used here are not yet implemented, and this will not compile for now
+Short list of required stuff:
+- the io module
+- module system
+- arrays, array literals, negative indices access, array standard library functions
+- for each loops
+- range operator ..
+- [] operator
+*/
+
+import print from io;
+
+function rule110 [Integer left, Integer center, Integer right] => Integer do
+  if (left == 1 && center == 1 && right == 1) ||
+    (left == 1 && center == 0 && right == 0) ||
+    (left == 0 && center == 0 && right == 0)
+  do
+    return 0;
+  else do
+    return 1;
+  end
+end
+
+DArray cells = [0, 0, 1, 0, 1, 1];
+Integer runs = 50;
+
+for each Integer i in 0..runs do
+  cells[0] = rule110(0, cells[0], cells[1]);
+  for Integer j = 1; j < cells.length() - 1; j++ do
+    cells[j] = rule110(cells[j - 1], cells[j], cells[j + 1]);
+  end
+  cells[-1] = rule110(cells[-2], cells[-1], 0);
+  cells.applyAll(print);
+end
