@@ -12,6 +12,9 @@ protected:
     path = fmt::format("{0}/{1}", DATA_PARENT_DIR, path);
     return rapidxml::file<>(path.c_str());
   }
+  inline void parse(std::string code) {
+    TokenParser::parse(Lexer::tokenize(code, "<parser-test>")->getTokens());
+  }
 };
 
 class ParserCompareTest: public ParserTest {
@@ -27,6 +30,9 @@ TEST_F(ParserCompareTest, Expressions) {
   compare("+ -- a ++ --;", "data/parser/unary.xml");
   compare("a + 1;", "data/parser/expr/start_with_ident.xml");
   compare("-(a + b)++;", "data/parser/expr/parens_unaries.xml");
+  EXPECT_THROW(parse("1 + return;"), Error);
+  EXPECT_THROW(parse("1 + do;"), Error);
+  EXPECT_THROW(parse("1 + else;"), Error);
 }
 
 TEST_F(ParserCompareTest, FunctionCalls) {

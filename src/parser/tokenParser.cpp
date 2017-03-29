@@ -113,7 +113,7 @@ Node<ExpressionNode>::Link TokenParser::parsePostfix(Node<ExpressionNode>::Link 
       newOp->addChild(args);
     }
     // Using continue skips the code block below, which is not good, but we still
-    // want continue-like behaviour
+    // want continue-li
     pseudoContinue:
     if (base == nullptr) {
       base = newOp;
@@ -155,13 +155,8 @@ Node<ExpressionNode>::Link TokenParser::parseExpressionPrimary() {
     auto terminalAndPostfix = parseExpressionPrimary();
     lastNode->addChild(terminalAndPostfix);
     return expr;
-  } else {
-    throw InternalError("Unimplemented primary expression", {
-      METADATA_PAIRS,
-      {"token", current().toString()},
-      {"token pos", std::to_string(pos)}
-    });
   }
+  throw "Illegal token '{}' in expression"_syntax(current().data) + current().trace;
 }
 
 Node<ExpressionNode>::Link TokenParser::expressionImpl(Node<ExpressionNode>::Link lhs, int minPrecedence) {
