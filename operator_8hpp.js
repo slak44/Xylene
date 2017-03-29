@@ -5,7 +5,8 @@ var operator_8hpp =
       [ "NULLARY", "operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8a74742057ec9d5653bb9423647e73e1cb", null ],
       [ "UNARY", "operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8aabdbf34bc415b5947bb72c06b15443aa", null ],
       [ "BINARY", "operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8aecafbc1299672a8c1521cc0d5f1ae986", null ],
-      [ "TERNARY", "operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8a1ff4b84dd5f493753248cb3879535df6", null ]
+      [ "TERNARY", "operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8a1ff4b84dd5f493753248cb3879535df6", null ],
+      [ "POLYADIC", "operator_8hpp.html#acbd37d1e0466b60e27b6067623705cc8aa4addb061ea98f6a01752d8c46962c7a", null ]
     ] ],
     [ "Associativity", "operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2", [
       [ "ASSOCIATE_FROM_LEFT", "operator_8hpp.html#af0c134c8c38b704002eecf49d690b2f2aa90f4bdd5dd80cb48623ffeb28e498b6", null ],

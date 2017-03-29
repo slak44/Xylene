@@ -3,7 +3,6 @@ var searchData=
   ['safeopname',['safeOpName',['../codegen_8cpp.html#a34c6053c4ab1544701660206bf7bbb47',1,'codegen.cpp']]],
   ['semi',['SEMI',['../namespace_t_t.html#a2bc3956c46f9c145dd8390d541b66559',1,'TT']]],
   ['serializetypeset',['serializeTypeSet',['../class_module_compiler.html#a818ae801663ff338d616d1c7bf2ef95d',1,'ModuleCompiler']]],
-  ['setexitblock',['setExitBlock',['../class_loop_node.html#aa6f766df5e8c0b1d813666978bd0fe4b',1,'LoopNode']]],
   ['setparent',['setParent',['../class_a_s_t_node.html#a8364648a730e8ca159a594b04a1efcab',1,'ASTNode']]],
   ['settid',['setTid',['../class_type_node.html#adcc66eaae8b47345b46aad25173bf327',1,'TypeNode']]],
   ['settrace',['setTrace',['../class_a_s_t_node.html#a5b166c50a1da8b5ab1c8dbef2c3ec077',1,'ASTNode']]],

@@ -8,9 +8,8 @@ var class_loop_node =
     [ "condition", "class_loop_node.html#ab39bd658a07f2920433040802cd24c3f", null ],
     [ "condition", "class_loop_node.html#a73bccb6603e408a116d31d7382086b48", null ],
     [ "getChildren", "class_loop_node.html#aef806725ca4f742405723290985d3716", null ],
-    [ "getExitBlock", "class_loop_node.html#af652ebdc27cf2cad8fb664b4f2c396f7", null ],
     [ "inits", "class_loop_node.html#a10124d491e0f35774329dfab8ca627c7", null ],
-    [ "setExitBlock", "class_loop_node.html#aa6f766df5e8c0b1d813666978bd0fe4b", null ],
     [ "updates", "class_loop_node.html#adcaf6bdc4866ff7bb705756cb71f2604", null ],
-    [ "visit", "class_loop_node.html#aea2567155b99062e197b603275739e7a", null ]
+    [ "visit", "class_loop_node.html#aea2567155b99062e197b603275739e7a", null ],
+    [ "exitBlock", "class_loop_node.html#a2d37fc55478638c593bbcbe41e2c6ce5", null ]
 ];

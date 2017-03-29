@@ -83,6 +83,7 @@ $(document).ready(function(){initNavTree('class_loop_node.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_loop_node-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">LoopNode Class Reference</div>  </div>
@@ -136,10 +137,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aef806725ca4f742405723290985d3716"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_s_t_node.html#ad64bdc35eff7b7ade1698416849dee41">Children</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#aef806725ca4f742405723290985d3716">getChildren</a> () const noexcept override</td></tr>
 <tr class="memdesc:aef806725ca4f742405723290985d3716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get list of children.  <a href="#aef806725ca4f742405723290985d3716">More...</a><br /></td></tr>
 <tr class="separator:aef806725ca4f742405723290985d3716"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af652ebdc27cf2cad8fb664b4f2c396f7"><td class="memItemLeft" align="right" valign="top">llvm::BasicBlock *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#af652ebdc27cf2cad8fb664b4f2c396f7">getExitBlock</a> () const noexcept</td></tr>
-<tr class="separator:af652ebdc27cf2cad8fb664b4f2c396f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6f766df5e8c0b1d813666978bd0fe4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#aa6f766df5e8c0b1d813666978bd0fe4b">setExitBlock</a> (llvm::BasicBlock *bb) noexcept</td></tr>
-<tr class="separator:aa6f766df5e8c0b1d813666978bd0fe4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea2567155b99062e197b603275739e7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#aea2567155b99062e197b603275739e7a">visit</a> (<a class="el" href="ast_8hpp.html#a5242bb806f94354e670b85544ec9d70a">ASTVisitorLink</a> visitor) override</td></tr>
 <tr class="separator:aea2567155b99062e197b603275739e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_no_more_children_node"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_no_more_children_node')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_no_more_children_node.html">NoMoreChildrenNode</a></td></tr>
@@ -184,6 +181,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8fc036294111d15ed1889fe8890ba4a4 inherit pub_methods_class_a_s_t_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb0b2d01835f8423d925ed47715b1706 inherit pub_methods_class_a_s_t_node"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_t_node.html#adb0b2d01835f8423d925ed47715b1706">operator!=</a> (const <a class="el" href="class_a_s_t_node.html">ASTNode</a> &amp;rhs) const</td></tr>
 <tr class="separator:adb0b2d01835f8423d925ed47715b1706 inherit pub_methods_class_a_s_t_node"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a2d37fc55478638c593bbcbe41e2c6ce5"><td class="memItemLeft" align="right" valign="top">llvm::BasicBlock *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loop_node.html#a2d37fc55478638c593bbcbe41e2c6ce5">exitBlock</a></td></tr>
+<tr class="memdesc:a2d37fc55478638c593bbcbe41e2c6ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by the break statement.  <a href="#a2d37fc55478638c593bbcbe41e2c6ce5">More...</a><br /></td></tr>
+<tr class="separator:a2d37fc55478638c593bbcbe41e2c6ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -428,31 +431,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="af652ebdc27cf2cad8fb664b4f2c396f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af652ebdc27cf2cad8fb664b4f2c396f7">&#9670;&nbsp;</a></span>getExitBlock()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">llvm::BasicBlock* LoopNode::getExitBlock </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a10124d491e0f35774329dfab8ca627c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a10124d491e0f35774329dfab8ca627c7">&#9670;&nbsp;</a></span>inits()</h2>
 
@@ -467,32 +445,6 @@ Additional Inherited Members</h2></td></tr>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa6f766df5e8c0b1d813666978bd0fe4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6f766df5e8c0b1d813666978bd0fe4b">&#9670;&nbsp;</a></span>setExitBlock()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LoopNode::setExitBlock </td>
-          <td>(</td>
-          <td class="paramtype">llvm::BasicBlock *&#160;</td>
-          <td class="paramname"><em>bb</em></td><td>)</td>
-          <td></td>
         </tr>
       </table>
   </td>
@@ -554,6 +506,23 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="class_a_s_t_node.html#aba2d694b903b866c9f68e07cb9bdfae2">ASTNode</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2d37fc55478638c593bbcbe41e2c6ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d37fc55478638c593bbcbe41e2c6ce5">&#9670;&nbsp;</a></span>exitBlock</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">llvm::BasicBlock* LoopNode::exitBlock</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Used by the break statement. </p>
 
 </div>
 </div>

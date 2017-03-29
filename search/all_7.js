@@ -15,7 +15,6 @@ var searchData=
   ['getend',['getEnd',['../class_range.html#a9c9770f947e3145375d031fefa884948',1,'Range']]],
   ['getentrypoint',['getEntryPoint',['../class_module_compiler.html#a8154a04fc853a1ab316fad2670eaa8c0',1,'ModuleCompiler']]],
   ['getevaltypelist',['getEvalTypeList',['../class_type_info.html#a1e690ce317c81846b1ec46e43cc550c0',1,'TypeInfo']]],
-  ['getexitblock',['getExitBlock',['../class_loop_node.html#af652ebdc27cf2cad8fb664b4f2c396f7',1,'LoopNode']]],
   ['getfilename',['getFileName',['../class_trace.html#a8ec3ce4dfc86e92b608cc0bcbf0b7dbe',1,'Trace']]],
   ['getfixity',['getFixity',['../class_operator.html#aa05af30bb58fc6dc76b561fab74bd3a9',1,'Operator']]],
   ['getfunction',['getFunction',['../class_method_data.html#ac309c8188bfecab2b6f452a0c36b3789',1,'MethodData::getFunction()'],['../class_constructor_data.html#ac07124b8c67557b72dccb10471537569',1,'ConstructorData::getFunction()']]],
