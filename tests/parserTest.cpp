@@ -34,6 +34,7 @@ TEST_F(ParserCompareTest, Expressions) {
   EXPECT_THROW(parse("1 + do;"), Error);
   EXPECT_THROW(parse("1 + else;"), Error);
   EXPECT_THROW(parse("1+1 return;"), Error);
+  EXPECT_THROW(parse("if do end;"), Error);
 }
 
 TEST_F(ParserCompareTest, FunctionCalls) {

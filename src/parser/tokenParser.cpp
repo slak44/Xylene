@@ -261,7 +261,11 @@ Node<DeclarationNode>::Link TokenParser::declaration(bool throwIfEmpty) {
 Node<BranchNode>::Link TokenParser::ifStatement() {
   auto branch = Node<BranchNode>::make();
   branch->setTrace(current().trace);
-  branch->condition(expression());
+  auto condition = expression(false);
+  if (condition == nullptr) {
+    throw "If statement requires condition expression"_syntax + branch->getTrace();
+  }
+  branch->condition(condition);
   branch->success(block(IF_BLOCK));
   skip(-1); // Go back to the block termination token
   if (accept(TT::ELSE)) {
