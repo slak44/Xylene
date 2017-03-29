@@ -165,7 +165,7 @@ Node<ExpressionNode>::Link TokenParser::expressionImpl(Node<ExpressionNode>::Lin
   Node<ExpressionNode>::Link lastExpr = nullptr;
   Token tok = current();
   if (acceptEndOfExpression()) return lhs;
-  while (tok.op().hasArity(BINARY) && tok.op().getPrec() >= minPrecedence) {
+  while (tok.isOp() && tok.op().hasArity(BINARY) && tok.op().getPrec() >= minPrecedence) {
     auto tokExpr = Node<ExpressionNode>::make(tok);
     tokExpr->setTrace(tok.trace);
     tokExpr->addChild(lhs);
