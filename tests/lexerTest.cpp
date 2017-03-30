@@ -95,14 +95,14 @@ TEST_F(LexerTest, FatArrow) {
 }
 
 TEST_F(LexerTest, Operators) {
-  ASSERT_EQ(getTokens("!=")[0], Token(TT::OPERATOR, 1, defaultTrace));
-  ASSERT_EQ(getTokens("1 + 1")[1], Token(TT::OPERATOR, 31, defaultTrace));
-  ASSERT_EQ(getTokens("+ 1")[0], Token(TT::OPERATOR, 25, defaultTrace));
-  ASSERT_EQ(getTokens("++1")[0], Token(TT::OPERATOR, 23, defaultTrace));
-  EXPECT_EQ(getTokens("1++ + 2")[1], Token(TT::OPERATOR, 20, defaultTrace));
-  ASSERT_EQ(at(2), Token(TT::OPERATOR, 31, defaultTrace));
-  EXPECT_EQ(getTokens("1++ + ++2")[3], Token(TT::OPERATOR, 23, defaultTrace));
-  ASSERT_EQ(at(2), Token(TT::OPERATOR, 31, defaultTrace));
+  ASSERT_EQ(getTokens("!=")[0], Token(TT::OPERATOR, Operator::find("Inequality"), defaultTrace));
+  ASSERT_EQ(getTokens("1 + 1")[1], Token(TT::OPERATOR, Operator::find("Add"), defaultTrace));
+  ASSERT_EQ(getTokens("+ 1")[0], Token(TT::OPERATOR, Operator::find("Unary +"), defaultTrace));
+  ASSERT_EQ(getTokens("++1")[0], Token(TT::OPERATOR, Operator::find("Prefix ++"), defaultTrace));
+  EXPECT_EQ(getTokens("1++ + 2")[1], Token(TT::OPERATOR, Operator::find("Postfix ++"), defaultTrace));
+  ASSERT_EQ(at(2), Token(TT::OPERATOR, Operator::find("Add"), defaultTrace));
+  EXPECT_EQ(getTokens("1++ + ++2")[3], Token(TT::OPERATOR, Operator::find("Prefix ++"), defaultTrace));
+  ASSERT_EQ(at(2), Token(TT::OPERATOR, Operator::find("Add"), defaultTrace));
 }
 
 TEST_F(LexerTest, Keywords) {
@@ -114,7 +114,7 @@ TEST_F(LexerTest, Keywords) {
 TEST_F(LexerTest, Expression) {
   getTokens("(-12 + -3) / 1.5 >> 1");
   ASSERT_EQ(at(0), Token(TT::PAREN_LEFT, "(", defaultTrace));
-  ASSERT_EQ(at(1), Token(TT::OPERATOR, 24, defaultTrace));
+  ASSERT_EQ(at(1), Token(TT::OPERATOR, Operator::find("Unary -"), defaultTrace));
   ASSERT_EQ(at(2), Token(TT::INTEGER, "12", defaultTrace));
   ASSERT_EQ(at(5), Token(TT::INTEGER, "3", defaultTrace));
   ASSERT_EQ(at(6), Token(TT::PAREN_RIGHT, ")", defaultTrace));
