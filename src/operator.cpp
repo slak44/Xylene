@@ -68,6 +68,8 @@ const std::vector<Operator> Operator::list {
   Operator("--", 130, "Postfix --", ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
   Operator("++", 130, "Postfix ++", ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
   
+  Operator("..", 15, "Range"),
+  
   Operator(".", 130, "Member access", ASSOCIATE_FROM_LEFT, BINARY, INFIX, {true, false}),
   
   Operator("--", 120, "Prefix --", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
