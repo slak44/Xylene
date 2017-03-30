@@ -42,63 +42,63 @@ namespace {
 }
 
 const std::vector<Operator> Operator::list {
-  Operator("==", 7, "Equality"),
-  Operator("!=", 7, "Inequality"),
+  Operator("==", 70, "Equality"),
+  Operator("!=", 70, "Inequality"),
   
-  Operator("=", 1, "Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("+=", 1, "+Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("-=", 1, "-Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("*=", 1, "*Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("/=", 1, "/Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("%=", 1, "%Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("<<=", 1, "<<Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator(">>=", 1, ">>Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("&=", 1, "&Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("^=", 1, "^Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
-  Operator("|=", 1, "|Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("=", 10, "Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("+=", 10, "+Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("-=", 10, "-Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("*=", 10, "*Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("/=", 10, "/Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("%=", 10, "%Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("<<=", 10, "<<Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator(">>=", 10, ">>Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("&=", 10, "&Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("^=", 10, "^Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
+  Operator("|=", 10, "|Assignment", ASSOCIATE_FROM_RIGHT, BINARY, INFIX, assignmentList),
   
-  Operator(">>", 9, "Bitshift >>"),
-  Operator("<<", 9, "Bitshift <<"),
+  Operator(">>", 90, "Bitshift >>"),
+  Operator("<<", 90, "Bitshift <<"),
   
-  Operator("<=", 8, "Less or equal"),
-  Operator("<", 8, "Less"),
-  Operator(">=", 8, "Greater or equal"),
-  Operator(">", 8, "Greater"),
+  Operator("<=", 80, "Less or equal"),
+  Operator("<", 80, "Less"),
+  Operator(">=", 80, "Greater or equal"),
+  Operator(">", 80, "Greater"),
   
-  Operator("--", 13, "Postfix --", ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
-  Operator("++", 13, "Postfix ++", ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
+  Operator("--", 130, "Postfix --", ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
+  Operator("++", 130, "Postfix ++", ASSOCIATE_FROM_LEFT, UNARY, POSTFIX, unaryOps),
   
-  Operator(".", 13, "Member access", ASSOCIATE_FROM_LEFT, BINARY, INFIX, {true, false}),
+  Operator(".", 130, "Member access", ASSOCIATE_FROM_LEFT, BINARY, INFIX, {true, false}),
   
-  Operator("--", 12, "Prefix --", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
-  Operator("++", 12, "Prefix ++", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
-  Operator("-", 12, "Unary -", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
-  Operator("+", 12, "Unary +", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
-  Operator("~", 12, "Bitwise NOT", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
-  Operator("!", 12, "Logical NOT", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  Operator("--", 120, "Prefix --", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
+  Operator("++", 120, "Prefix ++", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX, unaryOps),
+  Operator("-", 120, "Unary -", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  Operator("+", 120, "Unary +", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  Operator("~", 120, "Bitwise NOT", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
+  Operator("!", 120, "Logical NOT", ASSOCIATE_FROM_RIGHT, UNARY, PREFIX),
   
-  Operator("*", 11, "Multiply"),
-  Operator("/", 11, "Divide"),
-  Operator("%", 11, "Modulo"),
+  Operator("*", 110, "Multiply"),
+  Operator("/", 110, "Divide"),
+  Operator("%", 110, "Modulo"),
   
-  Operator("+", 10, "Add"),
-  Operator("-", 10, "Substract"),
+  Operator("+", 100, "Add"),
+  Operator("-", 100, "Substract"),
   
-  Operator("&&", 3, "Logical AND"),
-  Operator("||", 2, "Logical OR"),
+  Operator("&&", 30, "Logical AND"),
+  Operator("||", 20, "Logical OR"),
   
-  Operator("&", 6, "Bitwise AND"),
-  Operator("^", 5, "Bitwise XOR"),
-  Operator("|", 4, "Bitwise OR"),
+  Operator("&", 60, "Bitwise AND"),
+  Operator("^", 50, "Bitwise XOR"),
+  Operator("|", 40, "Bitwise OR"),
   
   Operator(",", 0, "Comma"),
   
   // These don't get matched by the lexer as operators, their symbols get matched as
   // constructs. The expressions using those are created in the parser
-  Operator("[]", 13, "Subscript", ASSOCIATE_FROM_LEFT, BINARY, CIRCUMFIX, {true, false}),
+  Operator("[]", 130, "Subscript", ASSOCIATE_FROM_LEFT, BINARY, CIRCUMFIX, {true, false}),
   // Second operand to call is the thing being called, first is arguments to call
-  Operator("()", 13, "Call", ASSOCIATE_FROM_LEFT, BINARY, POSTFIX, {false, true}),
-  Operator("?:", 1, "Conditional", ASSOCIATE_FROM_LEFT, TERNARY, CIRCUMFIX),
+  Operator("()", 130, "Call", ASSOCIATE_FROM_LEFT, BINARY, POSTFIX, {false, true}),
+  Operator("?:", 10, "Conditional", ASSOCIATE_FROM_LEFT, TERNARY, CIRCUMFIX),
   Operator(" ", 0, "Call arguments", ASSOCIATE_FROM_LEFT, POLYADIC)
 };
 
