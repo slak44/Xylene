@@ -82,39 +82,35 @@ Node<ExpressionNode>::Link TokenParser::parsePostfix(Node<ExpressionNode>::Link 
       auto insideCall = parseCircumfixGroup(begin);
       auto args = Node<ExpressionNode>::make(
         Token(TT::OPERATOR, Operator::find("Call arguments"), current().trace));
+      auto lastNode = insideCall;
       // Don't add any arguments to the call if the expression is empty
+      // 0 args
       if (insideCall == nullptr) {
         newOp->addChild(args);
-        goto pseudoContinue;
-      }
-      // Add all arguments to function call
-      auto lastNode = insideCall;
-      // If it's not an comma, it means this func call only has one argument
-      if (!(lastNode->getToken().isOp() && lastNode->getToken().op().hasSymbol(","))) {
+      } else if (!(lastNode->getToken().isOp() && lastNode->getToken().op().hasSymbol(","))) {
+        // If it's not an comma, it means this func call only has one argument
+        // 1 arg
         args->addChild(lastNode);
         newOp->addChild(args);
-        goto pseudoContinue;
+      } else {
+        // 2+ arguments
+        std::vector<Node<ExpressionNode>::Link> argList;
+        while (lastNode->getToken().op().hasSymbol(",")) {
+          argList.push_back(lastNode->at(1));
+          auto tok = lastNode->at(0)->getToken();
+          if (tok.type != TT::OPERATOR || !tok.op().hasSymbol(",")) break;
+          lastNode = lastNode->at(0);
+        }
+        // The last comma's arg 2 is not processed in the loop
+        argList.push_back(lastNode->at(0));
+        // They come in reverse order due to depth-first above
+        std::reverse(ALL(argList));
+        for (auto arg : argList) {
+          args->addChild(arg);
+        }
+        newOp->addChild(args);
       }
-      std::vector<Node<ExpressionNode>::Link> argList;
-      // 2+ arguments
-      while (lastNode->getToken().op().hasSymbol(",")) {
-        argList.push_back(lastNode->at(1));
-        auto tok = lastNode->at(0)->getToken();
-        if (tok.type != TT::OPERATOR || !tok.op().hasSymbol(",")) break;
-        lastNode = lastNode->at(0);
-      }
-      // The last comma's arg 2 is not processed in the loop
-      argList.push_back(lastNode->at(0));
-      // They come in reverse order due to depth-first above
-      std::reverse(ALL(argList));
-      for (auto arg : argList) {
-        args->addChild(arg);
-      }
-      newOp->addChild(args);
     }
-    // Using continue skips the code block below, which is not good, but we still
-    // want continue-li
-    pseudoContinue:
     if (base == nullptr) {
       base = newOp;
       base->addChild(terminal);
