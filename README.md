@@ -19,9 +19,7 @@ EBNF grammar can be found [here](https://github.com/slak44/Xylene/blob/master/gr
 - text handling
   - UTF-8 aware String class
   - byte arrays
-  - maybe UnsafeString for user input?
 - modules, import, export
-- .. range operator
 - type system
   - unit type?
   - bottom type?
@@ -44,6 +42,13 @@ EBNF grammar can be found [here](https://github.com/slak44/Xylene/blob/master/gr
   - interfaces?
   - abstract types?
   - enums (Java-like?)
+- operators
+  - ternary, lexer + parser + codegen
+  - range, codegen
+  - compund assignments, codegen
+  - member access, codegen
+  - subscript, parser + codegen
+  - operator overloading
 - for loop: multiple declarations, fix ambiguous grammar
   - for each loop
 - properly define an identifier
@@ -57,7 +62,6 @@ EBNF grammar can be found [here](https://github.com/slak44/Xylene/blob/master/gr
 - try-catch, throw, exceptions (finally block?)
 - first-class support for hashmaps
 - lambdas and anon funcs
-- operator overloading
 - switch / pattern matcher
 - standard library
 - metaprogramming
