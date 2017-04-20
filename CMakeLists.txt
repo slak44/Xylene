@@ -25,8 +25,8 @@ else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -stdlib=libstdc++ \
       -fshow-column -fcaret-diagnostics -fcolor-diagnostics \
       -Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded \
-      -Wno-weak-vtables -Wno-global-constructors -Wno-exit-time-destructors -Wno-shadow-field-in-constructor -Wno-documentation-unknown-command -Wno-used-but-marked-unused \
-      -Winconsistent-missing-override")
+      -Wno-weak-vtables -Wno-global-constructors -Wno-exit-time-destructors -Wno-shadow-field-in-constructor -Wno-documentation-unknown-command \
+      -Wno-used-but-marked-unused -Winconsistent-missing-override")
   else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall")
   endif()
