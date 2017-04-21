@@ -92,6 +92,11 @@ private:
   std::stack<FunctionWrapper::Link> functionStack; ///< Current function stack. Not a call stack
   AST ast; ///< Source AST
   
+  
+  using CodegenFun = std::function<ValueWrapper::Link(std::vector<ValueWrapper::Link>, Node<ExpressionNode>::Link)>;
+  /// Map of codegen funcs for operators
+  std::unordered_map<Operator::Name, CodegenFun> codegenMap {};
+  
   bool isRoot;
   
   ModuleCompiler(std::string moduleName, AST, bool isRoot);
@@ -193,14 +198,13 @@ private:
   
   // Codegen stuff
   
-  /**
-    \brief Load if it's a pointer, do nothing otherwise
-    \param maybePointer the thing to potentially be loaded
-  */
-  ValueWrapper::Link load(ValueWrapper::Link maybePointer);
-  bool operatorTypeCheck(std::vector<ValueWrapper::Link> checkThis, std::vector<std::vector<AbstractId::Link>> checkAgainst);
+  /// Fill the codegen map with the CodegenFuncs
+  void fillCodegenMap();
   
-  using CodegenFun = std::function<ValueWrapper::Link(std::vector<ValueWrapper::Link>, Node<ExpressionNode>::Link)>;
+  /// Load it if it's a pointer, do nothing otherwise
+  ValueWrapper::Link load(ValueWrapper::Link maybePointer);
+  /// Check if the given operators' types are allowed for the given set
+  bool operatorTypeCheck(std::vector<ValueWrapper::Link> checkThis, std::vector<std::vector<AbstractId::Link>> checkAgainst);
   
   /**
     \brief Creates a CodegenFun for arithmetic ops
@@ -239,83 +243,13 @@ private:
   }
   
   /**
-    \brief Creates a CodegenFun for the given predicates
-    \param intPred used for int-int and bool-bool comparisons
-    \param fltPred used for the other comparisons (all with at least one float)
+    \brief Creates a CodegenFun that increments/decrements postfixly/prefixly
+    \param f prefix/postfix
   */
-  CodegenFun cmpOpBuilder(llvm::CmpInst::Predicate intPred, llvm::CmpInst::Predicate fltPred) {
-    auto s = shared_from_this();
-    return [=](std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-      auto allowed = operatorTypeCheck(ops, {
-        {booleanTid, booleanTid},
-        {integerTid, integerTid},
-        {integerTid, floatTid},
-        {floatTid, integerTid},
-        {floatTid, floatTid}
-      });
-      if (!allowed) throw "No operation available for given types"_type + node->getTrace();
-      auto load0 = load(ops[0])->val;
-      auto load1 = load(ops[1])->val;
-      llvm::Value* value = nullptr;
-      // Catch bool-bool, int-int and float-float
-      if (ops[0]->ty == ops[1]->ty) {
-        value = ops[0]->ty == floatTid ?
-          builder->CreateFCmp(fltPred, load0, load1) :
-          builder->CreateICmp(intPred, load0, load1);
-      // Catch int-float, float-int
-      } else {
-        if (ops[0]->ty == integerTid) load0 = builder->CreateSIToFP(load0, floatType);
-        if (ops[1]->ty == integerTid) load1 = builder->CreateSIToFP(load1, floatType);
-        value = builder->CreateFCmp(fltPred, load0, load1);
-      }
-      if (value == nullptr) throw InternalError("Arguments must be type-checked", {METADATA_PAIRS});
-      return std::make_shared<ValueWrapper>(
-        value,
-        booleanTid
-      );
-    };
-  }
-  
-  enum Bitwiseity {
-    BITWISE,
-    LOGICAL
-  };
-  
-  CodegenFun notFunction(Bitwiseity b) {
-    return [=](std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-      std::vector<std::vector<AbstractId::Link>> allowed = {
-        {booleanTid}
-      };
-      if (b == BITWISE) allowed.push_back({integerTid});
-      auto isAllowed = operatorTypeCheck(ops, allowed);
-      if (!isAllowed) throw "No operation available for given types"_type + node->getTrace();
-      return std::make_shared<ValueWrapper>(
-        builder->CreateNot(load(ops[0])->val),
-        ops[0]->ty
-      );
-    };
-  }
-  
-  using BitwiseBinFunSig = llvm::Value* (llvm::IRBuilder<>::*)(llvm::Value*, llvm::Value*, const llvm::Twine&);
-  CodegenFun bitwiseOpBuilder(Bitwiseity b, BitwiseBinFunSig opFun) {
-    auto boundOpFun = objBind(opFun, builder.get());
-    return [=](std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-      std::vector<std::vector<AbstractId::Link>> allowed = {
-        {booleanTid}
-      };
-      if (b == BITWISE) allowed.push_back({integerTid});
-      auto isAllowed = operatorTypeCheck(ops, allowed);
-      if (!isAllowed) throw "No operation available for given types"_type + node->getTrace();
-      return std::make_shared<ValueWrapper>(
-        boundOpFun(load(ops[0])->val, load(ops[1])->val, ""),
-        ops[0]->ty
-      );
-    };
-  }
-  
   template<typename IncDecFunc>
   CodegenFun preOrPostfixOpBuilder(Fixity f, IncDecFunc fun) {
-    static_assert(std::is_member_function_pointer<IncDecFunc>::value, "IncDecFunc is not a member function!");
+    if (f != POSTFIX && f != PREFIX)
+      throw InternalError("Only accepts prefix and postfix", {METADATA_PAIRS});
     auto boundFun = objBind(fun, builder.get());
     return [=](std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
       auto allowed = operatorTypeCheck(ops, {
@@ -341,125 +275,38 @@ private:
     };
   }
   
-  ValueWrapper::Link unaryPlus(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-    auto allowed = operatorTypeCheck(ops, {
-      {integerTid},
-      {floatTid}
-    });
-    if (!allowed) throw "No operation available for given types"_type + node->getTrace();
-    return ops[0];
-  }
+  /**
+    \brief Creates a CodegenFun for the given predicates
+    \param intPred used for int-int and bool-bool comparisons
+    \param fltPred used for the other comparisons (all with at least one float)
+  */
+  CodegenFun cmpOpBuilder(llvm::CmpInst::Predicate intPred, llvm::CmpInst::Predicate fltPred);
   
-  ValueWrapper::Link unaryMinus(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-    auto allowed = operatorTypeCheck(ops, {
-      {integerTid},
-      {floatTid}
-    });
-    if (!allowed) throw "No operation available for given types"_type + node->getTrace();
-    return std::make_shared<ValueWrapper>(
-      ops[0]->ty == integerTid ?
-        builder->CreateNeg(load(ops[0])->val) :
-        builder->CreateFNeg(load(ops[0])->val),
-      ops[0]->ty
-    );
-  }
+  /// Bitwise and logical operators are identical, except the bitwise ones also work on integers
+  enum Bitwiseity {
+    BITWISE,
+    LOGICAL
+  };
   
-  ValueWrapper::Link shiftLeft(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-    auto allowed = operatorTypeCheck(ops, {
-      {integerTid, integerTid}
-    });
-    if (!allowed) throw "No operation available for given types"_type + node->getTrace();
-    return std::make_shared<ValueWrapper>(
-      builder->CreateShl(load(ops[0])->val, load(ops[1])->val),
-      integerTid
-    );
-  }
+  /// Creates a CodegenFun that applies the not operation
+  CodegenFun notFunction(Bitwiseity b);
   
-  ValueWrapper::Link shiftRight(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-    auto allowed = operatorTypeCheck(ops, {
-      {integerTid, integerTid}
-    });
-    if (!allowed) throw "No operation available for given types"_type + node->getTrace();
-    return std::make_shared<ValueWrapper>(
-      builder->CreateAShr(load(ops[0])->val, load(ops[1])->val),
-      integerTid
-    );
-  }
+  using BitwiseBinFunSig = llvm::Value* (llvm::IRBuilder<>::*)(llvm::Value*, llvm::Value*, const llvm::Twine&);
+  /// Creates a CodegenFun that applies the given binary bit operation
+  CodegenFun bitwiseOpBuilder(Bitwiseity b, BitwiseBinFunSig opFun);
   
-  ValueWrapper::Link call(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-    if (ops[0]->ty != functionTid) {
-      throw "Attempt to call non-function '{}'"_type(node->at(1)->getToken().data)
-        + node->getTrace();
-    }
-    auto fw = PtrUtil<FunctionWrapper>::staticPtrCast(ops[0]);
-    // Get a list of arguments to pass to CreateCall
-    std::vector<llvm::Value*> args {};
-    // We skip the first operand because it is the function itself, not an arg
-    auto opIt = ops.begin() + 1;
-    auto arguments = fw->getSignature().getArguments();
-    if (ops.size() - 1 != arguments.size()) {
-      throw "Expected {0} arguments for function '{1}' ({2} provided)"_ref(
-        arguments.size(),
-        node->at(1)->getToken().data,
-        ops.size() - 1
-      );
-    }
-    for (auto it = arguments.begin(); it != arguments.end(); ++it, ++opIt) {
-      auto argId = typeIdFromInfo(it->second, node);
-      typeCheck(argId, *opIt,
-        "Function argument '{0}' ({1}) has incompatible type with '{2}'"_type(
-          it->first,
-          argId->typeNames(),
-          (*opIt)->ty->typeNames()
-        ) + node->getTrace());
-      args.push_back((*opIt)->val);
-    }
-    AbstractId::Link ret;
-    if (fw->getSignature().getReturnType().isVoid()) ret = voidTid;
-    else ret = typeIdFromInfo(fw->getSignature().getReturnType(), node);
-    // TODO: use invoke instead of call in the future, it has exception handling and stuff
-    return std::make_shared<ValueWrapper>(
-      builder->CreateCall(
-        fw->getValue(),
-        args,
-        fw->getValue()->getReturnType()->isVoidTy() ? "" : "call"
-      ),
-      ret
-    );
-  }
-  
-  ValueWrapper::Link assignment(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
-    auto varIdent = node->at(0);
-    ValueWrapper::Link decl = ops[0];
-    if (decl == nullptr)
-      throw "Cannot assign to '{}'"_ref(varIdent->getToken().data) + varIdent->getToken().trace;
-    
-    // If the declaration doesn't allow this type, complain
-    typeCheck(decl->ty, ops[1],
-      "Value '{0}' ({1}) does not allow assigning type '{2}'"_type(
-        varIdent->getToken().data,
-        decl->ty->typeNames(),
-        ops[1]->ty->typeNames()
-      ) + varIdent->getToken().trace);
-    
-    // TODO: this needs work
-    if (decl->ty->storedTypeCount() > 1) {
-      // TODO: reclaim the memory that this location points to !!!
-      // auto oldDataPtrLocation =
-      //   mc->builder->CreateConstGEP1_32(operands[0]->getValue(), 0);
-      assignToUnion(decl, ops[1]);
-    } else {
-      // Store into the variable
-      builder->CreateStore(ops[1]->val, ops[0]->val);
-      // TODO: what the fuck is this?
-      // decl->setValue(decl->getValue(), operands[1]->getCurrentType());
-    }
-    // Return the assigned value
-    return ops[1];
-  }
-  
-  /// Arguments to CodegenFuns must already be type-checked
-  std::unordered_map<Operator::Name, CodegenFun> codegenMap {};
+  /// Is a CodegenFun that applies the unary plus operation (which is a noop)
+  ValueWrapper::Link unaryPlus(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node);
+  /// Is a CodegenFun that applies the unary minus operation
+  ValueWrapper::Link unaryMinus(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node);
+  /// Is a CodegenFun that applies the left shift operation
+  ValueWrapper::Link shiftLeft(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node);
+  /// Is a CodegenFun that applies the arithmentic right shift operation
+  ValueWrapper::Link shiftRight(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node);
+  /// Is a CodegenFun that creates a call
+  ValueWrapper::Link call(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node);
+  /// Is a CodegenFun that creates an assignment
+  ValueWrapper::Link assignment(std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node);
 };
 
 /**

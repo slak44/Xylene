@@ -175,7 +175,6 @@ set(COMMON_SOURCES
   ${SRC_DIR}/parser/xmlParser.cpp
   ${SRC_DIR}/llvm/compiler.cpp
   ${SRC_DIR}/llvm/runner.cpp
-  ${SRC_DIR}/llvm/codegen.cpp
   ${SRC_DIR}/llvm/values.cpp
   ${SRC_DIR}/llvm/typeId.cpp
   ${SRC_DIR}/llvm/typeData.cpp

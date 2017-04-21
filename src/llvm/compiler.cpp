@@ -153,36 +153,7 @@ ModuleCompiler::Link ModuleCompiler::create(
   bool isRoot
 ) {
   auto self = std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast, isRoot));
-  self->codegenMap = {
-    {"Add", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateAdd, &llvm::IRBuilder<>::CreateFAdd, "", false, false)},
-    {"Substract", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateSub, &llvm::IRBuilder<>::CreateFSub, "", false, false)},
-    {"Multiply", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateMul, &llvm::IRBuilder<>::CreateFMul, "", false, false)},
-    {"Divide", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateSDiv, &llvm::IRBuilder<>::CreateFDiv, "", false)},
-    {"Modulo", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateSRem, &llvm::IRBuilder<>::CreateFRem, "")},
-    {"Equality", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_EQ, llvm::CmpInst::Predicate::FCMP_OEQ)},
-    {"Inequality", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_NE, llvm::CmpInst::Predicate::FCMP_ONE)},
-    {"Less", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SLT, llvm::CmpInst::Predicate::FCMP_OLT)},
-    {"Less or equal", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SLE, llvm::CmpInst::Predicate::FCMP_OLE)},
-    {"Greater", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SGT, llvm::CmpInst::Predicate::FCMP_OGT)},
-    {"Greater or equal", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SGE, llvm::CmpInst::Predicate::FCMP_OGE)},
-    {"Bitwise NOT", self->notFunction(BITWISE)},
-    {"Logical NOT", self->notFunction(LOGICAL)},
-    {"Bitwise AND", self->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateAnd)},
-    {"Logical AND", self->bitwiseOpBuilder(LOGICAL, &llvm::IRBuilder<>::CreateAnd)},
-    {"Bitwise OR", self->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateOr)},
-    {"Logical OR", self->bitwiseOpBuilder(LOGICAL, &llvm::IRBuilder<>::CreateOr)},
-    {"Bitwise XOR", self->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateXor)},
-    {"Postfix ++", self->preOrPostfixOpBuilder(POSTFIX, &llvm::IRBuilder<>::CreateAdd)},
-    {"Postfix --", self->preOrPostfixOpBuilder(POSTFIX, &llvm::IRBuilder<>::CreateSub)},
-    {"Prefix ++", self->preOrPostfixOpBuilder(PREFIX, &llvm::IRBuilder<>::CreateAdd)},
-    {"Prefix --", self->preOrPostfixOpBuilder(PREFIX, &llvm::IRBuilder<>::CreateSub)},
-    {"Unary +", CodegenFun(objBind(&ModuleCompiler::unaryPlus, self.get()))},
-    {"Unary -", CodegenFun(objBind(&ModuleCompiler::unaryMinus, self.get()))},
-    {"Bitshift >>", CodegenFun(objBind(&ModuleCompiler::shiftLeft, self.get()))},
-    {"Bitshift <<", CodegenFun(objBind(&ModuleCompiler::shiftRight, self.get()))},
-    {"Call", CodegenFun(objBind(&ModuleCompiler::call, self.get()))},
-    {"Assignment", CodegenFun(objBind(&ModuleCompiler::assignment, self.get()))}
-  };
+  self->fillCodegenMap();
   self->types = std::make_unique<ProgramData::TypeSet>(types);
   self->ast.getRoot()->blockTypes = {
     self->integerTid,
@@ -1010,3 +981,268 @@ void ModuleCompiler::visitMember(Node<MemberNode>::Link node) {
     node->isStatic()
   );
 }
+
+void ModuleCompiler::fillCodegenMap() {
+  codegenMap = {
+    {"Add", this->arithmOpBuilder(&llvm::IRBuilder<>::CreateAdd, &llvm::IRBuilder<>::CreateFAdd, "", false, false)},
+    {"Substract", this->arithmOpBuilder(&llvm::IRBuilder<>::CreateSub, &llvm::IRBuilder<>::CreateFSub, "", false, false)},
+    {"Multiply", this->arithmOpBuilder(&llvm::IRBuilder<>::CreateMul, &llvm::IRBuilder<>::CreateFMul, "", false, false)},
+    {"Divide", this->arithmOpBuilder(&llvm::IRBuilder<>::CreateSDiv, &llvm::IRBuilder<>::CreateFDiv, "", false)},
+    {"Modulo", this->arithmOpBuilder(&llvm::IRBuilder<>::CreateSRem, &llvm::IRBuilder<>::CreateFRem, "")},
+    {"Equality", this->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_EQ, llvm::CmpInst::Predicate::FCMP_OEQ)},
+    {"Inequality", this->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_NE, llvm::CmpInst::Predicate::FCMP_ONE)},
+    {"Less", this->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SLT, llvm::CmpInst::Predicate::FCMP_OLT)},
+    {"Less or equal", this->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SLE, llvm::CmpInst::Predicate::FCMP_OLE)},
+    {"Greater", this->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SGT, llvm::CmpInst::Predicate::FCMP_OGT)},
+    {"Greater or equal", this->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SGE, llvm::CmpInst::Predicate::FCMP_OGE)},
+    {"Bitwise NOT", this->notFunction(BITWISE)},
+    {"Logical NOT", this->notFunction(LOGICAL)},
+    {"Bitwise AND", this->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateAnd)},
+    {"Logical AND", this->bitwiseOpBuilder(LOGICAL, &llvm::IRBuilder<>::CreateAnd)},
+    {"Bitwise OR", this->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateOr)},
+    {"Logical OR", this->bitwiseOpBuilder(LOGICAL, &llvm::IRBuilder<>::CreateOr)},
+    {"Bitwise XOR", this->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateXor)},
+    {"Postfix ++", this->preOrPostfixOpBuilder(POSTFIX, &llvm::IRBuilder<>::CreateAdd)},
+    {"Postfix --", this->preOrPostfixOpBuilder(POSTFIX, &llvm::IRBuilder<>::CreateSub)},
+    {"Prefix ++", this->preOrPostfixOpBuilder(PREFIX, &llvm::IRBuilder<>::CreateAdd)},
+    {"Prefix --", this->preOrPostfixOpBuilder(PREFIX, &llvm::IRBuilder<>::CreateSub)},
+    {"Unary +", CodegenFun(objBind(&ModuleCompiler::unaryPlus, this))},
+    {"Unary -", CodegenFun(objBind(&ModuleCompiler::unaryMinus, this))},
+    {"Bitshift >>", CodegenFun(objBind(&ModuleCompiler::shiftLeft, this))},
+    {"Bitshift <<", CodegenFun(objBind(&ModuleCompiler::shiftRight, this))},
+    {"Call", CodegenFun(objBind(&ModuleCompiler::call, this))},
+    {"Assignment", CodegenFun(objBind(&ModuleCompiler::assignment, this))}
+  };
+}
+
+ValueWrapper::Link ModuleCompiler::load(ValueWrapper::Link maybePointer) {
+  if (llvm::dyn_cast_or_null<llvm::PointerType>(maybePointer->val->getType())) {
+    return std::make_shared<ValueWrapper>(
+      builder->CreateLoad(maybePointer->val, "loadIfPointer"),
+      maybePointer->ty
+    );
+  }
+  return maybePointer;
+}
+
+bool ModuleCompiler::operatorTypeCheck(
+  std::vector<ValueWrapper::Link> checkThis,
+  std::vector<std::vector<AbstractId::Link>> checkAgainst
+) {
+  for (auto entry : checkAgainst) {
+    if (entry.size() != checkThis.size()) continue;
+    for (std::size_t i = 0; i < entry.size(); i++) {
+      if (entry[i] != checkThis[i]->ty) goto continueFor;
+    }
+    return true;
+    continueFor:;
+  }
+  return false;
+}
+
+ModuleCompiler::CodegenFun ModuleCompiler::cmpOpBuilder(
+  llvm::CmpInst::Predicate intPred,
+  llvm::CmpInst::Predicate fltPred
+) {
+  return [=](std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
+    auto allowed = operatorTypeCheck(ops, {
+      {booleanTid, booleanTid},
+      {integerTid, integerTid},
+      {integerTid, floatTid},
+      {floatTid, integerTid},
+      {floatTid, floatTid}
+    });
+    if (!allowed)
+      throw "No operation available for given types"_type + node->getTrace();
+    auto load0 = load(ops[0])->val;
+    auto load1 = load(ops[1])->val;
+    llvm::Value* value = nullptr;
+    // Catch bool-bool, int-int and float-float
+    if (ops[0]->ty == ops[1]->ty) {
+      value = ops[0]->ty == floatTid ?
+        builder->CreateFCmp(fltPred, load0, load1) :
+        builder->CreateICmp(intPred, load0, load1);
+    // Catch int-float, float-int
+    } else {
+      if (ops[0]->ty == integerTid) load0 = builder->CreateSIToFP(load0, floatType);
+      if (ops[1]->ty == integerTid) load1 = builder->CreateSIToFP(load1, floatType);
+      value = builder->CreateFCmp(fltPred, load0, load1);
+    }
+    if (value == nullptr)
+      throw InternalError("Arguments must be type-checked", {METADATA_PAIRS});
+    return std::make_shared<ValueWrapper>(
+      value,
+      booleanTid
+    );
+  };
+}
+
+ModuleCompiler::CodegenFun ModuleCompiler::notFunction(ModuleCompiler::Bitwiseity b) {
+  return [=](std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
+    std::vector<std::vector<AbstractId::Link>> allowed = {
+      {booleanTid}
+    };
+    if (b == BITWISE) allowed.push_back({integerTid});
+    auto isAllowed = operatorTypeCheck(ops, allowed);
+    if (!isAllowed) throw "No operation available for given types"_type + node->getTrace();
+    return std::make_shared<ValueWrapper>(
+      builder->CreateNot(load(ops[0])->val),
+      ops[0]->ty
+    );
+  };
+}
+
+ModuleCompiler::CodegenFun ModuleCompiler::bitwiseOpBuilder(
+  ModuleCompiler::Bitwiseity b,
+  ModuleCompiler::BitwiseBinFunSig opFun
+) {
+  auto boundOpFun = objBind(opFun, builder.get());
+  return [=](std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
+    std::vector<std::vector<AbstractId::Link>> allowed = {
+      {booleanTid}
+    };
+    if (b == BITWISE) allowed.push_back({integerTid});
+    auto isAllowed = operatorTypeCheck(ops, allowed);
+    if (!isAllowed) throw "No operation available for given types"_type + node->getTrace();
+    return std::make_shared<ValueWrapper>(
+      boundOpFun(load(ops[0])->val, load(ops[1])->val, ""),
+      ops[0]->ty
+    );
+  };
+}
+
+ValueWrapper::Link ModuleCompiler::unaryPlus(
+  std::vector<ValueWrapper::Link> ops,
+  Node<ExpressionNode>::Link node
+) {
+  auto allowed = operatorTypeCheck(ops, {
+    {integerTid},
+    {floatTid}
+  });
+  if (!allowed) throw "No operation available for given types"_type + node->getTrace();
+  return ops[0];
+}
+
+ValueWrapper::Link ModuleCompiler::unaryMinus(
+  std::vector<ValueWrapper::Link> ops,
+  Node<ExpressionNode>::Link node
+) {
+  auto allowed = operatorTypeCheck(ops, {
+    {integerTid},
+    {floatTid}
+  });
+  if (!allowed) throw "No operation available for given types"_type + node->getTrace();
+  return std::make_shared<ValueWrapper>(
+    ops[0]->ty == integerTid ?
+      builder->CreateNeg(load(ops[0])->val) :
+      builder->CreateFNeg(load(ops[0])->val),
+    ops[0]->ty
+  );
+}
+
+ValueWrapper::Link ModuleCompiler::shiftLeft(
+  std::vector<ValueWrapper::Link> ops,
+  Node<ExpressionNode>::Link node
+) {
+  auto allowed = operatorTypeCheck(ops, {
+    {integerTid, integerTid}
+  });
+  if (!allowed) throw "No operation available for given types"_type + node->getTrace();
+  return std::make_shared<ValueWrapper>(
+    builder->CreateShl(load(ops[0])->val, load(ops[1])->val),
+    integerTid
+  );
+}
+
+ValueWrapper::Link ModuleCompiler::shiftRight(
+  std::vector<ValueWrapper::Link> ops,
+  Node<ExpressionNode>::Link node
+) {
+  auto allowed = operatorTypeCheck(ops, {
+    {integerTid, integerTid}
+  });
+  if (!allowed) throw "No operation available for given types"_type + node->getTrace();
+  return std::make_shared<ValueWrapper>(
+    builder->CreateAShr(load(ops[0])->val, load(ops[1])->val),
+    integerTid
+  );
+}
+
+ValueWrapper::Link ModuleCompiler::call(
+  std::vector<ValueWrapper::Link> ops,
+  Node<ExpressionNode>::Link node
+) {
+  if (ops[0]->ty != functionTid) {
+    throw "Attempt to call non-function '{}'"_type(node->at(1)->getToken().data)
+      + node->getTrace();
+  }
+  auto fw = PtrUtil<FunctionWrapper>::staticPtrCast(ops[0]);
+  // Get a list of arguments to pass to CreateCall
+  std::vector<llvm::Value*> args {};
+  // We skip the first operand because it is the function itself, not an arg
+  auto opIt = ops.begin() + 1;
+  auto arguments = fw->getSignature().getArguments();
+  if (ops.size() - 1 != arguments.size()) {
+    throw "Expected {0} arguments for function '{1}' ({2} provided)"_ref(
+      arguments.size(),
+      node->at(1)->getToken().data,
+      ops.size() - 1
+    );
+  }
+  for (auto it = arguments.begin(); it != arguments.end(); ++it, ++opIt) {
+    auto argId = typeIdFromInfo(it->second, node);
+    typeCheck(argId, *opIt,
+      "Function argument '{0}' ({1}) has incompatible type with '{2}'"_type(
+        it->first,
+        argId->typeNames(),
+        (*opIt)->ty->typeNames()
+      ) + node->getTrace());
+    args.push_back((*opIt)->val);
+  }
+  AbstractId::Link ret;
+  if (fw->getSignature().getReturnType().isVoid()) ret = voidTid;
+  else ret = typeIdFromInfo(fw->getSignature().getReturnType(), node);
+  // TODO: use invoke instead of call in the future, it has exception handling and stuff
+  return std::make_shared<ValueWrapper>(
+    builder->CreateCall(
+      fw->getValue(),
+      args,
+      fw->getValue()->getReturnType()->isVoidTy() ? "" : "call"
+    ),
+    ret
+  );
+}
+
+ValueWrapper::Link ModuleCompiler::assignment(
+  std::vector<ValueWrapper::Link> ops,
+  Node<ExpressionNode>::Link node
+) {
+  auto varIdent = node->at(0);
+  ValueWrapper::Link decl = ops[0];
+  if (decl == nullptr)
+    throw "Cannot assign to '{}'"_ref(varIdent->getToken().data) + varIdent->getToken().trace;
+  
+  // If the declaration doesn't allow this type, complain
+  typeCheck(decl->ty, ops[1],
+    "Value '{0}' ({1}) does not allow assigning type '{2}'"_type(
+      varIdent->getToken().data,
+      decl->ty->typeNames(),
+      ops[1]->ty->typeNames()
+    ) + varIdent->getToken().trace);
+  
+  // TODO: this needs work
+  if (decl->ty->storedTypeCount() > 1) {
+    // TODO: reclaim the memory that this location points to !!!
+    // auto oldDataPtrLocation =
+    //   mc->builder->CreateConstGEP1_32(operands[0]->getValue(), 0);
+    assignToUnion(decl, ops[1]);
+  } else {
+    // Store into the variable
+    builder->CreateStore(ops[1]->val, ops[0]->val);
+    // TODO: what the fuck is this?
+    // decl->setValue(decl->getValue(), operands[1]->getCurrentType());
+  }
+  // Return the assigned value
+  return ops[1];
+}
+
