@@ -9,6 +9,5 @@ var searchData=
   ['literal',['Literal',['../class_t_t_1_1_literal.html',1,'TT::Literal'],['../class_t_t_1_1_literal.html#a01bd0ef82ddf6e2f864ea37cd355855f',1,'TT::Literal::Literal()']]],
   ['literal_5fmacro',['LITERAL_MACRO',['../error_8hpp.html#a740adbed7da1caad1b61d9134b56b353',1,'error.hpp']]],
   ['llvm',['llvm',['../namespacellvm.html',1,'']]],
-  ['loadifpointer',['loadIfPointer',['../codegen_8cpp.html#a9077bfc05d41cbf631acb7c2b3b4d150',1,'codegen.cpp']]],
   ['loopnode',['LoopNode',['../class_loop_node.html',1,'LoopNode'],['../class_loop_node.html#a0ce6e33de0470ca7e306f6c70b9fd720',1,'LoopNode::LoopNode()']]]
 ];

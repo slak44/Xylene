@@ -34,7 +34,6 @@ var annotated_dup =
     [ "Node", "struct_node.html", "struct_node" ],
     [ "NoMoreChildrenNode", "class_no_more_children_node.html", "class_no_more_children_node" ],
     [ "Operator", "class_operator.html", "class_operator" ],
-    [ "OperatorCodegen", "class_operator_codegen.html", "class_operator_codegen" ],
     [ "Position", "struct_position.html", "struct_position" ],
     [ "ProgramData", "class_program_data.html", "class_program_data" ],
     [ "PtrUtil", "struct_ptr_util.html", "struct_ptr_util" ],

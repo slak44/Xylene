@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['special_5fcodegen_5fsig',['SPECIAL_CODEGEN_SIG',['../compiler_8hpp.html#aae0ebaf3b9632f07c1fc5ac8154dc595',1,'compiler.hpp']]]
+  ['visitor_5fvisit_5fimpl_5ffor',['VISITOR_VISIT_IMPL_FOR',['../ast_8cpp.html#a3450fe18e7d2d50d74986704d30545a0',1,'ast.cpp']]]
 ];

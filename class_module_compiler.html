@@ -239,7 +239,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="class_module_compiler.html" title="Each ModuleCompiler creates a llvm::Module from an AST. ">ModuleCompiler</a>.</p>
-<p>This is a static factory because std::enable_shared_from_this&lt;ModuleCompiler&gt; requires a shared_ptr to already exist before being used. This method guarantees that at least one such pointer exists. It also handles creation of the <a class="el" href="class_operator_codegen.html" title="Used to generate IR for operators. ">OperatorCodegen</a>, since that also requires a shared_ptr of this. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This is a static factory because std::enable_shared_from_this&lt;ModuleCompiler&gt; requires a shared_ptr to already exist before being used. This method guarantees that at least one such pointer exists. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">t</td><td>reference to a globally shared set of types </td></tr>
     <tr><td class="paramname">isRoot</td><td>if this is the root module </td></tr>
@@ -376,7 +376,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class <a class="el" href="class_operator_codegen.html">OperatorCodegen</a></td>
+          <td class="memname">friend class OperatorCodegen</td>
         </tr>
       </table>
   </td>

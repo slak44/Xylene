@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['safeopname',['safeOpName',['../codegen_8cpp.html#a34c6053c4ab1544701660206bf7bbb47',1,'codegen.cpp']]],
   ['semi',['SEMI',['../namespace_t_t.html#a2bc3956c46f9c145dd8390d541b66559',1,'TT']]],
   ['serializetypeset',['serializeTypeSet',['../class_module_compiler.html#a818ae801663ff338d616d1c7bf2ef95d',1,'ModuleCompiler']]],
   ['setparent',['setParent',['../class_a_s_t_node.html#a8364648a730e8ca159a594b04a1efcab',1,'ASTNode']]],

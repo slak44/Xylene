@@ -45,7 +45,6 @@ var hierarchy =
     [ "MemberMetadata", "class_member_metadata.html", null ],
     [ "MethodData", "class_method_data.html", null ],
     [ "Operator", "class_operator.html", null ],
-    [ "OperatorCodegen", "class_operator_codegen.html", null ],
     [ "Position", "struct_position.html", null ],
     [ "ProgramData", "class_program_data.html", null ],
     [ "PtrUtil< T >", "struct_ptr_util.html", [

@@ -1,6 +1,10 @@
 var dir_98d739c9dde11a4c5e5c4d63e78d924e =
 [
-    [ "compiler.hpp", "compiler_8hpp.html", "compiler_8hpp" ],
+    [ "compiler.hpp", "compiler_8hpp.html", [
+      [ "ProgramData", "class_program_data.html", "class_program_data" ],
+      [ "ModuleCompiler", "class_module_compiler.html", "class_module_compiler" ],
+      [ "Compiler", "class_compiler.html", "class_compiler" ]
+    ] ],
     [ "runner.hpp", "runner_8hpp.html", "runner_8hpp" ],
     [ "typeData.hpp", "type_data_8hpp.html", [
       [ "MemberMetadata", "class_member_metadata.html", "class_member_metadata" ],

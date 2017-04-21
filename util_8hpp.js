@@ -10,16 +10,17 @@ var util_8hpp =
     [ "TypeList", "util_8hpp.html#a94523410a1b1e99b5b060be55c93b281", null ],
     [ "TypeName", "util_8hpp.html#a0d2baf641f4048e8787ce12c21bd1874", null ],
     [ "UniqueIdentifier", "util_8hpp.html#a430118f1b4415c76a823263d2a407a57", null ],
+    [ "__attribute", "util_8hpp.html#aa00f007453c587fa5ae7589e6dbf8ff6", null ],
     [ "collate", "util_8hpp.html#afdf140bbd294efa7c5bb3061ac515225", null ],
     [ "getAddressStringFrom", "util_8hpp.html#a8025ca4758bf291a0677d9c691fea381", null ],
     [ "includes", "util_8hpp.html#ac29fac651131744534fe0279bec8dc75", null ],
     [ "includes", "util_8hpp.html#a83a8dc172fb60be1576b36388068b356", null ],
+    [ "objBind", "util_8hpp.html#a9b61dc2d5d092c20fe6e2d8b6f56a65a", null ],
     [ "print", "util_8hpp.html#a8d1de6f3d8f633ee9e45170c5eb436de", null ],
     [ "print", "util_8hpp.html#a0261494bc9b772555c5bdad905384cac", null ],
     [ "print", "util_8hpp.html#a8f68e9e8916dbd7b18778fb6ad33c816", null ],
     [ "print", "util_8hpp.html#ab87e393f2f75f94a29a22524ad208a63", null ],
     [ "println", "util_8hpp.html#a7230e1cb00210d88037170fa369c110f", null ],
     [ "println", "util_8hpp.html#a5bf584ced7714b095379d4a6a3997d59", null ],
-    [ "split", "util_8hpp.html#a5ec5407b8d7f28fd0aa7699dbe16c448", null ],
-    [ "defaultCombine", "util_8hpp.html#ac1410462b56482855358b5d5d81ae1ab", null ]
+    [ "split", "util_8hpp.html#a5ec5407b8d7f28fd0aa7699dbe16c448", null ]
 ];

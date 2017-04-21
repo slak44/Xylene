@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['objbind',['objBind',['../util_8hpp.html#a9b61dc2d5d092c20fe6e2d8b6f56a65a',1,'util.hpp']]],
   ['op',['op',['../class_token.html#add3db2af108a7a6e4139204f8fa7ffe6',1,'Token']]],
   ['operator',['Operator',['../class_operator.html',1,'Operator'],['../namespace_t_t.html#addc418396c7d773bbc39d371c0b27270',1,'TT::OPERATOR()']]],
   ['operator_20int',['operator int',['../class_token_type.html#a355ee349406105cbbb73b3dbdc0731c2',1,'TokenType']]],
@@ -13,5 +14,5 @@ var searchData=
   ['operator_3d_3d',['operator==',['../class_a_s_t_node.html#a8fc036294111d15ed1889fe8890ba4a4',1,'ASTNode::operator==()'],['../class_block_node.html#a7ab49f36387a2fcedaf726c81ccee65b',1,'BlockNode::operator==()'],['../class_expression_node.html#af28552a28c7cf7e508bb31c43b6134ff',1,'ExpressionNode::operator==()'],['../class_type_node.html#a609183b7856070c156ecb89846f9f87d',1,'TypeNode::operator==()'],['../class_declaration_node.html#a0e4831945d0380fc1ad63c5942752a91',1,'DeclarationNode::operator==()'],['../class_function_node.html#a2ff6aa4f525b05e31eea3cdb4a93f6c8',1,'FunctionNode::operator==()'],['../class_constructor_node.html#ac451706d26459d14f99b80bc5cb1b9f5',1,'ConstructorNode::operator==()'],['../class_method_node.html#a0db01a60bebd39f12fda77983c43257c',1,'MethodNode::operator==()'],['../class_member_node.html#a1495742edf1124fd026ea823f178faf2',1,'MemberNode::operator==()'],['../class_a_s_t.html#ae2185d4eb7461ecf4ebf56f8b83cb1af',1,'AST::operator==()'],['../class_abstract_id.html#a147bab6fc2d1035608fb0c670b80f1a6',1,'AbstractId::operator==(const AbstractId &amp;rhs) const noexcept'],['../class_abstract_id.html#a2c2b68f969e3cbb06b386f355ddc7b89',1,'AbstractId::operator==(const UniqueIdentifier &amp;rhs) const noexcept'],['../class_operator.html#ae1e215afdd937a223be332cce7fff540',1,'Operator::operator==()'],['../class_token_type.html#abbd1a223feb9107d63014a8146e4f8c0',1,'TokenType::operator==()'],['../class_token.html#a5ba2c1e8635ad2ef06cc6857ab2a69bb',1,'Token::operator==()'],['../class_type_info.html#acc920992d37368b9c42b1c29fd921aa1',1,'TypeInfo::operator==()'],['../class_function_signature.html#aab8ca207e45a55798b3966d690a61632',1,'FunctionSignature::operator==()']]],
   ['operator_5b_5d',['operator[]',['../class_lexer.html#a23d9a0ee287051ed2d80f24e70433311',1,'Lexer']]],
   ['operatorcharacters',['operatorCharacters',['../class_operator.html#ad322355c70bad355baa04e7e58bfeb37',1,'Operator']]],
-  ['operatorcodegen',['OperatorCodegen',['../class_operator_codegen.html',1,'OperatorCodegen'],['../class_module_compiler.html#aa7051afbbb1c3ad552a7abaa58bcb454',1,'ModuleCompiler::OperatorCodegen()']]]
+  ['operatorcodegen',['OperatorCodegen',['../class_module_compiler.html#aa7051afbbb1c3ad552a7abaa58bcb454',1,'ModuleCompiler']]]
 ];

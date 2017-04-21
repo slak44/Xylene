@@ -6,7 +6,6 @@ var searchData=
   ['finalize',['finalize',['../class_type_data.html#abe40f4bf6631f3a0c927eafef3a577af',1,'TypeData']]],
   ['find',['find',['../class_operator.html#af37658b8781e9960dbef40df72e63644',1,'Operator']]],
   ['findabove',['findAbove',['../class_a_s_t_node.html#a47725885665cefb5d0fac9da915c4fa3',1,'ASTNode::findAbove(std::function&lt; bool(Link)&gt; isOk) const'],['../class_a_s_t_node.html#aa15addd0c2a2a0edb6e0fb5de113dce6',1,'ASTNode::findAbove() const']]],
-  ['findandrunfun',['findAndRunFun',['../class_operator_codegen.html#a5d6e1115af9fe7c537b506ffc515382d',1,'OperatorCodegen']]],
   ['findbyprettyname',['findByPrettyName',['../namespace_t_t.html#a55d3faba06a8fc8ab64ec1df56713b80',1,'TT']]],
   ['findconstruct',['findConstruct',['../namespace_t_t.html#a52c42958cd59fd0cb4c7c17076b1308d',1,'TT']]],
   ['findkeyword',['findKeyword',['../namespace_t_t.html#af7574f0fe8b34927bbfaf129da71be2b',1,'TT']]],
