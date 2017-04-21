@@ -114,6 +114,21 @@ bool includes(Container c, std::function<bool(typename Container::value_type)> t
   return std::any_of(ALL(c), test);
 }
 
+/**
+  \brief Binds a member function to an instance
+  \param memberPtr the member function to be bound
+  \param obj the instance to bind to
+  \tparam ReturnType the member function's return type
+  \tparam Args the member function's arguments' types
+  \tparam Object the type of the instance
+  
+  Cannot handle cv-qualified stuff.
+*/
+template<typename ReturnType, typename... Args, typename Object>
+std::function<ReturnType(Args...)> objBind(ReturnType(Object::*memberPtr)(Args...), Object* obj) {
+  return [=](Args... args) -> ReturnType {return (obj->*memberPtr)(args...);};
+}
+
 /// Smart pointer utils
 template<typename T>
 struct PtrUtil {
@@ -160,9 +175,10 @@ struct Identity {
   }
 };
 
-static const auto defaultCombine = [](std::string prev, std::string current) {
-  return fmt::format("{0}, {1}", prev, current);
-};
+static const auto defaultCombine __attribute((unused)) =
+  [](std::string prev, std::string current) {
+    return fmt::format("{0}, {1}", prev, current);
+  };
 
 /**
   \brief Collates a bunch of objects from Container into a string
