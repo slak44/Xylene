@@ -213,8 +213,6 @@ private:
   */
   template<typename IntegerFunc, typename FloatFunc, typename... DefaultArgs>
   CodegenFun arithmOpBuilder(IntegerFunc intFun, FloatFunc floatFun, DefaultArgs... args) {
-    static_assert(std::is_member_function_pointer<IntegerFunc>::value, "IntegerFunc is not a member function!");
-    static_assert(std::is_member_function_pointer<FloatFunc>::value, "FloatFunc is not a member function!");
     auto boundIntFunc = objBind(intFun, builder.get());
     auto boundFloatFunc = objBind(floatFun, builder.get());
     return [=](std::vector<ValueWrapper::Link> ops, Node<ExpressionNode>::Link node) {
