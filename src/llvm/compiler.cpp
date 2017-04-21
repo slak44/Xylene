@@ -152,18 +152,46 @@ ModuleCompiler::Link ModuleCompiler::create(
   AST ast,
   bool isRoot
 ) {
-  auto thisThing =
-    std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast, isRoot));
-  thisThing->types = std::make_unique<ProgramData::TypeSet>(types);
-  thisThing->ast.getRoot()->blockTypes = {
-    thisThing->integerTid,
-    thisThing->floatTid,
-    thisThing->booleanTid,
-    thisThing->functionTid
+  auto self = std::make_shared<ModuleCompiler>(ModuleCompiler(moduleName, ast, isRoot));
+  self->codegenMap = {
+    {"Add", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateAdd, &llvm::IRBuilder<>::CreateFAdd, "", false, false)},
+    {"Substract", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateSub, &llvm::IRBuilder<>::CreateFSub, "", false, false)},
+    {"Multiply", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateMul, &llvm::IRBuilder<>::CreateFMul, "", false, false)},
+    {"Divide", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateSDiv, &llvm::IRBuilder<>::CreateFDiv, "", false)},
+    {"Modulo", self->arithmOpBuilder(&llvm::IRBuilder<>::CreateSRem, &llvm::IRBuilder<>::CreateFRem, "")},
+    {"Equality", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_EQ, llvm::CmpInst::Predicate::FCMP_OEQ)},
+    {"Inequality", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_NE, llvm::CmpInst::Predicate::FCMP_ONE)},
+    {"Less", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SLT, llvm::CmpInst::Predicate::FCMP_OLT)},
+    {"Less or equal", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SLE, llvm::CmpInst::Predicate::FCMP_OLE)},
+    {"Greater", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SGT, llvm::CmpInst::Predicate::FCMP_OGT)},
+    {"Greater or equal", self->cmpOpBuilder(llvm::CmpInst::Predicate::ICMP_SGE, llvm::CmpInst::Predicate::FCMP_OGE)},
+    {"Bitwise NOT", self->notFunction(BITWISE)},
+    {"Logical NOT", self->notFunction(LOGICAL)},
+    {"Bitwise AND", self->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateAnd)},
+    {"Logical AND", self->bitwiseOpBuilder(LOGICAL, &llvm::IRBuilder<>::CreateAnd)},
+    {"Bitwise OR", self->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateOr)},
+    {"Logical OR", self->bitwiseOpBuilder(LOGICAL, &llvm::IRBuilder<>::CreateOr)},
+    {"Bitwise XOR", self->bitwiseOpBuilder(BITWISE, &llvm::IRBuilder<>::CreateXor)},
+    {"Postfix ++", self->preOrPostfixOpBuilder(POSTFIX, &llvm::IRBuilder<>::CreateAdd)},
+    {"Postfix --", self->preOrPostfixOpBuilder(POSTFIX, &llvm::IRBuilder<>::CreateSub)},
+    {"Prefix ++", self->preOrPostfixOpBuilder(PREFIX, &llvm::IRBuilder<>::CreateAdd)},
+    {"Prefix --", self->preOrPostfixOpBuilder(PREFIX, &llvm::IRBuilder<>::CreateSub)},
+    {"Unary +", CodegenFun(objBind(&ModuleCompiler::unaryPlus, self.get()))},
+    {"Unary -", CodegenFun(objBind(&ModuleCompiler::unaryMinus, self.get()))},
+    {"Bitshift >>", CodegenFun(objBind(&ModuleCompiler::shiftLeft, self.get()))},
+    {"Bitshift <<", CodegenFun(objBind(&ModuleCompiler::shiftRight, self.get()))},
+    {"Call", CodegenFun(objBind(&ModuleCompiler::call, self.get()))},
+    {"Assignment", CodegenFun(objBind(&ModuleCompiler::assignment, self.get()))}
   };
-  thisThing->codegen = std::make_unique<OperatorCodegen>(OperatorCodegen(thisThing));
-  if (isRoot) thisThing->addMainFunction();
-  return thisThing;
+  self->types = std::make_unique<ProgramData::TypeSet>(types);
+  self->ast.getRoot()->blockTypes = {
+    self->integerTid,
+    self->floatTid,
+    self->booleanTid,
+    self->functionTid
+  };
+  if (isRoot) self->addMainFunction();
+  return self;
 }
 
 void ModuleCompiler::compile() {
@@ -448,7 +476,7 @@ ValueWrapper::Link ModuleCompiler::compileExpression(Node<ExpressionNode>::Link 
       }
     }
     // Call the code generating function, and return its result
-    return codegen->findAndRunFun(node, operands);
+    return codegenMap[tok.op().getName()](operands, node);
   } else {
     throw InternalError("Malformed expression node", {
       METADATA_PAIRS,
