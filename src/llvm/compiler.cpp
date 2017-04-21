@@ -868,7 +868,7 @@ ValueWrapper::Link ModuleCompiler::getPtrForArgument(
   }
   auto argName = "arg_" + argPtr->getName().str();
   // If we already obtained this arg, fetch it and return it
-  if (auto val = fun->getValue()->getValueSymbolTable().lookup(argName)) {
+  if (auto val = fun->getValue()->getValueSymbolTable()->lookup(argName)) {
     return std::make_shared<ValueWrapper>(val, argType);
   }
   // We can't use the function argument as is, so we create a pointer, and
