@@ -4,23 +4,23 @@
 
 #include "utils/util.hpp"
 
-class test_obj {
+class TestObj {
 private:
   int a;
 public:
-  test_obj(int a): a(a) {}
+  TestObj(int a): a(a) {}
   int getInt() {return a;}
   int getInt() const {return a;}
 };
 
 TEST(UtilTest, Collate) {
-  std::vector<test_obj> vec1 {
-    test_obj(1),
-    test_obj(54),
-    test_obj(72364),
-    test_obj(985123)
+  std::vector<TestObj> vec1 {
+    TestObj(1),
+    TestObj(54),
+    TestObj(72364),
+    TestObj(985123)
   };
-  auto collated1 = collate(vec1, [](test_obj x) {
+  auto collated1 = collate(vec1, [](TestObj x) {
     return std::to_string(x.getInt());
   });
   EXPECT_EQ(collated1, "1, 54, 72364, 985123");
@@ -37,7 +37,7 @@ TEST(UtilTest, Collate) {
   EXPECT_EQ(collated2, target2);
   
   auto collated3 = collate<decltype(vec1)>(vec1,
-  [](test_obj x) {
+  [](TestObj x) {
     return std::to_string(x.getInt());
   },
   [](std::string a, std::string b) {
@@ -57,7 +57,7 @@ TEST(UtilTest, Split) {
 }
 
 TEST(UtilTest, ObjBind) {
-  test_obj* obj = new test_obj(67);
-  auto bound = objBind(&test_obj::getInt, obj);
+  TestObj* obj = new TestObj(67);
+  auto bound = objBind(&TestObj::getInt, obj);
   EXPECT_EQ(bound(), 67);
 }
