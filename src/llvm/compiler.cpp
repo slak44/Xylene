@@ -1245,4 +1245,3 @@ ValueWrapper::Link ModuleCompiler::assignment(
   // Return the assigned value
   return ops[1];
 }
-
