@@ -73,13 +73,12 @@ set(TERMCOLOR_PREFIX ${PROJECT_SOURCE_DIR}/libs/termcolor)
 ExternalProject_Add(
   termcolor
   GIT_REPOSITORY https://github.com/ikalnitsky/termcolor.git
-  GIT_TAG 252e16600f6ed8a83d6b0e92d03c292bb416e900
+  GIT_TAG 53a9a1b0d6f8781e916f677be676c0900bc3eb24
   PREFIX ${TERMCOLOR_PREFIX}
   CONFIGURE_COMMAND ""
   UPDATE_COMMAND ""
   INSTALL_COMMAND ""
   BUILD_COMMAND ""
-  PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/windows_include_issues.patch
 )
 include_directories(SYSTEM ${TERMCOLOR_PREFIX}/src/termcolor/include)
 
