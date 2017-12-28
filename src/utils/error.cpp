@@ -5,7 +5,7 @@ Error::Error(std::string errType, std::string msg) noexcept: message(errType + m
 std::string InternalError::buildErrorMessage(std::string errorName, std::string msg, const ErrorData& data) {
   using namespace termcolor;
   std::stringstream ss;
-  ss << red << errorName << reset << ": " << msg << "\n";
+  ss << colorize << red << errorName << reset << ": " << msg << "\n";
   for (auto& extra : data) {
     ss << "\t" << blue << extra.first << reset << ": " << extra.second << "\n";
   }
