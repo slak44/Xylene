@@ -7,7 +7,7 @@ TypeData::TypeData(llvm::StructType* type, ModuleCompiler::Link mc, Node<TypeNod
   dataType(type),
   staticTi(*this, TypeInitializer::Kind::STATIC),
   normalTi(*this, TypeInitializer::Kind::NORMAL) {}
-  
+
 TypeData::TypeInitializer TypeData::getInit() const {
   return normalTi;
 }
@@ -15,7 +15,7 @@ TypeData::TypeInitializer TypeData::getInit() const {
 TypeData::TypeInitializer TypeData::getStaticInit() const {
   return staticTi;
 }
-  
+
 std::vector<llvm::Type*> TypeData::getAllocaTypes() const {
   std::vector<llvm::Type*> allocaTypes {};
   std::transform(ALL(members), std::back_inserter(allocaTypes), [](auto a) {
@@ -178,7 +178,7 @@ TypeData::TypeInitializer::TypeInitializer(TypeData& tyData, Kind k): owner(tyDa
       }),
       owner.mc->functionTid
     );
-    init->getValue()->getArgumentList().begin()->setName("this");
+    init->getValue()->arg_begin()->setName("this");
   }
   initBlock = llvm::BasicBlock::Create(
     *tyData.mc->context,
@@ -230,7 +230,7 @@ void TypeData::TypeInitializer::finalize() {
     return;
   }
   // If normal init
-  if (init->getValue()->getArgumentList().size() > 0) {
+  if (std::distance(init->getValue()->arg_begin(), init->getValue()->arg_end()) > 0) {
     initializerInstance = std::make_shared<InstanceWrapper>(
       getInitStructArg()->val,
       owner.node->getTid()

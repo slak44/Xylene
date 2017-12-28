@@ -61,21 +61,21 @@ void assertCliIntegrity(TCLAP::CmdLine& cmd, bool assertion, std::string message
 int notReallyMain(int argc, const char* argv[]) {
   try {
     TCLAP::CmdLine cmd("Xylene", ' ', "pre-release");
-    
+
     TCLAP::SwitchArg asXML("", "xml", "Read file using the XML parser", cmd);
-    
+
     TCLAP::SwitchArg printTokens("", "tokens", "Print token list (if applicable)", cmd);
     TCLAP::SwitchArg printAST("", "ast", "Print AST (if applicable)", cmd);
     TCLAP::SwitchArg printIR("", "ir", "Print LLVM IR (if applicable)", cmd);
-    
+
     TCLAP::SwitchArg doNotParse("", "no-parse", "Don't parse the token list", cmd);
     TCLAP::SwitchArg doNotRun("", "no-run", "Don't execute the AST", cmd);
-    
+
     std::vector<std::string> runnerValues {"interpret", "compile"};
     TCLAP::ValuesConstraint<std::string> runnerConstraint(runnerValues);
     TCLAP::ValueArg<std::string> runner("r", "runner", "How to run this code", false,
       "interpret", &runnerConstraint, cmd, nullptr);
-    
+
     TCLAP::ValueArg<std::string> code("e", "eval", "Code to evaluate", false,
       std::string(), "string", cmd, nullptr);
     TCLAP::ValueArg<std::string> filePath("f", "file", "Load code from this file",
@@ -83,47 +83,47 @@ int notReallyMain(int argc, const char* argv[]) {
     TCLAP::ValueArg<std::string> outPath("o", "output", "Write exe to this file",
       false, std::string(), "path", cmd, nullptr);
     cmd.parse(argc, argv);
-    
+
     // There must be at least one input
     assertCliIntegrity(cmd, code.getValue().empty() && filePath.getValue().empty(),
       "Must specify either option -e or -f");
-    
+
     // There is not much you can do to the XML without parsing it
     assertCliIntegrity(cmd, asXML.getValue() && doNotParse.getValue(),
       "--no-parse and --xml are incompatible");
-    
+
     // The XML parser does not use tokens
     assertCliIntegrity(cmd, asXML.getValue() && printTokens.getValue(),
       "--tokens and --xml are incompatible");
-    
+
     // Can't print AST without creating it first
     assertCliIntegrity(cmd, printAST.getValue() && doNotParse.getValue(),
       "--no-parse and --ast are incompatible");
-      
+
     // Can't print IR without parsing the AST
     assertCliIntegrity(cmd, printIR.getValue() && doNotParse.getValue(),
       "--no-parse and --ir are incompatible");
-      
+
     std::unique_ptr<AST> ast;
-    
+
     if (asXML.getValue()) {
       ast = parseXML(filePath.getValue(), code.getValue());
     } else {
       auto tokens = tokenize(filePath.getValue(), code.getValue());
       if (printTokens.getValue()) for (auto tok : tokens) println(tok);
-      
+
       if (doNotParse.getValue()) return NORMAL_EXIT;
       ast = std::make_unique<AST>(TokenParser::parse(tokens));
     }
-    
+
     if (printAST.getValue()) ast->print();
-    
+
     auto mc = ModuleCompiler::create({}, "Command Line Module", *ast, true);
     mc->compile();
-    if (printIR.getValue()) mc->getModule()->dump();
-    
-    if (doNotRun.getValue()) return NORMAL_EXIT;    
-    
+    if (printIR.getValue()) mc->getModule()->print(llvm::outs(), nullptr);;
+
+    if (doNotRun.getValue()) return NORMAL_EXIT;
+
     if (runner.getValue() == "interpret") {
       return Runner(mc).run();
     } else if (runner.getValue() == "compile") {
@@ -157,9 +157,9 @@ int main(int argc, const char* argv[]) {
   #ifdef XYLENE_MEASURE_TIME
   auto begin = std::chrono::steady_clock::now();
   #endif
-  
+
   int exitCode = notReallyMain(argc, argv);
-  
+
   #ifdef XYLENE_MEASURE_TIME
   auto end = std::chrono::steady_clock::now();
   println(

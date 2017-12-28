@@ -12,25 +12,25 @@ protected:
   inline rapidxml::file<> xmlFile(fs::path relativePath) {
     return rapidxml::file<>((DATA_PARENT_DIR / relativePath).c_str());
   }
-  
+
   inline ModuleCompiler::Link compile(fs::path xmlFilePath) {
     auto mc = ModuleCompiler::create(
       {}, xmlFilePath, XMLParser::parse(xmlFile(xmlFilePath)), true);
     mc->compile();
-    if (printIr) mc->getModule()->dump();
+    if (printIr) mc->getModule()->print(llvm::outs(), nullptr);
     return mc;
   }
-  
+
   inline void noThrowOnCompile(fs::path xmlFilePath) {
     auto mc = ModuleCompiler::create(
       {}, xmlFilePath, XMLParser::parse(xmlFile(xmlFilePath)), true);
     try {
       mc->compile();
-      if (printIr) mc->getModule()->dump();
+      if (printIr) mc->getModule()->print(llvm::outs(), nullptr);
     } catch (InternalError& err) {
       EXPECT_NO_THROW(throw err);
       println(err.what());
-      mc->getModule()->dump();
+      mc->getModule()->print(llvm::outs(), nullptr);
     }
   }
 };

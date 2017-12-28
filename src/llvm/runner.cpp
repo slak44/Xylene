@@ -4,7 +4,7 @@ Runner::Runner(ModuleCompiler::Link v): v(v) {
   llvm::InitializeNativeTarget();
   llvm::InitializeNativeTargetAsmPrinter();
   llvm::InitializeNativeTargetAsmParser();
-  
+
   std::string onError = "";
   auto eb = new llvm::EngineBuilder(std::unique_ptr<llvm::Module>(v->getModule()));
   engine = eb

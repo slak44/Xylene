@@ -46,7 +46,7 @@ TypeListId::TypeListId(
     );
   }
 }
-  
+
 TypeListId::Link TypeListId::create(
   TypeName n,
   std::unordered_set<AbstractId::Link> v,

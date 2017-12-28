@@ -28,22 +28,22 @@ Compiler::Compiler(
 void Compiler::compile() {
   using namespace llvm;
   Module* m = pd.rootModule.get();
-  
+
   InitializeAllTargetInfos();
   InitializeAllTargets();
   InitializeAllTargetMCs();
   InitializeAllAsmParsers();
   InitializeAllAsmPrinters();
-  
+
   auto targetTriple = sys::getDefaultTargetTriple();
-  
+
   std::string error;
   auto target = TargetRegistry::lookupTarget(targetTriple, error);
 
   if (!target) {
     throw InternalError("No target: " + error, {METADATA_PAIRS});
   }
-  
+
   auto cpu = "generic";
   auto features = "";
 
@@ -51,7 +51,7 @@ void Compiler::compile() {
   auto relocModel = Optional<Reloc::Model>();
   auto targetMachine =
     target->createTargetMachine(targetTriple, cpu, features, opt, relocModel);
-  
+
   m->setDataLayout(targetMachine->createDataLayout());
   m->setTargetTriple(targetTriple);
 
@@ -61,7 +61,7 @@ void Compiler::compile() {
   if (ec) {
     throw InternalError("File open: " + ec.message(), {METADATA_PAIRS});
   }
-  
+
   legacy::PassManager pass;
   auto fileType = TargetMachine::CGFT_ObjectFile;
 
@@ -174,7 +174,7 @@ void ModuleCompiler::compile() {
   std::string str;
   llvm::raw_string_ostream rso(str);
   if (llvm::verifyModule(*module, &rso)) {
-    module->dump();
+    module->print(llvm::outs(), nullptr);
     throw InternalError("Module failed validation", {
       METADATA_PAIRS,
       {"module name", module->getName()},
@@ -189,7 +189,7 @@ void ModuleCompiler::serializeTypeSet() {
     TODO: do we really want all of this?
     when doing a runtime type check, the type list to compare against should be constant
     so theoretically, we can hardcode typelists where we do the checks
-    
+
     is rtti even necessary?
   */
   for (auto tid : *types) {
@@ -214,7 +214,7 @@ void ModuleCompiler::serializeTypeSet() {
       rttiInfoType,
       true, // Global is constant
       llvm::GlobalValue::LinkageTypes::ExternalLinkage,
-      0, // Only set initializer if in root
+      nullptr, // Only set initializer if in root
       fmt::format("_xyl_rtti_{0}", tid->getName()), // TODO: name mangling for collisions
       nullptr,
       llvm::GlobalValue::ThreadLocalMode::NotThreadLocal,
@@ -224,10 +224,10 @@ void ModuleCompiler::serializeTypeSet() {
     if (isRoot) {
       auto id = llvm::ConstantInt::get(integerType, tid->getId(), false);
       auto array = llvm::ConstantArray::get(arrayType, containedTys);
-      auto rttiStruct = llvm::ConstantStruct::get(rttiInfoType, id, array, nullptr);
+      auto rttiStruct = llvm::ConstantStruct::get(rttiInfoType, id, array);
       rtti->setInitializer(rttiStruct);
     }
-  }  
+  }
 }
 
 void ModuleCompiler::visitBlock(Node<BlockNode>::Link node) {
@@ -321,22 +321,24 @@ ValueWrapper::Link ModuleCompiler::valueFromIdentifier(Node<ExpressionNode>::Lin
     throw InternalError("This function takes identifies only", {METADATA_PAIRS});
   // Check if it's an argument to this function, return it
   // TODO might have to load it
-  // LLVM arguments
-  auto& argList = functionStack.top()->getValue()->getArgumentList();
+  // LLVM arguments count
+  auto llvmFun = functionStack.top()->getValue();
+  auto llvmArgCount = static_cast<std::size_t>(
+    std::distance(llvmFun->arg_begin(), llvmFun->arg_end()));
   // FunctionSignature arguments
   auto sigArgList = functionStack.top()->getSignature().getArguments();
   // Make sure the signature matches the arg list, otherwise something is really wrong
-  if (argList.size() != sigArgList.size()) throw InternalError(
+  if (llvmArgCount != sigArgList.size()) throw InternalError(
     "LLVM argument count does not match FunctionSignature argument count",
     {
       METADATA_PAIRS,
-      {"llvm arg count", std::to_string(argList.size())},
+      {"llvm arg count", std::to_string(llvmArgCount)},
       {"signature arg count", std::to_string(sigArgList.size())}
     }
   );
   // Iterate over them at the same time
   auto sigArg = sigArgList.begin();
-  for (auto arg = argList.begin(); arg != argList.end(); arg++, sigArg++) {
+  for (auto arg = llvmFun->arg_begin(); arg != llvmFun->arg_end(); arg++, sigArg++) {
     // Complain if arg names aren't the same
     if (arg->getName() != sigArg->first) {
       throw InternalError("Func arg name mismatch", {
@@ -577,18 +579,18 @@ void ModuleCompiler::visitDeclaration(Node<DeclarationNode>::Link node) {
   }
   auto id = typeIdFromInfo(node->getTypeInfo(), node);
   auto declWrap = std::make_shared<ValueWrapper>(decl, id);
-  
+
   // Add to scope
   auto inserted =
     enclosingBlock->blockScope.insert({node->getIdentifier(), declWrap});
   // If it failed, it means the decl already exists
   if (!inserted.second)
     throw "Redefinition of identifier '{}'"_ref(node->getIdentifier()) + node->getTrace();
-  
+
   // Handle initialization
   if (!node->hasInit()) return;
   ValueWrapper::Link initValue = compileExpression(node->init());
-  
+
   typeCheck(id, initValue,
     "Type of initialization ({0}) is not allowed by declaration ({1})"_type(
       initValue->ty->typeNames(), id->typeNames()) + node->getTrace());
@@ -728,7 +730,7 @@ void ModuleCompiler::visitBreakLoop(Node<BreakLoopNode>::Link node) {
 
 void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   static const auto funRetTyMismatch = "Function return type does not match return value";
-  
+
   auto func = node->findAbove<FunctionNode>();
   // If defined, allow return statements outside functions, that end the program and
   // return an exit code
@@ -739,7 +741,7 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
     if (func == nullptr)
       throw "Found return statement outside of function"_syntax + node->getTrace();
   #endif
-  
+
   auto returnType = func->getSignature().getReturnType();
   // If both return types are void, return void
   if (node->value() == nullptr && returnType.isVoid()) {
@@ -750,15 +752,15 @@ void ModuleCompiler::visitReturn(Node<ReturnNode>::Link node) {
   if ((node->value() == nullptr) != returnType.isVoid()) {
     throw "{}"_type(funRetTyMismatch) + node->getTrace();
   }
-  
+
   auto returnedValue = compileExpression(node->value());
   auto retId = typeIdFromInfo(returnType, node);
-  
+
   // If the returnedValue's type can't be found in the list of possible return types, get mad
   typeCheck(retId, returnedValue,
     "Function return type ({0}) does not match return value ({1})"_type(
       retId->typeNames(), returnedValue->ty->typeNames()) + node->getTrace());
-    
+
   if (functionStack.top()->getValue()->getReturnType() != returnedValue->val->getType()) {
     bool isUnion = returnedValue->val->getType() == taggedUnionType->getPointerTo();
     if (isUnion) {
@@ -794,7 +796,7 @@ void ModuleCompiler::visitFunction(Node<FunctionNode>::Link node) {
     functionTid
   ));
   std::size_t nameIdx = 0;
-  for (auto& arg : functionStack.top()->getValue()->getArgumentList()) {
+  for (auto& arg : functionStack.top()->getValue()->args()) {
     arg.setName(argNames[nameIdx]);
     nameIdx++;
   }
@@ -849,7 +851,8 @@ ValueWrapper::Link ModuleCompiler::getPtrForArgument(
     "Called too early; move caller inside or after TypeData::finalize",
     {METADATA_PAIRS}
   );
-  if (which >= fun->getValue()->getArgumentList().size()) {
+  if (which >= static_cast<std::size_t>(
+    std::distance(fun->getValue()->arg_begin(), fun->getValue()->arg_end()))) {
     throw InternalError("Bad argument index", {
       METADATA_PAIRS,
       {"which index", std::to_string(which)}
@@ -858,7 +861,7 @@ ValueWrapper::Link ModuleCompiler::getPtrForArgument(
   // Obtain desired argument + its type's name
   llvm::Argument* argPtr = nullptr;
   std::size_t i = 0;
-  for (auto& arg : fun->getValue()->getArgumentList()) {
+  for (auto& arg : fun->getValue()->args()) {
     if (i == which) {
       argPtr = &arg;
       break;
@@ -886,7 +889,7 @@ ValueWrapper::Link ModuleCompiler::getPtrForArgument(
 }
 
 void ModuleCompiler::visitConstructor(Node<ConstructorNode>::Link node) {
-  TypeData* tyData = 
+  TypeData* tyData =
     Node<TypeNode>::staticPtrCast(node->getParent().lock())->getTid()->getTyData();
   auto sig = node->getSignature();
   if (!sig.getReturnType().isVoid()) throw InternalError(
@@ -920,7 +923,7 @@ void ModuleCompiler::visitConstructor(Node<ConstructorNode>::Link node) {
     functionTid
   );
   std::size_t nameIdx = 0;
-  for (auto& arg : funWrapper->getValue()->getArgumentList()) {
+  for (auto& arg : funWrapper->getValue()->args()) {
     arg.setName(argNames[nameIdx]);
     nameIdx++;
   }
@@ -958,7 +961,7 @@ void ModuleCompiler::visitMethod(Node<MethodNode>::Link node) {
     functionTid
   );
   std::size_t nameIdx = 0;
-  for (auto& arg : funWrapper->getValue()->getArgumentList()) {
+  for (auto& arg : funWrapper->getValue()->args()) {
     arg.setName(argNames[nameIdx]);
     nameIdx++;
   }
@@ -1221,7 +1224,7 @@ ValueWrapper::Link ModuleCompiler::assignment(
   ValueWrapper::Link decl = ops[0];
   if (decl == nullptr)
     throw "Cannot assign to '{}'"_ref(varIdent->getToken().data) + varIdent->getToken().trace;
-  
+
   // If the declaration doesn't allow this type, complain
   typeCheck(decl->ty, ops[1],
     "Value '{0}' ({1}) does not allow assigning type '{2}'"_type(
@@ -1229,7 +1232,7 @@ ValueWrapper::Link ModuleCompiler::assignment(
       decl->ty->typeNames(),
       ops[1]->ty->typeNames()
     ) + varIdent->getToken().trace);
-  
+
   // TODO: this needs work
   if (decl->ty->storedTypeCount() > 1) {
     // TODO: reclaim the memory that this location points to !!!

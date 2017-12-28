@@ -136,29 +136,6 @@ include_directories(SYSTEM ${VARIANT_PREFIX}/src/variant/include/mpark/)
 find_package(LLVM REQUIRED)
 include_directories(SYSTEM ${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
-llvm_map_components_to_libnames(
-  REQ_LLVM_LIBRARIES
-  aarch64 aarch64asmparser aarch64asmprinter aarch64codegen aarch64desc aarch64disassembler aarch64info aarch64utils
-  amdgpu amdgpuasmparser amdgpuasmprinter amdgpucodegen amdgpudesc amdgpudisassembler amdgpuinfo amdgpuutils
-  arm armasmparser armasmprinter armcodegen armdesc armdisassembler arminfo
-  bpf bpfasmprinter bpfcodegen bpfdesc bpfinfo
-  hexagon hexagonasmparser hexagoncodegen hexagondesc hexagondisassembler hexagoninfo
-  lanai lanaiasmparser lanaicodegen lanaidesc lanaidisassembler lanaiinfo lanaiinstprinter
-  mips mipsasmparser mipsasmprinter mipscodegen mipsdesc mipsdisassembler mipsinfo
-  msp430 msp430asmprinter msp430codegen msp430desc msp430info
-  nvptx nvptxasmprinter nvptxcodegen nvptxdesc nvptxinfo
-  powerpc powerpcasmparser powerpcasmprinter powerpccodegen powerpcdesc powerpcdisassembler powerpcinfo
-  riscv riscvcodegen riscvdesc riscvinfo
-  sparc sparcasmparser sparcasmprinter sparccodegen sparcdesc sparcdisassembler sparcinfo
-  systemz systemzasmparser systemzasmprinter systemzcodegen systemzdesc systemzdisassembler systemzinfo
-  x86 x86asmparser x86asmprinter x86codegen x86desc x86disassembler x86info x86utils
-  xcore xcoreasmprinter xcorecodegen xcoredesc xcoredisassembler xcoreinfo
-  
-  analysis asmparser asmprinter bitreader bitwriter codegen core coverage coroutines demangle debuginfocodeview debuginfodwarf debuginfopdb
-  executionengine globalisel instcombine instrumentation interpreter ipo irreader libdriver lineeditor linker lto
-  mc mcdisassembler mcjit mcparser mirparser native nativecodegen objcarcopts object objectyaml option orcjit passes
-  profiledata runtimedyld scalaropts selectiondag support symbolize tablegen target transformutils vectorize
-)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
@@ -182,7 +159,7 @@ set(COMMON_SOURCES
   ${SRC_DIR}/runtime/io.cpp
 )
 set(COMMON_DEPS rapidxml termcolor tclap fmtlib variant)
-set(COMMON_LINK_LIBS ${REQ_LLVM_LIBRARIES} stdc++fs fmt)
+set(COMMON_LINK_LIBS LLVM-5.0 stdc++fs fmt)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)

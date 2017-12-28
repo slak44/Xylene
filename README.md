@@ -7,7 +7,7 @@ Documentation: https://slak44.github.io/Xylene/
 ## Dependencies
 
 - cmake 3.6.1+
-- llvm 4.0.0
+- llvm 5.0
 
 Everything else is downloaded and installed before building by cmake.
 
